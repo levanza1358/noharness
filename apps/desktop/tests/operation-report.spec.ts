@@ -8,7 +8,7 @@ import { writeCrashReport, type CrashReportInput } from '../src/crash-report.ts'
 const input: CrashReportInput = {
   operationHistoryPlanned: true, source: 'host', phase: 'startup', error: new Error('startup failed'),
   rendererConsole: [], time: new Date('2026-10-19T00:00:00Z'),
-  app: { name: 'test', version: '1', platform: 'win32', arch: 'x64', electron: '44', node: '24', locale: 'zh-CN' },
+  app: { name: 'test', version: '1', platform: 'win32', arch: 'x64', electron: '44', node: '24', locale: 'ja-JP' },
 }
 const limits = { bytes: 65536, recordBytes: 4096, records: 100, outputBytes: 65536 }
 async function fixture() {

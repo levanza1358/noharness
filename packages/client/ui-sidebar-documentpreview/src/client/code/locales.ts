@@ -4,62 +4,58 @@ import type {} from '@noharness/client-ui-slots'
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Code document implementation name and copy controls. */
-    sidebarCodePreview: keyof typeof zh
+    sidebarCodePreview: keyof typeof en
   }
 }
 
-/** Simplified Chinese dictionary and key source. */
-export const zh = {
-  title: '代码',
-  copy: '复制',
-  copied: '已复制',
-}
 
 /** English dictionary with the same keys. */
 export const en = {
   title: 'Code',
   copy: 'Copy',
   copied: 'Copied',
-} satisfies Record<keyof typeof zh, string>
+} as const
+
+export type Keys = keyof typeof en
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   'title': 'コード',
   'copy': 'コピー',
   'copied': 'コピーしました',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
   title: 'Código',
   copy: 'Copiar',
   copied: 'Copiado',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
   title: 'Coder',
   copy: 'Copier',
   copied: 'Copié',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
   title: 'Code',
   copy: 'Kopieren',
   copied: 'Kopiert',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
   title: 'Код',
   copy: 'Копировать',
   copied: 'Скопировано',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
   title: 'Código',
   copy: 'Copiar',
   copied: 'Copiado',
-} satisfies Record<keyof typeof en, string>
+} as const

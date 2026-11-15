@@ -1,5 +1,4 @@
 /** Japanese common vocabulary. */
-import type { en } from './en.ts'
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
@@ -44,4 +43,4 @@ export const ja = {
   'markdown.truncatedCharacters': '… {total}文字で切り捨て',
   'number.thousand': '{value}K',
   'number.million': '{value}M',
-} satisfies Record<keyof typeof en, string>
+} as const

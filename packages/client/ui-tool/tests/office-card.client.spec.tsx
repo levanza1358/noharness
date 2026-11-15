@@ -7,11 +7,11 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 import { contextMenuHook, bindSnapshotSelector, makeTranslate, SlotTestRuntime } from '@noharness/client-test-runtime'
 import { LocaleRuntime } from '@noharness/client-locale/client'
 import { createSnapshotStore } from '@noharness/client-store'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { StartedToolCall, ToolResultNode } from '@noharness/client-ui-chat/client'
 import type { SessionListState } from '@noharness/api-session-controller/client'
 import type { SessionId } from '@noharness/session/types'
-import { zh, en, ja, es, fr, de, ru, pt } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja, en, es, fr, de, ru, pt } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 import type { AttachmentId, ImageAttachmentRef } from '@noharness/attachment/types'
 import { brandString } from '@noharness/brand'
@@ -22,7 +22,7 @@ import { OfficeRow, officeToolview, type OfficeRowProps } from '../src/client/to
 afterEach(cleanup)
 
 const SID = 's1' as SessionId
-const t: ToolTreeProps['t'] = makeTranslate(zh, commonZh)
+const t: ToolTreeProps['t'] = makeTranslate(ja, commonJa)
 const RENDER_ARGS = '{"input":"docs/deck.pptx"}'
 const image: ImageAttachmentRef = {
   attachmentId: brandString<AttachmentId>(`sha256:${'b'.repeat(64)}`), mediaType: 'image/png', bytes: 120, width: 800, height: 600,
@@ -132,7 +132,7 @@ describe('OfficeRow', () => {
     const runtime = await SlotTestRuntime.create()
     onTestFinished(() => runtime.dispose())
     const locale = new LocaleRuntime(runtime.ctx)
-    locale.register('conversation', { en, zh })
+    locale.register('conversation', { en, ja })
     runtime.ctx.provide('locale', locale)
     runtime.slots.installLocale(locale)
     const fiber = await runtime.mount(officeToolview)
@@ -147,7 +147,7 @@ describe('OfficeRow', () => {
 })
 
 it.each([
-  ['zh', zh, ['渲染文档', '转换文档', '重算工作簿']],
+  ['ja', ja, ['渲染文档', '转换文档', '重算工作簿']],
   ['en', en, ['Render document', 'Convert document', 'Recalculate workbook']],
   ['ja', ja, ['文書を描画', '文書を変換', 'ブックを再計算']],
   ['es', es, ['Representar documento', 'Convertir documento', 'Recalcular libro']],

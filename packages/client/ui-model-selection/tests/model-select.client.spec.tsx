@@ -10,15 +10,15 @@ import type { ComponentProps } from 'react'
 import type { OwnerOf } from '@noharness/client-ui-slots'
 import type { ModelDirectoryState } from '../src/client/directory.ts'
 import { ModelSelect } from '../src/client/ModelSelect.tsx'
-import { en, zh } from '../src/client/locales.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { en, ja } from '../src/client/locales.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { brandString } from '@noharness/brand'
 
 // The seat's key domain is model ∪ common; the stub mirrors the real lookup
 // chain: package dictionary, then common vocabulary, then the key.
 const t: ComponentProps<typeof ModelSelect>['t'] = (key, params) => {
-  const template = (zh as Record<string, string>)[key]
-    ?? (commonZh as Record<string, string>)[key]
+  const template = (ja as Record<string, string>)[key]
+    ?? (commonJa as Record<string, string>)[key]
     ?? key
   return params === undefined
     ? template
@@ -157,7 +157,7 @@ describe('ModelSelect label slot', () => {
 })
 
 describe('ModelSelect catalog badges', () => {
-  const BADGE = { text: { en: 'New', zh: '新' }, tone: 'info' } as const
+  const BADGE = { text: { en: 'New', ja: '新' }, tone: 'info' } as const
   const badged = () => state({
     current: { provider: 'deepseek-official', model: 'deepseek-flash' },
     groups: [{
@@ -169,7 +169,7 @@ describe('ModelSelect catalog badges', () => {
       ],
     }],
   })
-  const chinese: ComponentProps<typeof ModelSelect>['resolveText'] = text => typeof text === 'string' ? text : text.zh ?? text.en
+  const chinese: ComponentProps<typeof ModelSelect>['resolveText'] = text => typeof text === 'string' ? text : text.ja ?? text.en
 
   it('places the badge before the trigger name and after names in the menus', () => {
     render(<ModelSelect renderSlot={renderLabel} locked={false} available directory={createSnapshotStore(badged())}
@@ -315,7 +315,7 @@ describe('ModelSelect reasoning effort', () => {
     expect(trigger.textContent).toBe('请选择模型')
     expect(directory.getSnapshot().current).toEqual(state().current)
     fireEvent.click(trigger)
-    expect(screen.getByRole('status').textContent).toBe(zh['empty.models'])
+    expect(screen.getByRole('status').textContent).toBe(ja['empty.models'])
     fireEvent.keyDown(trigger, { key: 'Tab', shiftKey: true })
     expect(screen.queryByRole('group', { name: '模型与推理等级' })).toBeNull()
   })
@@ -381,7 +381,7 @@ describe('ModelSelect reasoning effort', () => {
     const toast = await screen.findByRole('alert')
     expect(document.activeElement).toBe(trigger)
     expect(toast.textContent).toBe(sessionInUse
-      ? zh['error.sessionInUse']
+      ? ja['error.sessionInUse']
       : '模型操作失败：session/model-unavailable: session already contains images')
     // The selection failure does not render the in-menu load strip (no Retry).
     expect(screen.queryByRole('button', { name: '重试' })).toBeNull()
@@ -783,7 +783,7 @@ describe('ModelSelect catalog size', () => {
       expect(document.activeElement).toBe(count === 0 ? trigger : rows[count > 1 ? 1 : 0])
       expect(rows.every(row => row.tabIndex === 0)).toBe(true)
     }
-    if (count === 0) expect(screen.getByRole('status').textContent).toBe(zh['empty.models'])
+    if (count === 0) expect(screen.getByRole('status').textContent).toBe(ja['empty.models'])
   })
 
   it.each([0, 1, 4, 5])('opens an unselected %i-model catalog on search or its first row', (count) => {
@@ -919,7 +919,7 @@ describe('ModelSelect search', () => {
     fireEvent.click(screen.getByRole('menuitem', { name: /模型/ }))
     expect(screen.queryByRole('group', { name: 'Empty Provider' })).toBeNull()
     act(() => { directory.set(state({ groups: [] })) })
-    expect(screen.getByRole('status').textContent).toBe(zh['empty.models'])
+    expect(screen.getByRole('status').textContent).toBe(ja['empty.models'])
     expect(screen.getByRole('status').closest('[role="menu"]')).toBeNull()
   })
 
@@ -1091,7 +1091,7 @@ it('places account and official models before third-party models', async () => {
   await expect(`${names.join('\n')}\n`).toMatchFileSnapshot('./expected/account-first.txt')
 })
 
-it.each([en, zh])('localizes the account group while preserving external names', (copy) => {
+it.each([en, ja])('localizes the account group while preserving external names', (copy: typeof ja | typeof en) => {
   const groups = ['deepseek-account', 'custom'].map(id => ({
     id, name: id === 'deepseek-account' ? 'DeepSeek Account' : 'My Gateway',
     models: [{ id: 'model', name: 'Model' }],

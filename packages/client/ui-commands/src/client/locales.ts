@@ -7,42 +7,6 @@
 
 import { builtinCommandTokens } from '@noharness/commands/builtin'
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'section.add': '添加',
-  'section.commands': '指令',
-  'label.goal': '目标',
-  'label.plan': '计划',
-  'label.feedback': '反馈',
-  'label.compact': '压缩',
-  'label.permission': '权限',
-  'label.export': '下载日志',
-  'description.goal': '设置或查看长期任务目标',
-  'description.plan': '进入或退出计划模式',
-  'description.feedback': '发送关于当前会话的反馈',
-  'description.compact': '压缩以上对话内容',
-  'description.permission': '切换权限预设（沙箱模式与审批策略）',
-  'description.export': '将当前会话内容导出为 ZIP',
-  'token.goal': builtinCommandTokens.zh.goal,
-  'token.plan': builtinCommandTokens.zh.plan,
-  'token.feedback': builtinCommandTokens.zh.feedback,
-  'token.compact': builtinCommandTokens.zh.compact,
-  'token.permission': builtinCommandTokens.zh.permission,
-  'token.export': builtinCommandTokens.zh.export,
-  'search.placeholder': '搜索…',
-  'search.aria': '筛选选项',
-  'status.loading': '正在加载选项…',
-  'status.applying': '正在应用…',
-  'status.empty': '无选项',
-  'overlay.aria': '/{command} 选项',
-  'listbox.aria': '/{command} 匹配项',
-  'notice.attachmentsUnsupported': '/{command} 不接受附件，请先移除附件',
-} satisfies Record<string, string>
-
-/** The command namespace key union. */
-export type CommandKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'section.add': 'Add',
   'section.commands': 'Commands',
@@ -72,23 +36,26 @@ export const en = {
   'overlay.aria': '/{command} options',
   'listbox.aria': '/{command} matches',
   'notice.attachmentsUnsupported': '/{command} does not accept attachments; remove them first',
-} satisfies Record<CommandKey, string>
+} as const
+
+export type CommandKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'section.add': '追加',
+  'section.add': 'Add',
   'section.commands': 'コマンド',
-  'label.goal': '目標',
-  'label.plan': '計画',
+  'label.goal': 'Goal',
+  'label.plan': 'Plan',
   'label.feedback': 'フィードバック',
-  'label.compact': '圧縮',
-  'label.permission': '権限',
+  'label.compact': 'Compact',
+  'label.permission': 'Permission',
   'label.export': 'エクスポート',
-  'description.goal': '長時間実行するタスクの目標を設定または表示',
-  'description.plan': '計画モードに入るまたは終了する',
-  'description.feedback': 'このセッションに関するフィードバックを記録',
-  'description.compact': '古い会話履歴を圧縮',
-  'description.permission': '権限プリセットを切り替える (サンドボックスモード + 承認ポリシー)',
+  'description.goal': 'Set or view the goal for a long-running task',
+  'description.plan': 'Enter or leave plan mode',
+  'description.feedback': 'Record feedback about this session',
+  'description.compact': 'Compact older conversation history',
+  'description.permission': 'Switch the permission preset (sandbox mode + approval policy)',
   'description.export': 'このセッションログを ZIP アーカイブとしてダウンロード',
   'token.goal': 'goal',
   'token.plan': 'plan',
@@ -96,15 +63,15 @@ export const ja = {
   'token.compact': 'compact',
   'token.permission': 'permission',
   'token.export': 'export',
-  'search.placeholder': '検索…',
-  'search.aria': 'オプションを絞り込む',
-  'status.loading': 'オプションを読み込み中…',
-  'status.applying': '適用中…',
+  'search.placeholder': 'Search…',
+  'search.aria': 'Filter options',
+  'status.loading': 'Loading options…',
+  'status.applying': 'Applying…',
   'status.empty': 'オプションなし',
   'overlay.aria': '/{command} のオプション',
-  'listbox.aria': '/{command} の一致項目',
-  'notice.attachmentsUnsupported': '/{command} は添付ファイルを受け付けません。先に削除してください',
-} satisfies Record<keyof typeof en, string>
+  'listbox.aria': '/{command} matches',
+  'notice.attachmentsUnsupported': '/{command} does not accept attachments; remove them first',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -136,7 +103,7 @@ export const es = {
   'overlay.aria': 'Opciones de /{command}',
   'listbox.aria': '/{command} coincidencias',
   'notice.attachmentsUnsupported': '/{command} no acepta archivos adjuntos; eliminarlos primero',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -168,7 +135,7 @@ export const fr = {
   'overlay.aria': 'Options /{command}',
   'listbox.aria': '/{command} correspondances',
   'notice.attachmentsUnsupported': "/{command} n'accepte pas les pièces jointes ; retirez-les d'abord",
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -200,7 +167,7 @@ export const de = {
   'overlay.aria': '/{command}-Optionen',
   'listbox.aria': '/{command} stimmt überein',
   'notice.attachmentsUnsupported': '/{command} akzeptiert keine Anhänge; Entfernen Sie sie zuerst',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -232,7 +199,7 @@ export const ru = {
   'overlay.aria': 'Опции /{command}',
   'listbox.aria': '/{command} совпадений',
   'notice.attachmentsUnsupported': '/{command} не принимает вложения; сначала удали их',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -264,4 +231,4 @@ export const pt = {
   'overlay.aria': '/{command} opções',
   'listbox.aria': '/{command} correspondências',
   'notice.attachmentsUnsupported': '/{command} não aceita anexos; remova-os primeiro',
-} satisfies Record<keyof typeof en, string>
+} as const

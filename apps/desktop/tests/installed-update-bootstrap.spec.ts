@@ -8,8 +8,8 @@ import { createInstalledUpdateRun, readInstalledUpdateRun } from '../scripts/ins
 import { prepareInstalledUpdateBootstrap } from '../scripts/prepare-installed-update-bootstrap.ts'
 import { configureInstalledUpdateIdentity } from '../scripts/installed-update-identity.mjs'
 
-const versions = ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'] as const
-const source = { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }
+const versions = ['0.1.6-rc.20260914.1', '0.1.6-rc.20260914.2'] as const
+const source = { version: '0.1.5', commit: 'a'.repeat(40), dirtyFiles: [] }
 
 async function fixture<T>(body: (directory: string) => Promise<T>): Promise<T> {
   const directory = await mkdtemp(join(tmpdir(), 'nhs-update-bootstrap-'))
@@ -50,7 +50,7 @@ console.log(JSON.stringify({ paths: app.paths, home: process.env.NHS_HOME, journ
       const root = join(directory, 'application-data/nhs-update-qualification', run.id)
       expect(results).toEqual([0, 1].map(() => ({ paths: { userData: join(root, 'user-data'), sessionData: join(root, 'user-data') },
         home: join(root, 'nhs-home'), journals: join(root, 'journals') })))
-      expect((await readdir(root)).sort()).toEqual(['nhs-home', 'journals', 'user-data'])
+      expect((await readdir(root)).sort()).toEqual(['journals', 'nhs-home', 'user-data'])
       await expect(prepareInstalledUpdateBootstrap(join(run.root, 'run.json'))).rejects.toMatchObject({ code: 'EEXIST' })
     })
   })

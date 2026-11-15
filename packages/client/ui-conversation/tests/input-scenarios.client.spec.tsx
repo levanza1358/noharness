@@ -31,13 +31,13 @@ import {
 } from '@noharness/client-test-runtime'
 import type { SessionStatusSnapshot } from '@noharness/client-ui-session-status/client'
 import type { SessionId } from '@noharness/session/types'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { DraftAttachmentId } from '../src/client/contract/input.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { $replaceDetectSpanWithText } from '../src/client/input/editor/span-map.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'
 import type { InputBarProps } from '../src/client/skeleton/InputBar.tsx'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 import { createComposerFileIntake } from '../src/client/input/file-intake.ts'
 
 // Every fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
@@ -206,7 +206,7 @@ async function scopedBench(register?: (inputTriggers: InputTriggerService) => vo
     stop: vi.fn(),
     retry: undefined,
     useStopShortcut: bindSnapshotSelector(createSnapshotStore<readonly string[]>([])),
-    t: makeTranslate(zh, commonZh),
+    t: makeTranslate(ja, commonJa),
     variant: 'composer',
     occurrence: 'main',
   }
@@ -266,7 +266,7 @@ describe('scenario A: menu-pick /goal, type args, enter submits', () => {
     expect(b.shell.snapshot.phase).toBe('claimed')
     expect(b.shell.snapshot.draft).toBe('/goal ')
     expect(b.view.container.querySelector('[data-composer-command]')?.textContent).toBe('/goal')
-    // The zh dictionary owns a hint.goal entry, which overrides the machine's raw hint (production behavior).
+    // The ja dictionary owns a hint.goal entry, which overrides the machine's raw hint (production behavior).
     expect(b.textarea.style.getPropertyValue('--nhs-composer-hint')).toBe(JSON.stringify('输入目标，智能体将持续执行'))
     // Continue typing args; hint drops; claim holds.
     b.append('发布 v1')

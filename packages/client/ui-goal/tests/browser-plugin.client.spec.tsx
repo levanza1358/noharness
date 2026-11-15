@@ -21,11 +21,11 @@ import { LocaleRuntime } from '@noharness/client-locale/client'
 import { makeTranslate, RemoteError, TestSessions } from '@noharness/client-test-runtime'
 import type { SessionFixture } from '@noharness/client-test-runtime'
 import type { RemoteFailure } from '@noharness/api-remotes/client'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { GoalActivationSnapshot, GoalBarActions, GoalBarInjected } from '../src/client/slots.ts'
 import { apply, inject } from '../src/client/index.ts'
 import { GoalDock } from '../src/client/GoalBar.tsx'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 import { apply as nodeApply } from '../src/index.ts'
 
 afterEach(cleanup)
@@ -349,7 +349,7 @@ describe('GoalDock adapter', () => {
       onResume: () => Promise.resolve({ ok: true, value: undefined }),
       onClear: () => Promise.resolve({ ok: true, value: undefined }),
     }
-    const t = makeTranslate(zh, commonZh)
+    const t = makeTranslate(ja, commonJa)
     const dockProps = (up: () => GoalProjection | null | undefined) =>
       ({ useProjection: up, useGoalActivation, ...actions, t }) as unknown as Parameters<typeof GoalDock>[0]
     const shown = render(<GoalDock {...dockProps(useProjection)} />)
@@ -376,7 +376,7 @@ describe('GoalDock adapter', () => {
       onResume: () => Promise.resolve({ ok: true, value: undefined }),
       onClear: () => Promise.resolve({ ok: true, value: undefined }),
     }
-    const t = makeTranslate(zh, commonZh)
+    const t = makeTranslate(ja, commonJa)
     const props = { useProjection, useGoalActivation, ...actions, t } as unknown as Parameters<typeof GoalDock>[0]
     const rendered = render(<GoalDock {...props} />)
     expect(rendered.getByText('待继续的目标')).toBeTruthy()

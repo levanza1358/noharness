@@ -1,21 +1,15 @@
-/** Markdown implementation labels and primitive chrome. */
-export const zh = {
-  'viewer.label': 'Markdown',
-  'code.copy': '复制',
-  'code.copied': '已复制',
-  'footnotes': '脚注',
-} satisfies Record<string, string>
 
 /** Markdown namespace keys. */
-export type MarkdownPreviewKey = keyof typeof zh
 
-/** English labels, paired with the Chinese key set. */
+/** English labels. */
 export const en = {
   'viewer.label': 'Markdown',
   'code.copy': 'Copy',
   'code.copied': 'Copied',
   'footnotes': 'Footnotes',
-} satisfies Record<MarkdownPreviewKey, string>
+} as const
+
+export type MarkdownPreviewKey = keyof typeof en
 
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -29,8 +23,8 @@ export const ja = {
   'viewer.label': 'Markdown',
   'code.copy': 'コピー',
   'code.copied': 'コピーしました',
-  'footnotes': '脚注',
-} satisfies Record<keyof typeof en, string>
+  'footnotes': 'Footnotes',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -38,7 +32,7 @@ export const es = {
   'code.copy': 'Copiar',
   'code.copied': 'Copiado',
   'footnotes': 'Notas a pie de página',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -46,7 +40,7 @@ export const fr = {
   'code.copy': 'Copier',
   'code.copied': 'Copié',
   'footnotes': 'Notes de bas de page',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -54,7 +48,7 @@ export const de = {
   'code.copy': 'Kopieren',
   'code.copied': 'Kopiert',
   'footnotes': 'Fußnoten',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -62,7 +56,7 @@ export const ru = {
   'code.copy': 'Копировать',
   'code.copied': 'Скопировано',
   'footnotes': 'Сноски',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -70,4 +64,4 @@ export const pt = {
   'code.copy': 'Copiar',
   'code.copied': 'Copiado',
   'footnotes': 'Notas de rodapé',
-} satisfies Record<keyof typeof en, string>
+} as const

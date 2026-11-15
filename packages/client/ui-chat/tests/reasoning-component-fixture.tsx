@@ -1,14 +1,14 @@
 /** Child-renderer stubs for component units; registry behavior uses the real runtime fixture. */
 import { createElement, type ComponentProps } from 'react'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { PropsRenderFactories } from '@noharness/client-ui-slots'
 import type { ReasoningContentInput } from '../src/client/contract/slots.ts'
 import type { AssistantMarkdownProps } from '../src/client/chat/AssistantMarkdown.tsx'
 import { DefaultReasoningBody, ReasoningContent } from '../src/client/chat/ReasoningContent.tsx'
-import { zh } from '../src/client/locale.ts'
+import { ja } from '../src/client/locale.ts'
 
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 /** Reject attachment loads in component fixtures without durable images. */
 export const unusedImageLoader: AssistantMarkdownProps['loadImage'] = async () => {

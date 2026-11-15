@@ -8,13 +8,13 @@ export const en = {
 
 /** Chinese approval messages. */
 export const zh = {
-  denied: 'Auto review 拒绝了此调用。',
-  deniedWithReason: (reason: string): string => `Auto review 拒绝了此调用：${reason}`,
+  denied: 'Auto review denied this call.',
+  deniedWithReason: (reason: string): string => `Auto review denied this call: ${reason}`,
 } satisfies typeof en
 
 /** Japanese approval messages. */
 export const ja = {
-  denied: '自動認可レビューがこの呼び出しを拒否しました。',
+  denied: 'Auto review denied this call.',
   deniedWithReason: (reason: string): string => `自動認可レビューがこの呼び出しを拒否しました：${reason}`,
 } satisfies typeof en
 

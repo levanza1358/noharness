@@ -3,69 +3,7 @@
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'deliverables'
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'presented.nativeUnavailable': '此文件没有可用的主机路径，请在侧边栏预览',
-  'presented.revealError': '无法在文件管理器中显示，请重试',
-  'presented.directoryError': '无法打开所在文件夹，请重试',
-  'presented.directoryOpening': '正在打开所在文件夹…',
-  'presented.revealing': '正在文件管理器中显示…',
-  'presented.unavailable': '此主机没有可用的桌面，无法使用外部程序打开文件或文件夹；文件仍可在侧边栏预览',
-  'presented.retry': '重试',
-  'presented.hostError': '无法读取主机桌面信息',
-  'presented.preview': '在侧边栏预览',
-  'presented.previewButton': '在侧边栏打开 {name}',
-  'presented.previewCard': '在侧边栏预览 {name}',
-  'presented.all': '全部 {count} 个文件',
-  'presented.expandAria': '展开全部 {count} 个交付文件',
-  'presented.collapse': '收起',
-  'presented.collapseAria': '收起交付文件列表',
-  'presented.opening': '正在打开…',
-  'presented.error': '打开失败，点击重试',
-  'presented.file': '文件',
-  'row.title': '交付文件',
-  'row.running': '正在交付',
-  'row.preparing': '准备交付',
-  'row.ok': '已交付',
-  'row.error': '交付失败',
-  'row.stopped': '已中断',
-  'row.inspect': '查看调用',
-  'changes.title': '已编辑 {count} 个文件',
-  'changes.singleTitle': '已编辑 {name}',
-  'changes.added': '+{count}',
-  'changes.deleted': '-{count}',
-  'changes.binary': '二进制',
-  'changes.openReview': '在侧边栏查看本轮改动',
-  'changes.all': '全部 {count} 个文件',
-  'changes.expandAria': '展开全部 {count} 个改动文件',
-  'changes.collapse': '收起',
-  'changes.collapseAria': '收起改动文件列表',
-  'changes.oversized': '过大',
-  'changes.viewDiff': '查看 {name} 的改动',
-  'review.title': '第 {turn} 轮改动',
-  'review.selectFile': '选择要查看的文件',
-  'review.split': '切换为左右对比',
-  'review.unified': '切换为单栏对比',
-  'review.splitAria': '左右对比',
-  'review.wrap': '开启自动换行',
-  'review.nowrap': '关闭自动换行',
-  'review.wrapAria': '自动换行',
-  'review.openFile': '在侧边栏打开整个文件',
-  'review.openFileAria': '在侧边栏打开 {name}',
-  'diff.loading': '正在读取改动…',
-  'diff.missing': '这轮改动的内容已不可用',
-  'diff.error': '无法读取改动',
-  'diff.binary': '二进制文件，无法显示改动',
-  'diff.oversized': '文件过大，无法显示改动',
-  'diff.created': '本轮新建的文件',
-  'diff.deleted': '本轮删除的文件',
-  'diff.unchanged': '两侧内容相同',
-  'diff.coarse': '逐行对比超时，按整个文件替换显示',
-  'diff.truncated': '只显示前 {count} 行',
-}
-
-/** English dictionary (same key set). */
-export const en: Record<DeliverablesKey, string> = {
+export const en = {
   'presented.nativeUnavailable': 'This file has no available Host path. Preview it in the sidebar.',
   'presented.revealError': 'Could not show in file manager. Try again.',
   'presented.directoryError': 'Could not open containing folder. Try again.',
@@ -126,68 +64,74 @@ export const en: Record<DeliverablesKey, string> = {
 }
 
 /** Union of this namespace's dictionary keys. */
-export type DeliverablesKey = keyof typeof zh
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'deliverables': DeliverablesKey
+  }
+}
+
+export type DeliverablesKey = keyof typeof en
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'presented.nativeUnavailable': 'このファイルには利用可能なHostパスがありません。サイドバーでプレビューしてください。',
-  'presented.revealError': 'ファイルマネージャーで表示できませんでした。再試行してください。',
-  'presented.directoryError': '含まれるフォルダーを開けませんでした。再試行してください。',
-  'presented.directoryOpening': '含まれるフォルダーを開いています…',
-  'presented.revealing': 'ファイルマネージャーで表示しています…',
-  'presented.unavailable': 'このHostには、外部アプリでファイルやフォルダーを開くためのデスクトップがありません。ファイルはサイドバーで引き続きプレビューできます。',
-  'presented.retry': '再試行',
-  'presented.hostError': 'Hostのデスクトップ情報を読み取れませんでした',
+  'presented.nativeUnavailable': 'This file has no available Host path. Preview it in the sidebar.',
+  'presented.revealError': 'Could not show in file manager. Try again.',
+  'presented.directoryError': 'Could not open containing folder. Try again.',
+  'presented.directoryOpening': 'Opening containing folder…',
+  'presented.revealing': 'Showing in file manager…',
+  'presented.unavailable': 'This Host has no desktop available to open files or folders in external apps. Files can still be previewed in the sidebar.',
+  'presented.retry': 'Retry',
+  'presented.hostError': 'Could not read the Host desktop information',
   'presented.preview': 'サイドバーでプレビュー',
-  'presented.previewButton': '{name}をサイドバーで開く',
+  'presented.previewButton': 'Open {name} in sidebar',
   'presented.previewCard': '{name}をサイドバーでプレビュー',
-  'presented.all': '全{count}ファイル',
-  'presented.expandAria': '配信された全{count}ファイルを表示',
-  'presented.collapse': '折りたたむ',
-  'presented.collapseAria': '配信されたファイルを折りたたむ',
-  'presented.opening': '開いています…',
-  'presented.error': '開けませんでした。クリックして再試行してください。',
+  'presented.all': 'All {count} files',
+  'presented.expandAria': 'Show all {count} delivered files',
+  'presented.collapse': 'Collapse',
+  'presented.collapseAria': 'Collapse delivered files',
+  'presented.opening': 'Opening…',
+  'presented.error': 'Could not open. Click to retry.',
   'presented.file': 'ファイル',
-  'row.title': 'ファイルを提示',
-  'row.running': '配信中',
-  'row.preparing': '成果物を準備中',
-  'row.ok': '配信済み',
-  'row.error': '配信に失敗しました',
-  'row.stopped': '中断されました',
-  'row.inspect': '呼び出しを検査',
-  'changes.title': '{count}ファイルを編集しました',
-  'changes.singleTitle': '{name}を編集しました',
+  'row.title': 'Present files',
+  'row.running': 'Delivering',
+  'row.preparing': 'Preparing deliverables',
+  'row.ok': 'Delivered',
+  'row.error': 'Delivery failed',
+  'row.stopped': 'Interrupted',
+  'row.inspect': 'Inspect call',
+  'changes.title': 'Edited {count} files',
+  'changes.singleTitle': 'Edited {name}',
   'changes.added': '+{count}',
   'changes.deleted': '-{count}',
   'changes.binary': 'バイナリ',
-  'changes.openReview': 'このターンの変更をサイドバーで確認',
-  'changes.all': '全{count}ファイル',
-  'changes.expandAria': '変更された全{count}ファイルを表示',
-  'changes.collapse': '折りたたむ',
-  'changes.collapseAria': '変更されたファイルを折りたたむ',
-  'changes.oversized': 'サイズが大きすぎます',
-  'changes.viewDiff': '{name}の変更を表示',
+  'changes.openReview': 'Review this turn’s changes in the sidebar',
+  'changes.all': 'All {count} files',
+  'changes.expandAria': 'Show all {count} changed files',
+  'changes.collapse': 'Collapse',
+  'changes.collapseAria': 'Collapse changed files',
+  'changes.oversized': 'too large',
+  'changes.viewDiff': 'View changes to {name}',
   'review.title': 'レビュー · ターン{turn}',
-  'review.selectFile': 'レビューするファイルを選択',
-  'review.split': '分割ビューに切り替え',
-  'review.unified': '統合ビューに切り替え',
-  'review.splitAria': '分割ビュー',
-  'review.wrap': '行の折り返しを有効化',
-  'review.nowrap': '行の折り返しを無効化',
-  'review.wrapAria': '行の折り返し',
-  'review.openFile': 'ファイル全体をサイドバーで開く',
-  'review.openFileAria': '{name}をサイドバーで開く',
-  'diff.loading': '変更を読み込んでいます…',
-  'diff.missing': 'このターンの変更内容は利用できなくなりました',
-  'diff.error': '変更を読み取れませんでした',
-  'diff.binary': 'バイナリファイルのため、変更を表示できません',
-  'diff.oversized': 'ファイルが大きすぎるため、変更を表示できません',
-  'diff.created': 'このターンで作成',
-  'diff.deleted': 'このターンで削除',
-  'diff.unchanged': '両方の行内容が同一です',
-  'diff.coarse': '行比較がタイムアウトしたため、ファイル全体の置換として表示しています',
-  'diff.truncated': '最初の{count}行を表示',
-} satisfies Record<keyof typeof en, string>
+  'review.selectFile': 'Choose the file to review',
+  'review.split': 'Switch to split view',
+  'review.unified': 'Switch to unified view',
+  'review.splitAria': 'Split view',
+  'review.wrap': 'Enable line wrap',
+  'review.nowrap': 'Disable line wrap',
+  'review.wrapAria': 'Line wrap',
+  'review.openFile': 'Open the whole file in the sidebar',
+  'review.openFileAria': 'Open {name} in sidebar',
+  'diff.loading': 'Reading changes…',
+  'diff.missing': 'The contents of this turn’s changes are no longer available',
+  'diff.error': 'Could not read the changes',
+  'diff.binary': 'Binary file; changes cannot be shown',
+  'diff.oversized': 'File too large; changes cannot be shown',
+  'diff.created': 'Created in this turn',
+  'diff.deleted': 'Deleted in this turn',
+  'diff.unchanged': 'Both sides hold the same lines',
+  'diff.coarse': 'Line comparison timed out; shown as a whole-file replacement',
+  'diff.truncated': 'Showing the first {count} lines',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -248,7 +192,7 @@ export const es = {
   'diff.unchanged': 'Ambos lados mantienen las mismas líneas.',
   'diff.coarse': 'Se agotó el tiempo de espera para la comparación de líneas; se muestra como un reemplazo de archivo completo',
   'diff.truncated': 'Mostrando las primeras líneas {count}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -309,7 +253,7 @@ export const fr = {
   'diff.unchanged': 'Les deux côtés tiennent les mêmes lignes',
   'diff.coarse': "La comparaison de lignes a expiré ; affiché en remplacement de l'ensemble du fichier",
   'diff.truncated': 'Affichage des premières lignes {count}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -370,7 +314,7 @@ export const de = {
   'diff.unchanged': 'Beide Seiten vertreten die gleichen Linien',
   'diff.coarse': 'Zeitüberschreitung beim Leitungsvergleich; wird als vollständige Dateiersetzung angezeigt',
   'diff.truncated': 'Zeigt die ersten {count}-Zeilen',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -431,7 +375,7 @@ export const ru = {
   'diff.unchanged': 'Обе стороны держат одни и те же линии',
   'diff.coarse': 'Время сравнения строк истекло; отображается как замена всего файла',
   'diff.truncated': 'Показаны первые строки {count}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -492,4 +436,4 @@ export const pt = {
   'diff.unchanged': 'Ambos os lados mantêm as mesmas linhas',
   'diff.coarse': 'A comparação de linha expirou; mostrado como uma substituição de arquivo inteiro',
   'diff.truncated': 'Mostrando as primeiras {count} linhas',
-} satisfies Record<keyof typeof en, string>
+} as const

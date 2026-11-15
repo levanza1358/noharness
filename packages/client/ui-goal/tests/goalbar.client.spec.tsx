@@ -4,12 +4,12 @@ import { act, cleanup, createEvent, fireEvent, render, screen, waitFor } from '@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { GoalSnapshot } from '@noharness/goal/client'
 import { makeTranslate, RemoteError } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { GoalBar } from '../src/client/GoalBar.tsx'
 import type { GoalActionResult, GoalBarActions } from '../src/client/slots.ts'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 
-const t: Parameters<typeof GoalBar>[0]['t'] = makeTranslate(zh, commonZh)
+const t: Parameters<typeof GoalBar>[0]['t'] = makeTranslate(ja, commonJa)
 
 afterEach(cleanup)
 

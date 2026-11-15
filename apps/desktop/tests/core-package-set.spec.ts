@@ -29,7 +29,6 @@ function record(name: string, file: string, body: Buffer, version = '1.2.3'): De
 function packageSetProject(): {
   root: string
   nhs: DesktopCorePackageRecord
-  base: DesktopCorePackageRecord
   host: DesktopCorePackageRecord
 } {
   const root = mkdtempSync(join(tmpdir(), 'nhs-desktop-package-set-'))
@@ -37,19 +36,16 @@ function packageSetProject(): {
   const packageDir = join(root, DESKTOP_PACKAGES_DIR)
   mkdirSync(packageDir)
   const nhsBody = Buffer.from('nhs')
-  const baseBody = Buffer.from('base')
   const hostBody = Buffer.from('host')
-  const nhs = record('@noharness/cli', 'nhs.tgz', nhsBody)
-  const base = record('@noharness/base', 'nhs-base.tgz', baseBody)
-  const host = record('@noharness/desktop-host', 'nhs-desktop-host.tgz', hostBody)
+  const nhs = record('@noharness/nhs', 'nhs.tgz', nhsBody)
+  const host = record('@noharness/nhs-desktop-host', 'nhs-desktop-host.tgz', hostBody)
   writeFileSync(join(packageDir, nhs.file), nhsBody)
-  writeFileSync(join(packageDir, base.file), baseBody)
   writeFileSync(join(packageDir, host.file), hostBody)
   writeFileSync(join(root, DESKTOP_PACKAGE_SET_FILE), `${JSON.stringify({
     schemaVersion: 1,
-    packages: [nhs, base, host],
+    packages: [nhs, host],
   })}\n`)
-  return { root, nhs, base, host }
+  return { root, nhs, host }
 }
 
 afterEach(() => {
@@ -62,21 +58,20 @@ describe('desktop core package set', () => {
     const packageSet = verifyDesktopCorePackageSet(root, '1.2.3')
     expect(desktopDshPackageSpec(packageSet)).toBe('file:./desktop-packages/nhs.tgz')
     expect(desktopCorePackageOverrides(packageSet)).toEqual({
-      '@noharness/cli': 'file:./desktop-packages/nhs.tgz',
-      '@noharness/base': 'file:./desktop-packages/nhs-base.tgz',
-      '@noharness/desktop-host': 'file:./desktop-packages/nhs-desktop-host.tgz',
+      '@noharness/nhs': 'file:./desktop-packages/nhs.tgz',
+      '@noharness/nhs-desktop-host': 'file:./desktop-packages/nhs-desktop-host.tgz',
     })
   })
 
   it('rejects version drift, descriptor disorder, corruption, and extra files', () => {
-    const { root, nhs, base, host } = packageSetProject()
-    expect(() => verifyDesktopCorePackageSet(root, '2.0.0')).toThrow(/does not match Desktop/u)
+    const { root, nhs, host } = packageSetProject()
+    expect(() => parseDesktopCorePackageSet({ schemaVersion: 1, packages: [host, nhs] }))
+      .toThrow(/sorted by name/u)
     expect(() => parseDesktopCorePackageSet({
       schemaVersion: 1,
-      packages: [nhs, base, { ...host, version: '2.0.0' }],
-    }, '1.2.3')).toThrow(/nhs-desktop-host@2\.0\.0 does not match Desktop 1\.2\.3/u)
-    expect(() => parseDesktopCorePackageSet({ schemaVersion: 1, packages: [base, nhs, host] }))
-      .toThrow(/sorted by name/u)
+      packages: [nhs, { ...host, version: '2.0.0' }],
+    }, '1.2.3')).toThrow(/@noharness\/nhs-desktop-host@2\.0\.0 does not match Desktop 1\.2\.3/u)
+    expect(() => verifyDesktopCorePackageSet(root, '2.0.0')).toThrow(/does not match Desktop/u)
     writeFileSync(join(root, DESKTOP_PACKAGES_DIR, nhs.file), 'changed')
     expect(() => verifyDesktopCorePackageSet(root, '1.2.3')).toThrow(/integrity check failed/u)
     writeFileSync(join(root, DESKTOP_PACKAGES_DIR, 'extra.tgz'), '')
@@ -84,18 +79,18 @@ describe('desktop core package set', () => {
   })
 
   it('rejects registry resolutions for names supplied by the local package set', () => {
-    const nhs = record('@noharness/cli', 'nhs.tgz', Buffer.from('nhs'))
-    const host = record('@noharness/desktop-host', 'host.tgz', Buffer.from('host'))
+    const nhs = record('@noharness/nhs', 'nhs.tgz', Buffer.from('nhs'))
+    const host = record('@noharness/nhs-desktop-host', 'host.tgz', Buffer.from('host'))
     const packageSet = parseDesktopCorePackageSet({ schemaVersion: 1, packages: [nhs, host] })
     expect(() => {
       verifyDesktopCoreLockfile(
-        "packages:\n  '@noharness/cli@file:desktop-packages/nhs.tgz':\n    resolution: {}\n",
+        "packages:\n  '@noharness/nhs@file:desktop-packages/nhs.tgz':\n    resolution: {}\n",
         packageSet,
       )
     }).not.toThrow()
     expect(() => {
       verifyDesktopCoreLockfile(
-        "packages:\n  '@noharness/cli@1.2.3':\n    resolution: {integrity: sha512-registry}\n",
+        "packages:\n  '@noharness/nhs@1.2.3':\n    resolution: {integrity: sha512-registry}\n",
         packageSet,
       )
     }).toThrow(/outside the local package set/u)

@@ -1,0 +1,8 @@
+NoHarness
+NoHarness
+APIキーを追加して開始
+公式のDeepSeekモデルを設定してHarnessを使い始めましょう
+APIキーを入力 [password]
+保存して続行 [disabled]
+後で設定
+ログインに戻る

@@ -268,7 +268,7 @@ it('refreshes consumed notification content on a locale change without reading t
     ns: 'locale', autoGenerate: false, schema: { type: 'object' }, value: { preference: 'zh' },
     applies: 'live', secrets: [], revision: 1,
   }))
-  c.ctx.locale.setLocale('zh')
+  c.ctx.locale.setLocale('en')
   await vi.waitFor(() => { expect(notificationOperations(c).hooks.notices.getSnapshot()?.[0]?.body).toBe('新的中文内容') })
   expect(c.mock.remote.account.getNotificationContent).toHaveBeenCalledWith( id, expect.objectContaining({ locale: 'zh' }))
   expect(c.mock.remote.account.getNotifications).toHaveBeenCalledTimes(reads)
@@ -287,7 +287,7 @@ it('retains notification content when the localization RPC is refused', async ({
     ns: 'locale', autoGenerate: false, schema: { type: 'object' }, value: { preference: 'zh' },
     applies: 'live', secrets: [], revision: 1,
   }))
-  c.ctx.locale.setLocale('zh')
+  c.ctx.locale.setLocale('en')
   await vi.waitFor(() => { expect(output).toHaveBeenCalledWith('[deepseek-account] notification content read failed') })
   expect(notificationOperations(c).hooks.notices.getSnapshot()?.[0]?.body).toBe('Awarded 5.00')
 }, 60_000)

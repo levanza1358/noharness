@@ -51,6 +51,13 @@ const upstreamRepoPath = 'https://github.com/' + upstreamLower + '-ai/' + upstre
 const externalScopeGuard =
   '(?!libreoffice-kit|node-addon-system(?!-workspace))'
 
+/**
+ * Upstream's npm scope spelled with a hyphen instead of a slash; the publish workflow derives an
+ * npm dist-tag from it, so it stays upstream's.
+ */
+const hyphenScopeGuard =
+  '(?!' + upstreamLower + '-ai-libreoffice-kit)'
+
 /** The fork credit line exactly as it is written in the fork docs. */
 const UPSTREAM_CREDIT = 'forked from [' + upstreamName + ' Harness](' + upstreamRepoPath + ')'
 
@@ -86,7 +93,7 @@ const contentRules: [RegExp, string][] = [
   [new RegExp(upstreamName + ' Harness', 'g'), forkName],
   [new RegExp(upstreamName + 'Harness', 'g'), forkName],
   // The slugified npm scope that heading anchors and fixture paths use.
-  [new RegExp('(?<![\\w])' + upstreamLower + '-ai-' + externalScopeGuard, 'g'), forkLower + '-'],
+  [new RegExp('(?<![\\w])' + upstreamLower + '-ai-' + externalScopeGuard + hyphenScopeGuard, 'g'), forkLower + '-'],
   [new RegExp('(?<![\\w-])' + upstreamLower + '-ai' + upstreamCli + '-', 'g'), forkLower + forkCli + '-'],
   // The npm scope, including the vendored packages and the pnpm store path form.
   [new RegExp('@' + upstreamLower + '-ai/' + upstreamCli + 's?(?![\\w-])', 'g'), '@' + forkLower + '/cli'],

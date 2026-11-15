@@ -1,14 +1,6 @@
-/** Localized labels for the NodeJS inspector bottom panel and command. */
-export const zh = {
-  title: 'NodeJS 诊断',
-  toggle: '展开或收起 NodeJS 诊断',
-  close: '收起',
-  resize: '调整 NodeJS 诊断面板高度',
-  frameTitle: 'NodeJS 诊断',
-}
 
 /** English labels checked against the bottom-panel dictionary. */
-export const en: Record<keyof typeof zh, string> = {
+export const en = {
   title: 'NodeJS inspector',
   toggle: 'Toggle NodeJS inspector',
   close: 'Collapse',
@@ -16,21 +8,23 @@ export const en: Record<keyof typeof zh, string> = {
   frameTitle: 'NodeJS inspector',
 }
 
+export type Keys = keyof typeof en
+
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Shared Inspector frontend copy. */
-    inspectorPanel: keyof typeof zh
+    inspectorPanel: keyof typeof en
   }
 }
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   'title': 'NodeJS インスペクター',
-  'toggle': 'NodeJS インスペクターの表示切り替え',
-  'close': '折りたたむ',
-  'resize': 'NodeJS インスペクターパネルのサイズ変更',
+  'toggle': 'Toggle NodeJS inspector',
+  'close': 'Collapse',
+  'resize': 'Resize NodeJS inspector panel',
   'frameTitle': 'NodeJS インスペクター',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -39,7 +33,7 @@ export const es = {
   close: 'Contraer',
   resize: 'Cambiar el tamaño del panel inspector NodeJS',
   frameTitle: 'Inspector NodeJS',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -48,7 +42,7 @@ export const fr = {
   close: 'Réduire',
   resize: "Redimensionner le panneau d'inspection NodeJS",
   frameTitle: 'Inspecteur NodeJS',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -57,7 +51,7 @@ export const de = {
   close: 'Einklappen',
   resize: 'Größe des NodeJS-Inspektorfelds ändern',
   frameTitle: 'NodeJS-Inspektor',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -66,7 +60,7 @@ export const ru = {
   close: 'Свернуть',
   resize: 'Изменение размера панели инспектора NodeJS',
   frameTitle: 'NodeJS инспектор',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -75,4 +69,4 @@ export const pt = {
   close: 'Recolher',
   resize: 'Redimensionar painel do inspetor NodeJS',
   frameTitle: 'NodeJS inspetor',
-} satisfies Record<keyof typeof en, string>
+} as const

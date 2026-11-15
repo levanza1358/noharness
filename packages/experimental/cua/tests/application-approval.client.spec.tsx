@@ -6,7 +6,7 @@ import { afterEach, expect, it, vi } from 'vitest'
 import type { ApprovalCardInput } from '@noharness/client-ui-approval/client'
 import { PendingQuestion, createWaterfallRequest } from '@noharness/client-ui-user-questions/src/client/contract/slots.ts'
 import { ApplicationApproval, selectApplicationApproval, type ApplicationApprovalProps } from '../src/client/ApplicationApproval.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 type AskUserQuestionItem = PendingQuestion['questions'][number]
 type ApprovalIntent = Extract<NonNullable<AskUserQuestionItem['intent']>, { kind: 'approval' }>
@@ -29,8 +29,8 @@ it('leaves ordinary questions, plan reviews and other approval intents to their 
 it.each(['allow', 'reject', 'always'] as const)('returns the exact %s option from the shared card', async (choice) => {
   const intent: ApprovalIntent = {
     kind: 'approval', approve: 'task-value', reject: 'deny-value', always: 'saved-value',
-    subject: { name: 'Calculator' }, display: { question: { en: 'Allow?', zh: '允许吗？' },
-      detail: { en: 'Scope', zh: '本次任务' }, approve: { en: 'Task', zh: '本次任务允许' } },
+    subject: { name: 'Calculator' }, display: { question: { en: 'Allow?', ja: '允许吗？' },
+      detail: { en: 'Scope', ja: '本次任务' }, approve: { en: 'Task', ja: '本次任务允许' } },
   }
   const item: AskUserQuestionItem = { id: 'cua-app-access', question: 'English question', detail: 'English detail', intent }
   const pending = new PendingQuestion('s1' as SessionId, [item])
@@ -38,12 +38,12 @@ it.each(['allow', 'reject', 'always'] as const)('returns the exact %s option fro
   pending.attachWaterfall(request.channel)
   const factory = vi.fn((_name: string, _input: ApprovalCardInput) => null)
   render(<ApplicationApproval {...{ matched: selectApplicationApproval(pending)!, renderFactorySlot: factory,
-    t: makeTranslate(zh), resolveText: text => text.zh ?? text.en } as ApplicationApprovalProps} />)
+    t: makeTranslate(ja), resolveText: text => text.ja ?? text.en } as ApplicationApprovalProps} />)
   const [name, card] = factory.mock.calls[0]!
   expect(name).toBe('conversation.approval.card')
   expect(card).toMatchObject({ title: '允许吗？', description: '本次任务', allowLabel: '本次任务允许', subject: { name: 'Calculator' } })
   expect(card.canAnswer()).toBe(true)
-  expect(card.warning).toEqual({ label: zh.approvalRisks, title: zh.approvalRiskTitle, detail: zh.approvalRiskNotice })
+  expect(card.warning).toEqual({ label: ja.approvalRisks, title: ja.approvalRiskTitle, detail: ja.approvalRiskNotice })
   await ({ allow: card.onAllow, reject: card.onReject, always: card.onAlways! })[choice]()
   expect(await request.result).toEqual({ answers: [{ id: 'cua-app-access', selected: [{ allow: 'task-value', reject: 'deny-value', always: 'saved-value' }[choice]] }] })
   pending.close()
@@ -87,17 +87,17 @@ it('uses the original question cancellation and refuses late approval', async ()
 
 it('shows the mouse interruption and expiry with only session approval and refusal', () => {
   const display = {
-    question: { en: 'Move pointer?', zh: '允许移动鼠标指针吗？' },
-    detail: { en: 'Until restart', zh: '重启后失效' },
-    approve: { en: 'Allow for this session', zh: '本会话允许' },
+    question: { en: 'Move pointer?', ja: '允许移动鼠标指针吗？' },
+    detail: { en: 'Until restart', ja: '重启后失效' },
+    approve: { en: 'Allow for this session', ja: '本会话允许' },
   }
   const pending = new PendingQuestion('s1' as SessionId, [{ id: 'cua-mouse-control', question: display.question.en,
     detail: display.detail.en, intent: { kind: 'approval', approve: display.approve.en, reject: 'Deny', display } }])
   const factory = vi.fn((_name: string, _input: ApprovalCardInput) => null)
   render(<ApplicationApproval {...{ matched: selectApplicationApproval(pending)!, renderFactorySlot: factory,
-    t: makeTranslate(zh), resolveText: text => text.zh } as ApplicationApprovalProps} />)
+    t: makeTranslate(ja), resolveText: text => text.ja } as ApplicationApprovalProps} />)
   const card = factory.mock.calls[0]![1]
-  expect(card).toMatchObject({ title: display.question.zh, description: display.detail.zh, allowLabel: display.approve.zh })
+  expect(card).toMatchObject({ title: display.question.ja, description: display.detail.ja, allowLabel: display.approve.ja })
   expect(card.onAlways).toBeUndefined()
   expect(card.warning).toBeUndefined()
 })

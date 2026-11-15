@@ -8,7 +8,7 @@ import type { ConfigForm, ConfigFormSnapshot } from '@noharness/client-ui-settin
 import type { ComponentProps } from 'react'
 import { UploadRow, UploadToast } from '../src/client/UploadRow.tsx'
 import { UploadPreference, type UploadSettings } from '../src/client/upload-preference.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
@@ -69,10 +69,10 @@ it('disables input until a pending write settles', async () => {
 
 it('shows the Chinese label and cannot edit read-only settings', async () => {
   const { props, set } = fixture(false)
-  const translated: Record<string, string> = zh
+  const translated: Record<string, string> = ja
   const { container } = render(<UploadRow {...props} t={key => translated[key] ?? key} />)
-  await expect(container.textContent + '\n').toMatchFileSnapshot('./expected/upload-row.zh.txt')
-  expect(screen.getByRole('switch', { name: zh.title }).hasAttribute('disabled')).toBe(true)
+  await expect(container.textContent + '\n').toMatchFileSnapshot('./expected/upload-row.ja.txt')
+  expect(screen.getByRole('switch', { name: ja.title }).hasAttribute('disabled')).toBe(true)
   expect(screen.getByRole('switch').getAttribute('aria-checked')).toBe('true')
   fireEvent.click(screen.getByRole('switch'))
   expect(set).not.toHaveBeenCalled()

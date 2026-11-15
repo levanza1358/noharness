@@ -23,7 +23,7 @@ import {
 import { hunkRows, MAX_RENDERED_LINES, renderedHunks, splitRows } from '../src/client/FileDiff.tsx'
 import { changesReviewDefinition } from '../src/client/review-definition.ts'
 import { createReviewStore } from '../src/client/review-store.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import { brandString } from '@noharness/brand'
 
 afterEach(() => {
@@ -67,7 +67,7 @@ describe('review addresses', () => {
   it('round-trips coordinates and titles the tab by the turn', () => {
     expect(ADDRESS).toBe('nhs-resource://changes-review/session/viewed/5/2')
     expect(parseChangesReviewAddress(ADDRESS)).toEqual(COORDINATES)
-    const definition = changesReviewDefinition(makeTranslate(zh))
+    const definition = changesReviewDefinition(makeTranslate(ja))
     expect(definition).toMatchObject({ kind: 'changes-review', priority: 'builtin', patterns: ['nhs-resource://changes-review/**'] })
     expect(definition.canOpen?.(ADDRESS)).toBe(true)
     expect(definition.title(ADDRESS)).toBe('第 2 轮改动')
@@ -359,31 +359,31 @@ describe('ReviewTab', () => {
   it('states the summary and comparison that stand in for hunks, and retries a failed read', () => {
     const summaries = new ChangesSummaryStore()
     summaries.state.set({ [SUMMARY_URL]: 'missing' })
-    const missing = mount({ summaries, locale: zh })
-    expect(missing.view.getByText(zh['diff.missing'])).toBeTruthy()
+    const missing = mount({ summaries, locale: ja })
+    expect(missing.view.getByText(ja['diff.missing'])).toBeTruthy()
     expect(missing.view.getByText('第 2 轮改动')).toBeTruthy()
     missing.view.unmount()
     summaries.state.set({ [SUMMARY_URL]: summary })
     const diffs = new ChangesDiffStore()
-    const { view, injected } = mount({ summaries, diffs, locale: zh })
+    const { view, injected } = mount({ summaries, diffs, locale: ja })
     const url = changesDiffUrl(SESSION, 5, 0)
-    expect(view.getByRole('status').textContent).toBe(zh['diff.loading'])
+    expect(view.getByRole('status').textContent).toBe(ja['diff.loading'])
     act(() => { diffs.state.set({ [url]: 'error' }) })
-    fireEvent.click(view.getByRole('button', { name: zh['presented.retry'] }))
+    fireEvent.click(view.getByRole('button', { name: ja['presented.retry'] }))
     expect(injected.loadChangesDiff).toHaveBeenCalledTimes(2)
     act(() => { diffs.state.set({ [url]: 'missing' }) })
-    expect(view.getByText(zh['diff.missing'])).toBeTruthy()
+    expect(view.getByText(ja['diff.missing'])).toBeTruthy()
     act(() => { diffs.state.set({ [url]: { kind: 'binary', path: 'p', display: 'p' } }) })
-    expect(view.getByText(zh['diff.binary'])).toBeTruthy()
+    expect(view.getByText(ja['diff.binary'])).toBeTruthy()
     act(() => { diffs.state.set({ [url]: { kind: 'oversized', path: 'p', display: 'p' } }) })
-    expect(view.getByText(zh['diff.oversized'])).toBeTruthy()
+    expect(view.getByText(ja['diff.oversized'])).toBeTruthy()
     act(() => { diffs.state.set({ [url]: { ...text, before: false, coarse: true } }) })
-    expect(view.getByText(zh['diff.created'])).toBeTruthy()
-    expect(view.container.querySelector('[data-diff-coarse]')?.textContent).toBe(zh['diff.coarse'])
+    expect(view.getByText(ja['diff.created'])).toBeTruthy()
+    expect(view.container.querySelector('[data-diff-coarse]')?.textContent).toBe(ja['diff.coarse'])
     act(() => { diffs.state.set({ [url]: { ...text, after: false } }) })
-    expect(view.getByText(zh['diff.deleted'])).toBeTruthy()
+    expect(view.getByText(ja['diff.deleted'])).toBeTruthy()
     act(() => { diffs.state.set({ [url]: { ...text, hunks: [] } }) })
-    expect(view.getByText(zh['diff.unchanged'])).toBeTruthy()
+    expect(view.getByText(ja['diff.unchanged'])).toBeTruthy()
     const long = Array.from({ length: MAX_RENDERED_LINES + 1 }, (_, at) => `+line ${at}`)
     act(() => {
       diffs.state.set({ [url]: { ...text, hunks: [{ oldStart: 1, oldLines: 0, newStart: 1, newLines: long.length, lines: long }] } })

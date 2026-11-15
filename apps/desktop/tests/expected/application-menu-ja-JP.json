@@ -1,0 +1,44 @@
+[
+  {
+    "label": "NoHarness について",
+    "role": "about"
+  },
+  {
+    "type": "separator"
+  },
+  {
+    "label": "アップデートを確認…"
+  },
+  {
+    "label": "nhs コマンドを管理…"
+  },
+  {
+    "type": "separator"
+  },
+  {
+    "role": "toggleDevTools",
+    "label": "開発者ツール"
+  },
+  {
+    "type": "separator"
+  },
+  {
+    "role": "hide",
+    "label": "NoHarness を隠す"
+  },
+  {
+    "role": "hideOthers",
+    "label": "ほかを隠す"
+  },
+  {
+    "role": "unhide",
+    "label": "すべて表示"
+  },
+  {
+    "type": "separator"
+  },
+  {
+    "role": "quit",
+    "label": "NoHarness を終了"
+  }
+]

@@ -9,11 +9,11 @@ import type {
 } from '@noharness/api-workspace-controller/client'
 import type {} from '@noharness/client-locale/client'
 import { allowAllAccess, bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { SessionStatusSnapshot } from '@noharness/client-ui-session-status/client'
 import type { DirectoryFlowOwnerProps, WorkspacePickerProps } from '../src/client/contract/slots.ts'
 import { WorkspacePicker } from '../src/client/WorkspacePicker.tsx'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 
 // Every fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
 const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined, reload: () => {} })) as GlobalStandardProps['useResource']
@@ -23,7 +23,7 @@ afterEach(cleanup)
 
 // The seat's key domain is workspace ∪ common; the stub mirrors the real
 // lookup chain (namespace, then common vocabulary, then the key).
-const t: WorkspacePickerProps['t'] = makeTranslate(zh, commonZh)
+const t: WorkspacePickerProps['t'] = makeTranslate(ja, commonJa)
 
 const wid = (id: string) => id as WorkspaceId
 function workspace(id: string, title = id): WorkspaceView {

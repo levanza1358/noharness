@@ -27,11 +27,12 @@ describe('native locale initialization', () => {
     const ctx = new Context()
     const host = stubConfigForm<LocaleSettings>()
     try {
-      const locale = new LocaleRuntime(ctx, host.scope, { languages: ['ja-JP', 'zh-Hant', 'en-US'], preference: null })
-      expect(locale.getSnapshot().active).toBe('zh')
+      const locale = new LocaleRuntime(ctx, host.scope, { languages: ['ja-JP', 'en-US'], preference: null })
+      expect(locale.getSnapshot().active).toBe('en')
       expect(host.set).not.toHaveBeenCalled()
-      locale.setLocale('en')
-      expect(host.set).toHaveBeenCalledExactlyOnceWith('preference', 'en')
+      locale.addLanguage({ id: 'ja', label: '日本語', fallback: 'en' })
+      locale.setLocale('ja')
+      expect(host.set).toHaveBeenCalledExactlyOnceWith('preference', 'ja')
     } finally {
       await ctx.fiber.dispose()
     }
@@ -54,12 +55,12 @@ describe('native locale initialization', () => {
   it('keeps an external preference pending until its language registers', async () => {
     const ctx = new Context()
     try {
-      const locale = new LocaleRuntime(ctx, undefined, { languages: ['zh-CN'], preference: 'ja' })
-      expect(locale.getSnapshot().active).toBe('zh')
-      const remove = locale.addLanguage({ id: 'ja', label: '日本語', fallback: 'en' })
-      expect(locale.getSnapshot().active).toBe('ja')
+      const locale = new LocaleRuntime(ctx, undefined, { languages: ['ja-JP'], preference: 'fr' })
+      expect(locale.getSnapshot().active).toBe('en')
+      const remove = locale.addLanguage({ id: 'fr', label: 'Français', fallback: 'en' })
+      expect(locale.getSnapshot().active).toBe('fr')
       remove()
-      expect(locale.getSnapshot().active).toBe('zh')
+      expect(locale.getSnapshot().active).toBe('en')
     } finally {
       await ctx.fiber.dispose()
     }
@@ -67,7 +68,7 @@ describe('native locale initialization', () => {
 
   it('validates the preload response before reading its fields', () => {
     expect(parseLocaleBootstrap({ languages: ['en-US'], preference: null })).toEqual({ languages: ['en-US'], preference: null })
-    expect(parseLocaleBootstrap({ languages: [], preference: 'zh' }).preference).toBe('zh')
+    expect(parseLocaleBootstrap({ languages: [], preference: 'fr' }).preference).toBe('fr')
     for (const value of [null, {}, { languages: 'en', preference: null }, { languages: [42], preference: null }, { languages: [], preference: 42 }]) {
       expect(() => parseLocaleBootstrap(value)).toThrow('invalid native initialization data')
     }

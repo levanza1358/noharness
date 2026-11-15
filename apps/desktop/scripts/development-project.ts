@@ -124,9 +124,9 @@ function mirrorWorkspaceDependencies(roots: readonly string[], destinationRoot: 
  */
 export function prepareDevelopmentProject(options: DevelopmentProjectOptions): string {
   const cliManifest = readManifest(join(options.cliDir, 'package.json'))
-  if (cliManifest.name !== '@noharness/cli' || cliManifest.version !== options.release.version) {
+  if (cliManifest.name !== '@noharness/nhs' || cliManifest.version !== options.release.version) {
     throw new Error(
-      `desktop development: apps/cli must be @noharness/cli@${options.release.version}, found `
+      `desktop development: apps/cli must be @noharness/nhs@${options.release.version}, found `
       + `${String(cliManifest.name)}@${String(cliManifest.version)}`,
     )
   }
@@ -134,9 +134,9 @@ export function prepareDevelopmentProject(options: DevelopmentProjectOptions): s
     throw new Error('desktop development: workspace dependency links are missing; run pnpm install')
   }
   const hostManifest = readManifest(join(options.hostDir, 'package.json'))
-  if (hostManifest.name !== '@noharness/desktop-host' || hostManifest.version !== options.release.version) {
+  if (hostManifest.name !== '@noharness/nhs-desktop-host' || hostManifest.version !== options.release.version) {
     throw new Error(
-      `desktop development: apps/desktop-host must be @noharness/desktop-host@${options.release.version}, found `
+      `desktop development: apps/desktop-host must be @noharness/nhs-desktop-host@${options.release.version}, found `
       + `${String(hostManifest.name)}@${String(hostManifest.version)}`,
     )
   }
@@ -158,7 +158,7 @@ export function prepareDevelopmentProject(options: DevelopmentProjectOptions): s
   const hostLink = join(destinationModules, '@noharness', 'nhs-desktop-host')
   removeOwnedPath(hostLink)
   linkDirectory(options.hostDir, hostLink)
-  const sharedPackages = [...new Set([...names, '@noharness/cli', '@noharness/desktop-host'])].flatMap((name) => {
+  const sharedPackages = [...new Set([...names, '@noharness/nhs', '@noharness/nhs-desktop-host'])].flatMap((name) => {
     const manifest = readManifest(join(destinationModules, name, 'package.json'))
     return typeof manifest.version === 'string' ? [{ name, version: manifest.version, path: `node_modules/${name}` }] : []
   })

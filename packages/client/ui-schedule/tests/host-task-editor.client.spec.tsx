@@ -17,7 +17,7 @@ import { createAtScheduleRecord, createDailyScheduleRecord, createRRuleScheduleR
 import type { ScheduleId as createScheduleId } from '../../../schedule/schedule/src/types.ts'
 import { draftTarget, reapplyTaskDraft, taskDraft, taskDraftIssue, taskDraftPatch } from '../src/client/TaskEditorFields.tsx'
 import { formatAvailableAt, formatScheduleFrequency, orderScheduleRecords, zoneLabel, zoneName } from '../src/client/schedule-format.ts'
-import { en, zh, ja, es, fr, de, ru, pt } from '../src/client/task-manager-locales.ts'
+import { en, ja, es, fr, de, ru, pt } from '../src/client/task-manager-locales.ts'
 import { pinSystemZone } from './zone-fixture.ts'
 import css from '../src/client/TaskManagerPage.module.css'
 import { brandString } from '@noharness/brand'
@@ -193,7 +193,7 @@ describe('Host task editor on the existing manager', () => {
     expect(Object.hasOwn(h.editor.getSnapshot().drafts, `task:${task.id}`)).toBe(false)
   })
 
-  it.each([en, zh, ja, es, fr, de, ru, pt])('localizes empty field hints and lets an untouched form be discarded', (dictionary) => {
+  it.each([en, ja, ja, es, fr, de, ru, pt])('localizes empty field hints and lets an untouched form be discarded', (dictionary) => {
     const h = mount([], { t: makeTranslate(dictionary) })
     fireEvent.click(screen.getByRole('button', { name: dictionary['empty.action'] }))
     const detail = screen.getByRole('complementary', { name: dictionary['host.manualCreate'] })
@@ -392,7 +392,7 @@ describe('Host task editor on the existing manager', () => {
     })
   })
 
-  it.each([en, zh])('offers only new conversation strategies and registered workspaces, starting in the default one', (dictionary) => {
+  it.each([en, ja])('offers only new conversation strategies and registered workspaces, starting in the default one', (dictionary) => {
     mount([], { t: makeTranslate(dictionary), useWorkspaces: select => select(registered) })
     fireEvent.click(screen.getByRole('button', { name: dictionary['empty.action'] }))
     const modal = screen.getByRole('complementary')
@@ -517,7 +517,7 @@ describe('Host task editor on the existing manager', () => {
       .toEqual(['overdue', 'earlier', 'limited'])
   })
 
-  it.each([en, zh])('shows the delivery floor in both list and detail', (dictionary) => {
+  it.each([en, ja])('shows the delivery floor in both list and detail', (dictionary) => {
     const floor = '2099-01-05T10:00:00.000Z'
     const h = mount([{ ...task, target: { kind: 'new', create: {} }, deliveryFloorEndsAt: floor }], { t: makeTranslate(dictionary) })
     const row = within(screen.getByRole('list', { name: dictionary['list.label'] })).getByRole('button', { name: task.title })
@@ -610,7 +610,7 @@ describe('Host task editor on the existing manager', () => {
     await within(modal).findByText(makeTranslate(en)('host.newSessionInterval', { interval: '2 hours' }))
   })
 
-  it.each([en, zh])('shows a per-run conversation only after delivery and identifies it as the latest run', async (dictionary) => {
+  it.each([en, ja])('shows a per-run conversation only after delivery and identifies it as the latest run', async (dictionary) => {
     const eachRun = { ...task, target: { kind: 'new' as const, create: {} } }
     const h = mount([eachRun], { t: makeTranslate(dictionary) })
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: task.title })) })
@@ -629,7 +629,7 @@ describe('Host task editor on the existing manager', () => {
     expect(within(detail).queryByText(dictionary['host.latestConversation'])).toBeNull()
   })
 
-  it.each([en, zh])('names an empty status filter and opens the manual form from its action', (dictionary) => {
+  it.each([en, ja])('names an empty status filter and opens the manual form from its action', (dictionary) => {
     const h = mount([], { t: makeTranslate(dictionary) })
     fireEvent.click(screen.getByRole('button', { name: dictionary['status.paused'] }))
     expect(screen.getByRole('status').textContent).toContain(dictionary['list.emptyPaused'])
@@ -726,7 +726,7 @@ describe('Host task editor on the existing manager', () => {
     expect(within(detail).getByRole('button', { name: en['rule.save'] }).hasAttribute('disabled')).toBe(true)
   })
 
-  it.each([en, zh])('reapplies local edits only on request, then saves with the reviewed revision', async (dictionary) => {
+  it.each([en, ja])('reapplies local edits only on request, then saves with the reviewed revision', async (dictionary) => {
     const h = mount([task], { t: makeTranslate(dictionary) })
     const detail = openEdit()
     const name = within(detail).getByRole<HTMLInputElement>('textbox', { name: dictionary['detail.name'] })
@@ -906,7 +906,7 @@ describe('Host task editor on the existing manager', () => {
     expect(screen.getAllByRole('menuitem').map(item => item.textContent)).toEqual([en['host.run'], en['delete.action']])
   })
 
-  it.each([en, zh])('names when Run now returns after the minimum run interval, then offers it', async (dictionary) => {
+  it.each([en, ja])('names when Run now returns after the minimum run interval, then offers it', async (dictionary) => {
     vi.useFakeTimers()
     vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true })))
     vi.setSystemTime(Date.parse('2099-01-05T09:59:30.000Z'))
@@ -1255,7 +1255,7 @@ describe('rule editing', () => {
     },
   )
 
-  it.each([en, zh])('explains an empty weekday selection and removes the message after correction', (dictionary) => {
+  it.each([en, ja])('explains an empty weekday selection and removes the message after correction', (dictionary) => {
     const { rrule: _rrule, kind: _kind, ...common } = task
     const record: ScheduleCatalogEntry = { ...common, kind: 'weekly', time: '09:00:00.000', timeZone: 'UTC', weekdays: [1, 3] }
     mount([record], { t: makeTranslate(dictionary) })

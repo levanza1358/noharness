@@ -3,74 +3,16 @@
 /** Namespace owned by the Session Inspector plugin. */
 export const NS = 'session-inspector'
 
-/** Simplified Chinese labels and dictionary keys. */
-export const zh = {
-  'tab.title': '会话数据诊断',
-  'tab.description': '在侧边栏分析当前会话原始日志和聊天分组数据',
-  'view.presentation': '展示形式',
-  'view.sessionLog': '原始数据',
-  'view.chatNode': '对话分组',
-  'picker.pick': '在对话面板中选取元素',
-  'picker.cancel': '取消选取 (Esc)',
-  'picker.instructions': '在左侧 Chat 中悬停预览，点击选取；Esc 取消。',
-  'picker.noMatch': '当前表格没有匹配记录，请选择其他元素或按 Esc 取消。',
-  'picker.noChat': '请先在主区域打开当前 Session 的 Chat。',
-  'table.id': '序号',
-  'table.type': '类型',
-  'filter.title': '筛选类型',
-  'filter.input': '类型关键词',
-  'filter.placeholder': '输入类型片段，如 delta',
-  'filter.help': '默认包含匹配（*关键词*）；Enter 确认，Esc 取消。',
-  'filter.candidates': '类型候选',
-  'filter.loading': '正在查找候选…',
-  'filter.failed': '无法获取类型候选。',
-  'filter.noCandidates': '没有匹配候选，仍可确认当前关键词。',
-  'filter.clear': '清空',
-  'filter.cancel': '取消',
-  'filter.apply': '确认筛选',
-  'filter.context': '匹配记录的父级上下文',
-  'table.location': 'T/S',
-  'table.time': '时间 (UTC)',
-  'table.data': '数据',
-  'table.older': '加载更早',
-  'table.loading': '加载中…',
-  'table.latest': '跟踪最新',
-  'table.empty': '暂无记录',
-  'table.raw': '原始数据',
-  'table.rawError': '无法序列化这条记录，可以选择其他记录继续查看。',
-  'table.resizeDetails': '调整原始数据面板高度',
-  'table.close': '关闭',
-  'table.expand': '展开子行',
-  'table.collapse': '收起子行',
-  'table.removed': '该记录已移除或结算，请选择当前记录。',
-  'object.node': 'Node',
-  'object.nodeData': 'Node Data',
-  'object.group': 'Group',
-  'object.groupData': 'Group Data',
-  'object.turn': 'Turn',
-  'object.turnData': 'Turn Data',
-  'object.step': 'Step',
-  'object.stepData': 'Step Data',
-  'object.accessor': '[Getter / Setter，未执行]',
-  'object.empty': '空',
-  'object.absent': '[空槽]',
-  'object.properties': '其他属性',
-  'object.more': '显示更多',
-  'object.navigation': '原始数据导航',
-} as const
-
 /** Dictionary keys accepted by this plugin's translator. */
-export type SessionInspectorKey = keyof typeof zh
+export type SessionInspectorKey = keyof typeof en
 
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
-    /** Session Inspector tab and table labels. */
     'session-inspector': SessionInspectorKey
   }
 }
 
-/** English labels, checked against the Chinese key set. */
-export const en: Record<SessionInspectorKey, string> = {
+export const en = {
   'tab.title': 'Session log',
   'tab.description': 'Analyze raw logs and grouped chat messages for the current session in the sidebar.',
   'view.presentation': 'Presentation',
@@ -128,43 +70,43 @@ export const en: Record<SessionInspectorKey, string> = {
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   'tab.title': 'セッションログ',
-  'tab.description': 'サイドバーで現在のセッションの生ログとグループ化されたチャットメッセージを分析します。',
-  'view.presentation': '表示',
-  'view.sessionLog': '生ログ',
+  'tab.description': 'Analyze raw logs and grouped chat messages for the current session in the sidebar.',
+  'view.presentation': 'Presentation',
+  'view.sessionLog': 'Raw log',
   'view.chatNode': 'チャットグループ',
-  'picker.pick': 'チャットビューで要素を選択',
-  'picker.cancel': '選択をキャンセル (Esc)',
-  'picker.instructions': 'メインチャット上でホバーしてプレビューし、クリックで選択します。Escでキャンセル。',
-  'picker.noMatch': 'このテーブルに一致するレコードはありません。別の要素を選択するか、Escでキャンセルしてください。',
-  'picker.noChat': '選択する前に、このセッションをメインチャットで開いてください。',
+  'picker.pick': 'Pick an element in the chat view',
+  'picker.cancel': 'Cancel picking (Esc)',
+  'picker.instructions': 'Hover in the main chat to preview, then click to select. Esc cancels.',
+  'picker.noMatch': 'No matching record in this table. Pick another element or press Esc to cancel.',
+  'picker.noChat': 'Open this session in the main chat before picking.',
   'table.id': 'インデックス',
-  'table.type': '種類',
-  'filter.title': '種類を絞り込み',
-  'filter.input': 'キーワードを入力',
-  'filter.placeholder': '断片を入力 (例: delta)',
-  'filter.help': '部分一致 (*キーワード*)。Enterで確定、Escでキャンセル。',
-  'filter.candidates': '種類の候補',
-  'filter.loading': '候補を検索中…',
-  'filter.failed': '種類の候補を読み込めませんでした。',
-  'filter.noCandidates': '候補はありません。このキーワードはそのまま適用できます。',
+  'table.type': 'Type',
+  'filter.title': 'Filter types',
+  'filter.input': 'Type keyword',
+  'filter.placeholder': 'Type a fragment, e.g. delta',
+  'filter.help': 'Contains matching (*keyword*). Enter confirms; Esc cancels.',
+  'filter.candidates': 'Type suggestions',
+  'filter.loading': 'Finding suggestions…',
+  'filter.failed': 'Type suggestions could not be loaded.',
+  'filter.noCandidates': 'No suggestions. You can still apply this keyword.',
   'filter.clear': 'クリア',
   'filter.cancel': 'キャンセル',
-  'filter.apply': 'フィルターを適用',
-  'filter.context': '一致したレコードの親コンテキスト',
+  'filter.apply': 'Apply filter',
+  'filter.context': 'Parent context of a matching record',
   'table.location': 'T/S',
-  'table.time': '時刻 (UTC)',
+  'table.time': 'Time (UTC)',
   'table.data': 'データ',
-  'table.older': '以前を読み込む',
-  'table.loading': '読み込み中…',
-  'table.latest': '最新を追跡',
+  'table.older': 'Load earlier',
+  'table.loading': 'Loading…',
+  'table.latest': 'Follow latest',
   'table.empty': 'レコードなし',
-  'table.raw': '生データ',
-  'table.rawError': 'このレコードはシリアライズできませんでした。続行するには別のレコードを選択してください。',
-  'table.resizeDetails': '生データパネルのサイズ変更',
-  'table.close': '閉じる',
-  'table.expand': '子を展開',
-  'table.collapse': '子を折りたたむ',
-  'table.removed': 'このレコードは削除または確定済みです。現在のレコードを選択してください。',
+  'table.raw': 'Raw data',
+  'table.rawError': 'This record could not be serialized. Select another record to continue.',
+  'table.resizeDetails': 'Resize raw data panel',
+  'table.close': 'Close',
+  'table.expand': 'Expand children',
+  'table.collapse': 'Collapse children',
+  'table.removed': 'This record was removed or settled. Select a current record.',
   'object.node': 'ノード',
   'object.nodeData': 'ノードデータ',
   'object.group': 'グループ',
@@ -173,13 +115,13 @@ export const ja = {
   'object.turnData': 'ターンデータ',
   'object.step': 'ステップ',
   'object.stepData': 'ステップデータ',
-  'object.accessor': '[ゲッター / セッター、未評価]',
-  'object.empty': '空',
-  'object.absent': '[空のスロット]',
-  'object.properties': 'その他のプロパティ',
-  'object.more': 'さらに表示',
-  'object.navigation': '生データのナビゲーション',
-} satisfies Record<keyof typeof en, string>
+  'object.accessor': '[Getter / setter, not evaluated]',
+  'object.empty': 'Empty',
+  'object.absent': '[Empty slot]',
+  'object.properties': 'Other properties',
+  'object.more': 'Show more',
+  'object.navigation': 'Raw data navigation',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -235,7 +177,7 @@ export const es = {
   'object.properties': 'Otras propiedades',
   'object.more': 'Mostrar más',
   'object.navigation': 'Navegación de datos sin procesar',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -291,7 +233,7 @@ export const fr = {
   'object.properties': 'Autres propriétés',
   'object.more': 'Afficher plus',
   'object.navigation': 'Navigation dans les données brutes',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -347,7 +289,7 @@ export const de = {
   'object.properties': 'Andere Eigenschaften',
   'object.more': 'Mehr anzeigen',
   'object.navigation': 'Rohdatennavigation',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -403,7 +345,7 @@ export const ru = {
   'object.properties': 'Другие объекты недвижимости',
   'object.more': 'Показать больше',
   'object.navigation': 'Навигация по необработанным данным',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -459,4 +401,4 @@ export const pt = {
   'object.properties': 'Outras propriedades',
   'object.more': 'Mostrar mais',
   'object.navigation': 'Navegação de dados brutos',
-} satisfies Record<keyof typeof en, string>
+} as const

@@ -20,7 +20,7 @@ import { createCatalogSource, type CatalogDeleteOutcome, type CatalogSnapshot } 
 import {
   formatScheduleAbsolute, formatScheduleFrequency, formatScheduleNextRun, formatScheduleRelative, zoneLabel,
 } from '../src/client/schedule-format.ts'
-import { en, zh } from '../src/client/task-manager-locales.ts'
+import { en, ja } from '../src/client/task-manager-locales.ts'
 import css from '../src/client/TaskManagerPage.module.css'
 import modalCss from '../../ui-primitives/src/Modal.module.css'
 import pluginsCss from '../../ui-plugin-manager/src/client/PluginManagerPage.module.css'
@@ -56,7 +56,7 @@ function installStyles(selectors: Record<string, string | undefined>): void {
 }
 
 type Entry = ScheduleCatalogEntry
-type Dictionary = typeof en | typeof zh
+type Dictionary = typeof en | typeof ja
 
 const alpha = 'session-alpha' as SessionId
 const beta = 'session-beta' as SessionId
@@ -401,7 +401,7 @@ function remoteCatalog() {
   return { ...mounted, list, remove, onDelete }
 }
 
-describe.each([['English', en], ['Chinese', zh]] as const)('original Session availability in %s', (_name, dictionary) => {
+describe.each([['English', en], ['Chinese', ja]] as const)('original Session availability in %s', (_name, dictionary) => {
   it.each([
     ['Session list pending', { ...sessions, phase: 'pending' as const }, workspaces, 'Loading linked session information.', '正在加载关联会话信息'],
     ['Workspace list pending', sessions, { ...workspaces, phase: 'pending' as const }, 'Loading linked session information.', '正在加载关联会话信息'],
@@ -441,7 +441,7 @@ describe.each([['English', en], ['Chinese', zh]] as const)('original Session ava
   })
 })
 
-describe.each([['English', en], ['Chinese', zh]] as const)('linked-Session control naming in %s', (_name, dictionary) => {
+describe.each([['English', en], ['Chinese', ja]] as const)('linked-Session control naming in %s', (_name, dictionary) => {
   it('names the control by the catalog title after the visible Linked session label', () => {
     mount({ records: [ended] }, dictionary, {
       useSessions: select => select(sessionsWithTitles({ [alpha]: 'Planning chat' })),
@@ -586,8 +586,8 @@ describe('Task manager catalog', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Check metrics' }))
     expect(within(screen.getByRole('complementary')).getByRole('button', { name: `${en['rule.repeat']} ${en['rule.everyHours']}` })).toBeDefined()
     expect(within(screen.getByRole('complementary')).getByRole('spinbutton', { name: en['host.interval'] }).getAttribute('value')).toBe('1')
-    h.view.rerender(<TaskManagerPage {...h.props} t={makeTranslate(zh)} />)
-    expect(within(screen.getByRole('complementary')).getByRole('button', { name: `${zh['rule.repeat']} ${zh['rule.everyHours']}` })).toBeDefined()
+    h.view.rerender(<TaskManagerPage {...h.props} t={makeTranslate(ja)} />)
+    expect(within(screen.getByRole('complementary')).getByRole('button', { name: `${ja['rule.repeat']} ${ja['rule.everyHours']}` })).toBeDefined()
   })
 
   it('describes row frequency and next time without exposing its Session', () => {
@@ -611,14 +611,14 @@ describe('Task manager catalog', () => {
     expect(metadata.textContent).not.toContain(en['status.active'])
     row.focus()
     expect(document.activeElement).toBe(row)
-    h.view.rerender(<TaskManagerPage {...h.props} t={makeTranslate(zh)} />)
+    h.view.rerender(<TaskManagerPage {...h.props} t={makeTranslate(ja)} />)
     expect(screen.getByRole('button', {
       name: 'Check metrics', description: /^每 5 分钟.*下次计划时间：/,
     })).toBe(row)
-    expect(time.textContent).toBe(absoluteNextRun(every.scheduledAt, zh))
-    expect(relativeText(metadata)).toBe(relativeNextRun(every.scheduledAt, zh))
+    expect(time.textContent).toBe(absoluteNextRun(every.scheduledAt, ja))
+    expect(relativeText(metadata)).toBe(relativeNextRun(every.scheduledAt, ja))
     expect(time.parentElement?.textContent)
-      .toBe(`${zh['list.nextPrefix']}${time.textContent} ${relativeNextRun(every.scheduledAt, zh)}`)
+      .toBe(`${ja['list.nextPrefix']}${time.textContent} ${relativeNextRun(every.scheduledAt, ja)}`)
   })
 
   it('shortens the stated time remaining as the clock advances', () => {
@@ -651,13 +651,13 @@ describe('Task manager catalog', () => {
   })
 
   it('states the time remaining until the next run in each locale', () => {
-    // The row and the detail state a duration, not a date: zh reads `2小时后`
+    // The row and the detail state a duration, not a date: ja reads `2小时后`
     // and en reads `in 2 hours`, and neither renders a clock time for it.
     const soon: Entry = {
       ...at, title: 'Two hours out', prompt: 'Two hours out',
       scheduledAt: new Date(Date.now() + 2 * 3_600_000).toISOString(),
     }
-    for (const dictionary of [en, zh]) {
+    for (const dictionary of [en, ja]) {
       const h = mount({ records: [soon] }, dictionary)
       const expected = dictionary === en ? 'in 2 hours' : '2小时后'
       const row = screen.getByRole('button', { name: 'Two hours out' })
@@ -740,7 +740,7 @@ describe('Task manager catalog', () => {
     expect(taskNames()).toEqual(['Send summary', 'Review release', 'Check metrics'])
   })
 
-  it.each([en, zh])('starts on the active status filter', (dictionary) => {
+  it.each([en, ja])('starts on the active status filter', (dictionary) => {
     mount({ records: [ended, every, after] }, dictionary, {}, { startAtAll: false })
     const list = screen.getByRole('list', { name: dictionary['list.label'] })
     const names = within(list).queryAllByRole('button')
@@ -752,7 +752,7 @@ describe('Task manager catalog', () => {
     expect(names).toEqual(['Send summary', 'Check metrics'])
   })
 
-  it.each([en, zh])('combines all, enabled, paused, and ended status filters with search', (dictionary) => {
+  it.each([en, ja])('combines all, enabled, paused, and ended status filters with search', (dictionary) => {
     mount({ records: [ended, every, after, paused] }, dictionary)
     const list = screen.getByRole('list', { name: dictionary['list.label'] })
     const names = () => within(list).queryAllByRole('button')
@@ -791,7 +791,7 @@ describe('Task manager catalog', () => {
 
   it.each([
     { dictionary: en, frequency: 'Daily at 23:00' },
-    { dictionary: zh, frequency: '每天 23:00' },
+    { dictionary: ja, frequency: '每天 23:00' },
   ])('classifies daily wall-clock rules as repeating and omits the device zone: $frequency', ({ dictionary, frequency }) => {
     mount({ records: [...records, daily] }, dictionary)
     const list = screen.getByRole('list', { name: dictionary['list.label'] })
@@ -887,7 +887,7 @@ describe('clearing inactive tasks', () => {
   }
 
   /** The search row's 36px More trigger. */
-  function moreTrigger(dictionary: typeof en | typeof zh = en): HTMLElement {
+  function moreTrigger(dictionary: typeof en | typeof ja = en): HTMLElement {
     return screen.getByRole('button', { name: dictionary['list.more'] })
   }
 
@@ -897,7 +897,7 @@ describe('clearing inactive tasks', () => {
    * @param count - ended rows the page's complete catalog holds.
    * @returns the confirmation dialog.
    */
-  function openClear(dictionary: typeof en | typeof zh = en, count = 1): HTMLElement {
+  function openClear(dictionary: typeof en | typeof ja = en, count = 1): HTMLElement {
     fireEvent.click(moreTrigger(dictionary))
     fireEvent.click(screen.getByRole('menuitem', { name: dictionary['clear.action'] }))
     return screen.getByRole('dialog', {
@@ -1068,14 +1068,14 @@ describe('clearing inactive tasks', () => {
   })
 
   it('states the cleanup and its confirmation in Chinese', () => {
-    mount({ records: [at, endedTask] }, zh)
-    const dialog = openClear(zh, 1)
-    expect(within(dialog).getByText(zh['clear.description'])).toBeDefined()
-    expect(within(dialog).getByRole('button', { name: zh['clear.confirm'] })).toBeDefined()
+    mount({ records: [at, endedTask] }, ja)
+    const dialog = openClear(ja, 1)
+    expect(within(dialog).getByText(ja['clear.description'])).toBeDefined()
+    expect(within(dialog).getByRole('button', { name: ja['clear.confirm'] })).toBeDefined()
   })
 })
 
-describe.each([['English', en], ['Chinese', zh]] as const)('task detail views in %s', (_name, dictionary) => {
+describe.each([['English', en], ['Chinese', ja]] as const)('task detail views in %s', (_name, dictionary) => {
   it('opens Rules under the selected task and separates rule fields from saved deliveries', async () => {
     const labels = detailViewLabels(dictionary)
     const h = mount({ records: [{ ...at, lastDelivery: delivery }] }, dictionary)
@@ -1325,7 +1325,7 @@ describe.each([['English', en], ['Chinese', zh]] as const)('task detail views in
 })
 
 describe('saved-history task binding', () => {
-  it.each([en, zh])('renders saved prompts rather than the current instruction', async (dictionary) => {
+  it.each([en, ja])('renders saved prompts rather than the current instruction', async (dictionary) => {
     const savedPrompt = 'Original saved instruction\n<img src=x onerror=alert(1)>'
     const loadHistory = vi.fn<TaskManagerPageProps['loadHistory']>().mockResolvedValue({ ok: true, value: {
       id: at.id, records: [{ ...delivery, prompt: savedPrompt }], earlierRecordsUnavailable: false,
@@ -1342,7 +1342,7 @@ describe('saved-history task binding', () => {
     expect(record.querySelector<HTMLElement>(`.${css.savedPrompt}`)?.textContent).toBe(savedPrompt)
   })
 
-  it.each([en, zh])('never substitutes the current instruction for a record without a saved prompt', async (dictionary) => {
+  it.each([en, ja])('never substitutes the current instruction for a record without a saved prompt', async (dictionary) => {
     const loadHistory = vi.fn<TaskManagerPageProps['loadHistory']>().mockResolvedValue({ ok: true, value: {
       id: at.id, records: [delivery], earlierRecordsUnavailable: false, earlierRecordsPruned: false, retention: { days: 30, records: 200 },
     } })
@@ -1409,7 +1409,7 @@ describe('saved-history task binding', () => {
 })
 
 describe('Task manager details', () => {
-  it.each([en, zh])('retains the selected row and detail after an authoritative inactive update with a delivery receipt', async (dictionary) => {
+  it.each([en, ja])('retains the selected row and detail after an authoritative inactive update with a delivery receipt', async (dictionary) => {
     const h = mount({ records: [at] }, dictionary)
     const row = screen.getByRole('button', { name: 'Review release' })
     fireEvent.click(row)
@@ -1476,7 +1476,7 @@ describe('Task manager details', () => {
     expect(panel.querySelector('time')).toBeNull()
   })
 
-  it.each([en, zh])('preserves Delivery records on same-task refresh and replaces the actual latest receipt separately from the next target', async (dictionary) => {
+  it.each([en, ja])('preserves Delivery records on same-task refresh and replaces the actual latest receipt separately from the next target', async (dictionary) => {
     const labels = detailViewLabels(dictionary)
     const h = mount({ records: [{ ...every, lastDelivery: delivery }] }, dictionary)
     fireEvent.click(screen.getByRole('button', { name: 'Check metrics' }))
@@ -1514,7 +1514,7 @@ describe('Task manager details', () => {
     expect(nextRunTime(detail)?.dateTime).toBe('2026-10-01T09:35:01.000Z')
   })
 
-  it.each([en, zh])('keeps the linked Session entry separate from scrolling details and destructive actions', (dictionary) => {
+  it.each([en, ja])('keeps the linked Session entry separate from scrolling details and destructive actions', (dictionary) => {
     const h = mount({ records: [at] }, dictionary)
     fireEvent.click(screen.getByRole('button', { name: 'Review release' }))
     const detail = screen.getByRole('complementary', { name: dictionary['detail.label'] })
@@ -1670,23 +1670,23 @@ describe('Task manager details', () => {
   })
 
   it('renders Chinese labels and local time without translating stored user data', () => {
-    mount({}, zh)
+    mount({}, ja)
     expect(screen.getByRole('heading', { level: 1, name: '自动化任务' })).toBeDefined()
     expect(screen.getByRole('searchbox', { name: '搜索任务' })).toBeDefined()
     const statuses = screen.getByRole('group', { name: '任务状态' })
     expect(within(statuses).getAllByRole('button')[0]?.textContent).toBe('已开启')
     fireEvent.click(screen.getByRole('button', { name: 'Check metrics' }))
     const detail = screen.getByRole('complementary', { name: '任务详情' })
-    expect(within(detail).getByRole('button', { name: `${zh['rule.repeat']} ${zh['rule.everyMinutes']}` })).toBeDefined()
-    expect(within(detail).getByRole('spinbutton', { name: zh['host.interval'] }).getAttribute('value')).toBe('5')
-    expect(nextRunTime(detail)?.textContent).toBe(absoluteNextRun(every.scheduledAt, zh))
-    expect(relativeText(detail)).toBe(relativeNextRun(every.scheduledAt, zh))
-    chooseDelete(zh)
+    expect(within(detail).getByRole('button', { name: `${ja['rule.repeat']} ${ja['rule.everyMinutes']}` })).toBeDefined()
+    expect(within(detail).getByRole('spinbutton', { name: ja['host.interval'] }).getAttribute('value')).toBe('5')
+    expect(nextRunTime(detail)?.textContent).toBe(absoluteNextRun(every.scheduledAt, ja))
+    expect(relativeText(detail)).toBe(relativeNextRun(every.scheduledAt, ja))
+    chooseDelete(ja)
     expect(screen.getByRole('dialog', { name: '删除此任务？' })).toBeDefined()
     expect(screen.getByRole('button', { name: '确认删除' })).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: '关闭删除确认' }))
     expect(screen.queryByRole('dialog')).toBeNull()
-    expect(screen.getByRole('button', { name: zh['detail.openSession'] })).toBeDefined()
+    expect(screen.getByRole('button', { name: ja['detail.openSession'] })).toBeDefined()
   })
 
   it('republishes the next-run line in the language of the injected locale', () => {
@@ -1697,10 +1697,10 @@ describe('Task manager details', () => {
     expect(relativeText(row)).toBe(relativeNextRun(at.scheduledAt, en))
     // English names the year; the Chinese date form reads month and day only.
     expect(absoluteNextRun(at.scheduledAt, en)).toMatch(/\d{4}/)
-    expect(absoluteNextRun(at.scheduledAt, zh)).not.toMatch(/\d{4}/)
-    h.view.rerender(<TaskManagerPage {...h.props} t={makeTranslate(zh)} />)
-    expect(time?.textContent).toBe(absoluteNextRun(at.scheduledAt, zh))
-    expect(relativeText(row)).toBe(relativeNextRun(at.scheduledAt, zh))
+    expect(absoluteNextRun(at.scheduledAt, ja)).not.toMatch(/\d{4}/)
+    h.view.rerender(<TaskManagerPage {...h.props} t={makeTranslate(ja)} />)
+    expect(time?.textContent).toBe(absoluteNextRun(at.scheduledAt, ja))
+    expect(relativeText(row)).toBe(relativeNextRun(at.scheduledAt, ja))
     expect(screen.getByRole('heading', { level: 1, name: '自动化任务' })).toBeDefined()
   })
 
@@ -2483,7 +2483,7 @@ describe('timing pickers', () => {
     expect(document.activeElement).toBe(dateButton())
   })
 
-  it.each([en, zh])('names every picker part in %s', (dictionary) => {
+  it.each([en, ja])('names every picker part in %s', (dictionary) => {
     mount({ records: [at] }, dictionary)
     openEditor('Review release')
     fireEvent.click(timeButton(dictionary))

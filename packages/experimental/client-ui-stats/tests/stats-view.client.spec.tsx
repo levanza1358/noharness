@@ -16,7 +16,7 @@ import { brandString } from '@noharness/brand'
 import { createSnapshotStore } from '@noharness/client-store'
 import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
 import { StatsView } from '../src/client/StatsView.tsx'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 import css from '../src/client/stats.module.css'
 import {
   barShare, formatChars, formatClock, formatDateTime, formatDateTimeMs, formatDateTimeShort, formatMs, formatPercent,
@@ -29,10 +29,10 @@ import type {
   LoadOlderResult,
 } from '../src/client/stats-contract.ts'
 
-const t = makeTranslate(zh)
+const t = makeTranslate(ja)
 
 /** Translate one dictionary key with its interpolation params. */
-function say(key: keyof typeof zh, params?: Record<string, unknown>): string {
+function say(key: keyof typeof ja, params?: Record<string, unknown>): string {
   return t(key, params)
 }
 

@@ -135,7 +135,7 @@ async function fixture(
       count++
       exchanged.resolve(undefined)
       if (hold) await release.promise
-      value = { user: null, token: 'nhs_mock_test', authorized_url: `${origin}/nhs/authorized?result=test&locale=zh_CN`, ...exchangeOverride }
+      value = { user: null, token: 'nhs_mock_test', authorized_url: `${origin}/nhs/authorized?result=test&locale=ja_JP`, ...exchangeOverride }
     }
     res.setHeader('content-type', 'application/json')
     res.end(JSON.stringify({ code: 0, data: { biz_code: businessCode, biz_msg: 'sensitive diagnostic', biz_data: value } }))
@@ -321,7 +321,7 @@ it('stores a grant before redirecting, restores account presence, and signs out 
   expect(response.status).toBe(302)
   expect(f.init().login_source).toBe('desktop')
   expect(f.init()).not.toHaveProperty('client_type')
-  expect(response.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=test&locale=zh_CN&login_source=desktop`)
+  expect(response.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=test&locale=ja_JP&login_source=desktop`)
   expect((await f.account.getState()).status).toBe('credential-stored')
   expect(await readFile(join(f.home, 'credentials.yaml'), 'utf8')).toContain('nhs_mock_test')
   // The Host publishes identity from a separate profile read; the snapshot only reuses it.
@@ -377,12 +377,12 @@ it('restricts platform destinations to the configured origin and route', () => {
 
 it('maps both returned browser pages to the development origin across the login flow', async () => {
   const f = await fixture(undefined, {}, true)
-  f.exchangeResponse({ authorized_url: 'https://platform.deepseek.com/nhs/authorized?result=a%2Fb&locale=zh_CN' })
+  f.exchangeResponse({ authorized_url: 'https://platform.deepseek.com/nhs/authorized?result=a%2Fb&locale=ja_JP' })
   await f.account.startSignIn(clientMetadata(), f.callbackOrigin, 'desktop')
   expect((await f.wait('waiting-browser')).attempt?.authorizeUrl).toBe(`${f.origin}/nhs/authorize?authorize_id=test`)
   const response = await fetch(f.callback(), { redirect: 'manual' })
   expect(response.status).toBe(302)
-  expect(response.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=a%2Fb&locale=zh_CN&login_source=desktop`)
+  expect(response.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=a%2Fb&locale=ja_JP&login_source=desktop`)
   expect((await f.account.getState()).status).toBe('credential-stored')
 })
 
@@ -393,12 +393,12 @@ it.each([
   ['desktop', '&login_source=web&login_source=web'],
 ] as const)('redirects the %s login completion with its login source when Platform returns %s', async (client, query) => {
   const f = await fixture()
-  f.exchangeResponse({ authorized_url: `${f.origin}/nhs/authorized?result=a%2Fb&locale=zh_CN${query}` })
+  f.exchangeResponse({ authorized_url: `${f.origin}/nhs/authorized?result=a%2Fb&locale=ja_JP${query}` })
   await f.account.startSignIn(clientMetadata(), f.callbackOrigin, client)
   await f.wait('waiting-browser')
   const response = await fetch(f.callback(), { redirect: 'manual' })
   expect(response.status).toBe(302)
-  expect(response.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=a%2Fb&locale=zh_CN&login_source=${client}`)
+  expect(response.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=a%2Fb&locale=ja_JP&login_source=${client}`)
 })
 
 it('preserves Platform business client_type in the completion URL', async () => {
@@ -601,17 +601,17 @@ it('bounds failed logout retries without restoring the grant or deleting a new l
     .toMatchObject({ kind: 'grant', payload: { token: 'new-account-token' } })
 })
 
-it.each([['en', 'en_US'], ['zh-CN', 'zh_CN']])('passes %s to Platform and keeps the active attempt language', async (locale, platformLocale) => {
+it.each([['en', 'en_US'], ['ja-JP', 'ja_JP']])('passes %s to Platform and keeps the active attempt language', async (locale, platformLocale) => {
   const f = await fixture()
   await f.account.startSignIn(clientMetadata(locale), f.callbackOrigin, 'desktop')
   const first = await f.wait('waiting-browser')
   expect(f.init().locale).toBe(platformLocale)
-  expect((await f.account.startSignIn(clientMetadata('zh'), f.callbackOrigin, 'desktop')).attempt?.id).toBe(first.attempt?.id)
+  expect((await f.account.startSignIn(clientMetadata('ja'), f.callbackOrigin, 'desktop')).attempt?.id).toBe(first.attempt?.id)
   expect(f.init().locale).toBe(platformLocale)
   await f.account.cancelSignIn(first.attempt!.id)
-  await f.account.startSignIn(clientMetadata('zh'), f.callbackOrigin, 'desktop')
+  await f.account.startSignIn(clientMetadata('ja'), f.callbackOrigin, 'desktop')
   await f.wait('waiting-browser')
-  expect(f.init().locale).toBe('zh_CN')
+  expect(f.init().locale).toBe('ja_JP')
 })
 
 it('adds private deployment cookies to every Platform request without exposing them in account state', async () => {
@@ -679,7 +679,7 @@ it('closes the failed Web authorization tab without redirecting and keeps the sh
   await f.account.startSignIn(clientMetadata(), f.callbackOrigin, 'web')
   await f.wait('waiting-browser')
   const success = await fetch(f.callback(), { redirect: 'manual' })
-  expect(success.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=test&locale=zh_CN&login_source=web`)
+  expect(success.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=test&locale=ja_JP&login_source=web`)
   expect(f.count()).toBe(2)
 })
 
@@ -710,7 +710,7 @@ it('completes login through a local TCP forward using the browser port rather th
   await f.wait('waiting-browser')
   expect(f.init().redirect_uri).toBe(`${forwardedOrigin}/oauth/callback`)
   const response = await fetch(f.callback(), { redirect: 'manual' })
-  expect(response.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=test&locale=zh_CN&login_source=web`)
+  expect(response.headers.get('location')).toBe(`${f.origin}/nhs/authorized?result=test&locale=ja_JP&login_source=web`)
   expect((await f.account.getState()).status).toBe('credential-stored')
 })
 
@@ -994,8 +994,8 @@ it('keeps one login attempt on the identity captured by its own initiating call'
   expect(f.receivedHeaders.map(header => [
     header.path, header.bundleId, header.clientPlatform, header.version, header.locale, header.timezoneOffset,
   ])).toEqual([
-    ['/auth-api/v0/nhs/auth_init', '', 'web', '1.0.0', 'zh_CN', '28800'],
-    ['/auth-api/v0/nhs/auth_cancel', '', 'web', '1.0.0', 'zh_CN', '28800'],
+    ['/auth-api/v0/nhs/auth_init', '', 'web', '1.0.0', 'en_US', '28800'],
+    ['/auth-api/v0/nhs/auth_cancel', '', 'web', '1.0.0', 'en_US', '28800'],
     ['/auth-api/v0/nhs/auth_init', '', 'web', '9.9.9', 'en_US', '-18000'],
     ['/auth-api/v0/nhs/auth_exchange', '', 'web', '9.9.9', 'en_US', '-18000'],
   ])
@@ -1012,7 +1012,7 @@ it('derives the client headers independently for profile, balance, and logout ca
     header.path, header.bundleId, header.clientPlatform, header.version, header.locale, header.timezoneOffset,
   ])).toEqual([
     ['/auth-api/v0/users/current', '', 'web', '9.9.9', 'en_US', '-18000'],
-    ['/api/v0/users/get_user_summary', '', 'web', '1.0.0', 'zh_CN', '28800'],
+    ['/api/v0/users/get_user_summary', '', 'web', '1.0.0', 'en_US', '28800'],
     ['/auth-api/v0/users/logout', '', 'web', '2.0.0', 'en_US', '3600'],
   ])
 })
@@ -1196,11 +1196,11 @@ it.each([null, []])('rejects invalid initialization and exchange payload fields:
   await f.wait('failed')
   f.initResponse({})
   f.exchangeResponse({ token: value })
-  await f.account.startSignIn(clientMetadata('zh'), f.callbackOrigin, 'web')
+  await f.account.startSignIn(clientMetadata('ja'), f.callbackOrigin, 'web')
   await f.wait('waiting-browser')
   const callback = await fetch(f.callback(), { redirect: 'manual' })
   expect(callback.status).toBe(200)
-  expect(await callback.text()).toContain('登录失败')
+  expect(await callback.text()).toContain('サインインに失敗しました')
   expect((await f.wait('failed')).status).toBe('signed-out')
 })
 
@@ -1382,7 +1382,7 @@ it.each([false, true])('settles a previous attempt before concurrent restart or 
     await rejected
     await disposed
   } else {
-    const second = f.account.startSignIn(clientMetadata('zh'), f.callbackOrigin, 'web')
+    const second = f.account.startSignIn(clientMetadata('ja'), f.callbackOrigin, 'web')
     f.release.resolve(undefined)
     expect((await first).attempt?.id).toBe((await second).attempt?.id)
     await f.wait('waiting-browser')

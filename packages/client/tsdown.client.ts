@@ -97,7 +97,7 @@ function compiledClientStyle(
  * Everything else under @noharness/* is either a module-table entry
  * (external) or a leak the purity gate rejects.
  */
-export const INLINE_SAFE = /^(?:@noharness\/nhs-(?:file-reference|fs-patch|session|llm|tools|brand|error|official-bundles|deque|output-retention|typert-protocol|util-crypto|util-text-search|util-time|util-values|util-workspace-path)(?:\/|$)|@noharness\/nhs-util-file-drag$|@noharness\/nhs-token-meter\/client$|@noharness\/nhs-commands\/builtin$|@noharness\/nhs-native-command\/types$|@noharness\/nhs-host-open-in-app\/shared$|@noharness\/nhs-plugin-manager\/registry$|@noharness\/nhs-agent-preset-registry\/display$|@noharness\/nhs-api-workspace-controller\/default-workspace$|@noharness\/nhs-spill-policy\/notice$)/
+export const INLINE_SAFE = /^(?:@noharness\/(?:nhs-)?(?:file-reference|fs-patch|session|llm|tools|brand|error|official-bundles|deque|output-retention|typert-protocol|util-crypto|util-text-search|util-time|util-values|util-workspace-path)(?:\/|$)|@noharness\/(?:nhs-)?util-file-drag$|@noharness\/(?:nhs-)?token-meter\/client$|@noharness\/(?:nhs-)?commands\/builtin$|@noharness\/(?:nhs-)?native-command\/types$|@noharness\/(?:nhs-)?host-open-in-app\/shared$|@noharness\/(?:nhs-)?plugin-manager\/registry$|@noharness\/(?:nhs-)?agent-preset-registry\/display$|@noharness\/(?:nhs-)?api-workspace-controller\/default-workspace$|@noharness\/(?:nhs-)?spill-policy\/notice$)/
 
 /**
  * Vendored framework libraries: rescoped into @noharness, so the gate below
@@ -107,8 +107,12 @@ export const INLINE_SAFE = /^(?:@noharness\/nhs-(?:file-reference|fs-patch|sessi
  */
 const VENDORED_LIBRARY = /^@noharness\/(?:(?:cosmokit|schemastery)(?:\/|$)|cordis-plugin-timer$)/
 
-/** Generated descriptor/codec contribution with no shared runtime identity. */
-const GENERATED_REMOTE = /^@noharness\/nhs-[a-z0-9]+(?:-[a-z0-9]+)*\/remote$/
+/**
+ * Generated descriptor/codec contribution with no shared runtime identity. The
+ * scope is matched loosely on purpose: `@noharness` is the legacy package prefix,
+ * so no workspace package name starts with it.
+ */
+const GENERATED_REMOTE = /^(?:@noharness|@noharness)\/[a-z0-9]+(?:-[a-z0-9]+)*\/remote$/
 
 /**
  * Workspace mode replaces an empty config array with the root defaults. A

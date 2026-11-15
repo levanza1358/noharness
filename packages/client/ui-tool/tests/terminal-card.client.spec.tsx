@@ -10,18 +10,18 @@ import type { SessionListState } from '@noharness/api-session-controller/client'
 import type { SessionId } from '@noharness/session/types'
 import { makeTranslate } from '@noharness/client-test-runtime'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import {
   localizeTerminalCardModel, terminalCardModel, terminalFailed, terminalExitLabel,
 } from '../src/client/tool/models/terminal-card-model.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
 import { BashRow } from '../src/client/tool/toolviews/bash-sample.tsx'
-import { en, zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { en, ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 
 type BashRowProps = Parameters<typeof BashRow>[0]
 
-const t: GenericToolCardProps['t'] = makeTranslate(zh, commonZh)
+const t: GenericToolCardProps['t'] = makeTranslate(ja, commonJa)
 const enT: GenericToolCardProps['t'] = makeTranslate(en, commonEn)
 
 afterEach(cleanup)
@@ -454,7 +454,7 @@ describe('chat row terminal body', () => {
   })
 
   it.each([
-    { locale: 'zh', translate: t, description: '终端 pty-3', command: '（发送输入）' },
+    { locale: 'ja', translate: t, description: '终端 pty-3', command: '（发送输入）' },
     { locale: 'en', translate: enT, description: 'Terminal pty-3', command: '(send input)' },
   ])('renders terminal_send copy through the $locale locale', ({ translate, description, command }) => {
     const block = running({

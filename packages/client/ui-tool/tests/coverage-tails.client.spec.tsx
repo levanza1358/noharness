@@ -8,16 +8,16 @@ import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runt
 import type { SessionListState } from '@noharness/api-session-controller/client'
 import type { StartedToolCall, ToolResultNode } from '@noharness/client-ui-chat/client'
 import type { SessionId } from '@noharness/session/types'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
 import { ToolRow } from '../src/client/tool/components/ToolRow.tsx'
 import { BashRow } from '../src/client/tool/toolviews/bash-sample.tsx'
-import { zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 
 type BashRowProps = Parameters<typeof BashRow>[0]
 
-const t: GenericToolCardProps['t'] = makeTranslate(zh, commonZh)
+const t: GenericToolCardProps['t'] = makeTranslate(ja, commonJa)
 
 afterEach(cleanup)
 

@@ -7,14 +7,14 @@ import type {
 } from '@noharness/client-ui-chat/client'
 import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { PartialArguments } from '@noharness/util-values'
 import { ActivityPill, UsagePill, deriveStats, formatDuration, type StatPillProps } from '../src/client/chat/StatsPills.tsx'
 import { formatTokens } from '../src/client/chat/token-format.ts'
-import { en, zh } from '../src/client/locale.ts'
+import { en, ja } from '../src/client/locale.ts'
 import { chatSnapshotFixture } from './chat-snapshot-fixture.client.ts'
 
-const t: StatPillProps['t'] = makeTranslate(zh, commonZh)
+const t: StatPillProps['t'] = makeTranslate(ja, commonJa)
 const tEn: StatPillProps['t'] = makeTranslate(en, commonEn)
 
 /** Both composer-dock entries in their registered order, as the dock renders them. */

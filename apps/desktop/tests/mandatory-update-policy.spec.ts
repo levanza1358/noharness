@@ -3,7 +3,7 @@ import type { AccountClientMetadata } from '@noharness/deepseek-account/types'
 import { DesktopMandatoryUpdatePolicy, desktopPolicyPage, resolveDesktopPolicyConfig, type DesktopPolicyState } from '../src/mandatory-update-policy.ts'
 
 const identity = { platform: 'win32', arch: 'x64', channel: 'nightly', bundledDshVersion: '0.1.5-rc.1' } as const
-const client: AccountClientMetadata = { version: '1.2.3', locale: 'zh-CN', timezoneOffsetSeconds: 28_800 }
+const client: AccountClientMetadata = { version: '1.2.3', locale: 'ja-JP', timezoneOffsetSeconds: 28_800 }
 const force = { code: 40005, data: { show_content: { title: '<b>Update</b>', detail: 'Required upgrade' },
   desktop_app_link: 'https://downloads.example.com/desktop?os=win' } }
 const clear = { code: 0, msg: '', data: { biz_code: 0, biz_msg: '', biz_data: null } }
@@ -61,7 +61,7 @@ describe('mandatory update policy', () => {
     expect((url as URL).href).toBe('https://policy.example.com/api/v0/check_client_update?scenario=launch')
     expect(options).toMatchObject({ credentials: 'omit', cache: 'no-store', redirect: 'error', headers: {
       'x-client-platform': 'desktop-win', 'x-client-version': '1.2.3', 'x-client-bundle-id': '',
-      'x-client-locale': 'zh_CN', 'x-client-timezone-offset': '28800', 'x-client-arch': 'x64', 'x-client-update-channel': 'nightly',
+      'x-client-locale': 'ja_JP', 'x-client-timezone-offset': '28800', 'x-client-arch': 'x64', 'x-client-update-channel': 'nightly',
       'x-client-bundled-nhs-version': '0.1.5-rc.1',
     } })
   })
@@ -70,11 +70,11 @@ describe('mandatory update policy', () => {
     let current = { ...client, locale: 'en', timezoneOffsetSeconds: -18_000 }
     const { policy, request } = fixture('anonymous', () => current)
     await policy.check('launch')
-    current = { ...client, locale: 'zh-CN', timezoneOffsetSeconds: 28_800 }
+    current = { ...client, locale: 'ja-JP', timezoneOffsetSeconds: 28_800 }
     await policy.check('manual', true)
     const headers = request.mock.calls.map(call => (call[1]?.headers ?? {}) as Record<string, string>)
     expect(headers[0]).toMatchObject({ 'x-client-locale': 'en_US', 'x-client-timezone-offset': '-18000' })
-    expect(headers[1]).toMatchObject({ 'x-client-locale': 'zh_CN', 'x-client-timezone-offset': '28800' })
+    expect(headers[1]).toMatchObject({ 'x-client-locale': 'ja_JP', 'x-client-timezone-offset': '28800' })
   })
 
   it('checks the selected channel after an old-channel request finishes', async () => {

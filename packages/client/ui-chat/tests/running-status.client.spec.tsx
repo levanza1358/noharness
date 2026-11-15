@@ -3,11 +3,11 @@
 import { act, cleanup, render } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { RunningStatus } from '../src/client/chat/RunningStatus.tsx'
-import { zh } from '../src/client/locale.ts'
+import { ja } from '../src/client/locale.ts'
 
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(5_000) })
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals() })

@@ -1,13 +1,5 @@
-/** Locale-owned HTML implementation name and iframe status text. */
-export const zh = {
-  title: 'HTML',
-  frame: 'HTML 文档预览',
-  loading: '文档渲染中...',
-  failed: '无法预览这份 HTML 文档',
-} satisfies Record<string, string>
 
 /** HTML renderer dictionary keys. */
-export type HtmlPreviewKey = keyof typeof zh
 
 /** English dictionary with the same keys as the Chinese dictionary. */
 export const en = {
@@ -15,7 +7,9 @@ export const en = {
   frame: 'HTML document preview',
   loading: 'Rendering document...',
   failed: 'This HTML document could not be previewed.',
-} satisfies Record<HtmlPreviewKey, string>
+} as const
+
+export type HtmlPreviewKey = keyof typeof en
 
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -28,9 +22,9 @@ declare module '@noharness/client-ui-slots' {
 export const ja = {
   'title': 'HTML',
   'frame': 'HTMLドキュメントのプレビュー',
-  'loading': 'ドキュメントをレンダリング中...',
+  'loading': 'Rendering document...',
   'failed': 'このHTMLドキュメントをプレビューできませんでした。',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -38,7 +32,7 @@ export const es = {
   frame: 'Vista previa del documento HTML',
   loading: 'Representando documento...',
   failed: 'No se pudo obtener una vista previa de este documento HTML.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -46,7 +40,7 @@ export const fr = {
   frame: 'Aperçu du document HTML',
   loading: 'Rendu du document...',
   failed: "Ce document HTML n'a pas pu être prévisualisé.",
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -54,7 +48,7 @@ export const de = {
   frame: 'Vorschau des HTML-Dokuments',
   loading: 'Dokument wird gerendert...',
   failed: 'Dieses HTML-Dokument konnte nicht in der Vorschau angezeigt werden.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -62,7 +56,7 @@ export const ru = {
   frame: 'Предварительный просмотр HTML-документа',
   loading: 'Оформление документа...',
   failed: 'Этот HTML-документ не удалось просмотреть.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -70,4 +64,4 @@ export const pt = {
   frame: 'Pré-visualização do documento HTML',
   loading: 'Renderizando documento...',
   failed: 'Este documento HTML não pôde ser visualizado.',
-} satisfies Record<keyof typeof en, string>
+} as const

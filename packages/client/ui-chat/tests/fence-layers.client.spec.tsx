@@ -2,13 +2,13 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
-import { zh } from '../src/client/locale.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
+import { ja } from '../src/client/locale.ts'
 import {
   DiffFenceLayer, MathFenceLayer, type DiffFenceLayerProps, type MathFenceLayerProps,
 } from '../src/client/fence/FenceLayers.tsx'
 
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 afterEach(() => {
   cleanup()

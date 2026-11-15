@@ -8,7 +8,7 @@ import type { ConfigFormSnapshot } from '@noharness/client-ui-settings/client'
 import { afterEach, expect, it, vi } from 'vitest'
 import { PermissionPanel, PermissionSetup, PermissionToast, type PermissionPanelProps } from '../src/client/PermissionPanel.tsx'
 import type { PermissionView } from '../src/client/controller.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 afterEach(() => { cleanup(); vi.useRealTimers() })
 const value: CuaApplicationState & { system: Extract<CuaSystemPermissionState, { platform: 'darwin' }> } = { system: { platform: 'darwin' as const, accessibility: false, screenRecording: true,
@@ -61,7 +61,7 @@ it('requests only a missing privilege and leaves OS attribution to the system pr
   expect(f.props.refresh).toHaveBeenCalledTimes(2)
 })
 
-it.each([en, zh])('changes the default from the detail page and retains a refused write for retry', async (dictionary) => {
+it.each([en, ja])('changes the default from the detail page and retains a refused write for retry', async (dictionary) => {
   const f = fixture()
   f.preset.set({ ...f.preset.getSnapshot(), value: { default: 'standard' } })
   f.publish({ ...observe(value) })
@@ -142,7 +142,7 @@ it('shows query failures as unknown while retaining previously displayed apps', 
   expect(screen.queryByRole('button', { name: en.revoke })).toBeNull()
 })
 
-it.each([en, zh])('waits for platform identification before offering system permission actions', (dictionary) => {
+it.each([en, ja])('waits for platform identification before offering system permission actions', (dictionary) => {
   const f = fixture()
   render(<PermissionPanel {...f.props} t={makeTranslate(dictionary)} />)
   expect(screen.queryByRole('group', { name: dictionary.accessibility })).toBeNull()
@@ -231,7 +231,7 @@ it('shows application icons and names while keeping the executable path in the t
   expect(identity.querySelector('img')?.getAttribute('src')).toBe('data:image/png;base64,aWNvbg==')
 })
 
-it.each([en, zh])('shows four requirements with the target application beside each system permission', (dictionary) => {
+it.each([en, ja])('shows four requirements with the target application beside each system permission', (dictionary) => {
   const f = fixture()
   render(<PermissionPanel {...f.props} t={makeTranslate(dictionary)} />)
   const application = { name: 'Visual Studio Code.app', path: '/Applications/Visual Studio Code.app', icon: 'data:image/png;base64,aWNvbg==' }
@@ -376,7 +376,7 @@ it('finishes activation guidance without waiting for application icons', () => {
   expect(f.state.getSnapshot().icons.busy).toBe(true)
 })
 
-it.each([en, zh])('saves persistent PTC only from its own row and retains failures for retry', async (dictionary) => {
+it.each([en, ja])('saves persistent PTC only from its own row and retains failures for retry', async (dictionary) => {
   const f = fixture()
   render(<PermissionPanel {...f.props} t={makeTranslate(dictionary)} />)
   const row = screen.getByRole('group', { name: dictionary.persistentTitle })

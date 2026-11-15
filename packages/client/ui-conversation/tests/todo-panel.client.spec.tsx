@@ -9,12 +9,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
 import { createSnapshotStore } from '@noharness/client-store'
 import type { TodoItem } from '@noharness/tool-todo/client'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { TodoDockProps } from '../src/client/skeleton/TodoPanel.tsx'
 import { TodoDock, TodoPanel, todoDockEntry } from '../src/client/skeleton/TodoPanel.tsx'
-import { NS, zh } from '../src/client/locales.ts'
+import { NS, ja } from '../src/client/locales.ts'
 
-const t: TodoDockProps['t'] = makeTranslate(zh, commonZh)
+const t: TodoDockProps['t'] = makeTranslate(ja, commonJa)
 
 afterEach(cleanup)
 

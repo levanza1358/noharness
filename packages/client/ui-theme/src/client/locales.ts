@@ -1,38 +1,5 @@
 /** `settings.theme` namespace dictionaries (the Appearance and font settings rows' copy). */
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'appearance.title': '外观',
-  'appearance.light': '浅色',
-  'appearance.dark': '深色',
-  'appearance.system': '跟随系统',
-  'fontSize.text.title': '字号大小',
-  'fontSize.text.description': '仅影响会话内容的字号',
-  'fontSize.text.increase': '增大字号',
-  'fontSize.text.decrease': '减小字号',
-  'fontSize.code.title': '代码字号',
-  'fontSize.code.description': '用于代码块、行内代码与工具输出',
-  'fontSize.code.increase': '增大代码字号',
-  'fontSize.code.decrease': '减小代码字号',
-  'fontSize.terminal.title': '终端字号',
-  'fontSize.terminal.description': '用于侧栏终端',
-  'fontSize.terminal.increase': '增大终端字号',
-  'fontSize.terminal.decrease': '减小终端字号',
-  'fontSize.unit': 'px',
-  'fontFamily.text.title': '正文字体',
-  'fontFamily.text.description': '用于界面与会话正文。多个字体用逗号分隔，留空使用默认字体',
-  'fontFamily.code.title': '代码字体',
-  'fontFamily.code.description': '用于代码块、行内代码与工具输出。多个字体用逗号分隔，留空使用默认字体',
-  'fontFamily.terminal.title': '终端字体',
-  'fontFamily.terminal.description': '用于侧栏终端。多个字体用逗号分隔，留空使用默认字体',
-  'fontFamily.placeholder': '默认',
-  'fontSize.more': '更多字体设置',
-} satisfies Record<string, string>
-
-/** The settings.theme namespace key union. */
-export type ThemeKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'appearance.title': 'Appearance',
   'appearance.light': 'Light',
@@ -59,36 +26,38 @@ export const en = {
   'fontFamily.terminal.description': 'Used for the sidebar terminal. Separate fonts with commas; leave empty for the default',
   'fontFamily.placeholder': 'Default',
   'fontSize.more': 'More font settings',
-} satisfies Record<ThemeKey, string>
+} as const
+
+export type ThemeKey = keyof typeof en
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'appearance.title': '外観',
+  'appearance.title': 'Appearance',
   'appearance.light': 'ライト',
   'appearance.dark': 'ダーク',
   'appearance.system': 'システム',
   'fontSize.text.title': 'フォントサイズ',
-  'fontSize.text.description': '会話コンテンツにのみ適用',
-  'fontSize.text.increase': 'フォントサイズを大きくする',
-  'fontSize.text.decrease': 'フォントサイズを小さくする',
+  'fontSize.text.description': 'Only affects conversation content',
+  'fontSize.text.increase': 'Increase font size',
+  'fontSize.text.decrease': 'Decrease font size',
   'fontSize.code.title': 'コードのフォントサイズ',
-  'fontSize.code.description': 'コードブロック、インラインコード、ツール出力に使用',
-  'fontSize.code.increase': 'コードのフォントサイズを大きくする',
-  'fontSize.code.decrease': 'コードのフォントサイズを小さくする',
+  'fontSize.code.description': 'Used for code blocks, inline code, and tool output',
+  'fontSize.code.increase': 'Increase code font size',
+  'fontSize.code.decrease': 'Decrease code font size',
   'fontSize.terminal.title': 'ターミナルのフォントサイズ',
-  'fontSize.terminal.description': 'サイドバーのターミナルに使用',
-  'fontSize.terminal.increase': 'ターミナルのフォントサイズを大きくする',
-  'fontSize.terminal.decrease': 'ターミナルのフォントサイズを小さくする',
+  'fontSize.terminal.description': 'Used for the sidebar terminal',
+  'fontSize.terminal.increase': 'Increase terminal font size',
+  'fontSize.terminal.decrease': 'Decrease terminal font size',
   'fontSize.unit': 'px',
   'fontFamily.text.title': 'テキストフォント',
-  'fontFamily.text.description': 'インターフェースと会話テキストに使用します。フォントはカンマで区切ります。空欄の場合はデフォルトを使用',
+  'fontFamily.text.description': 'Used for the interface and conversation text. Separate fonts with commas; leave empty for the default',
   'fontFamily.code.title': 'コードフォント',
-  'fontFamily.code.description': 'コードブロック、インラインコード、ツール出力に使用します。フォントはカンマで区切ります。空欄の場合はデフォルトを使用',
+  'fontFamily.code.description': 'Used for code blocks, inline code, and tool output. Separate fonts with commas; leave empty for the default',
   'fontFamily.terminal.title': 'ターミナルフォント',
-  'fontFamily.terminal.description': 'サイドバーのターミナルに使用します。フォントはカンマで区切ります。空欄の場合はデフォルトを使用',
+  'fontFamily.terminal.description': 'Used for the sidebar terminal. Separate fonts with commas; leave empty for the default',
   'fontFamily.placeholder': 'デフォルト',
-  'fontSize.more': 'その他のフォント設定',
-} satisfies Record<keyof typeof en, string>
+  'fontSize.more': 'More font settings',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -117,7 +86,7 @@ export const es = {
   'fontFamily.terminal.description': 'Se utiliza para el terminal de la barra lateral. Separe las fuentes con comas; dejar vacío por defecto',
   'fontFamily.placeholder': 'Predeterminado',
   'fontSize.more': 'Más configuraciones de fuente',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -146,7 +115,7 @@ export const fr = {
   'fontFamily.terminal.description': 'Utilisé pour le terminal de la barre latérale. Séparez les polices par des virgules ; laisser vide pour la valeur par défaut',
   'fontFamily.placeholder': 'Par défaut',
   'fontSize.more': 'Plus de paramètres de police',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -175,7 +144,7 @@ export const de = {
   'fontFamily.terminal.description': 'Wird für das Sidebar-Terminal verwendet. Trennen Sie Schriftarten durch Kommas. Für die Standardeinstellung leer lassen',
   'fontFamily.placeholder': 'Standard',
   'fontSize.more': 'Weitere Schriftarteinstellungen',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -204,7 +173,7 @@ export const ru = {
   'fontFamily.terminal.description': 'Используется для терминала боковой панели. Разделяйте шрифты запятыми; оставьте пустым по умолчанию',
   'fontFamily.placeholder': 'По умолчанию',
   'fontSize.more': 'Дополнительные настройки шрифта',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -233,4 +202,4 @@ export const pt = {
   'fontFamily.terminal.description': 'Usado para o terminal da barra lateral. Separe as fontes com vírgulas; deixe em branco para o padrão',
   'fontFamily.placeholder': 'Padrão',
   'fontSize.more': 'Mais configurações de fonte',
-} satisfies Record<keyof typeof en, string>
+} as const

@@ -202,7 +202,7 @@ describe('viewer status', () => {
         expect(document.getElementById(MESSAGE_ID)?.textContent)
           .toBe('The owner is offline right now; this page reconnects automatically.')
       })
-      locale.setLocale('zh')
+      locale.setLocale('en')
 
       // The share itself ends: the page states the owner's own action, not the connection.
       context = { capabilities: { sessionMode: 'view', sessionModeReason: 'share-stopped', online: true } }

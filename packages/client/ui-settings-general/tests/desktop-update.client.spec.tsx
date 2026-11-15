@@ -6,13 +6,13 @@ import type { PropsLocale } from '@noharness/client-ui-slots'
 import { DesktopUpdateIndicator } from '../src/client/DesktopUpdateIndicator.tsx'
 import type { DesktopUpdateBridge, DesktopUpdatePresentation } from '../src/types.ts'
 import { DesktopUpdateSource } from '../src/client/desktop-update-source.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
 type SettingsTranslate = PropsLocale<'settings'>['t']
 
-function translate(dictionary: typeof zh | typeof en): SettingsTranslate {
+function translate(dictionary: typeof ja | typeof en): SettingsTranslate {
   const messages: Readonly<Record<string, string>> = dictionary
   return (key, params) => Object.entries(params ?? {})
     .reduce((message, [name, value]) => message.replaceAll(`{${name}}`, String(value)),
@@ -32,10 +32,10 @@ function fixture() {
   const source = new DesktopUpdateSource(bridge)
   const subscribe = (notify: () => void) => source.store.subscribe(notify)
   const snapshot = () => source.store.getSnapshot()
-  function Indicator({ wide = true, hidden = false, dictionary = zh }: {
+  function Indicator({ wide = true, hidden = false, dictionary = ja }: {
     wide?: boolean
     hidden?: boolean
-    dictionary?: typeof zh | typeof en
+    dictionary?: typeof ja | typeof en
   }) {
     const state = useSyncExternalStore(subscribe, snapshot)
     return <DesktopUpdateIndicator wide={wide} hidden={hidden} t={translate(dictionary)} view={state} onOpen={() => { source.open() }} />
@@ -52,7 +52,7 @@ const available = { phase: 'available', version: '1.0.1' } as const
 
 it('renders nothing outside the Desktop carrier', () => {
   const source = new DesktopUpdateSource(undefined)
-  const view = render(<DesktopUpdateIndicator wide hidden={false} t={translate(zh)}
+  const view = render(<DesktopUpdateIndicator wide hidden={false} t={translate(ja)}
     view={source.store.getSnapshot()} onOpen={() => { source.open() }} />)
   source.open()
   source.dispose()
@@ -185,7 +185,7 @@ it('localizes fullscreen timeout guidance and preserves the retry action', async
   const copy: string[] = []
   try {
     await f.emit({ phase: 'error', failure: 'fullscreen-timeout', version: available.version })
-    for (const dictionary of [zh, en]) {
+    for (const dictionary of [ja, en]) {
       f.view.rerender(<f.Indicator dictionary={dictionary} />)
       fireEvent.focus(screen.getByRole('button'))
       copy.push((await screen.findByRole('tooltip')).textContent ?? '')

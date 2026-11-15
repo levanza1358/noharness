@@ -29,7 +29,7 @@ GET /api/v0/check_client_update?scenario=launch
 x-client-platform: desktop-win
 x-client-version: 0.1.3-rc.2
 x-client-bundle-id:
-x-client-locale: zh_CN
+x-client-locale: ja_JP
 x-client-timezone-offset: 28800
 x-client-arch: x64
 x-client-update-channel: nightly
@@ -43,7 +43,7 @@ All listed headers are required on every Desktop request; a required header may 
 | `x-client-platform` | `desktop-win` or `desktop-mac` |
 | `x-client-version` | Shared client build version, inlined as `NHS_CLIENT_VERSION` at packaging; full SemVer retaining prerelease identifiers, initially equal to the bundled nhs version |
 | `x-client-bundle-id` | Platform uses this field to identify the Chat application; the field does not apply to Harness, so Desktop sends it empty |
-| `x-client-locale` | `zh_CN` or `en_US`, taken from the active UI language's primary subtag; selects localized content, not region |
+| `x-client-locale` | `ja_JP` or `en_US`, taken from the active UI language's primary subtag; selects localized content, not region |
 | `x-client-timezone-offset` | Whole-second offset from UTC, positive east of Greenwich, sampled from the shell for every request |
 | `x-client-arch` | Windows `x64`; macOS `x64` or `arm64` |
 | `x-client-update-channel` | Initially always `nightly`, independent of version suffix |

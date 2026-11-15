@@ -6,13 +6,13 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 import { Context } from '@noharness/cordis'
 import { contextMenuHook, bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
 import { createSnapshotStore } from '@noharness/client-store'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { StartedToolCall, ToolResultNode } from '@noharness/client-ui-chat/client'
 import type { SessionListState } from '@noharness/api-session-controller/client'
 import type { SessionId } from '@noharness/session/types'
 import { CHAT_READ_MAX_LINES, readCallLine, readCardModel } from '../src/client/tool/models/read-card-model.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 import { ReadRow, readToolview } from '../src/client/tool/toolviews/read-row.tsx'
 
@@ -21,7 +21,7 @@ afterEach(cleanup)
 const SID = 's1' as SessionId
 
 /** The chat-view locale seat: this package's namespace over the common fallback. */
-const t: GenericToolCardProps['t'] = makeTranslate(zh, commonZh)
+const t: GenericToolCardProps['t'] = makeTranslate(ja, commonJa)
 
 // The read tool's real schema key is `file_path`; the top-level read samples
 // use it so the row exercises a production-shaped call. `web_fetch` (below) has

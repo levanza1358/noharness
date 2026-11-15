@@ -6,9 +6,9 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 import type { StartedToolCall, ToolResultNode } from '@noharness/client-ui-chat/client'
 import type { SessionId } from '@noharness/session/types'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { CHAT_SEARCH_MAX_LINES, searchCardModel } from '../src/client/tool/models/search-card-model.ts'
-import { zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
 import { SearchRow, searchToolview } from '../src/client/tool/toolviews/search-row.tsx'
@@ -17,7 +17,7 @@ type SearchRowProps = Parameters<typeof SearchRow>[0]
 
 afterEach(cleanup)
 
-const t: GenericToolCardProps['t'] = makeTranslate(zh, commonZh)
+const t: GenericToolCardProps['t'] = makeTranslate(ja, commonJa)
 
 /** The rendered search card's kind attribute, so a render site cannot silently drop it. */
 function searchKindOf(container: HTMLElement): string | null {

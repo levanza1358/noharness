@@ -40,7 +40,7 @@ function expiresAt(): string {
 interface Granted {
   readonly orderId: string
   readonly amount: string
-  readonly zh_CN: string
+  readonly ja_JP: string
   readonly en_US: string
 }
 
@@ -91,7 +91,7 @@ async function mockPlatform() {
   const grant = (orderId: string, amount: string, extraCopy = ''): void => {
     const value = {
       orderId, amount,
-      zh_CN: `已赠送您 ${amount} 元 NHS 体验赠金。${extraCopy}`,
+      ja_JP: `已赠送您 ${amount} 元 NHS 体验赠金。${extraCopy}`,
       en_US: `You received a CNY ${amount} NHS trial credit.${extraCopy}`,
     }
     unnotified.unshift(value)
@@ -103,7 +103,7 @@ async function mockPlatform() {
     display_until: value.orderId === ORDER_FIRST ? null : expiresAt(),
     title: value.orderId === ORDER_FIRST ? (locale === 'en_US' ? 'Platform notice' : '平台通知')
       : locale === 'en_US' ? 'Bonus credited' : '赠金已到账',
-    body: locale === 'en_US' ? value.en_US : value.zh_CN,
+    body: locale === 'en_US' ? value.en_US : value.ja_JP,
     actions: value.orderId === 'b1111111-1111-4111-8111-111111111111' ? [
       { label: locale === 'en_US' ? 'View balance' : '查看余额', style: 'primary', target: { type: 'app_route', name: 'account' } },
       { label: locale === 'en_US' ? 'Got it' : '知道了', style: 'secondary', target: { type: 'dismiss' } },
@@ -353,10 +353,10 @@ describe.skipIf(MODE === 'record')('web e2e: bonus notice', () => {
     const ack = platform.acks[0]!
     observations.push(`startup.get locale=${String(get.locale)} query=${get.query}`)
     observations.push(`startup.ack method=${ack.method} path=${ack.path} locale=${String(ack.locale)} notification_id=${String(ack.orderId)} body=${JSON.stringify(ack.body)}`)
-    expect(get.locale).toBe('zh_CN')
+    expect(get.locale).toBe('ja_JP')
     expect(get.query).toBe('')
     expect(ack).toMatchObject({
-      method: 'POST', path: '/api/v0/users/notifications/events', locale: 'zh_CN', orderId: ORDER_FIRST,
+      method: 'POST', path: '/api/v0/users/notifications/events', locale: 'ja_JP', orderId: ORDER_FIRST,
       body: JSON.stringify({ notification_id: ORDER_FIRST, type: 'displayed' }), query: '', contentType: 'application/json',
     })
 
@@ -413,7 +413,7 @@ describe.skipIf(MODE === 'record')('web e2e: bonus notice', () => {
     observations.push(`open.balance bonus-row=${String(panel.includes('赠金余额'))} amount=${String(panel.includes('¥13.00'))} dated=${String(/\d{4}-\d{2}-\d{2}/.test(panel))}`)
     observations.push(`open.cards-while-open=${String(await noticeCards(page).count())} acks=${String(platform.acks.length)}`)
     observations.push(`open.usage-link=${String(usage).replace(platform.origin, '{{origin}}')}`)
-    expect(openGet.locale).toBe('zh_CN')
+    expect(openGet.locale).toBe('ja_JP')
     expect(openGet.query).toBe('')
     expect(panel).toContain('赠金余额')
     expect(panel).toContain('¥13.00')

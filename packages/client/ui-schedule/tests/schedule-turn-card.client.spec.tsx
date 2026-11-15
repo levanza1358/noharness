@@ -26,7 +26,7 @@ import {
   scheduleTasksForClosing, scheduleTurnDefinition, selectScheduleTasks,
   type ScheduleTurnData, type ScheduleTurnOwner,
 } from '../src/client/schedule-turn.ts'
-import { en, zh } from '../src/client/task-manager-locales.ts'
+import { en, ja } from '../src/client/task-manager-locales.ts'
 
 type Entry = ScheduleCatalogEntry
 
@@ -576,9 +576,9 @@ describe('ScheduleTurnCard', () => {
   it('opens the task and shows the weekly frequency in the active locale', () => {
     const openTaskDetail = vi.fn()
     render(<ScheduleTurnCard {...cardProps(
-      [settledBlock(weeklyTask)], openTaskDetail, makeTranslate(zh),
+      [settledBlock(weeklyTask)], openTaskDetail, makeTranslate(ja),
     )} />)
-    expect(screen.getByText(`每周一、三 09:00（${zoneLabel('Asia/Shanghai', makeTranslate(zh))}）`)).toBeDefined()
+    expect(screen.getByText(`每周一、三 09:00（${zoneLabel('Asia/Shanghai', makeTranslate(ja))}）`)).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: '打开任务详情：Check the deployment' }))
     expect(openTaskDetail).toHaveBeenCalledExactlyOnceWith('task-weekly' as ScheduleId)
   })

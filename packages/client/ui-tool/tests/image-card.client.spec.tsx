@@ -17,13 +17,13 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 import { Context } from '@noharness/cordis'
 import { contextMenuHook, bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
 import { createSnapshotStore } from '@noharness/client-store'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { StartedToolCall, ToolResultNode } from '@noharness/client-ui-chat/client'
 import type { SessionListState } from '@noharness/api-session-controller/client'
 import type { SessionId } from '@noharness/session/types'
 import type { PropsRenderSlots } from '@noharness/client-ui-slots'
 import type { MessageImageLoader } from '@noharness/client-ui-conversation/client'
-import { zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 import type { AttachmentId, ImageAttachmentRef } from '@noharness/attachment/types'
 import { brandString } from '@noharness/brand'
@@ -34,7 +34,7 @@ import { ReadImageRow, readImageToolview } from '../src/client/tool/toolviews/re
 afterEach(cleanup)
 
 const SID = 's1' as SessionId
-const t: ToolTreeProps['t'] = makeTranslate(zh, commonZh)
+const t: ToolTreeProps['t'] = makeTranslate(ja, commonJa)
 const ARGS = '{"file_path":"shots/card.png"}'
 
 /** The envelope read_image writes beside its image block. */

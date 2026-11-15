@@ -20,7 +20,7 @@ import { SlotRegistry } from '@noharness/client-ui-renderer/client'
 import { makeTranslate } from '@noharness/client-test-runtime'
 import { resolveSlotLabel } from '@noharness/client-ui-slots'
 import type { StoredEntry } from '@noharness/client-ui-slots'
-import { de, en, es, fr, ja, NS, pt, ru, zh } from '../src/client/locales.ts'
+import { de, en, es, fr, ja, NS, pt, ru } from '../src/client/locales.ts'
 import type {
   StatsCall, StatsContribution, StatsSnapshot, StatsStepMetrics, StatsStepState, StatsViewNode,
 } from '../src/client/stats-contract.ts'
@@ -28,7 +28,9 @@ import { TARGET } from '../src/client/stats-definition.ts'
 import { eventMetrics } from '../src/client/stats-event.ts'
 import { StatsView } from '../src/client/StatsView.tsx'
 import {
-  EMPTY_STATS_SNAPSHOT, statsViewDefinition, registerStatsConversationView,
+  EMPTY_STATS_SNAPSHOT,
+  statsViewDefinition,
+  registerStatsConversationView,
 } from '../src/client/stats-snapshot-builder.ts'
 import { apply as clientApply, inject as clientInject } from '../src/client/index.ts'
 import type { StatsViewInjected } from '../src/client/StatsView.tsx'
@@ -183,7 +185,7 @@ async function mountPlugin(): Promise<PluginBench> {
     },
   }
   ctx.provide('sessions', { binding: (id: SessionId) => (id === SID ? sessionBinding : undefined) } as never)
-  ctx.provide('locale', { register: localeRegister, bind: () => makeTranslate(zh) } as never)
+  ctx.provide('locale', { register: localeRegister, bind: () => makeTranslate(ja) } as never)
   ctx.provide('uiConversation', {
     binding,
     imageUrl,
@@ -390,7 +392,7 @@ function locatedUpdate(event: SessionEventLike, location: ConversationLocation):
 describe('browser plugin registration', () => {
   it('registers the performance tab, dictionaries, Definitions, and view target', async () => {
     const bench = await mountPlugin()
-    expect(bench.localeRegister).toHaveBeenCalledWith(NS, { zh, en, ja, de, es, fr, pt, ru })
+    expect(bench.localeRegister).toHaveBeenCalledWith(NS, { ja, en, de, es, fr, pt, ru })
     expect(bench.events.map(definition => definition.kind)).toEqual([
       'stats-step', 'stats-prompt', 'stats-turn-end', 'stats-code-mode', 'stats-compaction', 'stats-event',
     ])
@@ -535,7 +537,7 @@ describe('host entry', () => {
 
 describe('locale dictionaries', () => {
   it('ships the same key set in both languages', () => {
-    expect(Object.keys(en).sort()).toEqual(Object.keys(zh).sort())
+    expect(Object.keys(en).sort()).toEqual(Object.keys(ja).sort())
     expect(Object.values(en).every(value => value !== '')).toBe(true)
     expect(en['view.stats']).toBe('Statistics')
     expect(en['summary']).toContain('{turns}')

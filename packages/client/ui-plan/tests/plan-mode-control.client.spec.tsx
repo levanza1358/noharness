@@ -12,13 +12,13 @@ import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runt
 import type { PlanProjection } from '@noharness/plan-mode/client'
 import { PlanChip, type PlanChipProps } from '../src/client/PlanModeControl.tsx'
 import css from '../src/client/PlanModeControl.module.css'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
-import { zh } from '../src/client/locales.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
+import { ja } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
-// The framework-injected t seat, stubbed over the zh dictionaries (the default locale).
-const t: PlanChipProps['t'] = makeTranslate(zh, commonZh)
+// The framework-injected t seat, stubbed over the ja dictionaries (the default locale).
+const t: PlanChipProps['t'] = makeTranslate(ja, commonJa)
 
 function setup(
   plan: PlanProjection | undefined,

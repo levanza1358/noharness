@@ -3,45 +3,12 @@
 /** Locale namespace owned by the Agent teamwork Web UI. */
 export const NS = 'agent-team'
 
-/** Simplified Chinese dictionary and key source. */
-export const zh = {
-  'progress.completed': '{count} 已完成',
-  'progress.active': '{count} 进行中',
-  'progress.pending': '{count} 待处理',
-  'command.title': '智能体团队协作',
-  'command.running': '执行中',
-  'command.done': '已完成',
-  'command.failed': '执行失败',
-  'command.failedReason': '执行失败：{reason}',
-  trigger: '任务板',
-  'mode.label': '开启智能体团队协作',
-  'mode.on': '开启',
-  'mode.off': '关闭',
-  'mode.description': '通过共享任务板协调多个智能体的分工与进度，复杂任务表现更佳，token 开销也相应更高。',
-  'mode.failed': '无法确认智能体团队协作设置已保存，请重试：{message}',
-  'disable.title': '确认关闭智能体团队协作？',
-  'disable.description': '对话过程中关闭智能体团队协作，将停止共享任务工具和团队协调指令。',
-  'disable.warning': '关闭后可能影响缓存复用、增加后续 token 用量与开销，并影响当前任务的协作效果。',
-  'disable.cancel': '取消',
-  'disable.confirm': '确认关闭',
-  'disable.close': '关闭',
-  loading: '正在加载任务板…',
-  unavailable: '任务板暂不可用',
-  failure: '任务记录无效：{message}',
-  empty: '暂无共享任务，可以通过对话创建',
-  tasks: '共享任务',
-  owner: '负责人',
-  unowned: '未分配',
-  blocked: '被依赖阻塞',
-  'status.pending': '待处理',
-  'status.in_progress': '进行中',
-  'status.completed': '已完成',
-} satisfies Record<string, string>
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'agent-team': TeamKey
+  }
+}
 
-/** Agent teamwork locale key union. */
-export type TeamKey = keyof typeof zh
-
-/** English dictionary checked against the Chinese key set. */
 export const en = {
   'progress.completed': '{count} completed',
   'progress.active': '{count} in progress',
@@ -74,42 +41,45 @@ export const en = {
   'status.pending': 'Pending',
   'status.in_progress': 'In progress',
   'status.completed': 'Completed',
-} satisfies Record<TeamKey, string>
+} as const
+
+export type TeamKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'progress.completed': '{count}件完了',
-  'progress.active': '{count}件進行中',
-  'progress.pending': '{count}件保留中',
-  'command.title': 'エージェント連携',
-  'command.running': '実行中',
-  'command.done': '完了',
-  'command.failed': '実行失敗',
-  'command.failedReason': '実行失敗: {reason}',
-  'mode.label': 'エージェント連携を有効にする',
+  'progress.completed': '{count} completed',
+  'progress.active': '{count} in progress',
+  'progress.pending': '{count} pending',
+  'command.title': 'Agent teamwork',
+  'command.running': 'Running',
+  'command.done': 'Completed',
+  'command.failed': 'Failed',
+  'command.failedReason': 'Failed: {reason}',
+  'mode.label': 'Enable agent teamwork',
   'mode.on': 'オン',
   'mode.off': 'オフ',
-  'mode.description': '共有タスクボードで複数のエージェントの分担と進捗を調整します。複雑なタスクでより良い結果が得られますが、その分トークンのコストも高くなります。',
-  'mode.failed': 'エージェント連携の設定が保存されたことを確認できませんでした。再試行してください: {message}',
-  'disable.title': 'エージェント連携を無効にしますか？',
-  'disable.description': '会話中にエージェント連携を無効にすると、共有タスクツールとチーム調整用の指示の使用が停止されます。',
-  'disable.warning': '無効にすると、キャッシュの再利用に影響し、その後のトークン使用量や費用が増加する可能性があります。また、現在のタスクでの連携に影響する可能性があります。',
+  'mode.description': 'Coordinate work and progress across agents with a shared task board for better results on complex tasks, with correspondingly higher token costs.',
+  'mode.failed': 'Could not confirm the agent teamwork setting was saved. Try again: {message}',
+  'disable.title': 'Disable agent teamwork?',
+  'disable.description': 'Disabling agent teamwork during a conversation stops the use of shared task tools and team coordination instructions.',
+  'disable.warning': 'Disabling it may affect cache reuse, increase subsequent token usage and costs, and affect collaboration on the current task.',
   'disable.cancel': 'キャンセル',
-  'disable.confirm': '無効にする',
-  'disable.close': '閉じる',
+  'disable.confirm': 'Disable',
+  'disable.close': 'Close',
   'trigger': 'タスクボード',
-  'loading': 'タスクボードを読み込み中…',
-  'unavailable': 'タスクボードは利用できません',
-  'failure': '保存されたタスクレコードが無効です: {message}',
-  'empty': '共有タスクはまだありません。会話から作成してください。',
-  'tasks': '共有タスク',
+  'loading': 'Loading task board…',
+  'unavailable': 'Task board is unavailable',
+  'failure': 'Invalid persisted task record: {message}',
+  'empty': 'No shared tasks yet. Create them through the conversation.',
+  'tasks': 'Shared tasks',
   'owner': 'オーナー',
   'unowned': 'オーナーなし',
-  'blocked': '依存関係によりブロック中',
-  'status.pending': '保留中',
-  'status.in_progress': '進行中',
-  'status.completed': '完了',
-} satisfies Record<keyof typeof en, string>
+  'blocked': 'Blocked by dependencies',
+  'status.pending': 'Pending',
+  'status.in_progress': 'In progress',
+  'status.completed': 'Completed',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -144,7 +114,7 @@ export const es = {
   'status.pending': 'Pendiente',
   'status.in_progress': 'En progreso',
   'status.completed': 'Completado',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -179,7 +149,7 @@ export const fr = {
   'status.pending': 'En attente',
   'status.in_progress': 'En cours',
   'status.completed': 'Terminé',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -214,7 +184,7 @@ export const de = {
   'status.pending': 'Ausstehend',
   'status.in_progress': 'In Bearbeitung',
   'status.completed': 'Abgeschlossen',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -249,7 +219,7 @@ export const ru = {
   'status.pending': 'Ожидается',
   'status.in_progress': 'В процессе',
   'status.completed': 'Завершено',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -284,4 +254,4 @@ export const pt = {
   'status.pending': 'Pendente',
   'status.in_progress': 'Em andamento',
   'status.completed': 'Concluído',
-} satisfies Record<keyof typeof en, string>
+} as const

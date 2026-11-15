@@ -29,12 +29,12 @@ describe('desktop package-set selection', () => {
 
   it('includes only the available internal production closure', () => {
     const available = new Map<string, PackedDesktopPackage>([
-      ['@noharness/cli', packed('@noharness/cli', {
+      ['@noharness/nhs', packed('@noharness/nhs', {
         dependencies: { '@noharness/base': '^1.0.0', external: '^2.0.0' },
         optionalDependencies: { '@noharness/platform-package': '1.0.0', '@noharness/missing-platform': '1.0.0' },
       })],
-      ['@noharness/desktop-host', packed('@noharness/desktop-host', {
-        dependencies: { '@noharness/cli': '^1.0.0' },
+      ['@noharness/nhs-desktop-host', packed('@noharness/nhs-desktop-host', {
+        dependencies: { '@noharness/nhs': '^1.0.0' },
       })],
       ['@noharness/base', packed('@noharness/base', {
         peerDependencies: { '@noharness/cordis': '^1.0.0' },
@@ -44,10 +44,10 @@ describe('desktop package-set selection', () => {
       ['@noharness/unused', packed('@noharness/unused')],
     ])
     expect(selectDesktopPackageClosure(available, { platform: 'win32', arch: 'x64' }).map(entry => entry.manifest.name)).toEqual([
-      '@noharness/cordis',
-      '@noharness/cli',
       '@noharness/base',
-      '@noharness/desktop-host',
+      '@noharness/cordis',
+      '@noharness/nhs',
+      '@noharness/nhs-desktop-host',
       '@noharness/platform-package',
     ])
   })
@@ -56,31 +56,31 @@ describe('desktop package-set selection', () => {
     '@noharness/base', '@noharness/cordis', '@deepseek-ai/node-addon-system',
   ])('rejects required prepared package %s absent from the packed release inputs', (dependency) => {
     const available = new Map<string, PackedDesktopPackage>([
-      ['@noharness/cli', packed('@noharness/cli', {
+      ['@noharness/nhs', packed('@noharness/nhs', {
         dependencies: { [dependency]: '^1.0.0' },
       })],
-      ['@noharness/desktop-host', packed('@noharness/desktop-host', {
-        dependencies: { '@noharness/cli': '^1.0.0' },
+      ['@noharness/nhs-desktop-host', packed('@noharness/nhs-desktop-host', {
+        dependencies: { '@noharness/nhs': '^1.0.0' },
       })],
     ])
     expect(() => selectDesktopPackageClosure(available, { platform: 'win32', arch: 'x64' })).toThrow(/unpacked package/u)
     expect(() => selectDesktopPackageClosure(new Map([
-      ['@noharness/cli', packed('@noharness/cli')],
+      ['@noharness/nhs', packed('@noharness/nhs')],
     ]), { platform: 'win32', arch: 'x64' })).toThrow(/omit @noharness\/nhs-desktop-host/u)
   })
 
   it('leaves independently published Office packages to npm resolution', () => {
     const available = new Map<string, PackedDesktopPackage>([
-      ['@noharness/cli', packed('@noharness/cli', {
+      ['@noharness/nhs', packed('@noharness/nhs', {
         dependencies: {
           '@deepseek-ai/libreoffice-kit': '0.0.1',
           '@deepseek-ai/libreoffice-kit-wasm': '0.0.1',
         },
       })],
-      ['@noharness/desktop-host', packed('@noharness/desktop-host')],
+      ['@noharness/nhs-desktop-host', packed('@noharness/nhs-desktop-host')],
     ])
     expect(selectDesktopPackageClosure(available, { platform: 'win32', arch: 'x64' }).map(entry => entry.manifest.name)).toEqual([
-      '@noharness/cli', '@noharness/desktop-host',
+      '@noharness/nhs', '@noharness/nhs-desktop-host',
     ])
   })
 
@@ -102,8 +102,8 @@ describe('desktop package-set selection', () => {
 const macProvider = '@noharness/cua-macos'
 const cuaBundle = '@noharness/cua-bundle'
 const targetManifests = () => new Map<string, PackedDesktopPackage>([
-  ['@noharness/cli', packed('@noharness/cli', { dependencies: { [cuaBundle]: '1.0.0' } })],
-  ['@noharness/desktop-host', packed('@noharness/desktop-host')],
+  ['@noharness/nhs', packed('@noharness/nhs', { dependencies: { [cuaBundle]: '1.0.0' } })],
+  ['@noharness/nhs-desktop-host', packed('@noharness/nhs-desktop-host')],
   [cuaBundle, packed(cuaBundle, {
     optionalDependencies: { [macProvider]: '1.0.0' }, dependencies: { '@noharness/cua': '1.0.0' },
   })],
@@ -147,7 +147,7 @@ it('copies no macOS tarball into the Windows package set', () => {
     const folder = join(root, stem, 'package')
     mkdirSync(folder, { recursive: true })
     writeFileSync(join(folder, 'package.json'), JSON.stringify(entry.manifest))
-    if (name === '@noharness/desktop-host') {
+    if (name === '@noharness/nhs-desktop-host') {
       for (const file of DESKTOP_HOST_RUNTIME_FILES) {
         mkdirSync(join(folder, file, '..'), { recursive: true })
         writeFileSync(join(folder, file), '')
@@ -157,8 +157,8 @@ it('copies no macOS tarball into the Windows package set', () => {
   }
   const output = join(root, 'output')
   prepareDesktopPackageSet([inputs], output, { platform: 'win32', arch: 'x64' })
-  expect(readdirSync(join(output, DESKTOP_PACKAGES_DIR))).not.toContain('nhs-cua-macos.tgz')
+  expect(readdirSync(join(output, DESKTOP_PACKAGES_DIR))).not.toContain('cua-macos.tgz')
   prepareDesktopPackageSet([inputs], output, { platform: 'darwin', arch: 'arm64' })
-  expect(readFileSync(join(output, DESKTOP_PACKAGES_DIR, 'nhs-cua-macos.tgz')))
-    .toEqual(readFileSync(join(inputs, 'nhs-cua-macos.tgz')))
+  expect(readFileSync(join(output, DESKTOP_PACKAGES_DIR, 'cua-macos.tgz')))
+    .toEqual(readFileSync(join(inputs, 'cua-macos.tgz')))
 })

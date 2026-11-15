@@ -11,7 +11,7 @@ import { FoldedText } from '@noharness/client-ui-action-cards/src/client/Card.ts
 import type { ActionCardFields, ActionCardResult } from '@noharness/action-cards/types'
 import type { RecommendationDetails } from '@noharness/plugin-recommendations/types'
 import { PluginCardBody, type CatalogDetails, type PluginCardProps } from '../src/client/Card.tsx'
-import { de, en, es, fr, ja, pt, ru, zh } from '../src/client/locales.ts'
+import { de, en, es, fr, ja, pt, ru } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 const callId = brandString<ToolCallId>('call-plugin-1')
@@ -19,7 +19,7 @@ const ACTION = 'enable_official_plugin'
 type Act = (verb: string, payload?: ActionCardFields) => Promise<ActionCardResult | undefined>
 type Describe = PluginCardProps['describe']
 const available: RecommendationDetails = {
-  status: 'available', title: { en: 'Session search', zh: '会话搜索' }, description: { en: 'Search past conversations', zh: '检索过去的会话' }, enabled: false,
+  status: 'available', title: { en: 'Session search', ja: '会话搜索' }, description: { en: 'Search past conversations', ja: '检索过去的会话' }, enabled: false,
 }
 const proposal = { callId, turn: 1, action: ACTION, title: '搜索旧会话', brief: '帮你找到上周讨论的方案', details: { name: 'official-search' } as ActionCardFields }
 
@@ -33,8 +33,8 @@ function props(decision?: { phase: string; data?: ActionCardFields }, details: R
     sessionId: brandString<SessionId>('session-1'), summary: <strong>{proposal.title}</strong>, Folded: FoldedText,
     act: vi.fn<Act>(async () => ({ status: 'settled', decision: { callId, action: ACTION, phase: 'enabled' } })),
     catalog: store, describe: vi.fn<Describe>(async () => details), openDetails: vi.fn<(name: string) => void>(),
-    resolveText: (text: LocalizedText) => typeof text === 'string' ? text : text.zh ?? text.en,
-    t: makeTranslate(zh),
+    resolveText: (text: LocalizedText) => typeof text === 'string' ? text : text.ja ?? text.en,
+    t: makeTranslate(ja),
   } satisfies PluginCardProps
 }
 
@@ -51,7 +51,7 @@ function description(element: HTMLElement) {
 }
 
 it('keeps every dictionary aligned', () => {
-  for (const dictionary of [en, ja, es, fr, de, ru, pt]) expect(Object.keys(dictionary).sort()).toEqual(Object.keys(zh).sort())
+  for (const dictionary of [en, ja, es, fr, de, ru, pt]) expect(Object.keys(dictionary).sort()).toEqual(Object.keys(ja).sort())
 })
 
 it('shows the catalog title and description as one details target with the official badge, and enables only on click', async () => {
@@ -90,11 +90,11 @@ it.each([
 })
 
 it.each([
-  [{ phase: 'enabled' }, zh.enabled],
-  [{ phase: 'enabled', data: { application: 'restart-required' } }, zh['restart-required']],
-  [{ phase: 'already-enabled' }, zh['already-enabled']],
-  [{ phase: 'dismissed' }, zh.dismissed],
-  [{ phase: 'replaced' }, zh.replaced],
+  [{ phase: 'enabled' }, ja.enabled],
+  [{ phase: 'enabled', data: { application: 'restart-required' } }, ja['restart-required']],
+  [{ phase: 'already-enabled' }, ja['already-enabled']],
+  [{ phase: 'dismissed' }, ja.dismissed],
+  [{ phase: 'replaced' }, ja.replaced],
 ] as const)('shows the settled %j state without actions', async (decision, copy) => {
   await shown(props(decision))
   expect(screen.getByRole('status').textContent).toBe(copy)
@@ -109,10 +109,10 @@ it('names no status for a phase it does not know, and offers no action', async (
 })
 
 it.each([
-  [{ phase: 'failed' }, zh.failed, undefined],
-  [{ phase: 'failed', data: { errorCode: 'incompatible-version' } }, zh.failed, zh['version-error']],
-  [{ phase: 'failed', data: { errorCode: 'operation-error' } }, zh.failed, zh['management-error']],
-  [{ phase: 'unconfirmed' }, zh.unconfirmed, undefined],
+  [{ phase: 'failed' }, ja.failed, undefined],
+  [{ phase: 'failed', data: { errorCode: 'incompatible-version' } }, ja.failed, ja['version-error']],
+  [{ phase: 'failed', data: { errorCode: 'operation-error' } }, ja.failed, ja['management-error']],
+  [{ phase: 'unconfirmed' }, ja.unconfirmed, undefined],
 ] as const)('offers a retry after %j', async (decision, status, alert) => {
   const value = props(decision)
   await shown(value)
@@ -124,16 +124,16 @@ it.each([
 
 it('shows a plugin already selected in Plugins as enabled without actions', async () => {
   await shown(props(undefined, { ...available, enabled: true }))
-  expect(screen.getByRole('status').textContent).toBe(zh['already-enabled'])
+  expect(screen.getByRole('status').textContent).toBe(ja['already-enabled'])
   expect(screen.queryByRole('button', { name: '启用' })).toBeNull()
   expect(screen.queryByRole('button', { name: '暂不需要' })).toBeNull()
 })
 
 it.each([
-  [{ status: 'refused', reason: 'unavailable' }, zh.unavailable],
-  [{ status: 'refused', reason: 'closing' }, zh.closing],
-  [undefined, zh['lookup-failed']],
-  ['offline', zh['lookup-failed']],
+  [{ status: 'refused', reason: 'unavailable' }, ja.unavailable],
+  [{ status: 'refused', reason: 'closing' }, ja.closing],
+  [undefined, ja['lookup-failed']],
+  ['offline', ja['lookup-failed']],
 ] as const)('offers Not now and a retry of the lookup, but not Enable, after the lookup answers %j', async (answer, message) => {
   const value = props()
   value.describe = vi.fn<Describe>(async () => available).mockImplementationOnce(async () => {
@@ -156,7 +156,7 @@ it.each([
 
 it('keeps the recorded outcome of an enabled card whose plugin has left the catalog', async () => {
   await shown(props({ phase: 'enabled' }, { status: 'refused', reason: 'unavailable' }))
-  expect(screen.getByRole('status').textContent).toBe(zh.enabled)
+  expect(screen.getByRole('status').textContent).toBe(ja.enabled)
   expect(screen.queryByRole('alert')).toBeNull()
   expect(screen.getByRole('button', { name: '查看详情：搜索旧会话' })).toBeTruthy()
   expect(screen.queryByRole('button', { name: '重试' })).toBeNull()
@@ -206,10 +206,10 @@ it('renders a remembered plugin at once on a later card while refusals and lost 
   expect(within(screen.getByRole('button', { name: '查看详情：会话搜索' })).getByText('检索过去的会话')).toBeTruthy()
   expect(screen.getByRole('button', { name: '启用' }).hasAttribute('disabled')).toBe(false)
   await act(async () => { lookup.resolve({ ...available, enabled: true }) })
-  expect(screen.getByRole('status').textContent).toBe(zh['already-enabled'])
+  expect(screen.getByRole('status').textContent).toBe(ja['already-enabled'])
   cleanup()
   await shown(props(undefined, { status: 'refused', reason: 'unavailable' }, shared))
-  expect(screen.getByRole('alert').textContent).toBe(zh.unavailable)
+  expect(screen.getByRole('alert').textContent).toBe(ja.unavailable)
   expect(screen.queryByRole('button', { name: '启用' })).toBeNull()
 })
 
@@ -222,10 +222,10 @@ it('renders only the frame summary when the card names no plugin', () => {
 })
 
 it.each([
-  [undefined, zh.transport],
-  [{ status: 'refused', reason: 'access-denied' }, zh['access-denied']],
-  [{ status: 'refused', reason: 'read-only' }, zh.unavailable],
-  [{ status: 'unconfirmed', reason: 'closing' }, zh.closing],
+  [undefined, ja.transport],
+  [{ status: 'refused', reason: 'access-denied' }, ja['access-denied']],
+  [{ status: 'refused', reason: 'read-only' }, ja.unavailable],
+  [{ status: 'unconfirmed', reason: 'closing' }, ja.closing],
 ] as const)('explains an unsuccessful click: %j', async (result, message) => {
   const value = props()
   value.act = vi.fn<Act>(async () => result)
@@ -239,5 +239,5 @@ it('treats a lost reply as unconfirmed rather than failed', async () => {
   value.act = vi.fn<Act>(async () => { throw new Error('connection reset') })
   await shown(value)
   fireEvent.click(screen.getByRole('button', { name: '启用' }))
-  expect((await screen.findByRole('alert')).textContent).toBe(zh.transport)
+  expect((await screen.findByRole('alert')).textContent).toBe(ja.transport)
 })

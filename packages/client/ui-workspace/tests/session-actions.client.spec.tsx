@@ -22,7 +22,7 @@ import { registerToasts } from '../src/client/toast/register.ts'
 import { ArchiveToastEntry } from '../src/client/toast/Toast.tsx'
 import type { ArchiveToastEntryProps } from '../src/client/contract/toast.ts'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type {
   RowToast, RowToastState, SessionArchiveConfirmInjected, SessionArchiveConfirmRequest,
   SessionRenameDialogInjected, SessionRenameTarget,
@@ -34,13 +34,13 @@ import { PinSessionRowButton } from '../src/client/session-actions/PinSession.ts
 import { SessionRenameDialog } from '../src/client/session-actions/RenameSession.tsx'
 import { RowActionToast } from '../src/client/session-actions/RowActionToast.tsx'
 import { createWorkspaceViewStore } from '../src/client/stores.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
 // The seat's key domain is workspace ∪ common; the stub mirrors the real
 // lookup chain (namespace, then common vocabulary, then the key).
-const t: PropsLocale<'workspace'>['t'] = makeTranslate(zh, commonZh)
+const t: PropsLocale<'workspace'>['t'] = makeTranslate(ja, commonJa)
 const tEn: PropsLocale<'workspace'>['t'] = makeTranslate(en, commonEn)
 
 const sid = (id: string) => id as SessionId
@@ -462,8 +462,8 @@ describe('RowActionToast', () => {
     const runtime = await SlotTestRuntime.create()
     onTestFinished(() => runtime.dispose())
     const locale = new LocaleRuntime(runtime.ctx)
-    locale.setLocale(translate === tEn ? 'en' : 'zh')
-    locale.register('workspace', { en, zh })
+    locale.setLocale(translate === tEn ? 'en' : 'ja')
+    locale.register('workspace', { en, ja })
     runtime.ctx.provide('locale', locale)
     runtime.slots.installLocale(locale)
     await runtime.root.declare({ 'shell.overlay': { kind: 'list', scope: 'root' } }, ToastFrame)
@@ -517,7 +517,7 @@ describe('RowActionToast', () => {
   })
 
   it.each([
-    ['zh', t, '请先打开原会话完成迁移，再创建分支', '打开原会话'],
+    ['ja', t, '请先打开原会话完成迁移，再创建分支', '打开原会话'],
     ['en', tEn, 'Open the original session to complete migration before creating a branch.', 'Open original session'],
   ] as const)('keeps the %s fork notice after menu unmount and opens only on its action', async (_locale, translate, message, action) => {
     const { dismissToast, openForkSource, notify } = await toastSurface(undefined, translate)

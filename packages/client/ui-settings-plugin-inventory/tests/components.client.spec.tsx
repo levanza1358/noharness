@@ -12,13 +12,13 @@ import type {
   PluginInventorySettingsTabInjected,
   PluginInventorySettingsTabProps,
 } from '../src/client/PluginInventorySettingsTab.tsx'
-import { en, zh, type PluginInventoryLocaleKey } from '../src/client/locales.ts'
+import { en, ja, type PluginInventoryLocaleKey } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
 type Snapshot = Awaited<ReturnType<PluginInventorySettingsTabInjected['list']>>
 const t = ((key: PluginInventoryLocaleKey, params?: Record<string, string>): string =>
-  Object.entries(params ?? {}).reduce(
+  Object.entries(params ?? {}).reduce<string>(
     (text, [name, value]) => text.replaceAll(`{${name}}`, value),
     en[key],
   )) as PluginInventorySettingsTabProps['t']
@@ -43,7 +43,7 @@ function localizedProps(list: PluginInventorySettingsTabInjected['list']) {
   onTestFinished(async () => { await ctx.fiber.dispose() })
   const locale = new LocaleRuntime(ctx)
   ctx.effect(() => locale.register('settings.pluginInventory', 'en', en), 'test: English inventory dictionary')
-  ctx.effect(() => locale.register('settings.pluginInventory', 'zh', zh), 'test: Chinese inventory dictionary')
+  ctx.effect(() => locale.register('settings.pluginInventory', 'ja', ja), 'test: Chinese inventory dictionary')
   locale.setLocale('en')
   const pageProps: PluginInventorySettingsTabProps = {
     ...props(list, preset => preset.name ?? preset.id, text => locale.resolveText(text)),
@@ -153,27 +153,27 @@ describe('PluginInventorySettingsTab', () => {
     const { locale, pageProps } = localizedProps(async () => ({
       entries: [{
         entryId: 'include:navigation' as PluginEntryId, moduleName: '@acme/nhs-navigation', enabled: true, fiberPhase: null,
-        meta: { title: { en: 'nhs-Navigation', zh: 'nhs-导航' } },
+        meta: { title: { en: 'nhs-Navigation', ja: 'nhs-导航' } },
       }],
     }))
     const view = render(<PluginInventorySettingsTab {...pageProps} />)
     await screen.findByRole('searchbox', { name: en.search })
     fireEvent.click(globalToggle())
     expect(screen.getByRole('button', { name: 'nhs-Navigation, include:navigation, Enabled' })).toBeTruthy()
-    locale.setLocale('zh')
+    locale.setLocale('en')
     view.rerender(<PluginInventorySettingsTab {...pageProps} />)
     expect(screen.getByRole('button', { name: 'nhs-导航, include:navigation, 已启用' })).toBeTruthy()
   })
 
   it('localizes global and preset metadata at render time while preserving identities and query state', async () => {
-    const globalError = 'locale/zh.json: invalid title'
+    const globalError = 'locale/ja.json: invalid title'
     const presetError = 'locale/fr.json: invalid description'
     const snapshot: Snapshot = {
       entries: [{
         entryId: 'include:global-navigation' as PluginEntryId, moduleName: '@acme/navigation', enabled: true, fiberPhase: 'active',
         meta: {
-          title: { en: 'Navigation', zh: '导航' },
-          description: { en: 'Global navigation controls', zh: '全局导航控件' },
+          title: { en: 'Navigation', ja: '导航' },
+          description: { en: 'Global navigation controls', ja: '全局导航控件' },
           error: globalError,
         },
       }],
@@ -182,8 +182,8 @@ describe('PluginInventorySettingsTab', () => {
         rows: [{
           entryId: 'include:preset-runner', moduleName: '@acme/runner', enabled: true, fiberPhase: null,
           meta: {
-            title: { en: 'Session runner', zh: '会话执行器' },
-            description: { en: 'Run per session', zh: '运行会话命令' },
+            title: { en: 'Session runner', ja: '会话执行器' },
+            description: { en: 'Run per session', ja: '运行会话命令' },
             error: presetError,
           },
         }],
@@ -209,17 +209,17 @@ describe('PluginInventorySettingsTab', () => {
     expect(screen.getByText(en.moduleLabel).nextElementSibling?.textContent).toBe('@acme/runner')
     expect(view.container.querySelector('[data-loader-entry]')?.textContent).toBe('include:preset-runner')
 
-    locale.setLocale('zh')
+    locale.setLocale('en')
     view.rerender(<PluginInventorySettingsTab {...pageProps} />)
-    expect(screen.getByText(zh.presetSubtitle).textContent).toBe(zh.presetSubtitle)
-    expect(screen.getByText(zh.globalSubtitle).textContent).toBe(zh.globalSubtitle)
+    expect(screen.getByText(ja.presetSubtitle).textContent).toBe(ja.presetSubtitle)
+    expect(screen.getByText(ja.globalSubtitle).textContent).toBe(ja.globalSubtitle)
     expect(screen.getByRole('button', { name: '导航, include:global-navigation, 已启用' })).toBeTruthy()
     expect(screen.getByRole('button', { name: '会话执行器, include:preset-runner, 已启用' })).toBeTruthy()
     expect(screen.getByText('全局导航控件')).toBeTruthy()
     expect(screen.getByText('运行会话命令')).toBeTruthy()
-    expect(screen.getByText(zh.metadataError.replace('{error}', presetError))).toBeTruthy()
+    expect(screen.getByText(ja.metadataError.replace('{error}', presetError))).toBeTruthy()
     expect(view.container.querySelector('[data-loader-entry]')?.textContent).toBe('include:preset-runner')
-    const search = screen.getByRole('searchbox', { name: zh.search })
+    const search = screen.getByRole('searchbox', { name: ja.search })
     for (const query of ['导航', '全局导航控件', '@acme/navigation', 'include:global-navigation']) {
       fireEvent.change(search, { target: { value: query } })
       expect(screen.getAllByRole('listitem')).toHaveLength(1)
@@ -232,7 +232,7 @@ describe('PluginInventorySettingsTab', () => {
     fireEvent.change(search, { target: { value: 'Run per session' } })
     expect(screen.getByRole('button', { name: '会话执行器, include:preset-runner, 已启用' })).toBeTruthy()
     fireEvent.change(search, { target: { value: 'no such plugin' } })
-    expect(screen.getByText(zh.emptySearch)).toBeTruthy()
+    expect(screen.getByText(ja.emptySearch)).toBeTruthy()
     fireEvent.change(search, { target: { value: 'Run per session' } })
     locale.setLocale('en')
     view.rerender(<PluginInventorySettingsTab {...pageProps} />)
@@ -249,11 +249,11 @@ describe('PluginInventorySettingsTab', () => {
       },
       {
         entryId: 'include:commands' as PluginEntryId, moduleName: '@acme/nhs-sidebar/commands', enabled: true, fiberPhase: null,
-        meta: { title: { en: 'English title' }, description: { en: 'Package description.', zh: '中文命令说明。' } },
+        meta: { title: { en: 'English title' }, description: { en: 'Package description.', ja: '中文命令说明。' } },
       },
       {
         entryId: 'include:theme' as PluginEntryId, moduleName: '@acme/nhs-theme/client', enabled: true, fiberPhase: null,
-        meta: { title: { en: '@acme/nhs-theme', zh: '主题插件' }, description: { en: '', zh: '中文主题说明。' } },
+        meta: { title: { en: '@acme/nhs-theme', ja: '主题插件' }, description: { en: '', ja: '中文主题说明。' } },
       },
     ]
     const snapshot: Snapshot = scope === 'global'
@@ -272,7 +272,7 @@ describe('PluginInventorySettingsTab', () => {
     expect(theme.getAttribute('aria-describedby')).toBeNull()
     expect(screen.queryByText('中文主题说明。')).toBeNull()
 
-    locale.setLocale('zh')
+    locale.setLocale('en')
     view.rerender(<PluginInventorySettingsTab {...pageProps} />)
     for (const [name, description] of [
       ['sidebar/navigation, include:navigation, 已启用', 'Navigation description.'],
@@ -286,9 +286,9 @@ describe('PluginInventorySettingsTab', () => {
     expect(screen.queryByText('Package description.')).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: '主题插件, include:theme, 已启用' }))
     expect(view.container.querySelector('[data-loader-entry]')?.textContent).toBe('include:theme')
-    expect(screen.getByText(zh.moduleLabel).nextElementSibling?.textContent).toBe('@acme/nhs-theme/client')
+    expect(screen.getByText(ja.moduleLabel).nextElementSibling?.textContent).toBe('@acme/nhs-theme/client')
 
-    fireEvent.change(screen.getByRole('searchbox', { name: zh.search }), { target: { value: '中文主题说明。' } })
+    fireEvent.change(screen.getByRole('searchbox', { name: ja.search }), { target: { value: '中文主题说明。' } })
     expect(screen.getAllByRole('listitem')).toHaveLength(1)
     locale.setLocale('en')
     view.rerender(<PluginInventorySettingsTab {...pageProps} />)
@@ -302,7 +302,7 @@ describe('PluginInventorySettingsTab', () => {
   })
 
   it('keeps metadata-error-only rows inspectable by their full module specifier', async () => {
-    const error = 'locale/zh.json: invalid title'
+    const error = 'locale/ja.json: invalid title'
     await renderReady({
       entries: [{
         entryId: 'include:legacy' as PluginEntryId, moduleName: '@acme/nhs-legacy', enabled: false, fiberPhase: null,

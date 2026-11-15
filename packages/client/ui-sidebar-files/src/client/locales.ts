@@ -18,67 +18,6 @@ declare module '@noharness/client-ui-slots' {
   }
 }
 
-/** Simplified Chinese dictionary and key-set source of truth. */
-export const zh = {
-  'shortcut.noSession': '请先选择会话',
-  'type.label': '文件',
-  'guide.title': '工作区文件',
-  'guide.description': '浏览会话工作区的文件',
-  loading: '正在读取…',
-  empty: '空目录',
-  emptyHidden: '隐藏项未显示',
-  truncated: '条目太多，只显示了一部分。',
-  noWorkspace: '这个会话没有工作区目录。',
-  reload: '重新读取',
-  autoRefresh: '自动刷新',
-  'autoRefresh.enable': '开启自动刷新',
-  'autoRefresh.disable': '关闭自动刷新',
-  'entry.other': '这不是文件或目录，没法打开。',
-  'entry.noViewer': '没有可以打开此文件的查看器。',
-  'navigator.show': '显示文件树',
-  'navigator.hide': '隐藏文件树',
-  'navigator.resize': '调整文件树宽度',
-  'error.notFound': '这个目录不在了。可能已被移动或删除。',
-  'error.outsideWorkspace': '这个目录在工作区之外，侧栏不会读取它。',
-  'error.notDirectory': '这不是一个目录。',
-  'error.unavailable': '读取失败：{message}',
-  'search.placeholder': '搜索文件',
-  'search.settings': '搜索设置',
-  'search.clear': '清空搜索',
-  'search.showHidden': '显示隐藏项',
-  'search.results': '{count} 个结果',
-  'search.empty': '没有匹配项',
-  'search.emptyHint.hidden': '隐藏项不会显示。',
-  'search.emptyHint.excluded': '排除的文件和目录不会显示。',
-  'search.emptyHint.both': '隐藏项以及排除的文件和目录不会显示。',
-  'search.emptyHint.ignored': '被忽略文件（如 .gitignore）忽略的文件和目录不会显示。',
-  'search.emptyHint.hiddenIgnored': '隐藏项，以及被忽略文件（如 .gitignore）忽略的文件和目录不会显示。',
-  'search.emptyHint.excludedIgnored': '排除的文件和目录，以及被忽略文件（如 .gitignore）忽略的文件和目录不会显示。',
-  'search.emptyHint.all': '隐藏项、排除的文件和目录，以及被忽略文件（如 .gitignore）忽略的文件和目录不会显示。',
-  'search.emptyHint.label': '为什么没有匹配项',
-  'search.truncated': '只显示前 {count} 个结果，请缩小搜索范围。',
-  'search.incomplete': '文件数超过搜索上限，或部分目录未能读取，因此结果可能不完整。',
-  'search.failed': '搜索失败：{message}',
-  'search.retry': '重试',
-  'settings.title': '排除的文件和目录',
-  'settings.description': '只影响搜索结果，不影响文件树。',
-  'settings.respectGitignore': '尊重忽略文件（.gitignore 等）',
-  'settings.add': '添加文件或目录',
-  'settings.close': '关闭',
-  'settings.restore': '还原默认列表',
-  'settings.remove': '删除 {path}',
-  'settings.toggle': '排除 {path}',
-  'settings.invalid.empty': '请输入名称或相对路径。',
-  'settings.invalid.nul': '路径不能包含 NUL 字符。',
-  'settings.invalid.absolute': '请使用相对于工作区的路径。',
-  'settings.invalid.parent': '路径不能包含 . 或 .. 段。',
-  'settings.invalid.glob': '路径不能包含通配符 * ? [ ] { } !。',
-} satisfies Record<string, string>
-
-/** Files dictionary key union. */
-export type SidebarFilesKey = keyof typeof zh
-
-/** English dictionary, checked against the Chinese key set. */
 export const en = {
   'shortcut.noSession': 'Select a session first',
   'type.label': 'Files',
@@ -133,64 +72,67 @@ export const en = {
   'settings.invalid.absolute': 'Use a path relative to the workspace.',
   'settings.invalid.parent': 'The path cannot contain . or .. segments.',
   'settings.invalid.glob': 'The path cannot contain wildcards * ? [ ] { } !.',
-} satisfies Record<SidebarFilesKey, string>
+} as const
+
+export type SidebarFilesKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'shortcut.noSession': '先にセッションを選択してください',
+  'shortcut.noSession': 'Select a session first',
   'type.label': 'ファイル',
   'guide.title': 'ワークスペースのファイル',
-  'guide.description': 'このセッションのワークスペース内のファイルを参照',
-  'loading': '読み取り中…',
-  'empty': '空のディレクトリ',
-  'emptyHidden': '隠し項目は表示されていません',
-  'truncated': 'エントリが多すぎるため、一部のみ表示しています。',
+  'guide.description': 'Browse files in this session\\\'s workspace',
+  'loading': 'Reading…',
+  'empty': 'Empty directory',
+  'emptyHidden': 'Hidden entries are not shown',
+  'truncated': 'Too many entries, showing only some of them.',
   'noWorkspace': 'このセッションにはワークスペースディレクトリがありません。',
-  'reload': '再読み込み',
-  'autoRefresh': '自動更新',
-  'autoRefresh.enable': '自動更新を有効にする',
-  'autoRefresh.disable': '自動更新を無効にする',
-  'entry.other': 'ファイルでもディレクトリでもないため、開けません。',
-  'entry.noViewer': 'このファイルを開けるビューアーがありません。',
-  'navigator.show': 'ファイルツリーを表示',
-  'navigator.hide': 'ファイルツリーを非表示',
-  'navigator.resize': 'ファイルツリーの幅を調整',
-  'error.notFound': 'そのディレクトリは存在しません。移動または削除された可能性があります。',
-  'error.outsideWorkspace': 'そのディレクトリはワークスペース外のため、サイドバーでは読み取りません。',
+  'reload': 'Reload',
+  'autoRefresh': 'Auto refresh',
+  'autoRefresh.enable': 'Enable auto refresh',
+  'autoRefresh.disable': 'Disable auto refresh',
+  'entry.other': 'Not a file or a directory, so it cannot be opened.',
+  'entry.noViewer': 'No viewer can open this file.',
+  'navigator.show': 'Show file tree',
+  'navigator.hide': 'Hide file tree',
+  'navigator.resize': 'Resize file tree',
+  'error.notFound': 'That directory is gone. It may have been moved or deleted.',
+  'error.outsideWorkspace': 'That directory is outside the workspace, so the sidebar will not read it.',
   'error.notDirectory': 'それはディレクトリではありません。',
-  'error.unavailable': '読み取りに失敗しました: {message}',
-  'search.placeholder': 'ファイルを検索',
-  'search.settings': '検索設定',
-  'search.clear': '検索をクリア',
-  'search.showHidden': '隠し項目を表示',
-  'search.results': '結果: {count} 件',
-  'search.empty': '一致する項目はありません',
-  'search.emptyHint.hidden': '隠し項目は表示されません。',
-  'search.emptyHint.excluded': '除外したファイルとディレクトリは表示されません。',
-  'search.emptyHint.both': '隠し項目と、除外したファイルとディレクトリは表示されません。',
-  'search.emptyHint.ignored': '.gitignore などの無視ファイルで無視されたファイルとディレクトリは表示されません。',
-  'search.emptyHint.hiddenIgnored': '隠し項目と、.gitignore などの無視ファイルで無視されたファイルとディレクトリは表示されません。',
-  'search.emptyHint.excludedIgnored': '除外したファイルとディレクトリ、および .gitignore などの無視ファイルで無視された項目は表示されません。',
-  'search.emptyHint.all': '隠し項目、除外したファイルとディレクトリ、および .gitignore などの無視ファイルで無視された項目は表示されません。',
-  'search.emptyHint.label': '一致する項目がない理由',
-  'search.truncated': '最初の {count} 件のみ表示しています。検索範囲を絞り込んでください。',
-  'search.incomplete': 'ファイル数が検索上限を超えたか、一部のディレクトリを読み取れなかったため、結果が不完全な可能性があります。',
-  'search.failed': '検索に失敗しました: {message}',
-  'search.retry': '再試行',
-  'settings.title': '除外するファイルとディレクトリ',
-  'settings.description': '検索結果にのみ適用され、ファイルツリーには影響しません。',
-  'settings.respectGitignore': '無視ファイル（.gitignore など）に従う',
-  'settings.add': 'ファイルまたはディレクトリを追加',
-  'settings.close': '閉じる',
-  'settings.restore': '既定のリストに戻す',
-  'settings.remove': '{path} を削除',
-  'settings.toggle': '{path} を除外',
-  'settings.invalid.empty': '名前または相対パスを入力してください。',
-  'settings.invalid.nul': 'パスに NUL 文字は使用できません。',
-  'settings.invalid.absolute': 'ワークスペースからの相対パスを使用してください。',
-  'settings.invalid.parent': 'パスに . や .. のセグメントは使用できません。',
-  'settings.invalid.glob': 'パスにワイルドカード * ? [ ] { } ! は使用できません。',
-} satisfies Record<keyof typeof en, string>
+  'error.unavailable': 'Read failed: {message}',
+  'search.placeholder': 'Search files',
+  'search.settings': 'Search settings',
+  'search.clear': 'Clear search',
+  'search.showHidden': 'Show hidden entries',
+  'search.results': 'Results: {count}',
+  'search.empty': 'No matches',
+  'search.emptyHint.hidden': 'Hidden entries are not shown.',
+  'search.emptyHint.excluded': 'Excluded files and directories are not shown.',
+  'search.emptyHint.both': 'Hidden entries and excluded files and directories are not shown.',
+  'search.emptyHint.ignored': 'Files and directories ignored by ignore files such as .gitignore are not shown.',
+  'search.emptyHint.hiddenIgnored': 'Hidden entries, and files and directories ignored by ignore files such as .gitignore, are not shown.',
+  'search.emptyHint.excludedIgnored': 'Excluded files and directories, and those ignored by ignore files such as .gitignore, are not shown.',
+  'search.emptyHint.all': 'Hidden entries, excluded files and directories, and those ignored by ignore files such as .gitignore, are not shown.',
+  'search.emptyHint.label': 'Why there are no matches',
+  'search.truncated': 'Showing only the first {count} results. Narrow the search to see the rest.',
+  'search.incomplete': 'The search passed its file limit, or some directories could not be read, so results may be incomplete.',
+  'search.failed': 'Search failed: {message}',
+  'search.retry': 'Retry',
+  'settings.title': 'Excluded files and directories',
+  'settings.description': 'Only affects search results, not the file tree.',
+  'settings.respectGitignore': 'Respect ignore files (.gitignore, etc.)',
+  'settings.add': 'Add file or directory',
+  'settings.close': 'Close',
+  'settings.restore': 'Restore default list',
+  'settings.remove': 'Remove {path}',
+  'settings.toggle': 'Exclude {path}',
+  'settings.invalid.empty': 'Enter a name or relative path.',
+  'settings.invalid.nul': 'The path cannot contain a NUL character.',
+  'settings.invalid.absolute': 'Use a path relative to the workspace.',
+  'settings.invalid.parent': 'The path cannot contain . or .. segments.',
+  'settings.invalid.glob': 'The path cannot contain wildcards * ? [ ] { } !.',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -247,7 +189,7 @@ export const es = {
   'settings.invalid.absolute': 'Use una ruta relativa al espacio de trabajo.',
   'settings.invalid.parent': 'La ruta no puede contener segmentos «.» ni «..».',
   'settings.invalid.glob': 'La ruta no puede contener comodines * ? [ ] { } !.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -304,7 +246,7 @@ export const fr = {
   'settings.invalid.absolute': 'Utilisez un chemin relatif à l’espace de travail.',
   'settings.invalid.parent': 'Le chemin ne peut pas contenir de segments « . » ou « .. ».',
   'settings.invalid.glob': 'Le chemin ne peut pas contenir les caractères génériques * ? [ ] { } !.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -361,7 +303,7 @@ export const de = {
   'settings.invalid.absolute': 'Verwenden Sie einen Pfad relativ zum Arbeitsbereich.',
   'settings.invalid.parent': 'Der Pfad darf keine Segmente . oder .. enthalten.',
   'settings.invalid.glob': 'Der Pfad darf keine Platzhalter * ? [ ] { } ! enthalten.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -418,7 +360,7 @@ export const ru = {
   'settings.invalid.absolute': 'Укажите путь относительно рабочей области.',
   'settings.invalid.parent': 'Путь не может содержать сегменты «.» или «..».',
   'settings.invalid.glob': 'Путь не может содержать подстановочные знаки * ? [ ] { } !.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -475,4 +417,4 @@ export const pt = {
   'settings.invalid.absolute': 'Use um caminho relativo ao espaço de trabalho.',
   'settings.invalid.parent': 'O caminho não pode conter segmentos “.” ou “..”.',
   'settings.invalid.glob': 'O caminho não pode conter curingas * ? [ ] { } !.',
-} satisfies Record<keyof typeof en, string>
+} as const

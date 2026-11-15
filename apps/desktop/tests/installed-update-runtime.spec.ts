@@ -7,8 +7,9 @@ import { prepareInstalledUpdateRuntime } from '../scripts/prepare-installed-upda
 import { verifyDesktopRuntime } from '../src/runtime-tree.ts'
 import { runtimeFixture } from './runtime-fixture.ts'
 
-const versions = ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'] as const
-const source = { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }
+const versions = ['0.1.6-rc.20260914.1', '0.1.6-rc.20260915.1'] as const
+const sourceRelease = '0.1.6-rc.20260913.1'
+const source = { version: sourceRelease, commit: 'a'.repeat(40), dirtyFiles: [] }
 
 async function fixture<T>(body: (directory: string) => Promise<T>): Promise<T> {
   const directory = await mkdtemp(join(tmpdir(), 'nhs-update-materials-'))
@@ -20,7 +21,7 @@ describe('installed-update runtime preparation', () => {
   it('retags only release-owned packages and dependencies while preserving source and third-party versions', async () => {
     await fixture(async (directory) => {
       const original = join(directory, 'source')
-      runtimeFixture(original, source.version)
+      runtimeFixture(original, sourceRelease)
       const before = await readFile(join(original, 'desktop-runtime.json'))
       const run = await createInstalledUpdateRun(join(directory, 'runs'), versions, source)
       const result = await prepareInstalledUpdateRuntime(join(run.root, 'run.json'), original)
@@ -28,16 +29,16 @@ describe('installed-update runtime preparation', () => {
       for (const version of versions) {
         const runtime = join(run.root, version, 'nhs')
         const descriptor = await verifyDesktopRuntime(runtime, version)
-        expect(descriptor.sharedPackages.find(entry => entry.name === '@noharness/cordis')?.version).toBe(source.version)
-        expect(descriptor.sharedPackages.find(entry => entry.name === '@noharness/cli')?.version).toBe(version)
-        const metadata = JSON.parse(await readFile(join(runtime, 'node_modules/@noharness/cli/package.json'), 'utf8')) as {
+        expect(descriptor.sharedPackages.find(entry => entry.name === '@noharness/cordis')?.version).toBe(version)
+        expect(descriptor.sharedPackages.find(entry => entry.name === '@noharness/nhs')?.version).toBe(version)
+        const metadata = JSON.parse(await readFile(join(runtime, 'node_modules/@noharness/nhs/package.json'), 'utf8')) as {
           dependencies: Record<string, string>
         }
-        expect(metadata.dependencies['@noharness/desktop-host']).toBe(version)
-        expect(metadata.dependencies['@noharness/cordis']).toBe(source.version)
+        expect(metadata.dependencies['@noharness/nhs-desktop-host']).toBe(version)
+        expect(metadata.dependencies['@noharness/cordis']).toBe(version)
       }
       expect(await readFile(join(original, 'desktop-runtime.json'))).toEqual(before)
-      await expect(verifyDesktopRuntime(original, source.version)).resolves.toBeDefined()
+      await expect(verifyDesktopRuntime(original, sourceRelease)).resolves.toBeDefined()
       await expect(prepareInstalledUpdateRuntime(join(run.root, 'run.json'), original)).rejects.toMatchObject({ code: 'EEXIST' })
     })
   })

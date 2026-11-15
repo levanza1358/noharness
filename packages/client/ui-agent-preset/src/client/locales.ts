@@ -1,6 +1,6 @@
 /** Locale bundles for the agent-preset hero chip, header label, and management section. */
 
-import { guideEn, guideJa, guideEs, guideFr, guideDe, guideRu, guidePt, guideZh, type PresetGuideKey } from './guide-locales.ts'
+import { guideEn, guideJa, guideEs, guideFr, guideDe, guideRu, guidePt, type PresetGuideKey } from './guide-locales.ts'
 
 /** Locale keys these surfaces render. */
 export type AgentPresetSettingsKey =
@@ -34,8 +34,14 @@ export type AgentPresetSettingsKey =
   | 'createPluginUnavailable'
   | 'createPluginMissing'
 
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'agentPreset': AgentPresetKey
+  }
+}
+
 /** English copy. */
-export const en: Record<AgentPresetSettingsKey, string> = {
+export const en = {
   ...guideEn,
   builtInGroup: 'Built-in', customGroup: 'Custom',
   sectionIntro: 'Choose the agent’s tools and how it works. Use Standard mode for everyday tasks, or Creator mode to add capabilities to NHS.',
@@ -79,46 +85,9 @@ export const en: Record<AgentPresetSettingsKey, string> = {
 
 }
 
-/** Simplified Chinese copy. */
-export const zh: Record<AgentPresetSettingsKey, string> = {
-  ...guideZh,
-  builtInGroup: '内置', customGroup: '自定义',
-  sectionIntro: '选择 Agent 的工具和工作方式。日常任务用「标准模式」，扩展 NHS 的能力用「创造模式」。',
+export type AgentPresetKey = keyof typeof en
 
-  seatHint: '选择新任务使用的 Agent 预设',
-  headerHint: '本任务的 Agent 预设，在任务开始时确定',
-  nav: 'Agent 预设',
 
-  setDefault: '设为新任务默认',
-  view: '查看配置',
-
-  presetStandardName: '标准模式',
-  presetStandardDescription: '处理代码、文件和资料，适合大多数任务。Agent 会按需使用检索、编辑和终端等工具。',
-  presetPtcName: 'PTC 模式',
-  presetPtcDescription: '包含标准模式的所有能力，更适合批量调用工具，并对结果进行筛选、整理、去重、统计或汇总的任务。',
-  presetMinimalName: '极简模式',
-  presetMinimalDescription: 'Agent 使用终端和图片读取工具，并支持上下文压缩，适合测试和对比其基础表现。',
-  presetCordisName: '创造模式',
-  presetCordisDescription: '用对话定制 NHS：让 Agent 编写插件，添加新功能或界面；也能组合工具和提示词，创建自己的模式。',
-
-  inUse: '新任务默认',
-
-  noDescription: '暂无描述。',
-  brokenBadge: '加载失败',
-
-  switchRefused: '无法切换到「{name}」：{reason}',
-  standardUnavailable: '标准模式不可用，请恢复该模式或选择其他可用模式。',
-
-  close: '关闭',
-
-  creatorDraft: '让 Agent 帮我创建预设模式',
-  createPlugin: '让 Agent 创建插件',
-  createPluginDescription: '进入创造模式，制作属于你的 NHS 插件',
-  createPluginChecking: '正在确认创造模式是否可用',
-  createPluginUnavailable: '暂时不可用，请重新打开菜单重试',
-  createPluginMissing: '当前配置未提供创造模式',
-
-}
 
 // The resolution itself is the shared fold in `nhs-agent-preset-registry/display`,
 // re-exported here so every surface in this plugin reads one path; the
@@ -131,33 +100,33 @@ export const ja = {
   ...guideJa,
   'builtInGroup': '組み込み',
   'customGroup': 'カスタム',
-  'sectionIntro': 'エージェントのツールと動作を選択します。日々のタスクには標準モードを、NHS に機能を追加するにはクリエイターモードを使用してください。',
-  'seatHint': '新しいタスクで使用するエージェントプリセットを選択',
-  'headerHint': 'このタスクの開始時に選択されたエージェントプリセット',
+  'sectionIntro': 'Choose the agent’s tools and how it works. Use Standard mode for everyday tasks, or Creator mode to add capabilities to NHS.',
+  'seatHint': 'Choose the agent preset for your new task',
+  'headerHint': 'The agent preset chosen when this task started',
   'nav': 'エージェントプリセット',
-  'setDefault': '新しいタスクの既定に設定',
-  'view': '設定を表示',
-  'presetStandardName': '標準モード',
+  'setDefault': 'Set as new task default',
+  'view': 'View configuration',
+  'presetStandardName': 'Standard mode',
   'presetStandardDescription': 'コード、ファイル、情報を扱います。検索、編集、ターミナルコマンドなどのツールを必要に応じて利用でき、ほとんどのタスクに適しています。',
   'presetPtcName': 'PTC モード',
   'presetPtcDescription': '標準モードのすべての機能を含みます。ツールを一括で呼び出し、その結果を絞り込み、整理、重複排除、集計、要約するタスクに適しています。',
-  'presetMinimalName': '最小モード',
+  'presetMinimalName': 'Minimal mode',
   'presetMinimalDescription': 'エージェントはターミナルと画像読み取りを使用し、コンテキスト圧縮にも対応します。基本的な性能のテストや比較に役立ちます。',
   'presetCordisName': 'クリエイターモード',
   'presetCordisDescription': '会話を通じて NHS をカスタマイズします。機能や UI を追加するプラグインをエージェントに書かせたり、ツールとプロンプトを組み合わせて独自のモードを作成したりできます。',
-  'inUse': '新しいタスクの既定',
-  'noDescription': '説明はありません。',
-  'brokenBadge': '読み込みに失敗',
-  'switchRefused': '{name} に切り替えられませんでした: {reason}',
-  'standardUnavailable': '標準モードは利用できません。復元するか、利用可能な別のモードを選択してください。',
-  'close': '閉じる',
-  'creatorDraft': 'エージェントにプリセット作成を手伝ってもらう',
-  'createPlugin': 'エージェントにプラグインを作成してもらう',
-  'createPluginDescription': 'クリエイターモードに入り、独自の NHS プラグインを作成',
-  'createPluginChecking': 'クリエイターモードが利用可能か確認中',
-  'createPluginUnavailable': '一時的に利用できません。このメニューを開き直して再試行してください',
-  'createPluginMissing': 'この構成にはクリエイターモードが含まれていません',
-} satisfies Record<keyof typeof en, string>
+  'inUse': 'New task default',
+  'noDescription': 'No description.',
+  'brokenBadge': 'Failed to load',
+  'switchRefused': 'Could not switch to {name}: {reason}',
+  'standardUnavailable': 'Standard mode is unavailable. Restore it or choose another available mode.',
+  'close': 'Close',
+  'creatorDraft': 'Let the agent help me create a preset',
+  'createPlugin': 'Let the agent create a plugin',
+  'createPluginDescription': 'Enter Creator mode and make your own NHS plugin',
+  'createPluginChecking': 'Checking whether Creator mode is available',
+  'createPluginUnavailable': 'Temporarily unavailable. Reopen this menu to retry',
+  'createPluginMissing': 'Creator mode is not included in this configuration',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -202,7 +171,7 @@ export const es = {
   createPluginUnavailable: 'Temporalmente no disponible. Vuelve a abrir este menú para volver a intentarlo.',
   createPluginMissing: 'El modo creador no está incluido en esta configuración.',
 
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -247,7 +216,7 @@ export const fr = {
   createPluginUnavailable: 'Temporairement indisponible. Rouvrez ce menu pour réessayer',
   createPluginMissing: "Le mode Créateur n'est pas inclus dans cette configuration",
 
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -292,7 +261,7 @@ export const de = {
   createPluginUnavailable: 'Vorübergehend nicht verfügbar. Öffnen Sie dieses Menü erneut, um es erneut zu versuchen',
   createPluginMissing: 'Der Creator-Modus ist in dieser Konfiguration nicht enthalten',
 
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -337,7 +306,7 @@ export const ru = {
   createPluginUnavailable: 'Временно недоступен. Откройте это меню еще раз, чтобы повторить попытку.',
   createPluginMissing: 'Режим Creator не включен в эту конфигурацию.',
 
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -382,4 +351,4 @@ export const pt = {
   createPluginUnavailable: 'Temporariamente indisponível. Reabra este menu para tentar novamente',
   createPluginMissing: 'O modo criador não está incluído nesta configuração',
 
-} satisfies Record<keyof typeof en, string>
+} as const

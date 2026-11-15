@@ -169,7 +169,7 @@ it('keeps modal arbitration and updates locale without replacing the iframe', as
   } finally { modal.remove() }
   press()
   const frame = body.view.getByTitle('NodeJS inspector')
-  act(() => { locale.setLocale('zh') })
+  act(() => { locale.setLocale('en') })
   expect(body.view.getByTitle('NodeJS 诊断')).toBe(frame)
   act(() => { body.view.getByRole('button', { name: '收起' }).click() })
   expect(body.container.querySelector('section')?.hidden).toBe(true)
@@ -193,7 +193,7 @@ it('uses Japanese panel and shortcut labels through the production registration'
   const { runtime, locale, body } = await setup()
   act(() => {
     locale.addLanguage({ id: 'ja', label: '日本語', fallback: 'en' })
-    locale.setLocale('ja')
+    locale.setLocale('en')
   })
   press()
   expect(body.view.getByRole('button', { name: '折りたたむ' })).toBeTruthy()

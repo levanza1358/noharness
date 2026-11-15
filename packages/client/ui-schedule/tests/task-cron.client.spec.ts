@@ -2,10 +2,10 @@
 import { describe, expect, it } from 'vitest'
 import { makeTranslate } from '@noharness/client-test-runtime'
 import { cronPreview, parseCronExpression } from '../src/client/task-cron.ts'
-import { en, zh } from '../src/client/task-manager-locales.ts'
+import { en, ja } from '../src/client/task-manager-locales.ts'
 
 const tEn = makeTranslate(en)
-const tZh = makeTranslate(zh)
+const tZh = makeTranslate(ja)
 
 /**
  * Parse one expression the Host accepts, failing the case when it does not.
@@ -41,7 +41,7 @@ describe('Vixie star flags mirrored from the Host', () => {
     const conjunction = cronPreview(parsed('0 9 */2 * 1'), tEn, 'en')
     expect(conjunction).toContain(' and ')
     expect(conjunction).not.toContain(' or ')
-    expect(cronPreview(parsed('0 9 */2 * 1'), tZh, 'zh-CN')).toContain('且')
+    expect(cronPreview(parsed('0 9 */2 * 1'), tZh, 'ja-CN')).toContain('且')
     // Without a star on either side the fields stay alternatives.
     expect(cronPreview(parsed('0 9 1 * 1'), tEn, 'en')).toContain(' or ')
   })
@@ -60,7 +60,7 @@ describe('Vixie star flags mirrored from the Host', () => {
     expect(cronPreview(parsed('0 9 1 * 0-6'), tEn, 'en')).toBe('Every day at 09:00')
     // Neither side covers every value: both are named as alternatives.
     expect(cronPreview(parsed('0 9 1,2 * 1,3'), tEn, 'en')).toBe('Day 1, 2 of every month or Mon, Wed at 09:00')
-    expect(cronPreview(parsed('0 9 1,2 * 1,3'), tZh, 'zh-CN')).toBe('每月 1、2 日或周一、周三 09:00')
+    expect(cronPreview(parsed('0 9 1,2 * 1,3'), tZh, 'ja-CN')).toBe('每月 1、2 日或周一、周三 09:00')
   })
 })
 
@@ -173,7 +173,7 @@ describe('cronPreview', () => {
     ['*/15 * * 3 *', 'Every day in March every 15 minutes', '每天（三月） 每 15 分钟'],
   ])('describes %s', (expression, english, chinese) => {
     expect(cronPreview(parsed(expression), tEn, 'en')).toBe(english)
-    expect(cronPreview(parsed(expression), tZh, 'zh-CN')).toBe(chinese)
+    expect(cronPreview(parsed(expression), tZh, 'ja-CN')).toBe(chinese)
   })
 
   it('joins a repeated hour phrase in its lower-case form after a day phrase', () => {

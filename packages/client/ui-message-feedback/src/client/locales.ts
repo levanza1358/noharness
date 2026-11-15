@@ -1,40 +1,11 @@
-/** `feedback` namespace dictionaries. */
-
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'action.like': '好的回答',
-  'action.likeActive': '取消标记',
-  'action.dislike': '有问题的回答',
-  'action.dislikeActive': '取消标记',
-  'dialog.title': '提交反馈',
-  'dialog.categories': '反馈分类',
-  'dialog.detail': '反馈详情',
-  'dialog.hint': '填写详情以帮助我们改进体验，提交内容会包括当前对话的日志',
-  'category.task-result': '任务结果',
-  'category.instruction-following': '指令理解与遵循',
-  'category.product-interaction': '产品功能与交互',
-  'category.service-stability': '稳定性和速度',
-  'category.resource-cost': '资源使用与费用',
-  'category.security-privacy-permission': '安全隐私与权限',
-  'category.other': '其他',
-  'toast.recorded': '感谢你的反馈',
-  'error.conflict': '这条反馈已在别处改动，已显示最新状态',
-  'error.load': '反馈状态加载失败',
-  'error.generic': '反馈保存失败',
-  'error.noteTooLarge': '描述太长，请缩短后再提交',
-} satisfies Record<string, string>
-
-/** The feedback namespace key union. */
-export type MessageFeedbackKey = keyof typeof zh
-
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
-    /** The feedback surface's copy: the message controls, the dialog, and the acknowledgement. */
-    feedback: MessageFeedbackKey
+    'feedback': MessageFeedbackKey
   }
 }
 
-/** English dictionary, checked complete against the zh key set. */
+/** `feedback` namespace dictionaries. */
+
 export const en = {
   'action.like': 'Good response',
   'action.likeActive': 'Remove rating',
@@ -56,31 +27,34 @@ export const en = {
   'error.load': 'Could not load feedback',
   'error.generic': 'Could not save feedback',
   'error.noteTooLarge': 'The description is too long; shorten it and submit again',
-} satisfies Record<MessageFeedbackKey, string>
+} as const
+
+export type MessageFeedbackKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'action.like': '良い回答',
-  'action.likeActive': '評価を取り消す',
-  'action.dislike': '悪い回答',
-  'action.dislikeActive': '評価を取り消す',
-  'dialog.title': 'フィードバックを送信',
+  'action.like': 'Good response',
+  'action.likeActive': 'Remove rating',
+  'action.dislike': 'Bad response',
+  'action.dislikeActive': 'Remove rating',
+  'dialog.title': 'Submit feedback',
   'dialog.categories': 'フィードバックのカテゴリ',
-  'dialog.detail': 'フィードバックの詳細',
-  'dialog.hint': '改善のため詳細を追加してください。現在の会話ログが送信内容に含まれます。',
-  'category.task-result': 'タスク結果',
-  'category.instruction-following': '指示の理解と遵守',
-  'category.product-interaction': '製品機能と操作',
-  'category.service-stability': '安定性と速度',
-  'category.resource-cost': 'リソース使用量とコスト',
-  'category.security-privacy-permission': 'セキュリティ、プライバシー、権限',
-  'category.other': 'その他',
+  'dialog.detail': 'Feedback details',
+  'dialog.hint': 'Add details to help us improve. Your submission will include the current conversation log.',
+  'category.task-result': 'Task result',
+  'category.instruction-following': 'Instruction understanding and following',
+  'category.product-interaction': 'Product features and interaction',
+  'category.service-stability': 'Stability and speed',
+  'category.resource-cost': 'Resource usage and cost',
+  'category.security-privacy-permission': 'Security, privacy, and permissions',
+  'category.other': 'Other',
   'toast.recorded': 'フィードバックありがとうございます',
-  'error.conflict': 'このフィードバックは別の場所で変更されました。最新の状態を表示しています',
-  'error.load': 'フィードバックを読み込めませんでした',
-  'error.generic': 'フィードバックを保存できませんでした',
-  'error.noteTooLarge': '説明が長すぎます。短くして再送信してください',
-} satisfies Record<keyof typeof en, string>
+  'error.conflict': 'This feedback changed elsewhere; the latest state is shown',
+  'error.load': 'Could not load feedback',
+  'error.generic': 'Could not save feedback',
+  'error.noteTooLarge': 'The description is too long; shorten it and submit again',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -104,7 +78,7 @@ export const es = {
   'error.load': 'No se pudieron cargar los comentarios',
   'error.generic': 'No se pudieron guardar los comentarios',
   'error.noteTooLarge': 'La descripción es demasiado larga; acortarlo y enviarlo de nuevo',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -128,7 +102,7 @@ export const fr = {
   'error.load': 'Impossible de charger les commentaires',
   'error.generic': "Impossible d'enregistrer les commentaires",
   'error.noteTooLarge': 'La description est trop longue ; raccourcissez-le et soumettez-le à nouveau',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -152,7 +126,7 @@ export const de = {
   'error.load': 'Feedback konnte nicht geladen werden',
   'error.generic': 'Das Feedback konnte nicht gespeichert werden',
   'error.noteTooLarge': 'Die Beschreibung ist zu lang; kürzen Sie es und reichen Sie es erneut ein',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -176,7 +150,7 @@ export const ru = {
   'error.load': 'Не удалось загрузить отзыв.',
   'error.generic': 'Не удалось сохранить отзыв',
   'error.noteTooLarge': 'Описание слишком длинное; сократите его и отправьте снова',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -200,4 +174,4 @@ export const pt = {
   'error.load': 'Não foi possível carregar o feedback',
   'error.generic': 'Não foi possível salvar o feedback',
   'error.noteTooLarge': 'A descrição é muito longa; encurte-o e envie novamente',
-} satisfies Record<keyof typeof en, string>
+} as const

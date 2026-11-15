@@ -109,7 +109,7 @@ function dictionariesIn(file: string): Dictionary[] {
   const rel = relative(file)
 
   // Module-scope variable declarations, keyed by name. A 3-arg
-  // `register(NS, 'zh'|'en', dict)` whose third argument is an identifier —
+  // `register(NS, 'en', dict)` whose third argument is an identifier —
   // e.g. a local dictionary variable rather than an inline literal — resolves
   // through here so the gate still verifies its symmetry.
   const moduleConsts = new Map<string, ts.Expression>()
@@ -134,7 +134,7 @@ function dictionariesIn(file: string): Dictionary[] {
     }
   }
 
-  // A 3-arg `register(ns, 'zh'|'en', dict)` call whose dictionary argument we
+  // A 3-arg `register(ns, 'en', dict)` call whose dictionary argument we
   // cannot turn into an object literal. We refuse instead of skipping: a
   // registration we cannot measure is exactly the silent narrowing this gate
   // exists to catch.
@@ -144,7 +144,7 @@ function dictionariesIn(file: string): Dictionary[] {
 
   // Inline registrations, two shapes. A `[['zh', {...}], ['en', {...}]]` pair
   // handed to a registration loop keys off the enclosing array; separate
-  // `register(NS, 'zh', {...})` / `register(NS, 'en', {...})` calls key off the
+  // `register(NS, 'en', {...})` / `register(NS, 'ja', {...})` calls key off the
   // namespace argument, so the two calls pair with each other.
   const visit = (node: ts.Node): void => {
     if (ts.isCallExpression(node)) {
@@ -290,7 +290,7 @@ function registrationProblems(file: string): string[] {
             entries.set(prop.name.text, prop.initializer)
           }
         }
-        if (entries.has('zh') && entries.has('en')) {
+        if (entries.has('en')) {
           const site = `${relative(file)}:${source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1}`
           for (const language of SHIPPED_LOCALE_IDS) {
             const dictionary = entries.get(language)
@@ -309,11 +309,11 @@ function registrationProblems(file: string): string[] {
 }
 
 describe('shipped locale dictionaries', () => {
-  it('registers every shipped language alongside every object-form bilingual dictionary', () => {
+  it('registers every shipped language alongside every object-form English dictionary', () => {
     expect(sourceFiles().flatMap(registrationProblems)).toEqual([])
   })
 
-  it('keeps bilingual keys aligned and shipped-language keys and placeholders complete', () => {
+  it('keeps shipped-language keys and placeholders complete', () => {
     const files = sourceFiles()
     // Guard the discovery itself: an empty or narrowed sweep would pass every
     // assertion below while checking nothing.
@@ -321,8 +321,8 @@ describe('shipped locale dictionaries', () => {
 
     // Pair within a file first; a dictionary whose counterpart is not in the
     // same module then pairs with a sibling in the same directory. Both shapes
-    // ship here: `locales/settings.ts` exports zh+en together, while
-    // `locales/zh.ts` + `locales/en.ts` split the common pair across files.
+    // ship here: `locales/settings.ts` exports ja+en together, while
+    // `locales/ja.ts` + `locales/en.ts` split the common pair across files.
     const perFile = new Map<string, Dictionary[]>()
     for (const file of files) {
       const dicts = dictionariesIn(file)
@@ -365,19 +365,14 @@ describe('shipped locale dictionaries', () => {
     const problems: string[] = []
     let comparedPairs = 0
     for (const [key, slot] of [...groups].sort()) {
-      const zh = slot.get('zh')
       const en = slot.get('en')
-      if (zh === undefined || en === undefined) {
-        const present = zh ?? en
+      if (en === undefined) {
+        const present = [...slot.values()][0]
         problems.push(`${present?.file} declares ${present?.name} with no counterpart for pair ${key}`)
         continue
       }
       comparedPairs++
-      const zhOnly = zh.keys.filter(k => !en.keys.includes(k))
-      const enOnly = en.keys.filter(k => !zh.keys.includes(k))
-      if (zhOnly.length > 0) problems.push(`${zh.file} ${zh.name} has keys absent from ${en.name}: ${zhOnly.join(', ')}`)
-      if (enOnly.length > 0) problems.push(`${en.file} ${en.name} has keys absent from ${zh.name}: ${enOnly.join(', ')}`)
-      for (const language of SHIPPED_LOCALE_IDS.filter(id => id !== 'en' && id !== 'zh')) {
+      for (const language of SHIPPED_LOCALE_IDS.filter(id => id !== 'en')) {
         const translatedDictionary = slot.get(language)
         if (translatedDictionary === undefined) {
           problems.push(`${key} has no ${language} dictionary`)

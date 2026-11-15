@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { SessionId } from '@noharness/session/types'
 import type {} from '../src/client/index.ts'
 import { LiveshareShareDialog, type LiveshareShareDialogProps } from '../src/client/ShareDialog.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import css from '../src/client/ShareDialog.module.css'
 import type {
   CreatedShare, OwnerIdentityStatus, OwnerRelayState, RelayConnectivityView, RelayPublishView, SharePermissions,
@@ -354,9 +354,9 @@ describe('Liveshare dialog product acceptance', () => {
   })
 
   it('[P1] both locales define the same copy and the Chinese flow renders it', async () => {
-    expect(Object.keys(zh).sort()).toEqual(Object.keys(en).sort())
+    expect(Object.keys(ja).sort()).toEqual(Object.keys(en).sort())
     const zhTranslate: LiveshareShareDialogProps['t'] = (key, params) => {
-      let result: string = (zh as Readonly<Record<string, string>>)[key] ?? key
+      let result: string = (ja as Readonly<Record<string, string>>)[key] ?? key
       for (const [name, value] of Object.entries(params ?? {})) result = result.replace(`{${name}}`, String(value))
       return result
     }

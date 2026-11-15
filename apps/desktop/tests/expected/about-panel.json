@@ -12,9 +12,9 @@
       "iconPath": "<app icon>"
     }
   },
-  "darwin:zh-CN": {
+  "darwin:ja-JP": {
     "menu": [
-      { "label": "关于 NoHarness", "role": "about" },
+      { "label": "NoHarness について", "role": "about" },
       { "type": "separator" }
     ],
     "options": {
@@ -25,9 +25,9 @@
       "iconPath": "<app icon>"
     }
   },
-  "win32:zh-CN": {
+  "win32:ja-JP": {
     "menu": [
-      { "label": "关于 NoHarness" },
+      { "label": "NoHarness について" },
       { "type": "separator" }
     ],
     "options": {

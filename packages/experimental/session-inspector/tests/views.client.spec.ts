@@ -18,7 +18,7 @@ import type { SessionInspectorInjected } from '../src/client/views/View.tsx'
 import { chatNodeWithLocation } from './chat-node-fixture.client.ts'
 import { apply, inject } from '../src/client/index.ts'
 import * as discovery from '../src/index.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 async function fixture(services?: { sessions: object; uiConversation: object; uiSession: object }) {
   const ctx = new Context()
@@ -72,8 +72,8 @@ describe('Session Inspector Sidebar tab', () => {
       .toEqual([{ kind: KIND, title: en['tab.title'] }])
     expect(tabs.guide()[0]?.description?.()).toBe(en['tab.description'])
     expect(tabs.get('nodejs-inspector')).toBeUndefined()
-    ctx.locale.setLocale('zh')
-    expect(tabs.get(KIND)?.title('')).toBe(zh['tab.title'])
+    ctx.locale.setLocale('en')
+    expect(tabs.get(KIND)?.title('')).toBe(ja['tab.title'])
     expect(tabs.guide()[0]?.description?.()).toBe('在侧边栏分析当前会话原始日志和聊天分组数据')
     await fiber.dispose()
     expect(entries()).toEqual([])

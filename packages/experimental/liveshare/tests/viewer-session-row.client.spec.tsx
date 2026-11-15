@@ -8,7 +8,7 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { apply, inject } from '../src/client/viewer-session-row.tsx'
-import { en, NS, zh } from '../src/client/locales.ts'
+import { en, NS, ja } from '../src/client/locales.ts'
 
 const SHARED = 'shared' as SessionId
 const contexts: Context[] = []
@@ -29,9 +29,9 @@ async function bench() {
     'sidebar.session.row.leading': { kind: 'list', scope: 'root' },
   } } as never, () => null)
   const locale = new LocaleRuntime(ctx)
-  locale.setLocale('zh')
+  locale.setLocale('en')
   ctx.provide('locale', locale)
-  locale.register(NS, { zh, en })
+  locale.register(NS, { ja, en })
   await ctx.plugin({ inject: [...inject], apply }).await()
   const entry = slots.entriesOfSlot('sidebar.session.row.leading')[0]!
   const View = entry.component as (props: Record<string, unknown>) => ReactNode

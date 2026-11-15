@@ -74,7 +74,7 @@ describe('ui-settings-plugin-inventory browser plugin', () => {
     expect(injected.resolveText(text)).toBe('本地工具')
     b.locale.setLocale('en')
     expect(injected.resolveText(text)).toBe('Local tools')
-    b.locale.setLocale('zh')
+    b.locale.setLocale('en')
     injected.retryClient()
     const retryError = vi.spyOn(b.ctx.logger, 'error').mockImplementation(() => {})
     b.retryClient.mockRejectedValueOnce(new Error('retry unavailable'))

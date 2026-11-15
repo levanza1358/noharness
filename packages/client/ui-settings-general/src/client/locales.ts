@@ -1,78 +1,7 @@
 /** Shell chrome and General-nav dictionaries; feature rows own their copy. */
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'desktop.channel.title': '更新渠道',
-  'desktop.channel.description': '正式版适合日常使用；开发版可提前体验新功能，但可能不稳定。',
-  'desktop.channel.stable': '正式版',
-  'desktop.channel.nightly': '开发版',
-  'desktop.channel.unavailable': '配置不可用',
-  'desktop.channel.error': '未能应用更新配置。请点击桌面更新入口查看原因。',
-  'desktop.channel.readError': '无法读取更新渠道状态，请重启应用。',
-  'desktop.update.configurationFailed': '未能应用更新配置。请点击桌面更新入口查看原因。',
-  'desktop.channel.result.applied': '更新渠道已切换',
-  'desktop.channel.result.configuration': '配置文件异常，更新已暂停',
-  'desktop.channel.details': '查看详情',
-  'desktop.channel.result.save': '保存失败',
-  'desktop.channel.result.uncertain': '设置保存异常',
-  'desktop.channel.result.format': '保存失败，配置文件格式有误',
-  'desktop.channel.result.permission': '保存失败，没有写入权限',
-  'desktop.channel.result.apply': '设置保存异常',
-  'desktop.update.configuration.read': '更新已暂停：无法读取配置文件',
-  'desktop.update.configuration.format': '更新已暂停：配置文件格式有误',
-  'desktop.update.configuration.channel': '更新已暂停：channel 只能是 nightly 或 stable',
-  'desktop.update.configuration.cleanup': '更新已暂停：无法清理旧更新，请重启应用',
-  'trigger': '设置',
-  'shortcut.open': '打开设置',
-  'desktop.update.available': '新版本',
-  'desktop.update.checking': '正在检查更新…',
-  'desktop.update.progress': '{percent}%',
-  'desktop.update.verifying': '正在校验更新文件…',
-  'desktop.update.installing': '正在准备重启…',
-  'desktop.update.ready': '安装并重启',
-  'desktop.update.retry': '重试更新',
-  'desktop.update.versionDetail': '{label}：{version}',
-  'desktop.update.downloadDetail': '正在下载更新：{percent}%\n目标版本：{version}',
-  'desktop.update.checkFailed': '检查更新失败，请稍后重试。',
-  'desktop.update.downloadFailed': '下载更新失败，请重试。',
-  'desktop.update.downloadSpaceFailed': '磁盘空间不足，无法下载更新。请释放空间后重试。',
-  'desktop.update.downloadPermissionFailed': '无法写入更新文件，请检查目录权限后重试。',
-  'desktop.update.downloadBusyFailed': '更新文件正被占用，请关闭占用它的程序后重试。',
-  'desktop.update.installFailed': '安装更新失败，请稍后重试。',
-  'desktop.update.checkNetworkFailed': '检查更新失败，请检查网络连接后重试。',
-  'desktop.update.downloadNetworkFailed': '下载更新失败，请检查网络连接后重试。',
-  'desktop.update.installNetworkFailed': '安装更新失败，请检查网络连接后重试。',
-  'desktop.update.fullscreenTimeout': '无法退出全屏，请退出全屏后重试更新',
-  'desktop.update.stopFailed': '未能安全停止任务，更新尚未安装，请稍后重试。',
-  'desktop.update.tasksChanged': '有新任务开始运行，请重新确认是否停止任务并更新。',
-  'desktop.update.tasksUnavailable': '无法确认任务状态，请在工作区就绪后重试更新。',
-  'title': '设置',
-  'close': '关闭',
-  'openDocument': '打开配置文件',
-  'openDocument.error': '无法打开配置文件',
-  'general.nav': '通用设置',
-  'general.currentVersion': '当前版本：{version}',
-  'developerTools.title': '显示代码工作视图',
-  'developerTools.error': '保存失败，请重试',
-  'developerTools.description': '开启后，显示轨迹、本轮代码差异，可选择完整的 Agent 预设切换',
-  'connection.error': '连接异常，刷新重试',
-  'connection.connecting': '重新连接中',
-  'connection.connected': '连接成功',
-  'connection.reconnect': '连接异常，点击立即重连',
-  'connection.restart': '连接中断，正在重试，点击立即重连',
-  'hostRelease.title': '服务版本变化',
-  'hostRelease.description': '服务版本已变化，本页面已暂停热更新，刷新后加载新版本。',
-  'hostRelease.service': '服务',
-  'hostRelease.page': '页面',
-  'hostRelease.unknown': '未解析',
-  'hostRelease.reload': '刷新以加载新版本',
-  'hostRelease.later': '暂不刷新',
-} satisfies Record<string, string>
+export type SettingsKey = keyof typeof en
 
-/** The settings namespace key union. */
-export type SettingsKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'desktop.channel.title': 'Update channel',
   'desktop.channel.description': 'Stable is suitable for everyday use. Development offers early access to new features but may be unstable.',
@@ -139,76 +68,79 @@ export const en = {
   'hostRelease.unknown': 'Unknown',
   'hostRelease.reload': 'Reload to load the new version',
   'hostRelease.later': 'Not now',
-} satisfies Record<SettingsKey, string>
+} as const
+
+export type SettingsGeneralKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'desktop.channel.title': '更新チャンネル',
-  'desktop.channel.description': '安定版は日常的な使用に適しています。開発版では新機能をいち早く試せますが、不安定な場合があります。',
-  'desktop.channel.stable': '安定版',
-  'desktop.channel.nightly': '開発版',
-  'desktop.channel.unavailable': '設定を利用できません',
-  'desktop.channel.error': '更新設定を適用できませんでした。デスクトップの更新表示で詳細を確認してください。',
-  'desktop.channel.readError': '更新チャンネルを読み取れません。アプリを再起動してください。',
-  'desktop.update.configurationFailed': '更新設定を適用できませんでした。デスクトップの更新表示で詳細を確認してください。',
-  'desktop.channel.result.applied': '更新チャンネルを変更しました',
-  'desktop.channel.result.configuration': '設定ファイルに問題があるため、更新を停止しています',
-  'desktop.channel.details': '詳細を表示',
-  'desktop.channel.result.save': '保存できませんでした',
-  'desktop.channel.result.uncertain': '設定の保存中に問題が発生しました',
-  'desktop.channel.result.format': '保存できませんでした：設定ファイルの形式が不正です',
-  'desktop.channel.result.permission': '保存できませんでした：書き込み権限がありません',
-  'desktop.channel.result.apply': '設定の保存中に問題が発生しました',
-  'desktop.update.configuration.read': '更新を停止中：設定ファイルを読み取れません',
-  'desktop.update.configuration.format': '更新を停止中：設定ファイルの形式が不正です',
-  'desktop.update.configuration.channel': '更新を停止中：channel は nightly または stable にしてください',
-  'desktop.update.configuration.cleanup': '更新を停止中：以前の更新を削除できません。アプリを再起動してください',
-  'trigger': '設定',
-  'shortcut.open': '設定を開く',
-  'desktop.update.available': '更新',
-  'desktop.update.checking': '更新を確認中…',
+  'desktop.channel.title': 'Update channel',
+  'desktop.channel.description': 'Stable is suitable for everyday use. Development offers early access to new features but may be unstable.',
+  'desktop.channel.stable': 'Stable',
+  'desktop.channel.nightly': 'Development',
+  'desktop.channel.unavailable': 'Configuration unavailable',
+  'desktop.channel.error': 'Could not apply update settings. Open the desktop update indicator for details.',
+  'desktop.channel.readError': 'Could not read the update channel. Restart the app.',
+  'desktop.update.configurationFailed': 'Could not apply update settings. Open the desktop update indicator for details.',
+  'desktop.channel.result.applied': 'Update channel changed',
+  'desktop.channel.result.configuration': 'Settings file error; updates are paused',
+  'desktop.channel.details': 'View details',
+  'desktop.channel.result.save': 'Could not save',
+  'desktop.channel.result.uncertain': 'Settings save error',
+  'desktop.channel.result.format': 'Could not save: invalid settings file',
+  'desktop.channel.result.permission': 'Could not save: permission denied',
+  'desktop.channel.result.apply': 'Settings save error',
+  'desktop.update.configuration.read': 'Updates paused: cannot read settings file',
+  'desktop.update.configuration.format': 'Updates paused: invalid settings file',
+  'desktop.update.configuration.channel': 'Updates paused: channel must be nightly or stable',
+  'desktop.update.configuration.cleanup': 'Updates paused: cannot discard previous update; restart the app',
+  'trigger': 'Settings',
+  'shortcut.open': 'Open settings',
+  'desktop.update.available': 'Update',
+  'desktop.update.checking': 'Checking for updates…',
   'desktop.update.progress': '{percent}%',
-  'desktop.update.verifying': '更新ファイルを検証中…',
-  'desktop.update.installing': '再起動の準備中…',
-  'desktop.update.ready': 'インストールして再起動',
-  'desktop.update.retry': '更新を再試行',
+  'desktop.update.verifying': 'Verifying update files…',
+  'desktop.update.installing': 'Preparing to restart…',
+  'desktop.update.ready': 'Install and Restart',
+  'desktop.update.retry': 'Retry update',
   'desktop.update.versionDetail': '{label}: {version}',
-  'desktop.update.downloadDetail': '更新をダウンロード中: {percent}%\n対象バージョン: {version}',
-  'desktop.update.checkFailed': '更新を確認できませんでした。しばらくしてから再試行してください。',
-  'desktop.update.downloadFailed': '更新をダウンロードできませんでした。再試行してください。',
-  'desktop.update.downloadSpaceFailed': '更新のダウンロードに必要なディスク容量が不足しています。空き容量を増やして再試行してください。',
-  'desktop.update.downloadPermissionFailed': '更新ファイルを書き込めません。フォルダーのアクセス権を確認して再試行してください。',
-  'desktop.update.downloadBusyFailed': '更新ファイルが使用中です。使用しているプログラムを閉じて再試行してください。',
-  'desktop.update.installFailed': '更新をインストールできませんでした。しばらくしてから再試行してください。',
-  'desktop.update.checkNetworkFailed': '更新を確認できませんでした。接続を確認して再試行してください。',
-  'desktop.update.downloadNetworkFailed': '更新をダウンロードできませんでした。接続を確認して再試行してください。',
-  'desktop.update.installNetworkFailed': '更新をインストールできませんでした。接続を確認して再試行してください。',
-  'desktop.update.fullscreenTimeout': '全画面表示を終了できませんでした。全画面表示を終了してから更新を再試行してください。',
-  'desktop.update.stopFailed': 'タスクを安全に停止できませんでした。更新はインストールされていません。しばらくしてから再試行してください。',
-  'desktop.update.tasksChanged': '新しいタスクが開始されました。タスクを停止して更新するには、もう一度確認してください。',
-  'desktop.update.tasksUnavailable': 'タスクの状態を取得できません。ワークスペースの準備ができてから更新を再試行してください。',
-  'title': '設定',
-  'close': '閉じる',
-  'openDocument': '設定ファイルを開く',
-  'openDocument.error': '設定ファイルを開けませんでした',
-  'general.nav': '一般',
-  'general.currentVersion': '現在のバージョン: {version}',
-  'developerTools.title': 'コーディングビューを表示',
-  'developerTools.error': '保存できませんでした。再試行してください。',
-  'developerTools.description': '軌跡、コード差分、すべてのエージェントプリセットを表示します',
-  'connection.error': '切断済み',
-  'connection.connecting': '再接続中',
-  'connection.connected': '接続済み',
-  'connection.reconnect': '切断されました。今すぐ再接続',
-  'connection.restart': '再接続中、今すぐ再接続',
-  'hostRelease.title': 'サービスのバージョンが変更されました',
-  'hostRelease.description': 'サービスのバージョンが変更されました。このページのライブ更新は停止しています。再読み込みして新しいバージョンを読み込んでください。',
+  'desktop.update.downloadDetail': 'Downloading update: {percent}%\\nTarget version: {version}',
+  'desktop.update.checkFailed': 'Could not check for updates. Please try again later.',
+  'desktop.update.downloadFailed': 'Could not download the update. Please try again.',
+  'desktop.update.downloadSpaceFailed': 'Not enough disk space to download the update. Free up space, then retry.',
+  'desktop.update.downloadPermissionFailed': 'Cannot write the update files. Check the folder permissions and retry.',
+  'desktop.update.downloadBusyFailed': 'An update file is in use. Close the program using it, then retry.',
+  'desktop.update.installFailed': 'Could not install the update. Please try again later.',
+  'desktop.update.checkNetworkFailed': 'Could not check for updates. Check your connection and try again.',
+  'desktop.update.downloadNetworkFailed': 'Could not download the update. Check your connection and try again.',
+  'desktop.update.installNetworkFailed': 'Could not install the update. Check your connection and try again.',
+  'desktop.update.fullscreenTimeout': 'Could not exit fullscreen. Exit fullscreen, then retry the update.',
+  'desktop.update.stopFailed': 'Could not safely stop the tasks. The update has not been installed. Please try again later.',
+  'desktop.update.tasksChanged': 'New tasks have started. Confirm again to stop the tasks and update.',
+  'desktop.update.tasksUnavailable': 'Task status is unavailable. Try updating again when the workspace is ready.',
+  'title': 'Settings',
+  'close': 'Close',
+  'openDocument': 'Open configuration file',
+  'openDocument.error': 'Could not open configuration file',
+  'general.nav': 'General',
+  'general.currentVersion': 'Current version: {version}',
+  'developerTools.title': 'Show coding view',
+  'developerTools.error': 'Could not save. Please try again.',
+  'developerTools.description': 'Shows trajectory, code diffs, and all Agent presets',
+  'connection.error': 'Disconnected',
+  'connection.connecting': 'Reconnecting',
+  'connection.connected': 'Connected',
+  'connection.reconnect': 'Disconnected, reconnect now',
+  'connection.restart': 'Reconnecting, reconnect now',
+  'hostRelease.title': 'Service version changed',
+  'hostRelease.description': 'The service version changed. This page paused live updates; reload to load the new version.',
   'hostRelease.service': 'サービス',
   'hostRelease.page': 'ページ',
-  'hostRelease.unknown': '不明',
-  'hostRelease.reload': '再読み込みして新しいバージョンを読み込む',
-  'hostRelease.later': '後で',
-} satisfies Record<keyof typeof en, string>
+  'hostRelease.unknown': 'Unknown',
+  'hostRelease.reload': 'Reload to load the new version',
+  'hostRelease.later': 'Not now',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -277,7 +209,7 @@ export const es = {
   'hostRelease.unknown': 'Desconocido',
   'hostRelease.reload': 'Recargar para cargar la nueva versión.',
   'hostRelease.later': 'Ahora no',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -346,7 +278,7 @@ export const fr = {
   'hostRelease.unknown': 'Inconnu',
   'hostRelease.reload': 'Recharger pour charger la nouvelle version',
   'hostRelease.later': 'Pas maintenant',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -415,7 +347,7 @@ export const de = {
   'hostRelease.unknown': 'Unbekannt',
   'hostRelease.reload': 'Neu laden, um die neue Version zu laden',
   'hostRelease.later': 'Nicht jetzt',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -484,7 +416,7 @@ export const ru = {
   'hostRelease.unknown': 'Неизвестно',
   'hostRelease.reload': 'Перезагрузите, чтобы загрузить новую версию',
   'hostRelease.later': 'Не сейчас',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -553,4 +485,4 @@ export const pt = {
   'hostRelease.unknown': 'Desconhecido',
   'hostRelease.reload': 'Recarregue para carregar a nova versão',
   'hostRelease.later': 'Agora não',
-} satisfies Record<keyof typeof en, string>
+} as const

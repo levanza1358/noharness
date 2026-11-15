@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
 import type { PropsRenderSlots } from '@noharness/client-ui-slots'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type {
   ChatConversationViewNode, ConversationNode,
 } from '@noharness/client-ui-chat/client'
@@ -23,7 +23,7 @@ import { createUserContentFixture } from './user-content-component-fixture.tsx'
 import { useDisclosure } from '../src/client/chat/use-disclosure.ts'
 import { useSearchableHidden } from '../src/client/chat/searchable-hidden.ts'
 import { ActivityPill, UsagePill, type StatPillProps } from '../src/client/chat/StatsPills.tsx'
-import { zh } from '../src/client/locale.ts'
+import { ja } from '../src/client/locale.ts'
 import { chatSnapshotFixture } from './chat-snapshot-fixture.client.ts'
 
 afterEach(() => {
@@ -32,7 +32,7 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-const t: ChatNodeViewProps['t'] = makeTranslate(zh, commonZh)
+const t: ChatNodeViewProps['t'] = makeTranslate(ja, commonJa)
 const renderUserImages: Parameters<ReturnType<typeof createUserContentFixture>>[1] = () => null
 const userSlots: PropsRenderSlots<'conversation.chat.user.before'> = {
   renderSlot: () => null,

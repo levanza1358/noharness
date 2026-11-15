@@ -3,50 +3,15 @@
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'job'
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'count.idle.one': '{count} 个后台任务',
-  'count.idle.other': '{count} 个后台任务',
-  'list.aria': '后台任务',
-  'section.live': '进行中',
-  'section.settledCount': '已结束 {count}',
-  'section.clear': '清空',
-  'row.expandAria': '展开 {label} 的实时输出',
-  'row.collapseAria': '收起 {label} 的实时输出',
-  'kill.stop': '停止任务 {label}',
-  'kill.confirm': '再次点击确认停止',
-  'kill.confirmAction': '确认停止',
-  'kill.failed': '停止失败',
-  'status.running': '运行中',
-  'status.stopping': '正在停止',
-  'status.completed': '已完成',
-  'status.killed': '已取消',
-  'status.failed': '已失败',
-  'duration.seconds': '{seconds}秒',
-  'duration.minutes': '{minutes}分{seconds}秒',
-  'duration.hours': '{hours}小时{minutes}分',
-  'duration.title.live': '已运行 {duration}',
-  'duration.title.done': '耗时 {duration}',
-  'output.gap': '……较早的输出已丢弃……',
-  'output.error': '实时输出流中断：{error}',
-  'terminal.signal': '信号 {signal}',
-  'terminal.exitCode': '退出码 {code}',
-  'terminal.noExitCode': '未正常退出',
-  'terminal.commandLine': '命令第 {n} 行',
-  'terminal.running': '运行中',
-  'terminal.failed': '已失败',
-  'terminal.done': '已完成',
-  'terminal.copy': '复制',
-  'terminal.copied': '已复制',
-  'terminal.noOutput': '（无输出）',
-  'terminal.collapse': '收起',
-  'terminal.collapseAria': '收起输出',
-  'terminal.expand': '展开其余 {n} 行',
-  'terminal.expandAria': '展开被折叠的 {n} 行输出',
-} as const
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'job': JobKey
+  }
+}
 
-/** English dictionary, key-identical to the Chinese source of truth. */
-export const en: Record<JobKey, string> = {
+export type JobKey = keyof typeof en
+
+export const en = {
   'count.idle.one': '{count} background job',
   'count.idle.other': '{count} background jobs',
   'list.aria': 'Background jobs',
@@ -88,49 +53,47 @@ export const en: Record<JobKey, string> = {
 }
 
 /** Key domain of the `job` namespace (zh is the source of truth). */
-export type JobKey = keyof typeof zh
-
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'count.idle.one': 'バックグラウンドジョブ {count} 件',
-  'count.idle.other': 'バックグラウンドジョブ {count} 件',
+  'count.idle.one': '{count} background job',
+  'count.idle.other': '{count} background jobs',
   'list.aria': 'バックグラウンドジョブ',
-  'section.live': '実行中',
-  'section.settledCount': '完了 {count} 件',
+  'section.live': 'Running',
+  'section.settledCount': 'Finished {count}',
   'section.clear': 'クリア',
-  'row.expandAria': '{label} のライブ出力を表示',
-  'row.collapseAria': '{label} のライブ出力を非表示',
-  'kill.stop': 'タスク {label} を停止',
-  'kill.confirm': 'もう一度クリックして確定',
-  'kill.confirmAction': '停止を確定',
-  'kill.failed': '停止に失敗しました',
-  'status.running': '実行中',
-  'status.stopping': '停止中',
-  'status.completed': '完了',
-  'status.killed': 'キャンセル済み',
-  'status.failed': '失敗',
-  'duration.seconds': '{seconds}秒',
-  'duration.minutes': '{minutes}分 {seconds}秒',
-  'duration.hours': '{hours}時間 {minutes}分',
-  'duration.title.live': '実行時間 {duration}',
-  'duration.title.done': '所要時間 {duration}',
-  'output.gap': '…以前の出力は破棄されました…',
-  'output.error': 'ライブ出力ストリームが中断されました: {error}',
+  'row.expandAria': 'Show live output of {label}',
+  'row.collapseAria': 'Hide live output of {label}',
+  'kill.stop': 'Stop task {label}',
+  'kill.confirm': 'Click again to confirm',
+  'kill.confirmAction': 'Confirm stop',
+  'kill.failed': 'Stop failed',
+  'status.running': 'running',
+  'status.stopping': 'stopping',
+  'status.completed': 'completed',
+  'status.killed': 'cancelled',
+  'status.failed': 'failed',
+  'duration.seconds': '{seconds}s',
+  'duration.minutes': '{minutes}m {seconds}s',
+  'duration.hours': '{hours}h {minutes}m',
+  'duration.title.live': 'Running for {duration}',
+  'duration.title.done': 'Took {duration}',
+  'output.gap': '… earlier output dropped …',
+  'output.error': 'live output stream interrupted: {error}',
   'terminal.signal': 'シグナル {signal}',
-  'terminal.exitCode': '終了コード {code}',
-  'terminal.noExitCode': '終了コードなし',
+  'terminal.exitCode': 'exit {code}',
+  'terminal.noExitCode': 'no exit code',
   'terminal.commandLine': 'コマンドライン {n}',
-  'terminal.running': '実行中',
-  'terminal.failed': '失敗',
-  'terminal.done': '完了',
+  'terminal.running': 'running',
+  'terminal.failed': 'failed',
+  'terminal.done': 'done',
   'terminal.copy': 'コピー',
   'terminal.copied': 'コピーしました',
-  'terminal.noOutput': '（出力なし）',
-  'terminal.collapse': '折りたたむ',
-  'terminal.collapseAria': '出力を折りたたむ',
-  'terminal.expand': '残り {n} 行を表示',
-  'terminal.expandAria': '折りたたまれた出力 {n} 行を展開',
-} satisfies Record<keyof typeof en, string>
+  'terminal.noOutput': '(no output)',
+  'terminal.collapse': 'Collapse',
+  'terminal.collapseAria': 'Collapse output',
+  'terminal.expand': 'Show {n} more lines',
+  'terminal.expandAria': 'Expand {n} collapsed output lines',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -172,7 +135,7 @@ export const es = {
   'terminal.collapseAria': 'Contraer salida',
   'terminal.expand': 'Mostrar {n} más líneas',
   'terminal.expandAria': 'Expandir líneas de salida colapsadas {n}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -214,7 +177,7 @@ export const fr = {
   'terminal.collapseAria': 'Réduire la sortie',
   'terminal.expand': 'Afficher {n} plus de lignes',
   'terminal.expandAria': 'Développer les lignes de sortie réduites {n}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -256,7 +219,7 @@ export const de = {
   'terminal.collapseAria': 'Ausgabe reduzieren',
   'terminal.expand': 'Zeige {n} weitere Zeilen',
   'terminal.expandAria': 'Erweitern Sie die minimierten Ausgabezeilen {n}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -298,7 +261,7 @@ export const ru = {
   'terminal.collapseAria': 'Свернуть вывод',
   'terminal.expand': 'Показать {n} больше строк',
   'terminal.expandAria': 'Развернуть свернутые выходные строки {n}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -340,4 +303,4 @@ export const pt = {
   'terminal.collapseAria': 'Recolher saída',
   'terminal.expand': 'Mostrar mais {n} linhas',
   'terminal.expandAria': 'Expanda {n} linhas de saída recolhidas',
-} satisfies Record<keyof typeof en, string>
+} as const

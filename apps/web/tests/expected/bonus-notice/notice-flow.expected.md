@@ -3,14 +3,14 @@ startup.notice=平台通知 / 已赠送您 5.00 元 NHS 体验赠金。
 startup.ack orders=notice-first
 startup.unsupported-action skipped=true valid-card=true displayed=false
 startup.profile-pending notice=true displayed=1
-startup.get locale=zh_CN query=
-startup.ack method=POST path=/api/v0/users/notifications/events locale=zh_CN notification_id=notice-first body="{\"notification_id\":\"notice-first\",\"type\":\"displayed\"}"
+startup.get locale=ja_JP query=
+startup.ack method=POST path=/api/v0/users/notifications/events locale=ja_JP notification_id=notice-first body="{\"notification_id\":\"notice-first\",\"type\":\"displayed\"}"
 startup.close event=dismissed displayed=1 dismissed=1
 open.held cards=0 acks=1 gets=1
 open.shown notice=赠金已到账 / 已赠送您 8.00 元 NHS 体验赠金。
 open.shown ack orders=notice-first,notice-later
 open.shown painted-under-settings=true cards=1 acks=2
-open.get locale=zh_CN query= served=true gets=1
+open.get locale=ja_JP query= served=true gets=1
 open.balance bonus-row=true amount=true dated=false
 open.cards-while-open=1 acks=2
 open.usage-link={{origin}}/usage

@@ -3,33 +3,10 @@ import type {} from '@noharness/client-ui-slots'
 
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
-    sidebarTerminal: keyof typeof zh
+    sidebarTerminal: keyof typeof en
   }
 }
 
-/** Simplified Chinese terminal copy. */
-export const zh = {
-  'shortcut.noSession': '请先选择会话',
-  recoveryFailed: '恢复终端失败：{message}', retryRecovery: '重试恢复终端',
-  shell: '选择 Shell', shellLoading: '正在读取 Shell…', shellEmpty: '没有可用的 Shell', description: '在会话工作区运行命令',
-  title: '终端', new: '新建终端', loading: '正在读取终端环境…', creating: '正在启动…',
-  connecting: '正在连接…', disconnected: '连接已断开。', reconnect: '重新连接',
-  readonly: '此页面当前只读。', control: '接管输入',
-  closed: '终端已关闭。', exited: '进程已退出（{code}）', failed: '终端错误：{message}',
-  rename: '终端名称', unavailable: '不可用', retry: '重试',
-  cleanupFailed: '终端「{title}」未能结束：{message}',
-  missingTerminal: '此终端已不存在，请新建终端。',
-  inputFull: '输入缓冲区已满，请重新连接后重试。',
-  attachmentEnded: '终端连接已结束，请重新连接。',
-  invalidOutput: '终端画面传输异常，请重新连接。',
-  terminalLimit: '终端数量已达上限，请关闭不用的终端后重试。已退出的终端也计入数量。',
-  'badge.agent': 'Agent', 'badge.agentHint': '由 Agent 打开。你一输入就由你接管，Agent 之后只能读取。',
-  'badge.sandbox': '沙箱',
-  'badge.readOnlyHint': '命令在 Agent 的只读沙箱里运行，包括你在这里输入的命令。',
-  'badge.workspaceWriteHint': '命令在 Agent 的工作区沙箱里运行，包括你在这里输入的命令。',
-} satisfies Record<string, string>
-
-/** English terminal copy. */
 export const en = {
   'shortcut.noSession': 'Select a session first',
   recoveryFailed: 'Terminal recovery failed: {message}', retryRecovery: 'Retry terminal recovery',
@@ -49,11 +26,13 @@ export const en = {
   'badge.sandbox': 'Sandbox',
   'badge.readOnlyHint': "Commands run in the agent's read-only sandbox, including commands you type here.",
   'badge.workspaceWriteHint': "Commands run in the agent's workspace sandbox, including commands you type here.",
-} satisfies Record<keyof typeof zh, string>
+} as const
+
+export type SidebarTerminalKey = keyof typeof en
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'shortcut.noSession': '先にセッションを選択してください',
+  'shortcut.noSession': 'Select a session first',
   'recoveryFailed': 'ターミナルの復元に失敗しました: {message}',
   'retryRecovery': 'ターミナルの復元を再試行',
   'shell': 'シェルを選択',
@@ -75,18 +54,18 @@ export const ja = {
   'rename': 'ターミナル名',
   'unavailable': '利用不可',
   'retry': '再試行',
-  'cleanupFailed': 'ターミナル「{title}」を終了できませんでした: {message}',
-  'missingTerminal': 'このターミナルはすでに存在しません。新しいターミナルを開いてください。',
-  'inputFull': '入力バッファがいっぱいです。再接続して再試行してください。',
-  'attachmentEnded': 'ターミナル接続が終了しました。続行するには再接続してください。',
-  'invalidOutput': 'ターミナル画面を受信できませんでした。再接続して復元してください。',
-  'terminalLimit': 'ターミナルの上限に達しました。未使用のターミナルを閉じて再試行してください。終了したターミナルも上限に含まれます。',
+  'cleanupFailed': 'Terminal “{title}” could not be ended: {message}',
+  'missingTerminal': 'This terminal no longer exists. Open a new terminal.',
+  'inputFull': 'The input buffer is full. Reconnect and try again.',
+  'attachmentEnded': 'The terminal connection ended. Reconnect to continue.',
+  'invalidOutput': 'The terminal screen could not be received. Reconnect to recover it.',
+  'terminalLimit': 'The terminal limit has been reached. Close unused terminals and try again. Exited terminals also count toward the limit.',
   'badge.agent': 'エージェント',
   'badge.agentHint': 'エージェントが開きました。ここで入力すると操作を引き継ぎ、以後エージェントは読み取りのみ可能になります。',
   'badge.sandbox': 'サンドボックス',
   'badge.readOnlyHint': 'コマンドはエージェントの読み取り専用サンドボックスで実行されます（ここで入力したコマンドも含みます）。',
   'badge.workspaceWriteHint': 'コマンドはエージェントのワークスペースサンドボックスで実行されます（ここで入力したコマンドも含みます）。',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -108,7 +87,7 @@ export const es = {
   'badge.sandbox': 'Sandbox',
   'badge.readOnlyHint': 'Los comandos se ejecutan en el sandbox de solo lectura del agente, incluidos los que escriba aquí.',
   'badge.workspaceWriteHint': 'Los comandos se ejecutan en el sandbox del espacio de trabajo del agente, incluidos los que escriba aquí.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -130,7 +109,7 @@ export const fr = {
   'badge.sandbox': 'Sandbox',
   'badge.readOnlyHint': 'Les commandes s’exécutent dans le sandbox en lecture seule de l’agent, y compris celles que vous saisissez ici.',
   'badge.workspaceWriteHint': 'Les commandes s’exécutent dans le sandbox de l’espace de travail de l’agent, y compris celles que vous saisissez ici.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -152,7 +131,7 @@ export const de = {
   'badge.sandbox': 'Sandbox',
   'badge.readOnlyHint': 'Befehle laufen in der schreibgeschützten Sandbox des Agenten, auch Befehle, die Sie hier eingeben.',
   'badge.workspaceWriteHint': 'Befehle laufen in der Arbeitsbereich-Sandbox des Agenten, auch Befehle, die Sie hier eingeben.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -174,7 +153,7 @@ export const ru = {
   'badge.sandbox': 'Песочница',
   'badge.readOnlyHint': 'Команды выполняются в песочнице агента только для чтения, включая команды, которые вы вводите здесь.',
   'badge.workspaceWriteHint': 'Команды выполняются в песочнице рабочей области агента, включая команды, которые вы вводите здесь.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -196,4 +175,4 @@ export const pt = {
   'badge.sandbox': 'Sandbox',
   'badge.readOnlyHint': 'Os comandos são executados no sandbox somente leitura do agente, incluindo os que você digitar aqui.',
   'badge.workspaceWriteHint': 'Os comandos são executados no sandbox do espaço de trabalho do agente, incluindo os que você digitar aqui.',
-} satisfies Record<keyof typeof en, string>
+} as const

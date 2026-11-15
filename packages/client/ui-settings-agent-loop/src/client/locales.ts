@@ -24,21 +24,9 @@ export const en: Record<AgentLoopSettingsLocaleKey, string> = {
   invalidNumber: 'Enter a number, or leave blank to use the default.',
 }
 
-/** Simplified Chinese copy. */
-export const zh: Record<AgentLoopSettingsLocaleKey, string> = {
-  title: 'Agent 循环',
-  description: '控制 Agent 派发工具调用的方式。',
-  maxParallel: '并行工具调用数',
-  maxParallelHint: '同一步内最多同时运行多少个可并行的调用。',
-  overridden: '已覆盖',
-  reset: '恢复默认',
-  readOnly: '本部署的设置为只读。',
-  unavailable: '该插件当前未加载，暂时无法配置。',
-  save: '保存',
-  saving: '保存中…',
-  saveFailed: '本部署没有接受这些值，已保留供你修改。',
-  invalidNumber: '请填数字；留空表示使用默认值。',
-}
+export type SettingsAgentLoopKey = keyof typeof en
+
+
 
 /**
  * The form frame's copy, read from this page's dictionary.
@@ -52,18 +40,18 @@ export function formLabels(t: (key: AgentLoopSettingsLocaleKey) => string): Sett
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   'title': 'エージェントループ',
-  'description': 'エージェントのツール呼び出しのディスパッチ方法を制御します。',
-  'maxParallel': '並列ツール呼び出し',
-  'maxParallelHint': '1ステップ内で同時に実行される並列安全呼び出しの上限。',
-  'overridden': '上書き済み',
+  'description': 'Control how the Agent dispatches tool calls.',
+  'maxParallel': 'Parallel tool calls',
+  'maxParallelHint': 'Upper bound on parallel-safe calls running at once within one step.',
+  'overridden': 'Overridden',
   'reset': 'デフォルトにリセット',
-  'readOnly': 'このデプロイメントでは設定は読み取り専用で保存されます。',
-  'unavailable': 'このプラグインは読み込まれていないため、現在設定できません。',
-  'save': '保存',
-  'saving': '保存中…',
-  'saveFailed': 'デプロイがこれらの値を受け付けませんでした。修正のために残されています。',
-  'invalidNumber': '数値を入力するか、空欄のままにするとデフォルトが使用されます。',
-} satisfies Record<keyof typeof en, string>
+  'readOnly': 'This deployment stores settings read-only.',
+  'unavailable': 'This plugin is not loaded, so it cannot be configured right now.',
+  'save': 'Save',
+  'saving': 'Saving…',
+  'saveFailed': 'The deployment did not accept these values; they were left for you to correct.',
+  'invalidNumber': 'Enter a number, or leave blank to use the default.',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -79,7 +67,7 @@ export const es = {
   saving: 'Guardando…',
   saveFailed: 'El despliegue no aceptó estos valores; quedaron para que usted los corrigiera.',
   invalidNumber: 'Ingrese un número o déjelo en blanco para usar el valor predeterminado.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -95,7 +83,7 @@ export const fr = {
   saving: 'Sauvegarde…',
   saveFailed: "Le déploiement n'a pas accepté ces valeurs ; ils vous ont été laissés à corriger.",
   invalidNumber: 'Entrez un numéro ou laissez ce champ vide pour utiliser la valeur par défaut.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -111,7 +99,7 @@ export const de = {
   saving: 'Speichern…',
   saveFailed: 'Die Bereitstellung hat diese Werte nicht akzeptiert. Sie mussten sie korrigieren.',
   invalidNumber: 'Geben Sie eine Zahl ein oder lassen Sie das Feld leer, um den Standardwert zu verwenden.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -127,7 +115,7 @@ export const ru = {
   saving: 'Сохранение…',
   saveFailed: 'Развертывание не приняло эти значения; их оставили вам на исправление.',
   invalidNumber: 'Введите число или оставьте поле пустым, чтобы использовать значение по умолчанию.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -143,4 +131,4 @@ export const pt = {
   saving: 'Salvando…',
   saveFailed: 'A implantação não aceitou esses valores; eles foram deixados para você corrigir.',
   invalidNumber: 'Insira um número ou deixe em branco para usar o padrão.',
-} satisfies Record<keyof typeof en, string>
+} as const

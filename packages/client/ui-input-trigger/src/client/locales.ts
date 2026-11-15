@@ -4,23 +4,6 @@
  * raw name), the pending row, and the listbox and header aria labels.
  */
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'command': '指令',
-  'skill': '技能',
-  'subagent': '子智能体',
-  'loading': '正在加载…',
-  'drill.aria': '进入目录',
-  'drill.hint': '进入目录',
-  'drill.key': 'Tab',
-  'crumbs.aria': '目录导航',
-  'suggestions.aria': '触发候选建议',
-} satisfies Record<string, string>
-
-/** The slash.menu namespace key union. */
-export type MenuKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'command': 'Commands',
   'skill': 'Skills',
@@ -31,20 +14,23 @@ export const en = {
   'drill.key': 'Tab',
   'crumbs.aria': 'Folder navigation',
   'suggestions.aria': 'Trigger suggestions',
-} satisfies Record<MenuKey, string>
+} as const
+
+export type MenuKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   'command': 'コマンド',
   'skill': 'スキル',
   'subagent': 'サブエージェント',
-  'loading': '読み込み中…',
-  'drill.aria': 'フォルダを参照',
-  'drill.hint': 'フォルダを参照',
+  'loading': 'Loading…',
+  'drill.aria': 'Browse folder',
+  'drill.hint': 'Browse folder',
   'drill.key': 'Tab',
   'crumbs.aria': 'フォルダナビゲーション',
-  'suggestions.aria': '候補を表示',
-} satisfies Record<keyof typeof en, string>
+  'suggestions.aria': 'Trigger suggestions',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -57,7 +43,7 @@ export const es = {
   'drill.key': 'Pestaña',
   'crumbs.aria': 'Navegación de carpetas',
   'suggestions.aria': 'Sugerencias de activación',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -70,7 +56,7 @@ export const fr = {
   'drill.key': 'Onglet',
   'crumbs.aria': 'Navigation dans les dossiers',
   'suggestions.aria': 'Suggestions de déclenchement',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -83,7 +69,7 @@ export const de = {
   'drill.key': 'Tab',
   'crumbs.aria': 'Ordnernavigation',
   'suggestions.aria': 'Trigger-Vorschläge',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -96,7 +82,7 @@ export const ru = {
   'drill.key': 'Вкладка',
   'crumbs.aria': 'Навигация по папкам',
   'suggestions.aria': 'Триггерные предложения',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -109,4 +95,4 @@ export const pt = {
   'drill.key': 'Guia',
   'crumbs.aria': 'Navegação de pastas',
   'suggestions.aria': 'Sugestões de gatilho',
-} satisfies Record<keyof typeof en, string>
+} as const

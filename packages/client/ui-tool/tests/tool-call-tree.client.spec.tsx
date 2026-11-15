@@ -7,15 +7,15 @@ import { bindDisclosure, useDisclosure } from '@noharness/client-ui-chat/src/cli
 import type { SessionSnapshot } from '@noharness/api-session-controller/client'
 import type { ToolCallBlock, ToolResultNode } from '@noharness/client-ui-chat/client'
 import { contextMenuHook, makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { ToolCallOwnerProps, ToolTreeProps } from '../src/client/contract/slots.ts'
 import { ToolCallTree } from '../src/client/tool/ToolCallTree.tsx'
-import { zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 
 afterEach(cleanup)
 
-const t: ToolTreeProps['t'] = makeTranslate(zh, commonZh)
+const t: ToolTreeProps['t'] = makeTranslate(ja, commonJa)
 
 const root = (callId: string, call: ToolResultNode['call']): ToolResultNode => ({
   kind: 'tool-result', seq: 3, time: 3_000, callId, call, callTime: 2_000,

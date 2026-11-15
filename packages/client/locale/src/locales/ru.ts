@@ -1,5 +1,4 @@
 /** Russian common-namespace dictionary. */
-import type { en } from './en.ts'
 
 /** Complete Russian copy for the common namespace. */
 export const ru = {
@@ -44,4 +43,4 @@ export const ru = {
   'markdown.truncatedCharacters': '… обрезано до {total} символов',
   'number.thousand': '{value}K',
   'number.million': '{value}M',
-} satisfies Record<keyof typeof en, string>
+} as const

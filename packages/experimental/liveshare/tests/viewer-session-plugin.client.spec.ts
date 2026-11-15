@@ -9,7 +9,7 @@ import { apply, inject, viewerSignInHref } from '../src/client/viewer-session-pl
 import { publishViewerCapabilities, viewerCapabilities } from '../src/client/viewer-capabilities.ts'
 import { viewerContextFacts } from '../src/client/viewer-context.ts'
 import { viewerStatus, viewerStatusFacts } from '../src/client/viewer-status.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import { cleanup, render } from '@testing-library/react'
 import { createElement, createRef } from 'react'
 import { DraftEditor } from '@noharness/client-ui-conversation/src/client/input/editor/DraftEditor.tsx'
@@ -35,7 +35,7 @@ type BlockRecord = { readonly reason: string }
  */
 async function bench(
   initial?: Parameters<typeof provideViewerRemoteAccess>[1],
-  language: 'zh' | 'en' = 'zh',
+  language: 'ja' | 'en' = 'ja',
   options: { readonly target?: boolean; readonly missingConversation?: boolean } = {},
 ) {
   const rows = createSnapshotStore<{ byId: Record<string, unknown> }>({ byId: {} })
@@ -245,7 +245,7 @@ describe('viewer sign-in return address', () => {
 })
 
 describe('viewer session plugin', () => {
-  for (const [language, dictionary] of [['zh', zh], ['en', en]] as const) {
+  for (const [language, dictionary] of [['ja', ja], ['en', en]] as const) {
     describe(`readable viewer in ${language}`, () => {
       it('renders localized blocked-composer copy and keeps read navigation available', async () => {
         // The share grants writing but this page's snapshot holds no prompt for it, which is the state a
@@ -299,7 +299,7 @@ describe('viewer session plugin', () => {
       admitted = true
       window.dispatchEvent(new Event('focus'))
       await vi.waitFor(() => { expect(viewerStatus.getSnapshot()).toBe('ready') })
-      expect(page.blocks.get(SHARED)?.reason).toBe(zh['viewer.readonlyNote'])
+      expect(page.blocks.get(SHARED)?.reason).toBe(ja['viewer.readonlyNote'])
       expect(document.getElementById('liveshare-viewer-status')?.style.display).toBe('none')
     } finally { await page.fiber.dispose() }
   })
@@ -544,7 +544,7 @@ describe('viewer session plugin', () => {
       // The snapshot withdraws that Session: its composer returns to read-only at once and states the
       // page's own read-only reason, because the snapshot carries no per-Session refusal code.
       page.access.push({ type: 'remove', resource: { kind: 'session', id: OTHER } })
-      expect(page.blocks.get(OTHER)?.reason).toBe(zh['viewer.readonlyNote'])
+      expect(page.blocks.get(OTHER)?.reason).toBe(ja['viewer.readonlyNote'])
       // One withdrawn Session does not narrow what the page holds for the Session it presents.
       expect(page.blocks.get(SHARED)).toBeUndefined()
     } finally {
@@ -612,7 +612,7 @@ describe('viewer session plugin', () => {
 
   it('addresses no composer when a Session exposes no conversation face', async () => {
     vi.stubGlobal('fetch', vi.fn(() => Promise.reject(new Error('the share is not read here'))))
-    const page = await bench(undefined, 'zh', { missingConversation: true })
+    const page = await bench(undefined, 'ja', { missingConversation: true })
     try {
       listRows(page, { ownFork: false })
       await vi.waitFor(() => { expect(page.scopesAsked).toContain(SHARED) })
@@ -626,7 +626,7 @@ describe('viewer session plugin', () => {
   it('reads the bare page when the served document names no share', async () => {
     const request = vi.fn((_input: unknown) => Promise.reject(new Error('context unavailable')))
     vi.stubGlobal('fetch', request)
-    const page = await bench(undefined, 'zh', { target: false })
+    const page = await bench(undefined, 'ja', { target: false })
     try {
       await vi.waitFor(() => { expect(request).toHaveBeenCalled() })
       // No share and no base path named: the context read asks for the empty share.

@@ -2,7 +2,7 @@
 export const mouseControlPrompt = {
   question: {
     en: 'Allow the agent to move and drag with your mouse?',
-    zh: '允许智能体使用你的鼠标移动指针和拖动吗？',
+    zh: 'Allow the agent to move and drag with your mouse?',
     ja: 'エージェントにマウスポインタの移動とドラッグを許可しますか？',
     es: '¿Permitir que el agente mueva el puntero y arrastre con tu ratón?',
     fr: 'Autoriser l’agent à déplacer le pointeur et à faire glisser des éléments avec votre souris ?',
@@ -12,7 +12,7 @@ export const mouseControlPrompt = {
   },
   detail: {
     en: 'The agent can move your pointer and drag with a mouse button held when it explicitly requests control. Your choice lasts until you close this session or restart NHS.',
-    zh: '智能体明确请求使用鼠标时，可以移动指针，也可以按住鼠标键拖动。此选择在关闭本次会话或重启 NHS 前有效。',
+    zh: 'The agent can move your pointer and drag with a mouse button held when it explicitly requests control. Your choice lasts until you close this session or restart NHS.',
     ja: 'エージェントが明示的に要求したとき、ポインタの移動やマウスボタンを押したままのドラッグを許可します。この選択はセッションを閉じるか NHS を再起動するまで有効です。',
     es: 'Cuando lo solicite expresamente, el agente podrá mover el puntero y arrastrar con un botón pulsado. Tu decisión se recuerda hasta que cierres la sesión o reinicies NHS.',
     fr: 'Sur demande explicite, l’agent pourra déplacer le pointeur et faire glisser la souris en maintenant un bouton enfoncé. Votre choix reste valable jusqu’à la fermeture de la session ou au redémarrage de NHS.',

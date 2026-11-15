@@ -14,7 +14,7 @@ import { createSnapshotStore, type SnapshotStore } from '@noharness/client-store
 import type { ConnectionState } from '@noharness/client-connection/client'
 import type { RemoteAccessFrame, TypertResourceKind } from '@noharness/api-remote-access/client'
 import { ClientAccessState } from '@noharness/api-remote-access/src/client/state.ts'
-import { en, NS, zh } from '../src/client/locales.ts'
+import { en, NS, ja } from '../src/client/locales.ts'
 
 /** Scripted access snapshot of one viewer page. */
 export interface ViewerRemoteAccess {
@@ -68,10 +68,10 @@ export function provideViewerConnection(ctx: Context): SnapshotStore<ConnectionS
  * @param language - Language the mounted surfaces state their copy in.
  * @returns The provided registry, for a case that switches language mid-test.
  */
-export function provideViewerLocale(ctx: Context, language: 'zh' | 'en' = 'zh'): LocaleRuntime {
+export function provideViewerLocale(ctx: Context, language: 'ja' | 'en' = 'ja'): LocaleRuntime {
   const locale = new LocaleRuntime(ctx)
   ctx.provide('locale', locale)
-  locale.register(NS, { zh, en })
+  locale.register(NS, { ja, en })
   locale.setLocale(language)
   return locale
 }

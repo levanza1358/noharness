@@ -8,7 +8,7 @@ import { fileAddressFor } from '@noharness/util-workspace-path'
 import { failureLine } from '../src/client/workspace-tree.ts'
 import type { PaneId, TabId } from '@noharness/client-ui-dockkit'
 import type { DirLevel } from '../src/client/store.ts'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 import { mountBody, PANE, ROOT, SESSION, TAB } from './mount.client.tsx'
 import { answer, searchesSettled } from './search-fixture.client.ts'
 
@@ -35,11 +35,11 @@ describe('FilesBody', () => {
       binding: null, keys: ['Ctrl', 'R'], aria: 'Control+R', modified: true, conflicts: [], issue: null } })
     await act(() => script.watches.ready(ROOT))
     await act(() => script.settle({ ok: true, value: ROOT_LEVEL }))
-    expect(view.getByRole('button', { name: zh.reload }).getAttribute('aria-keyshortcuts')).toBe('Control+R')
+    expect(view.getByRole('button', { name: ja.reload }).getAttribute('aria-keyshortcuts')).toBe('Control+R')
   })
   it('says so when the session has no workspace directory, and asks for nothing', () => {
     const { view, script } = mountBody(null)
-    expect(view.container.querySelector('[data-files-state="no-workspace"]')?.textContent).toBe(zh.noWorkspace)
+    expect(view.container.querySelector('[data-files-state="no-workspace"]')?.textContent).toBe(ja.noWorkspace)
     expect(script.list).not.toHaveBeenCalled()
   })
 
@@ -54,7 +54,7 @@ describe('FilesBody', () => {
     const header = page.firstElementChild!
     expect(header.querySelector('[data-files-path]')?.getAttribute('title')).toBe(ROOT)
     expect([...header.querySelectorAll('button:not([data-files-auto-refresh])')].map(button => button.getAttribute('aria-label')))
-      .toEqual([zh.reload, zh['search.placeholder']])
+      .toEqual([ja.reload, ja['search.placeholder']])
     const content = page.querySelector('[data-files-content]')!
     // The filled layout's rule finds the row the navigator covers by this attribute.
     expect(content.hasAttribute('data-files-navigator-row')).toBe(true)
@@ -70,7 +70,7 @@ describe('FilesBody', () => {
     fireEvent.keyDown(navigator, { key: 'Escape' })
     act(() => { instance.actions.shown(PANE, false) })
     expect(view.container.querySelector('[data-files-navigator]')).not.toBeNull()
-    expect(view.getByRole('button', { name: zh.reload }).hasAttribute('disabled')).toBe(false)
+    expect(view.getByRole('button', { name: ja.reload }).hasAttribute('disabled')).toBe(false)
     const bound = tabActions.bindCommands.mock.lastCall?.[0]
     expect(typeof bound?.refresh).toBe('function')
   })
@@ -95,7 +95,7 @@ describe('FilesBody', () => {
     const h = mountBody()
     await act(() => h.script.watches.ready(ROOT))
     await act(() => h.script.settle({ ok: true, value: ROOT_LEVEL }))
-    const toggle = h.view.getByRole('button', { name: zh['search.placeholder'] })
+    const toggle = h.view.getByRole('button', { name: ja['search.placeholder'] })
     expect(toggle.getAttribute('aria-expanded')).toBe('false')
     expect(h.view.queryByRole('searchbox')).toBeNull()
     expect(h.beside(TAB)).toBe(true)
@@ -124,7 +124,7 @@ describe('FilesBody', () => {
     const back = h.remount()
     expect(back.queryByRole('searchbox')).toBeNull()
     expect(names(back.container)).toContain(`${ROOT}/src/target.ts`)
-    await act(async () => { fireEvent.click(back.getByRole('button', { name: zh['search.placeholder'] })) })
+    await act(async () => { fireEvent.click(back.getByRole('button', { name: ja['search.placeholder'] })) })
     expect(back.container.querySelector<HTMLInputElement>('[data-files-search]')?.value).toBe('target')
     expect(h.search).toHaveBeenCalledTimes(1)
   })
@@ -133,7 +133,7 @@ describe('FilesBody', () => {
     const h = mountBody()
     await act(() => h.script.watches.ready(ROOT))
     await act(() => h.script.settle({ ok: true, value: ROOT_LEVEL }))
-    const toggle = h.view.getByRole('button', { name: zh['search.placeholder'] })
+    const toggle = h.view.getByRole('button', { name: ja['search.placeholder'] })
     await act(async () => { fireEvent.click(toggle) })
     h.searches.answerWith(answer(['src/target.ts']))
     await act(async () => {
@@ -155,7 +155,7 @@ describe('FilesBody', () => {
     const h = mountBody()
     await act(() => h.script.watches.ready(ROOT))
     await act(() => h.script.settle({ ok: true, value: ROOT_LEVEL }))
-    const toggle = h.view.getByRole('button', { name: zh['search.placeholder'] })
+    const toggle = h.view.getByRole('button', { name: ja['search.placeholder'] })
     await act(async () => { fireEvent.click(toggle) })
     h.searches.answerWith(undefined)
     fireEvent.change(h.view.getByRole('searchbox'), { target: { value: 'target' } })
@@ -180,9 +180,9 @@ describe('FilesBody', () => {
     const h = mountBody()
     await act(() => h.script.watches.ready(ROOT))
     await act(() => h.script.settle({ ok: true, value: ROOT_LEVEL }))
-    const toggle = h.view.getByRole('button', { name: zh['search.placeholder'] })
+    const toggle = h.view.getByRole('button', { name: ja['search.placeholder'] })
     await act(async () => { fireEvent.click(toggle) })
-    fireEvent.click(h.view.getByRole('button', { name: zh['search.settings'] }))
+    fireEvent.click(h.view.getByRole('button', { name: ja['search.settings'] }))
     expect(h.view.queryByRole('dialog')).not.toBeNull()
     fireEvent.click(toggle)
     expect(h.view.queryByRole('dialog')).toBeNull()
@@ -202,8 +202,8 @@ describe('FilesBody', () => {
     expect(path?.getAttribute('title')).toBe(ROOT)
     expect([...path?.firstElementChild?.children ?? []].map(span => span.textContent)).toEqual(['/work/', 'app'])
     expect(names(view.container)).toEqual([`${ROOT}/src`, `${ROOT}/pipe`, `${ROOT}/README.md`])
-    await act(async () => { fireEvent.click(view.getByRole('button', { name: zh['search.placeholder'] })) })
-    act(() => { fireEvent.click(view.getByRole('button', { name: zh['search.showHidden'] })) })
+    await act(async () => { fireEvent.click(view.getByRole('button', { name: ja['search.placeholder'] })) })
+    act(() => { fireEvent.click(view.getByRole('button', { name: ja['search.showHidden'] })) })
     expect(names(view.container)).toEqual([`${ROOT}/src`, `${ROOT}/.env`, `${ROOT}/pipe`, `${ROOT}/README.md`])
     const envIcon = view.container.querySelector(`[data-files-path="${ROOT}/.env"] svg`)?.innerHTML
     const readmeIcon = view.container.querySelector(`[data-files-path="${ROOT}/README.md"] svg`)?.innerHTML
@@ -312,18 +312,18 @@ describe('FilesBody', () => {
     expect(view.container.querySelector('[data-files-navigator]')).not.toBeNull()
     const other = view.container.querySelector(`[data-files-path="${ROOT}/pipe"]`)!
     expect(other.querySelector('button')).toBeNull()
-    expect(other.querySelector('[aria-disabled="true"]')?.getAttribute('title')).toBe(zh['entry.other'])
+    expect(other.querySelector('[aria-disabled="true"]')?.getAttribute('title')).toBe(ja['entry.other'])
   })
 
   it('marks a cut listing and an empty one', async () => {
     const { view, script } = mountBody()
     await act(() => script.watches.ready(ROOT))
     await act(() => script.settle({ ok: true, value: { entries: [{ name: 'd', type: 'directory' }], truncated: true } }))
-    expect(view.container.querySelector('[data-files-row="truncated"]')?.textContent).toBe(zh.truncated)
+    expect(view.container.querySelector('[data-files-row="truncated"]')?.textContent).toBe(ja.truncated)
     act(() => { fireEvent.click(within(view.container.querySelector<HTMLElement>(`[data-files-path="${ROOT}/d"]`)!).getByRole('button', { name: 'd' })) })
     await act(() => script.watches.ready(`${ROOT}/d`))
     await act(() => script.settle({ ok: true, value: { entries: [], truncated: false } }))
-    expect(view.container.querySelector('[data-files-row="empty"]')?.textContent).toBe(zh.empty)
+    expect(view.container.querySelector('[data-files-row="empty"]')?.textContent).toBe(ja.empty)
   })
 
   it('shows a failed level under its directory in terms of the directory', async () => {
@@ -333,7 +333,7 @@ describe('FilesBody', () => {
       ok: false,
       error: new RemoteError('workspace-file/not-found', 'gone', { path: ROOT }),
     }))
-    expect(view.container.querySelector('[data-files-row="failed"]')?.textContent).toBe(zh['error.notFound'])
+    expect(view.container.querySelector('[data-files-row="failed"]')?.textContent).toBe(ja['error.notFound'])
     expect(view.container.querySelector('[data-files-row="empty"]')).toBeNull()
   })
 
@@ -342,12 +342,12 @@ describe('FilesBody', () => {
     await act(() => script.watches.ready(ROOT))
     await act(() => script.settle({ ok: true, value: ROOT_LEVEL }))
     const rows = names(view.container)
-    const reload = view.getByRole('button', { name: zh.reload })
+    const reload = view.getByRole('button', { name: ja.reload })
     act(() => { fireEvent.click(reload) })
     await act(() => script.settle({
       ok: false, error: new RemoteError('workspace-file/not-found', 'gone', { path: ROOT }),
     }))
-    expect(view.container.querySelector('[data-files-row="failed"]')?.textContent).toBe(zh['error.notFound'])
+    expect(view.container.querySelector('[data-files-row="failed"]')?.textContent).toBe(ja['error.notFound'])
     expect(names(view.container)).toEqual(rows)
     act(() => { fireEvent.click(reload) })
     await act(() => script.settle({ ok: true, value: ROOT_LEVEL }))
@@ -392,7 +392,7 @@ describe('FilesBody', () => {
     expect(body.scrollTop).toBe(120)
     expect(instance.getSnapshot().byPane[PANE]!.tree!.expanded).toEqual([ROOT, child])
     expect(script.watches.opened.map(stream => stream.path)).toEqual([ROOT, child])
-    expect(view.container.querySelector('[data-files-reload]')?.getAttribute('aria-label')).toBe(zh.reload)
+    expect(view.container.querySelector('[data-files-reload]')?.getAttribute('aria-label')).toBe(ja.reload)
   })
 
   it('keeps the automatic control hidden and enabled by default, with manual reload independent of its setting', async () => {
@@ -402,13 +402,13 @@ describe('FilesBody', () => {
     const automatic = view.container.querySelector('[data-files-auto-refresh]')!
     expect(automatic.closest('span[hidden]')).not.toBeNull()
     expect(automatic.getAttribute('aria-pressed')).toBe('true')
-    expect(view.queryByRole('button', { name: zh.autoRefresh })).toBeNull()
-    expect(view.getByRole('button', { name: zh.reload })).toBeDefined()
+    expect(view.queryByRole('button', { name: ja.autoRefresh })).toBeNull()
+    expect(view.getByRole('button', { name: ja.reload })).toBeDefined()
     act(() => { fireEvent.click(automatic) })
     expect(automatic.getAttribute('aria-pressed')).toBe('false')
     await act(() => stream.deliver('change'))
     expect(script.list).toHaveBeenCalledTimes(1)
-    act(() => { fireEvent.click(view.getByRole('button', { name: zh.reload })) })
+    act(() => { fireEvent.click(view.getByRole('button', { name: ja.reload })) })
     await act(() => script.settle({ ok: true, value: ROOT_LEVEL }))
     expect(script.list).toHaveBeenCalledTimes(2)
     expect(instance.getSnapshot().byPane[PANE]!.tree!.autoRefresh).toBe(false)
@@ -417,14 +417,14 @@ describe('FilesBody', () => {
 })
 
 describe('failureLine', () => {
-  const t = makeTranslate(zh)
+  const t = makeTranslate(ja)
 
   it('names each directory failure', () => {
-    expect(failureLine(t, new RemoteError('workspace-file/not-found', 'x', { path: 'p' }))).toBe(zh['error.notFound'])
+    expect(failureLine(t, new RemoteError('workspace-file/not-found', 'x', { path: 'p' }))).toBe(ja['error.notFound'])
     expect(failureLine(t, new RemoteError('workspace-file/outside-workspace', 'x', { path: 'p' })))
-      .toBe(zh['error.outsideWorkspace'])
+      .toBe(ja['error.outsideWorkspace'])
     expect(failureLine(t, new RemoteError('workspace-file/not-directory', 'x', { path: 'p', kind: 'file' })))
-      .toBe(zh['error.notDirectory'])
+      .toBe(ja['error.notDirectory'])
   })
 
   it('carries an unclassified failure\'s own message', () => {

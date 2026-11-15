@@ -7,7 +7,7 @@ import { act, cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { ViewerBrandMark, ViewerBrandName } from '../src/client/viewer-brand.tsx'
 import { viewerContextFacts, type ViewerContextFacts } from '../src/client/viewer-context.ts'
-import { en, NS, zh } from '../src/client/locales.ts'
+import { en, NS, ja } from '../src/client/locales.ts'
 
 interface ViewerTargetWindow {
   __NHS_LIVESHARE_VIEWER__?: { shareId: string; sessionId: string; basePath: string }
@@ -15,8 +15,8 @@ interface ViewerTargetWindow {
 
 // The brand row reads its copy through the locale seat the served page's client tree provides.
 const locale = new LocaleRuntime(new Context())
-locale.register(NS, { zh, en })
-locale.setLocale('zh')
+locale.register(NS, { ja, en })
+locale.setLocale('en')
 const t = locale.bind(NS)
 
 afterEach(() => {

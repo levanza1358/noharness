@@ -6,7 +6,7 @@ import { createSnapshotStore } from '@noharness/client-store'
 import type { ShortcutCatalogEntry, ShortcutCommandId, ShortcutFixedCatalogEntry } from '@noharness/client-shortcuts/client'
 import { ShortcutReference, ShortcutsRow } from '../src/client/Reference.tsx'
 import { createShortcutsStore } from '../src/client/store.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import { initialShortcutConfig, bindingIssue, normalizeBinding, presentBinding } from '@noharness/client-shortcuts/protocol'
 import type { ShortcutConfigSnapshot } from '@noharness/client-shortcuts/protocol'
 import { ShortcutRegistry } from '../../shortcuts/src/client/registry.ts'
@@ -112,7 +112,7 @@ it.each(['macos', 'windows'] as const)('shows the reference, filters labels and 
   expect(screen.queryByRole('tooltip')).toBeNull()
   act(() => { catalog.set([]) })
   expect(opener.hasAttribute('aria-keyshortcuts')).toBe(false)
-  expect(makeTranslate(zh)('title')).toBe('快捷键')
+  expect(makeTranslate(ja)('title')).toBe('快捷键')
 })
 
 
@@ -250,7 +250,7 @@ it('keeps product order for tied searches while prioritizing stronger matches', 
 })
 
 it.each((['web', 'desktop'] as const).flatMap(runtime => (['invalid', 'future'] as const)
-  .flatMap(error => [{ runtime, error, dictionary: en }, { runtime, error, dictionary: zh }])))
+  .flatMap(error => [{ runtime, error, dictionary: en }, { runtime, error, dictionary: ja }])))
 ('identifies the $runtime document and preserves $error data in the selected locale', ({ runtime, error, dictionary }) => {
   const f = referenceFixture({ runtime, dictionary })
   act(() => { f.config.set({ ...f.config.getSnapshot(), status: 'unreadable', error, usingDefaults: false,

@@ -10,7 +10,7 @@ import { brandString } from '@noharness/brand'
 import type { SessionId } from '@noharness/session/types'
 import { SlotTestRuntime } from '@noharness/client-test-runtime'
 import { LocaleRuntime } from '@noharness/client-locale/client'
-import { en, zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { en, ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { UiConversation } from '@noharness/client-ui-conversation/src/client/conversation/assembly.ts'
 import { ImageGallery, MessageImage } from '../src/MessageImage.tsx'
 import type { MessageImageLabels } from '../src/MessageImage.tsx'
@@ -295,7 +295,7 @@ describe('ImageGallery', () => {
     const runtime = await SlotTestRuntime.create()
     onTestFinished(() => runtime.dispose())
     const locale = new LocaleRuntime(runtime.ctx)
-    locale.register('conversation', { en, zh })
+    locale.register('conversation', { en, ja })
     locale.setLocale('en')
     runtime.ctx.provide('locale', locale)
     runtime.slots.installLocale(locale)
@@ -342,8 +342,8 @@ describe('ImageGallery', () => {
     const runtime = await SlotTestRuntime.create()
     onTestFinished(() => runtime.dispose())
     const locale = new LocaleRuntime(runtime.ctx)
-    locale.register('conversation', { en, zh })
-    locale.setLocale('zh')
+    locale.register('conversation', { en, ja })
+    locale.setLocale('en')
     runtime.ctx.provide('locale', locale)
     new UiConversation(runtime.ctx, runtime.sessions)
     runtime.slots.installLocale(locale)

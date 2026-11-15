@@ -13,12 +13,12 @@ import { useDisclosure } from '@noharness/client-ui-chat/src/client/chat/use-dis
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { ToolCallBlock, ToolResultNode } from '@noharness/client-ui-chat/client'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 // Export discipline: packages/client/AGENTS.md.
 import { AskQuestionRow, askQuestionToolview } from '../src/client/tool/toolviews/ask-question-row.tsx'
 import type { UserQuestionPanels } from '../src/client/contract/slots.ts'
 import type { SessionId } from '@noharness/session/types'
-import { zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 
 afterEach(cleanup)
@@ -45,7 +45,7 @@ const resultNode = (argsRaw: string, resultText: string | null, over?: Partial<T
 const runningCall = (argsRaw: string): ToolCallBlock =>
   ({ phase: 'start', args: PartialArguments.fromText(argsRaw), callId: 'c1', name: 'ask_user_question', argsRaw, turn: 1, step: 1, time: 1_000, subCalls: [] })
 
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 /** What the row's environment says about the call, beyond the recorded block. */
 interface RowEnvironment {

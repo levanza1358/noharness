@@ -4,10 +4,10 @@ import { createRef, StrictMode } from 'react'
 import { act, cleanup, fireEvent, render, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { TurnNavigator, type TurnNavigatorHandle } from '../src/client/chat/TurnNavigator.tsx'
 import type { TurnRailItem } from '../src/client/chat/turn-rail-items.ts'
-import { zh } from '../src/client/locale.ts'
+import { ja } from '../src/client/locale.ts'
 import { installTurnNavigatorObserver } from './turn-navigator-fixture.ts'
 
 afterEach(() => {
@@ -22,7 +22,7 @@ const items: readonly TurnRailItem[] = Array.from({ length: 1_000 }, (_, index) 
   response: '',
   anchor: { kind: 'loaded', key: `turn:${String(index + 1)}` },
 }))
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 describe('TurnNavigator', () => {
   it('places the latest committed active turn on its first viewport size without scroll commands', () => {

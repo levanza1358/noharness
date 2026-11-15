@@ -39,7 +39,7 @@ import {
   type ConversationSessionHeaderProps, type ConversationSessionProps,
 } from '@noharness/client-ui-conversation/src/client/skeleton/ConversationSession.tsx'
 import { createConversationStore } from '@noharness/client-ui-conversation/src/client/stores.ts'
-import { zh as conversationZh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja as conversationZh } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import * as localePlugin from '@noharness/client-locale/client'
 import { apply, inject } from '@noharness/client-ui-trajectory/client'
 import { PartialArguments } from '@noharness/util-values'
@@ -52,7 +52,7 @@ import { createTrajectoryDurationStore } from '../src/client/duration-store.ts'
 import { EMPTY_TRAJECTORY_SNAPSHOT } from '../src/client/trajectory-snapshot-builder.ts'
 import type { TrajectorySnapshot } from '../src/client/trajectory-contract.ts'
 import { deriveTrajectoryTimeline } from '../src/client/timeline.ts'
-import { t as tTrajectory, tZh } from './locale.client.ts'
+import { t as tTrajectory, tJa } from './locale.client.ts'
 
 // Every session-scope fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
 const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined, reload: () => {} })) as GlobalStandardProps['useResource']
@@ -250,7 +250,7 @@ function standaloneProps(
     renderSlot: () => null,
     loadImage: () => Promise.reject(new Error('standalone views load no images')),
     // The locale seat the outlet would inject for the declared namespace.
-    t: tZh,
+    t: tJa,
   }
 }
 
@@ -402,7 +402,7 @@ function mount(fixture: Awaited<ReturnType<typeof bench>>) {
           loadImage: trajectory.loadImage,
           setActualDuration: trajectory.setActualDuration,
           useDuration: bindSnapshotSelector(trajectory.hooks.duration),
-          t: tZh,
+          t: tJa,
         }
       })()
       : injected
@@ -560,7 +560,7 @@ describe('tab switching in ConversationRoot', () => {
     const labelOf = () => tabsOf(b.slots).find(tab => tab.id === 'trajectory')?.label
     expect(labelOf()).toBe('Trajectory')
     const locale = b.ctx.get('locale') as { setLocale(id: string): void }
-    locale.setLocale('zh')
+    locale.setLocale('en')
     expect(labelOf()).toBe('轨迹')
     locale.setLocale('en')
     expect(labelOf()).toBe('Trajectory')

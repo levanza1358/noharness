@@ -1,5 +1,4 @@
 /** Portuguese common-namespace dictionary. */
-import type { en } from './en.ts'
 
 /** Complete Portuguese copy for the common namespace. */
 export const pt = {
@@ -44,4 +43,4 @@ export const pt = {
   'markdown.truncatedCharacters': '… truncado em {total} caracteres',
   'number.thousand': '{value}K',
   'number.million': '{value}M',
-} satisfies Record<keyof typeof en, string>
+} as const

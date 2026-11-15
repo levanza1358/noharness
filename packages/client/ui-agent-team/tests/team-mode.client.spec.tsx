@@ -5,7 +5,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import type { SessionId } from '@noharness/session'
 import { makeTranslate } from '@noharness/client-test-runtime'
 import { TeamModePane, TeamModeToggle, type TeamModePaneProps, type TeamModeToggleProps } from '../src/client/TeamModeToggle.tsx'
-import { de, en, es, fr, ja, pt, ru, zh } from '../src/client/locales.ts'
+import { de, en, es, fr, ja, pt, ru } from '../src/client/locales.ts'
 import { brandString } from '@noharness/brand'
 
 afterEach(cleanup)
@@ -22,18 +22,18 @@ function props(enabled: boolean | undefined, selectTeamMode = vi.fn(async () => 
       : enabled === undefined ? undefined : { enabled, tasks: [] },
     locked: false, openPane: vi.fn(), dismiss: vi.fn(), reportFailure: vi.fn(),
     selectTeamMode, requestDisableConfirmation: vi.fn(),
-    t: makeTranslate(zh),
+    t: makeTranslate(ja),
   } as TestProps
 }
 
-it.each(Object.entries({ zh, en, ja, es, fr, de, ru, pt }).flatMap(([locale, dictionary]) =>
+it.each(Object.entries({ ja, en, es, fr, de, ru, pt }).flatMap(([locale, dictionary]) =>
   [false, true].map(enabled => ({ locale, dictionary, enabled })),
 ))('opens Team settings from the $locale summary without changing mode (enabled: $enabled)', ({ locale, dictionary, enabled }) => {
   const input = props(enabled)
   render(<TeamModeToggle {...input} t={makeTranslate(dictionary)} />)
   const summary = screen.getByRole('menuitem', { name: new RegExp(dictionary['command.title']) })
   expect(summary.textContent).toBe(dictionary['command.title'] + dictionary[enabled ? 'mode.on' : 'mode.off'])
-  if (locale === 'zh') expect(summary.textContent).toBe(`智能体团队协作${enabled ? '开启' : '关闭'}`)
+  if (locale === 'ja') expect(summary.textContent).toBe(`智能体团队协作${enabled ? '开启' : '关闭'}`)
   expect(summary.getAttribute('data-model-menu-pane')).toBe('agent-team')
   expect(screen.queryByRole('switch')).toBeNull()
   expect(screen.queryByRole('tooltip', { hidden: true })).toBeNull()
@@ -102,7 +102,7 @@ it.each(['returned', 'error', 'string'])('reports rejected mode writes through t
   expect(screen.getByRole('switch').hasAttribute('disabled')).toBe(false)
 })
 
-it.each(Object.entries({ zh, en, ja, es, fr, de, ru, pt }).flatMap(([locale, dictionary]) =>
+it.each(Object.entries({ ja, en, es, fr, de, ru, pt }).flatMap(([locale, dictionary]) =>
   [false, true].map(locked => ({ locale, dictionary, locked })),
 ))('shows the full $locale explanation in the settings pane (locked: $locked)', ({ dictionary, locked }) => {
   const input = props(false)

@@ -15,12 +15,12 @@ import type { SessionId } from '@noharness/session/types'
 import type { SessionStatusSnapshot } from '@noharness/client-ui-session-status/client'
 import type { WorkspaceId } from '@noharness/workspace/types'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { EMPTY_CONVERSATION_SNAPSHOT } from '../src/client/contract/snapshot.ts'
 import type { ConversationSnapshot } from '../src/client/contract/snapshot.ts'
 import { createConversationStore } from '../src/client/stores.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import { ConversationContent } from '../src/client/skeleton/ConversationContent.tsx'
 import { ConversationHeader } from '../src/client/skeleton/ConversationHeader.tsx'
 import { ConversationMainPanel } from '../src/client/skeleton/ConversationMainPanel.tsx'
@@ -95,7 +95,7 @@ beforeEach(() => {
   vi.stubGlobal('ResizeObserver', ResizeObserverStub)
 })
 
-const t: ConversationContentProps['t'] = makeTranslate(zh, commonZh)
+const t: ConversationContentProps['t'] = makeTranslate(ja, commonJa)
 
 const sid = (id: string) => id as SessionId
 const wid = (id: string) => id as WorkspaceId
@@ -564,7 +564,7 @@ describe('ConversationRoot resident composer', () => {
     expect(b.slotCalls).toContain('conversation.session.header.utilities')
     expect(b.slotCalls).toContain('conversation.session.header.corner')
     expect(b.headerFactory).toHaveBeenCalledWith('contextMenu.button', expect.objectContaining({
-      target: { kind: 'sessionHeader', value: { sessionId: SID } }, label: zh['header.more'], size: 'sm',
+      target: { kind: 'sessionHeader', value: { sessionId: SID } }, label: ja['header.more'], size: 'sm',
     }))
   })
 
@@ -722,7 +722,7 @@ describe('ConversationRoot resident composer', () => {
     const viewTabs = ['trajectory', 'timeline', 'chat', 'notes'].map(id => ({ id, label: id }))
     const b = mount(sessionSnapshotOf(), undefined, undefined, { viewTabs, entryActions: true })
     expect(within(b.view.getByRole('tablist')).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['chat'])
-    fireEvent.click(b.view.getByRole('button', { name: zh['session.moreViews'] }))
+    fireEvent.click(b.view.getByRole('button', { name: ja['session.moreViews'] }))
     expect(b.actionsOwner().entries.map(entry => entry.id)).toEqual(['trajectory', 'timeline', 'notes'])
     act(() => { b.actionsOwner().onOpen('trajectory') })
     expect(b.view.getByRole('tab', { name: 'chat' })).toBeTruthy()
@@ -736,7 +736,7 @@ describe('ConversationRoot resident composer', () => {
     const viewTabs = ['chat', 'trajectory', 'timeline'].map(id => ({ id, label: id }))
     const b = mount(sessionSnapshotOf(), undefined, undefined, { viewTabs, entryActions: true, headerOnly: true })
     expect(within(b.view.getByRole('tablist')).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['chat', 'trajectory'])
-    fireEvent.click(b.view.getByRole('button', { name: zh['session.moreViews'] }))
+    fireEvent.click(b.view.getByRole('button', { name: ja['session.moreViews'] }))
     expect(b.actionsOwner().entries.map(entry => entry.id)).toEqual(['timeline'])
   })
 
@@ -761,7 +761,7 @@ describe('ConversationRoot resident composer', () => {
     const b = mount(sessionSnapshotOf(), undefined, undefined, { unpinnedViews: ['trajectory'], entryActions: true })
     const tablist = b.view.getByRole('tablist')
     expect(within(tablist).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['Chat'])
-    const more = b.view.getByRole('button', { name: zh['session.moreViews'] })
+    const more = b.view.getByRole('button', { name: ja['session.moreViews'] })
     expect(tablist.nextElementSibling?.contains(more)).toBe(true)
     expect(more.getAttribute('aria-haspopup')).toBe('menu')
     expect(b.view.queryByRole('menu')).toBeNull()
@@ -802,12 +802,12 @@ describe('ConversationRoot resident composer', () => {
     const b = mount(sessionSnapshotOf(), undefined, undefined, { viewTabs, entryActions: true })
     const external = () => within(b.view.getByRole('tablist')).getAllByRole('tab').map(tab => tab.textContent)
     expect(external()).toEqual(['Chat', 'Trajectory', 'Timeline'])
-    fireEvent.click(b.view.getByRole('button', { name: zh['session.moreViews'] }))
+    fireEvent.click(b.view.getByRole('button', { name: ja['session.moreViews'] }))
     expect(b.actionsOwner().entries.map(entry => entry.id)).toEqual(['inspector'])
     act(() => { b.actionsOwner().onOpen('inspector') })
     expect(external()).toEqual(['Chat', 'Trajectory', 'Timeline'])
     expect(b.actionsOwner().entries.find(entry => entry.id === 'inspector')?.active).toBe(true)
-    expect(b.view.getByRole('button', { name: zh['session.moreViews'] })).toBeTruthy()
+    expect(b.view.getByRole('button', { name: ja['session.moreViews'] })).toBeTruthy()
     const row = b.view.getByRole('tablist').parentElement!
     const rowReads = () => readWidth.mock.contexts.filter(element => element === row).length
     const reads = rowReads()
@@ -836,7 +836,7 @@ describe('ConversationRoot resident composer', () => {
     width = 300
     act(() => { fireResize(row) })
     expect(external()).toEqual(['chat', 'trajectory'])
-    fireEvent.click(b.view.getByRole('button', { name: zh['session.moreViews'] }))
+    fireEvent.click(b.view.getByRole('button', { name: ja['session.moreViews'] }))
     expect(b.actionsOwner().entries.map(entry => entry.id)).toEqual(['timeline', 'inspector', 'notes'])
     expect(b.actionsOwner().entries.find(entry => entry.id === 'notes')?.active).toBe(true)
     width = 1000
@@ -857,25 +857,25 @@ describe('ConversationRoot resident composer', () => {
     const b = mount(sessionSnapshotOf(), undefined, undefined, { viewTabs, entryActions: true })
     expect(within(b.view.getByRole('tablist')).getAllByRole('tab').map(tab => tab.textContent))
       .toEqual(viewTabs.map(tab => tab.label))
-    fireEvent.click(b.view.getByRole('button', { name: zh['session.moreViews'] }))
+    fireEvent.click(b.view.getByRole('button', { name: ja['session.moreViews'] }))
     expect(b.actionsOwner().entries).toEqual([])
   })
 
   it('omits More while the View actions list has no registrations', () => {
     const b = mount(sessionSnapshotOf())
     expect(b.view.getByRole('tablist')).toBeTruthy()
-    expect(b.view.queryByRole('button', { name: zh['session.moreViews'] })).toBeNull()
+    expect(b.view.queryByRole('button', { name: ja['session.moreViews'] })).toBeNull()
   })
 
   it('omits the tab row and More while Chat is the only registered View', () => {
     const b = mount(sessionSnapshotOf(), undefined, undefined, { viewTabs: [{ id: 'chat', label: 'Chat' }], entryActions: true })
     expect(b.view.queryByRole('tablist')).toBeNull()
-    expect(b.view.queryByRole('button', { name: zh['session.moreViews'] })).toBeNull()
+    expect(b.view.queryByRole('button', { name: ja['session.moreViews'] })).toBeNull()
   })
 
   it('hands the More menu the non-Chat Views with their pin state and this Session\'s selection', () => {
     const b = mount(sessionSnapshotOf(), undefined, undefined, { unpinnedViews: ['trajectory'], entryActions: true })
-    const more = b.view.getByRole('button', { name: zh['session.moreViews'] })
+    const more = b.view.getByRole('button', { name: ja['session.moreViews'] })
     fireEvent.click(more)
     expect(more.getAttribute('aria-expanded')).toBe('true')
     expect(within(b.view.getByRole('menu')).getByRole('menuitem', { name: 'Header view action' })).toBeTruthy()

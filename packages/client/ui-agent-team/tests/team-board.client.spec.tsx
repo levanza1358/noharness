@@ -7,9 +7,9 @@ import type { TeamProjection, TeamTaskId, TeamTaskView as TeamTask } from '@noha
 import type { SessionListState, SessionSummary } from '@noharness/api-session-controller/client'
 import { createSnapshotStore } from '@noharness/client-store'
 import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { TeamBoard, type TeamBoardProps } from '../src/client/TeamBoard.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 afterEach(() => {
   cleanup()
@@ -66,7 +66,7 @@ function bench(options: {
   const props = {
     sessionId, useProjection,
     useSessions: bindSnapshotSelector(sessions),
-    t: makeTranslate(zh, commonZh),
+    t: makeTranslate(ja, commonJa),
   } as TeamBoardProps
   return { props, sessions }
 }
@@ -113,17 +113,17 @@ describe('TeamBoard', () => {
     const b = bench()
     render(<TeamBoard {...b.props} />)
     const heading = screen.getByRole('heading')
-    expect(heading.textContent).toBe(`${zh.tasks}${b.props.t('progress.active', { count: 1 })}`)
+    expect(heading.textContent).toBe(`${ja.tasks}${b.props.t('progress.active', { count: 1 })}`)
     expect(heading.querySelector('button')).toBeNull()
     expect(heading.querySelector('[data-icon="dsw-icon-checklist-outline-regular"]')).toBeTruthy()
     expect(screen.getAllByRole('button')).toEqual([row()])
     expect(row().getAttribute('aria-expanded')).toBe('false')
     expect(row().textContent).toBe(task.subject)
-    expect(within(row()).getByRole('img', { name: zh['status.in_progress'] })).toBeTruthy()
+    expect(within(row()).getByRole('img', { name: ja['status.in_progress'] })).toBeTruthy()
     expect(row().querySelector('[data-state="ongoing"]')).toBeTruthy()
     expect(row().querySelector('[data-icon="dsw-icon-chevron-down-outline-regular"]')).toBeTruthy()
     expect(screen.queryByText(task.description)).toBeNull()
-    expect(screen.queryByText(zh.owner)).toBeNull()
+    expect(screen.queryByText(ja.owner)).toBeNull()
     expect(screen.queryByRole('button', { name: '展开' })).toBeNull()
   })
 
@@ -142,7 +142,7 @@ describe('TeamBoard', () => {
     const details = document.getElementById(first.getAttribute('aria-controls')!)!
     const owner = details.querySelector('[data-team-task-owner]')!
     expect(owner.tagName).toBe('P')
-    expect(owner.textContent).toBe(`${zh.owner}: lead`)
+    expect(owner.textContent).toBe(`${ja.owner}: lead`)
     expect(ownerValue()).toBe('lead')
     const paragraphs = details.querySelectorAll('p')
     expect(paragraphs).toHaveLength(2)
@@ -172,7 +172,7 @@ describe('TeamBoard', () => {
     ] } })
     render(<TeamBoard {...b.props} />)
     expect(screen.getAllByRole('button').map(button => button.textContent)).toEqual(['Pending first', 'Completed second', 'Active third'])
-    expect(screen.getByRole('heading').textContent).toBe(`${zh.tasks}${[
+    expect(screen.getByRole('heading').textContent).toBe(`${ja.tasks}${[
       b.props.t('progress.completed', { count: 1 }), b.props.t('progress.active', { count: 1 }), b.props.t('progress.pending', { count: 1 }),
     ].join('\u2002·\u2002')}`)
     expect(screen.queryByText('Deleted task')).toBeNull()
@@ -191,15 +191,15 @@ describe('TeamBoard', () => {
       { ...task, id: TASK_2, subject: 'Prepare shared types', status: 'completed' },
     ] } })
     render(<TeamBoard {...b.props} />)
-    expect(within(row()).getByRole('img', { name: zh.blocked })).toBeTruthy()
+    expect(within(row()).getByRole('img', { name: ja.blocked })).toBeTruthy()
     expect(row().querySelector('[data-state="warning"]')).toBeTruthy()
     fireEvent.click(row())
-    expect(ownerValue()).toBe(zh.unowned)
+    expect(ownerValue()).toBe(ja.unowned)
     const details = document.querySelector<HTMLElement>('[data-team-task-details]')!
-    expect(details.textContent).toBe(`${task.description}${zh.owner}: ${zh.unowned}`)
+    expect(details.textContent).toBe(`${task.description}${ja.owner}: ${ja.unowned}`)
     expect(details.querySelector('dl, dt, dd')).toBeNull()
     for (const metadata of [
-      TASK_1, TASK_2, 'Prepare shared types', 'missing', 'src', task.writeScopeWarnings[0]!, zh.blocked,
+      TASK_1, TASK_2, 'Prepare shared types', 'missing', 'src', task.writeScopeWarnings[0]!, ja.blocked,
     ]) expect(within(details).queryByText(metadata)).toBeNull()
     expect(b.sessions.getSnapshot().projectionsBySession[SESSION]!.values.agentTeam?.tasks[0]).toEqual({
       ...unowned, status: 'pending', blockedBy: [TASK_2, 'missing' as TeamTaskId],
@@ -211,7 +211,7 @@ describe('TeamBoard', () => {
       ...task, status: 'pending', ready: true, description: '', writeScopes: [], writeScopeWarnings: [],
     }] } }).props} />)
     fireEvent.click(row())
-    expect(within(row()).getByRole('img', { name: zh['status.pending'] })).toBeTruthy()
+    expect(within(row()).getByRole('img', { name: ja['status.pending'] })).toBeTruthy()
     expect(row().querySelector('[data-state="idle"]')).toBeTruthy()
     expect(ownerValue()).toBe('lead')
     expect(document.querySelector('[data-team-task-details]')?.children).toHaveLength(1)
@@ -260,7 +260,7 @@ describe('TeamBoard', () => {
     expect(screen.queryByRole('region')).toBeNull()
     for (const tasks of [[], [{ ...task, status: 'deleted' as const }]]) {
       setProjection(b.sessions, SESSION, { enabled: true, tasks })
-      expect(screen.queryByText(zh.empty)).toBeNull()
+      expect(screen.queryByText(ja.empty)).toBeNull()
       expect(screen.queryByRole('heading')).toBeNull()
       expect(screen.queryByRole('button')).toBeNull()
       expect(screen.queryByRole('region')).toBeNull()
@@ -296,7 +296,7 @@ describe('TeamBoard', () => {
       expect(view.container.querySelector('[data-with-members="true"]')).toBeNull()
       expect(screen.queryByRole('heading')).toBeNull()
       expect(screen.queryByRole('region')).toBeNull()
-      expect(screen.queryByText(zh.empty)).toBeNull()
+      expect(screen.queryByText(ja.empty)).toBeNull()
       expect(document.querySelector('[data-team-panel]')).toBeNull()
     }
     setProjection(b.sessions, SESSION, { enabled: false, tasks: [], failure: 'invalid task' })

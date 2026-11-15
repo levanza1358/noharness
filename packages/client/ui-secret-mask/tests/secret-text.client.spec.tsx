@@ -5,7 +5,7 @@ import type { ComponentProps } from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { makeTranslate } from '@noharness/client-test-runtime'
 import { SecretText } from '../src/client/SecretText.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
@@ -16,7 +16,7 @@ const KEY = ['sk', '-', '0123456789abcdef0123456789abcdef'].join('')
 const OTHER = ['sk', '-', 'fedcba9876543210fedcba9876543210'].join('')
 const masked = (value: string): string => value.slice(0, 8) + '*'.repeat(value.length - 8)
 
-function props(raw: string, interactive: boolean, dictionary: Record<string, string> = zh): Props {
+function props(raw: string, interactive: boolean, dictionary: Record<string, string> = ja): Props {
   // The component reads only these owner and locale seats.
   return {
     node: { id: 'secret', start: 0, end: raw.length, data: { masked: masked(raw) } },

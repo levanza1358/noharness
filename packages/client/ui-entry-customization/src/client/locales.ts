@@ -1,3 +1,9 @@
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'entryCustomization': EntryCustomizationKey
+  }
+}
+
 /** Copy for the More menu rows: navigation actions, and Creator draft prompts per region. */
 export const en = {
   'pinTooltip': 'Pin to left sidebar',
@@ -9,27 +15,20 @@ export const en = {
   'createPrompt.rightbar': 'Create a NHS plugin with a right sidebar entry.',
 } as const
 
-/** Chinese counterpart of the entry-customization dictionary. */
-export const zh: Record<keyof typeof en, string> = {
-  'pinTooltip': '固定到左侧栏',
-  'pin': '将{name}固定到侧边栏',
-  install: '浏览更多插件',
-  create: '创建你的插件',
-  'createPrompt.sidebar': '创建一个带左侧栏入口的 NHS 插件。',
-  'createPrompt.conversation': '创建一个 NHS 会话视图插件。',
-  'createPrompt.rightbar': '创建一个带右侧栏入口的 NHS 插件。',
-}
+export type EntryCustomizationKey = keyof typeof en
+
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'pinTooltip': '左サイドバーに固定',
-  'pin': '{name}をサイドバーに固定',
-  'install': '他のプラグインを探す',
-  'create': 'プラグインを作成',
-  'createPrompt.sidebar': '左サイドバーにエントリを持つ NHS プラグインを作成します。',
-  'createPrompt.conversation': 'NHS 会話ビュープラグインを作成します。',
-  'createPrompt.rightbar': '右サイドバーにエントリを持つ NHS プラグインを作成します。',
-} satisfies Record<keyof typeof en, string>
+  'pinTooltip': 'Pin to left sidebar',
+  'pin': 'Pin {name} to sidebar',
+  'install': 'Browse other plugins',
+  'create': 'Create your plugin',
+  'createPrompt.sidebar': 'Create a NHS plugin with a left sidebar entry.',
+  'createPrompt.conversation': 'Create a NHS conversation view plugin.',
+  'createPrompt.rightbar': 'Create a NHS plugin with a right sidebar entry.',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -40,7 +39,7 @@ export const es = {
   'createPrompt.sidebar': 'Cree un complemento NHS con una entrada en la barra lateral izquierda.',
   'createPrompt.conversation': 'Cree un complemento de vista de conversación NHS.',
   'createPrompt.rightbar': 'Cree un complemento NHS con una entrada en la barra lateral derecha.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -51,7 +50,7 @@ export const fr = {
   'createPrompt.sidebar': 'Créez un plugin NHS avec une entrée dans la barre latérale gauche.',
   'createPrompt.conversation': "Créez un plugin d'affichage de conversation NHS.",
   'createPrompt.rightbar': 'Créez un plugin NHS avec une entrée dans la barre latérale droite.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -62,7 +61,7 @@ export const de = {
   'createPrompt.sidebar': 'Erstellen Sie ein NHS-Plugin mit einem Eintrag in der linken Seitenleiste.',
   'createPrompt.conversation': 'Erstellen Sie ein NHS-Plugin für die Konversationsansicht.',
   'createPrompt.rightbar': 'Erstellen Sie ein NHS-Plugin mit einem Eintrag in der rechten Seitenleiste.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -73,7 +72,7 @@ export const ru = {
   'createPrompt.sidebar': 'Создайте плагин NHS с записью на левой боковой панели.',
   'createPrompt.conversation': 'Создайте плагин просмотра диалога NHS.',
   'createPrompt.rightbar': 'Создайте плагин NHS с записью на правой боковой панели.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -84,4 +83,4 @@ export const pt = {
   'createPrompt.sidebar': 'Crie um plug-in NHS com uma entrada na barra lateral esquerda.',
   'createPrompt.conversation': 'Crie um plug-in de visualização de conversa NHS.',
   'createPrompt.rightbar': 'Crie um plug-in NHS com uma entrada na barra lateral direita.',
-} satisfies Record<keyof typeof en, string>
+} as const

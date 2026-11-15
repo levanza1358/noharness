@@ -57,7 +57,7 @@ function desktopRelease(): DesktopRelease {
   const version = manifestVersion(join(APP_ROOT, 'package.json'), 'desktop package')
   const nhsVersion = manifestVersion(resolve(APP_ROOT, '..', '..', 'package.json'), 'root nhs package')
   if (version !== nhsVersion) {
-    throw new Error(`desktop runtime: Electron ${version} must bind the same version of @noharness/cli, found ${nhsVersion}`)
+    throw new Error(`desktop runtime: Electron ${version} must bind the same version of @noharness/nhs, found ${nhsVersion}`)
   }
   const runtime = JSON.parse(readFileSync(join(RUNTIME_ROOT, 'versions.json'), 'utf8')) as Record<string, unknown>
   return parseDesktopRelease({
@@ -160,7 +160,7 @@ async function main(): Promise<void> {
         throw new Error(`desktop runtime: missing private Host file ${file}`)
       }
     }
-    if (!existsSync(join(NHS_OUTPUT_ROOT, 'node_modules', '@noharness', `libreoffice-kit-${officeEngine}`, 'prebuilds.json'))) {
+    if (!existsSync(join(NHS_OUTPUT_ROOT, 'node_modules', '@deepseek-ai', `libreoffice-kit-${officeEngine}`, 'prebuilds.json'))) {
       throw new Error(`desktop runtime: missing required LibreOffice engine ${officeEngine}`)
     }
     if (process.platform === 'darwin' && process.env.NHS_DESKTOP_UNSIGNED !== '1') {

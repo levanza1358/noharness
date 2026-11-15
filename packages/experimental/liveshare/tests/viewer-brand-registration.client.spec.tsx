@@ -14,7 +14,7 @@ import { LocaleRuntime } from '@noharness/client-locale/client'
 import { SlotTestRuntime } from '@noharness/client-test-runtime'
 import { afterEach, describe, expect, it, onTestFinished } from 'vitest'
 import { cleanup } from '@testing-library/react'
-import { en, NS, zh } from '../src/client/locales.ts'
+import { en, NS, ja } from '../src/client/locales.ts'
 import * as viewerBrand from '../src/client/viewer-brand.tsx'
 import { VIEWER_BRAND_PRIORITY } from '../src/client/viewer-brand.tsx'
 
@@ -37,8 +37,8 @@ async function bench() {
   const runtime = await SlotTestRuntime.create()
   onTestFinished(() => runtime.dispose())
   const locale = new LocaleRuntime(runtime.ctx)
-  locale.register(NS, { en, zh })
-  locale.setLocale('zh')
+  locale.register(NS, { en, ja })
+  locale.setLocale('en')
   runtime.ctx.provide('locale', locale)
   runtime.slots.installLocale(locale)
   await runtime.declare({
@@ -79,7 +79,7 @@ describe('viewer brand registration', () => {
     expect(mark.container.querySelector('[data-shipped="brand-mark"]')).toBeNull()
     expect(mark.container.querySelector('svg')).not.toBeNull()
     expect(name.container.querySelector('[data-shipped="brand-name"]')).toBeNull()
-    expect(name.container.textContent).toContain(zh['viewer.brand'])
+    expect(name.container.textContent).toContain(ja['viewer.brand'])
 
     // Both entries stay on the ledger: the viewer entry is the lower rank, the shipped entry is shadowed.
     expect(brandRanks(runtime)).toEqual({

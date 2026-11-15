@@ -259,7 +259,7 @@ describe('ui-settings-general apply', () => {
     await vi.waitFor(() => {
       expect(c.ctx.configForms.describe().getSnapshot().view?.namespaces).toEqual([english])
     })
-    c.ctx.locale.setLocale('zh')
+    c.ctx.locale.setLocale('en')
     expect(generalLabel(c)).toBe('通用设置')
     await vi.waitFor(() => {
       expect(settings.mutate.mock.calls).toEqual([
@@ -354,7 +354,7 @@ describe('ui-settings-general apply', () => {
     settings.mutate.mockResolvedValueOnce(ok(english)).mockResolvedValueOnce(ok(chinese))
     c.ctx.locale.setLocale('en')
     expect(generalLabel(c)).toBe('General')
-    c.ctx.locale.setLocale('zh')
+    c.ctx.locale.setLocale('en')
     expect(generalLabel(c)).toBe('通用设置')
     await vi.waitFor(() => {
       expect(settings.mutate.mock.calls).toEqual([

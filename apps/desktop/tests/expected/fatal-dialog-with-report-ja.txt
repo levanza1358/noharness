@@ -1,0 +1,11 @@
+NoHarness を利用できません
+アプリケーションを起動できなかったか、予期せず停止しました。
+Desktop Host failed
+Plugin initialization failed
+診断レポート: C:\Users\someone\AppData\Roaming\NoHarness\logs\crash-2026-09-22T10-30-00-000Z-host.log
+
+アプリケーションファイルが見つからないか破損している場合は、アプリケーションを閉じて再インストールしてください。タスクは別途保存されています。
+終了
+再起動
+サードパーティのプラグインを無効化し、プロファイルパッチをバックアップして再起動
+診断レポートを取得

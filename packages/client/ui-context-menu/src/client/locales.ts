@@ -1,6 +1,6 @@
 /** Context-menu operation feedback, separate from plugin display metadata. */
 export const dictionaries = {
-  zh: { back: '返回', failed: '操作失败，请重试' },
+  zh: { back: 'Back', failed: 'Could not complete the action. Try again.' },
   en: { back: 'Back', failed: 'Could not complete the action. Try again.' },
   ja: { back: '戻る', failed: '操作に失敗しました。再試行してください。' },
   es: { back: 'Atrás', failed: 'No se pudo completar la acción. Inténtelo de nuevo.' },

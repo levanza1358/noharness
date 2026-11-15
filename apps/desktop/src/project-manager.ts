@@ -26,7 +26,7 @@ import { initProfile, removeLinkProjections, sanitizeProfile } from '@noharness/
 import { PROFILE_TEMPLATES, type ProfileTemplate } from '@noharness/official-bundles'
 
 const PROJECT_NAME = '@noharness/desktop-runtime'
-const NHS_PACKAGE = '@noharness/cli'
+const NHS_PACKAGE = '@noharness/nhs'
 const CORE_BUILD_PACKAGE = '@noharness/subprocess-local'
 const WEB_PROFILE = PROFILE_TEMPLATES.web as ProfileTemplate
 const WORKSPACE_SETTINGS = 'nodeLinker: hoisted\nautoInstallPeers: false\n'

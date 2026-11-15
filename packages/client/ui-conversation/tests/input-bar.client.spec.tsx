@@ -24,7 +24,7 @@ import {
 import { createSnapshotStore } from '@noharness/client-store'
 import type { SessionListState, SessionSnapshot } from '@noharness/api-session-controller/client'
 import type { ContextPressureProjection } from '@noharness/token-meter/client'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { Context } from '@noharness/cordis'
 import type { SessionId, SessionSeq } from '@noharness/session/types'
 import type { SubmitOutcome } from '../src/client/contract/input.ts'
@@ -36,7 +36,7 @@ import type {
 import type { DraftAttachmentId } from '../src/client/contract/input.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'
 import type { InputBarProps } from '../src/client/skeleton/InputBar.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import { createComposerFileIntake } from '../src/client/input/file-intake.ts'
 
 // Every fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
@@ -231,7 +231,7 @@ function bench(over?: BenchOptions) {
     useMenuLauncher: bindSnapshotSelector(menuLauncher),
     stop,
     // Mirrors the real lookup chain (conversation namespace, then common).
-    t: over?.t ?? makeTranslate(zh, commonZh),
+    t: over?.t ?? makeTranslate(ja, commonJa),
     renderSlot,
     variant: over?.variant ?? 'composer',
     occurrence: over?.occurrence ?? 'main',
@@ -1107,7 +1107,7 @@ describe('Enter semantics', () => {
 
 describe('running and lock semantics', () => {
   it.each([
-    { messages: zh, label: '停止生成', trigger: 'hover' },
+    { messages: ja, label: '停止生成', trigger: 'hover' },
     { messages: en, label: 'Stop generating', trigger: 'focus' },
   ])('shows the registered Stop sequence on $trigger and removes it when unavailable', ({ messages, label, trigger }) => {
     vi.useFakeTimers()
@@ -2057,13 +2057,13 @@ describe('insertText (scoped event body)', () => {
 })
 
 describe('strips and variants', () => {
-  it.each([zh, en])('shows localized guidance when another writer owns the Session', (dictionary) => {
+  it.each([ja, en])('shows localized guidance when another writer owns the Session', (dictionary) => {
     const send = bench({
       promptError: {
         op: 'send',
         error: new RemoteError('session/writer-held', 'internal writer diagnostic', { sessionId: SID }),
       },
-      t: makeTranslate(dictionary, commonZh),
+      t: makeTranslate(dictionary, commonJa),
     })
     expect(send.view.getByRole('alert').textContent).toBe(dictionary['error.sessionInUse'])
   })

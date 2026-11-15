@@ -7,7 +7,7 @@ export const en = {
 
 /** Chinese escalation messages. */
 export const zh = {
-  escalation: (mode: string, justification: string): string => `允许本次操作使用 ${mode} 权限：${justification}`,
+  escalation: (mode: string, justification: string): string => `Allow this operation with ${mode} permissions: ${justification}`,
 } satisfies typeof en
 
 /** Japanese escalation messages. */

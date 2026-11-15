@@ -11,7 +11,7 @@ import type { SurfaceSnapshot } from '@noharness/experimental-claude-code-mods/t
 import type { SessionId } from '@noharness/session/types'
 import type { TypertRemoteContribution } from '@noharness/typert-protocol'
 import { Band, type BandInjected } from './Band.tsx'
-import { en, ja, es, fr, de, ru, pt, NS, zh, type ModsBandKey } from './locales.ts'
+import { en, ja, es, fr, de, ru, pt, NS, type ModsBandKey } from './locales.ts'
 
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -75,7 +75,7 @@ function watchSession(ctx: Context, sessionId: SessionId, onEnd: () => void): { 
 }
 
 function registerUi(ctx: Context): void {
-  ctx.effect(() => ctx.locale.register(NS, { zh, en, ja, es, fr, de, ru, pt }), 'client-ui-claude-code-mods: dictionaries')
+  ctx.effect(() => ctx.locale.register(NS, { en, ja, es, fr, de, ru, pt }), 'client-ui-claude-code-mods: dictionaries')
   const watches = new Map<SessionId, ReturnType<typeof watchSession>>()
   ctx.effect(() => () => {
     for (const watch of watches.values()) watch.dispose()

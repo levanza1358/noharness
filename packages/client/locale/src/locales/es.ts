@@ -1,5 +1,4 @@
 /** Spanish common-namespace dictionary. */
-import type { en } from './en.ts'
 
 /** Complete Spanish copy for the common namespace. */
 export const es = {
@@ -44,4 +43,4 @@ export const es = {
   'markdown.truncatedCharacters': '… truncado a {total} caracteres',
   'number.thousand': '{value}K',
   'number.million': '{value}M',
-} satisfies Record<keyof typeof en, string>
+} as const

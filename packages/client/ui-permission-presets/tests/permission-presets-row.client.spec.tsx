@@ -7,7 +7,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { allowAllAccess, bindSnapshotSelector, RemoteError } from '@noharness/client-test-runtime'
 import type { SettingsNamespaceView } from '@noharness/api-remotes/client'
 import { PermissionRow, type PermissionRowProps } from '../src/client/PermissionRow.tsx'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 import { SettingsDescribeMirror } from '@noharness/client-ui-settings/src/client/settings-mirror.ts'
 import { PermissionPresetSettingsController } from '../src/client/settings-store.ts'
 
@@ -54,7 +54,7 @@ function ok<T>(value: T) {
   return { ok: true as const, value }
 }
 
-const dictionary: Record<string, string> = zh
+const dictionary: Record<string, string> = ja
 const t: PermissionRowProps['t'] = key => dictionary[key] ?? key
 type AttentionSnapshot = Parameters<Parameters<PermissionRowProps['useSessionStatus']>[0]>[0]
 const noAttention: AttentionSnapshot = new Map()

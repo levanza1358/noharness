@@ -20,7 +20,7 @@ import { LocaleRuntime } from '@noharness/client-locale/client'
 import type { DraftInitializationOptions, SessionInputResolver } from '@noharness/client-ui-conversation/client'
 import type { RowToast } from '../src/client/contract/slots.ts'
 import { DirectoryBrowseError, UiWorkspaceService } from '../src/client/navigation.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import { createWorkspaceViewStore, FLAT_SESSION_ORDER_KEY } from '../src/client/stores.ts'
 import { UNGROUPED_KEY } from '../src/client/tree.ts'
 import { brandString } from '@noharness/brand'
@@ -284,7 +284,7 @@ function bench(options: BenchOptions = {}) {
   contexts.push(ctx)
   const locale = new LocaleRuntime(ctx)
   locale.setLocale('en')
-  ctx.effect(() => locale.register('workspace', { en, zh }))
+  ctx.effect(() => locale.register('workspace', { en, ja }))
   ctx.provide('locale', locale)
   const requestDraftInitialization = vi.fn<SessionInputResolver['requestDraftInitialization']>(() => 'applied')
   if (options.conversation !== false) ctx.provide('conversation', { input: { requestDraftInitialization } })

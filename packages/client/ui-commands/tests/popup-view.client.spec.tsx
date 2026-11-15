@@ -18,11 +18,11 @@ import type { PopupSpec, TokenSegment } from '../src/client/popup.ts'
 import { PopupSelectController } from '../src/client/popup.ts'
 import { PopupSelectView } from '../src/client/PopupSelectView.tsx'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
-import { zh } from '../src/client/locales.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
+import { ja } from '../src/client/locales.ts'
 
-// The framework-injected t seat, stubbed over the zh dictionaries (the default locale).
-const t: Parameters<typeof PopupSelectView>[0]['t'] = makeTranslate(zh, commonZh)
+// The framework-injected t seat, stubbed over the ja dictionaries (the default locale).
+const t: Parameters<typeof PopupSelectView>[0]['t'] = makeTranslate(ja, commonJa)
 
 // jsdom has no scrollIntoView; the view calls it on the highlighted row.
 const scrollIntoView = vi.fn()
@@ -123,9 +123,9 @@ describe('PopupSelectView', () => {
       popup.open('theme', spec(), 'ctx-A', SEGMENT)
       await Promise.resolve()
     })
-    expect(search.getAttribute('placeholder')).toBe(zh['search.placeholder'])
+    expect(search.getAttribute('placeholder')).toBe(ja['search.placeholder'])
     fireEvent.change(search, { target: { value: 'no-match' } })
-    expect(screen.getByText(zh['status.empty'])).toBeTruthy()
+    expect(screen.getByText(ja['status.empty'])).toBeTruthy()
     expect(popup.state.getSnapshot().searchLabels).toBeNull()
   })
 

@@ -50,61 +50,16 @@ export const en = {
 }
 /** Keys shared by all supported locale dictionaries. */
 export type CuaPermissionLocaleKey = keyof typeof en
-/** Chinese permission-page dictionary. */
-export const zh: Record<CuaPermissionLocaleKey, string> = {
-  approvalRisks: '风险提示',
-  approvalRiskTitle: 'Computer Use 风险提示',
-  approvalRiskNotice: '智能体只能访问你已授权的应用，并可在后台读取应用内容、操作应用。\n\n网络游戏、即时通讯等应用可能对自动化操作有所限制。违反相关规则可能导致你在该应用中的账号被暂停使用或封禁。\n\n请自行承担使用风险。如需停止自动化操作，可随时点击 NoHarness 中的停止按钮。',
-  title: '给 Computer Use 授权', applicationsTitle: '管理 Computer Use 可访问的应用', setupTitle: '使用 Computer Use 前需要设置',
-  setupBody: 'Computer Use 插件已开启。使用前请授予辅助功能和屏幕录制权限。请前往插件详情页完成设置。',
-  setupQueryFailed: 'Computer Use 插件已开启，但暂时无法检测系统权限。请前往插件详情页查看原因并重试。',
-  windowsSetupTitle: '检查 Windows 桌面访问状态',
-  windowsSetupBody: '请解锁 Windows 桌面，然后重新检测。NHS 会在访问每个应用前询问授权。',
-  windowsSessionUnknown: '尚未确认可交互的 Windows 桌面。请在已登录的桌面会话中运行 NHS，然后重新检测。',
-  windowsCaptureUnavailable: '当前 Windows 会话不支持窗口截图。请检查 Windows 版本和显卡驱动，然后重新检测。',
-  applicationInteraction: '应用交互',
-  windowsInstructions: '请保持 Windows 桌面解锁。部分输入需要将目标应用切到前台，运行权限更高的应用可能拒绝访问。',
-  windowsDesktop: '交互桌面', windowsDesktopUse: '观察和输入需要已解锁的桌面。',
-  windowsCapture: '窗口截图', available: '可用', unavailable: '不可用', locked: '已锁定或断开连接',
-  elevated: '本机组件正以管理员权限运行。', standardPrivileges: '本机组件正以普通用户权限运行。',
-  defaultTitle: '新会话默认模式',
-  defaultBody: '标准、创造和 PTC 模式均可使用 Computer Use。在此选择 PTC，可将其设为新会话的默认模式',
-  defaultConfirm: '设为 PTC', defaultSet: '已设为 PTC',
-  defaultUnavailable: '无法读取默认模式，请在设置中检查',
-  defaultReadOnly: '默认模式设置为只读',
-  defaultNotSaved: '默认模式未保存，请重试',
-  defaultFailed: '无法切换默认模式：{message}',
-  persistentTitle: 'PTC 执行方式',
-  persistentBody: '跨 PTC 工具调用保留变量和应用对象。切换会重启 PTC 运行时。其他模式始终单独保留 Computer Use 状态。',
-  persistentConfirm: '设为持久化', persistentSet: '已设为持久化',
-  persistentUnavailable: '无法读取 PTC 执行方式，请在设置中检查',
-  persistentReadOnly: 'PTC 执行方式设置为只读',
-  persistentNotSaved: 'PTC 执行方式未保存，请重试',
-  persistentFailed: '无法切换 PTC 执行方式：{message}',
-  openSetup: '前往设置', later: '稍后', close: '关闭',
-  accessibility: '辅助功能', screenRecording: '屏幕录制',
-  accessibilityUse: '读取界面控件、点击和输入文字', screenRecordingUse: '截取所选应用的窗口',
-  accessibilityPermission: '在系统设置中允许 {application} 读取界面、点击和输入。',
-  screenRecordingPermission: '在系统设置中允许 {application} 截取应用窗口。',
-  permissionHint: '在系统设置中管理辅助功能和屏幕录制权限',
-  granted: '已允许', unknown: '未确认', request: '申请权限', settings: '打开系统设置', retry: '重试',
-  allowedApps: '始终允许的应用',
-  blockedApps: '不允许访问的应用', retryApproval: '允许再次询问',
-  retryAllowed: '下次选择此应用时将重新询问，当前尚未授权',
-  noApps: '暂无始终允许或不允许访问的应用。',
-  revoke: '撤销', revoked: '已撤销应用访问权限', requested: '请按系统设置底部的引导完成授权', opened: '已打开系统设置',
-  applicationsFailed: '无法读取应用授权：{message}', iconsFailed: '无法读取应用图标：{message}',
-  failed: '无法更新权限：{message}', queryFailed: '无法检测权限：{message}',
-}
+/** Keys shared by all supported locale dictionaries. */
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  windowsSetupTitle: 'Windows デスクトップへのアクセスを確認',
-  windowsSetupBody: 'Windows デスクトップのロックを解除して再確認してください。NHS は各アプリへのアクセス前に確認します。',
-  windowsSessionUnknown: '操作可能な Windows デスクトップを確認できませんでした。サインイン済みのデスクトップセッションで NHS を実行し、再確認してください。',
-  windowsCaptureUnavailable: 'この Windows セッションはウィンドウキャプチャに対応していません。Windows のバージョンとグラフィックスドライバーを確認して再試行してください。',
-  applicationInteraction: 'アプリの操作',
-  windowsInstructions: 'Windows デスクトップのロックを解除しておいてください。一部の入力では対象アプリを最前面にする必要があります。高い権限で実行中のアプリはアクセスを拒否する場合があります。',
+  windowsSetupTitle: 'Check Windows desktop access',
+  windowsSetupBody: 'Unlock the Windows desktop, then check again. NHS asks before accessing each application.',
+  windowsSessionUnknown: 'No interactive Windows desktop was verified. Run NHS in a signed-in desktop session, then check again.',
+  windowsCaptureUnavailable: 'This Windows session does not support window capture. Check the Windows version and graphics driver, then check again.',
+  applicationInteraction: 'Application interaction',
+  windowsInstructions: 'Keep the Windows desktop unlocked. Some input needs the target application in front. Applications running with higher privileges can refuse access.',
   windowsDesktop: '操作可能なデスクトップ',
   windowsDesktopUse: '画面の確認と入力にはロック解除済みのデスクトップが必要です。',
   windowsCapture: 'ウィンドウキャプチャ',
@@ -112,29 +67,29 @@ export const ja = {
   elevated: 'ネイティブコンポーネントは管理者権限で実行中です。',
   standardPrivileges: 'ネイティブコンポーネントは標準ユーザー権限で実行中です。',
   approvalRisks: 'リスク',
-  approvalRiskTitle: 'コンピュータ操作のリスク',
-  approvalRiskNotice: 'エージェントがアクセスできるのは、あなたが許可したアプリだけです。許可したアプリの内容を読み取ったり、バックグラウンドで操作したりできます。\n\nオンラインゲームやメッセージアプリなどでは、自動操作が制限されている場合があります。規約に違反すると、そのアプリのアカウントが一時停止または永久停止になる可能性があります。\n\n自己責任でご利用ください。自動操作は、NoHarness の停止ボタンでいつでも止められます。',
-  'title': 'コンピュータ操作を承認',
-  'applicationsTitle': 'Computer Useがアクセスできるアプリを管理',
-  'setupTitle': '使用前にComputer Useを設定',
-  'setupBody': 'Computer Use は有効です。使用前にアクセシビリティと画面収録の権限を許可してください。プラグインの詳細を開いて設定を完了してください。',
-  'setupQueryFailed': 'Computer Useは有効ですが、システム権限を確認できませんでした。プラグインの詳細を開いてエラーを確認し、再試行してください。',
-  'defaultTitle': '新規セッションのデフォルトモード',
-  'defaultBody': 'Computer Use は標準、クリエイター、PTC モードで利用できます。ここで PTC を選ぶと、新しいセッションの既定のモードになります。',
+  approvalRiskTitle: 'Computer use risks',
+  approvalRiskNotice: 'The agent can access only apps you approve, and can read and control them in the background.\\n\\nOnline games, messaging apps, and other apps may restrict automation. Violating their rules could result in your account with that app being suspended or banned.\\n\\nProceed at your own risk. To stop automated control at any time, press Stop in NoHarness.',
+  'title': 'Authorize computer use',
+  'applicationsTitle': 'Manage applications computer use can access',
+  'setupTitle': 'Set up computer use before use',
+  'setupBody': 'Computer use is enabled. Before using it, grant Accessibility and Screen Recording permissions. Open the plugin details to complete setup.',
+  'setupQueryFailed': 'computer use is enabled, but system permissions could not be checked. Open the plugin details to see the error and retry.',
+  'defaultTitle': 'Default mode for new sessions',
+  'defaultBody': 'Computer use is available in Standard, Creator, and PTC modes. Choose PTC here to make it the default for new sessions.',
   'defaultConfirm': 'PTCに設定',
   'defaultSet': 'PTCがデフォルトです',
-  'defaultUnavailable': 'デフォルトモードを読み取れませんでした。設定で確認してください。',
-  'defaultReadOnly': 'デフォルトモードの設定は読み取り専用です。',
-  'defaultNotSaved': 'デフォルトモードは保存されませんでした。もう一度お試しください。',
-  'defaultFailed': 'デフォルトモードを変更できませんでした: {message}',
-  'persistentTitle': 'PTC実行モード',
-  'persistentBody': 'PTC のツール呼び出し間で変数とアプリケーションオブジェクトを保持します。切り替えると PTC ランタイムが再起動します。他のモードでは Computer Use の状態が常に別に保持されます。',
+  'defaultUnavailable': 'Could not read the default mode. Check it in Settings.',
+  'defaultReadOnly': 'Default-mode settings are read-only.',
+  'defaultNotSaved': 'The default mode was not saved. Try again.',
+  'defaultFailed': 'Could not change the default mode: {message}',
+  'persistentTitle': 'PTC execution mode',
+  'persistentBody': 'Keep variables and application objects across PTC tool calls. Switching restarts the PTC runtime. Other modes always keep their computer use state separately.',
   'persistentConfirm': '永続モードを使用',
   'persistentSet': '永続モードが有効になりました',
-  'persistentUnavailable': 'PTC実行モードを読み取れませんでした。設定で確認してください。',
-  'persistentReadOnly': 'PTC実行設定は読み取り専用です。',
-  'persistentNotSaved': 'PTC実行モードは保存されませんでした。もう一度お試しください。',
-  'persistentFailed': 'PTC実行モードを変更できませんでした: {message}',
+  'persistentUnavailable': 'Could not read the PTC execution mode. Check it in Settings.',
+  'persistentReadOnly': 'PTC execution settings are read-only.',
+  'persistentNotSaved': 'The PTC execution mode was not saved. Try again.',
+  'persistentFailed': 'Could not change the PTC execution mode: {message}',
   'openSetup': '設定を開く',
   'later': '後で',
   'close': '閉じる',
@@ -142,19 +97,19 @@ export const ja = {
   'screenRecording': '画面収録',
   'accessibilityUse': 'インターフェースのコントロールを読み取り、クリックし、入力します。',
   'screenRecordingUse': '選択したアプリケーションのウィンドウをキャプチャします。',
-  'accessibilityPermission': 'システム設定で、{application}にインターフェースのコントロールの読み取り、クリック、入力を許可してください。',
-  'screenRecordingPermission': 'システム設定で、{application}にアプリケーションウィンドウのキャプチャを許可してください。',
-  'permissionHint': 'システム設定でアクセシビリティと画面収録の権限を管理してください。',
+  'accessibilityPermission': 'In System Settings, allow {application} to read interface controls, click, and type.',
+  'screenRecordingPermission': 'In System Settings, allow {application} to capture application windows.',
+  'permissionHint': 'Manage Accessibility and Screen Recording permissions in System Settings.',
   'granted': '許可済み',
   'unknown': '不明',
   'request': '権限をリクエスト',
   'settings': 'システム設定を開く',
   'retry': '再試行',
-  'allowedApps': '常に許可するアプリケーション',
+  'allowedApps': 'Always-allowed applications',
   'blockedApps': '許可されていないアプリケーション',
   'retryApproval': '再度確認を許可',
-  'retryAllowed': '次回アプリケーションを選択するときに再度確認します。アクセスは許可されていません',
-  'noApps': '常に許可またはブロックされたアプリケーションはありません。',
+  'retryAllowed': 'The next application selection will ask again; access has not been granted',
+  'noApps': 'No always-allowed or blocked applications.',
   'revoke': '取り消し',
   'revoked': 'アプリケーションのアクセスを取り消しました',
   'requested': 'システム設定の下部にあるガイドに従ってください。',
@@ -163,7 +118,7 @@ export const ja = {
   'iconsFailed': 'アプリケーションのアイコンを読み込めませんでした: {message}',
   'failed': '権限を更新できませんでした: {message}',
   'queryFailed': '権限を確認できませんでした: {message}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -217,7 +172,7 @@ export const es = {
   revoke: 'Revocar', revoked: 'Acceso a la aplicación revocado', requested: 'Siga la guía en la parte inferior de Configuración del sistema', opened: 'Configuración del sistema abierta',
   applicationsFailed: 'No se pudo cargar el acceso a la aplicación: {message}', iconsFailed: 'No se pudieron cargar los íconos de la aplicación: {message}',
   failed: 'No se pudieron actualizar los permisos: {message}', queryFailed: 'No se pudieron verificar los permisos: {message}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -271,7 +226,7 @@ export const fr = {
   revoke: 'Révoquer', revoked: "Accès à l'application révoqué", requested: 'Suivez le guide en bas des réglages système.', opened: 'Paramètres système ouverts',
   applicationsFailed: "Impossible de charger l'accès à l'application : {message}", iconsFailed: "Impossible de charger les icônes d'application : {message}",
   failed: 'Impossible de mettre à jour les autorisations : {message}', queryFailed: 'Impossible de vérifier les autorisations : {message}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -325,7 +280,7 @@ export const de = {
   revoke: 'Widerrufen', revoked: 'Anwendungszugriff widerrufen', requested: 'Folgen Sie der Anleitung unten in den Systemeinstellungen', opened: 'Systemeinstellungen geöffnet',
   applicationsFailed: 'Anwendungszugriff konnte nicht geladen werden: {message}', iconsFailed: 'Anwendungssymbole konnten nicht geladen werden: {message}',
   failed: 'Berechtigungen konnten nicht aktualisiert werden: {message}', queryFailed: 'Berechtigungen konnten nicht überprüft werden: {message}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -379,7 +334,7 @@ export const ru = {
   revoke: 'Отозвать', revoked: 'Доступ к приложению отозван', requested: 'Следуйте инструкциям внизу окна «Системные настройки».', opened: 'Системные настройки открыты',
   applicationsFailed: 'Не удалось загрузить доступ к приложению: {message}.', iconsFailed: 'Не удалось загрузить значки приложений: {message}.',
   failed: 'Не удалось обновить разрешения: {message}.', queryFailed: 'Не удалось проверить разрешения: {message}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -433,4 +388,4 @@ export const pt = {
   revoke: 'Revogar', revoked: 'Acesso ao aplicativo revogado', requested: 'Siga o guia na parte inferior das Configurações do sistema', opened: 'Configurações do sistema abertas',
   applicationsFailed: 'Não foi possível carregar o acesso ao aplicativo: {message}', iconsFailed: 'Não foi possível carregar os ícones do aplicativo: {message}',
   failed: 'Não foi possível atualizar as permissões: {message}', queryFailed: 'Não foi possível verificar as permissões: {message}',
-} satisfies Record<keyof typeof en, string>
+} as const

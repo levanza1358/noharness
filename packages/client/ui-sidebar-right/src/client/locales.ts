@@ -6,52 +6,6 @@
  * vocabulary is this package's to own and translate.
  */
 
-/** Simplified Chinese dictionary and key-set source of truth. */
-export const zh = {
-  'menu.close': '关闭',
-  'menu.closeOthers': '关闭其他标签页',
-  'menu.closeRight': '关闭右侧标签页',
-  'command.close': '关闭当前页面／窗口',
-  'command.refresh': '刷新当前页面',
-  'command.noRefresh': '当前页面不支持刷新',
-  'command.toggle': '展开／收起右侧栏',
-  'command.fullscreen': '面板全屏／退出全屏',
-  'command.noSession': '请先选择会话',
-  'command.noFocus': '请先聚焦右侧面板',
-  'command.stale': '页面已切换，请重新聚焦',
-  'command.collapsed': '请先展开右侧栏',
-  'command.float': '浮动面板不支持此操作',
-  'command.empty': '请先打开页面',
-  'command.budget': '已达两格上限',
-  'command.width': '栏宽不足，拖宽侧边栏后再分栏',
-  'chrome.expand': '打开侧边栏',
-  'chrome.expandAria': '打开右侧边栏',
-  'chrome.collapse': '收起侧边栏',
-  'chrome.collapseAria': '收起右侧边栏',
-  'chrome.toFullscreen': '全屏',
-  'chrome.exitFullscreen': '退出全屏',
-  'dock.emptyPane': '空面板',
-  'dock.splitPane': '分栏',
-  'dock.splitPaneDisabled': '已达两格上限',
-  'dock.splitPaneNarrow': '栏宽不足，拖宽侧边栏后再分栏',
-  'dock.closeTab': '关闭',
-  'dock.addTab': '新标签页',
-  'dock.dockFloat': '收回到侧边栏',
-  'dock.closeFloat': '关闭',
-  'dock.drop.center': '移到这里',
-  'dock.drop.left': '左分栏',
-  'dock.drop.right': '右分栏',
-  'dock.drop.top': '上分栏',
-  'dock.drop.bottom': '下分栏',
-  'tab.guide.title': '开始',
-  'tab.guide.more': '更多工具',
-  'tab.unavailable': '这类内容还没有可用的查看方式。',
-} satisfies Record<string, string>
-
-/** Right-Sidebar dictionary key union. */
-export type SidebarRightKey = keyof typeof zh
-
-/** English dictionary, checked against the Chinese key set. */
 export const en = {
   'menu.close': 'Close',
   'menu.closeOthers': 'Close Other Tabs',
@@ -91,49 +45,52 @@ export const en = {
   'tab.guide.title': 'Start',
   'tab.guide.more': 'More tools',
   'tab.unavailable': 'Nothing here can view this kind of content yet.',
-} satisfies Record<SidebarRightKey, string>
+} as const
+
+export type SidebarRightKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'menu.close': '閉じる',
-  'menu.closeOthers': '他のタブを閉じる',
-  'menu.closeRight': '右側のタブを閉じる',
-  'command.close': '現在のページまたはウィンドウを閉じる',
-  'command.refresh': '現在のページを更新',
-  'command.noRefresh': 'このページは更新できません',
-  'command.toggle': '右サイドバーを切り替え',
-  'command.fullscreen': 'パネルの全画面表示を切り替え',
-  'command.noSession': '先にセッションを選択してください',
-  'command.noFocus': '先に右サイドバーのペインにフォーカスしてください',
-  'command.stale': 'ページが変更されました。再度フォーカスしてください',
-  'command.collapsed': '先に右サイドバーを展開してください',
-  'command.float': 'この操作はフローティングパネルでは使用できません',
-  'command.empty': '先にページを開いてください',
+  'menu.close': 'Close',
+  'menu.closeOthers': 'Close Other Tabs',
+  'menu.closeRight': 'Close Tabs to the Right',
+  'command.close': 'Close current page or window',
+  'command.refresh': 'Refresh current page',
+  'command.noRefresh': 'This page cannot be refreshed',
+  'command.toggle': 'Toggle right sidebar',
+  'command.fullscreen': 'Toggle panel fullscreen',
+  'command.noSession': 'Select a session first',
+  'command.noFocus': 'Focus a right sidebar pane first',
+  'command.stale': 'The page changed; focus it again',
+  'command.collapsed': 'Expand the right sidebar first',
+  'command.float': 'This action is unavailable in a floating panel',
+  'command.empty': 'Open a page first',
   'command.budget': 'ペインは2つまでです',
-  'command.width': '分割するのに十分な幅がありません。サイドバーを広げてください',
-  'chrome.expand': 'サイドバーを開く',
-  'chrome.expandAria': '右サイドバーを開く',
-  'chrome.collapse': 'サイドバーを折りたたむ',
-  'chrome.collapseAria': '右サイドバーを折りたたむ',
-  'chrome.toFullscreen': '全画面',
-  'chrome.exitFullscreen': '全画面を終了',
-  'dock.emptyPane': '空のペイン',
-  'dock.splitPane': '分割',
+  'command.width': 'Not enough width to split, widen the sidebar',
+  'chrome.expand': 'Open sidebar',
+  'chrome.expandAria': 'Open right sidebar',
+  'chrome.collapse': 'Collapse sidebar',
+  'chrome.collapseAria': 'Collapse right sidebar',
+  'chrome.toFullscreen': 'Fullscreen',
+  'chrome.exitFullscreen': 'Exit fullscreen',
+  'dock.emptyPane': 'Empty pane',
+  'dock.splitPane': 'Split',
   'dock.splitPaneDisabled': 'ペインは2つまでです',
-  'dock.splitPaneNarrow': '分割するのに十分な幅がありません。サイドバーを広げてください',
-  'dock.closeTab': '閉じる',
-  'dock.addTab': '新しいタブ',
-  'dock.dockFloat': 'サイドバーに戻す',
-  'dock.closeFloat': '閉じる',
-  'dock.drop.center': 'ここに移動',
-  'dock.drop.left': '左に分割を追加',
-  'dock.drop.right': '右に分割を追加',
-  'dock.drop.top': '上に分割を追加',
-  'dock.drop.bottom': '下に分割を追加',
-  'tab.guide.title': '開始',
-  'tab.guide.more': 'その他のツール',
-  'tab.unavailable': 'この種類のコンテンツを表示できるものはまだありません。',
-} satisfies Record<keyof typeof en, string>
+  'dock.splitPaneNarrow': 'Not enough width to split, widen the sidebar',
+  'dock.closeTab': 'Close',
+  'dock.addTab': 'New tab',
+  'dock.dockFloat': 'Send back to the sidebar',
+  'dock.closeFloat': 'Close',
+  'dock.drop.center': 'Move here',
+  'dock.drop.left': 'Add left split',
+  'dock.drop.right': 'Add right split',
+  'dock.drop.top': 'Add top split',
+  'dock.drop.bottom': 'Add bottom split',
+  'tab.guide.title': 'Start',
+  'tab.guide.more': 'More tools',
+  'tab.unavailable': 'Nothing here can view this kind of content yet.',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -175,7 +132,7 @@ export const es = {
   'tab.guide.title': 'Empezar',
   'tab.guide.more': 'Más herramientas',
   'tab.unavailable': 'Nada aquí puede ver este tipo de contenido todavía.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -217,7 +174,7 @@ export const fr = {
   'tab.guide.title': 'Commencer',
   'tab.guide.more': "Plus d'outils",
   'tab.unavailable': 'Rien ici ne peut encore afficher ce type de contenu.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -259,7 +216,7 @@ export const de = {
   'tab.guide.title': 'Starten',
   'tab.guide.more': 'Weitere Werkzeuge',
   'tab.unavailable': 'Diese Art von Inhalten kann hier noch nicht angezeigt werden.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -301,7 +258,7 @@ export const ru = {
   'tab.guide.title': 'Старт',
   'tab.guide.more': 'Дополнительные инструменты',
   'tab.unavailable': 'Ничто здесь пока не может просматривать такой контент.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -343,4 +300,4 @@ export const pt = {
   'tab.guide.title': 'Começar',
   'tab.guide.more': 'Mais ferramentas',
   'tab.unavailable': 'Nada aqui pode visualizar esse tipo de conteúdo ainda.',
-} satisfies Record<keyof typeof en, string>
+} as const

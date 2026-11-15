@@ -1,44 +1,7 @@
 /** `question` namespace dictionaries. */
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'error.incomplete': '请先完成这道问题。',
-  'error.unanswered': '请选择一个选项或填写自定义答案。',
-  'error.unavailable': '当前无法提交，请稍候再试。',
-  'error.resubmit': '回答未送达，工作已继续，请再提交一次。',
-  'status.sent': '回答已发送；面板未能关闭。',
-  'wait.takeTime': '慢慢回答',
-  'wait.countdown': '{seconds} 秒后继续工作',
-  'wait.paused': '已暂停 · 剩余 {seconds} 秒',
-  'wait.held': '会一直等你回答',
-  'wait.continued': '已继续工作，仍可回答',
-  'review.status': '已回答',
-  'review.skipped': '这道问题当时被跳过。',
-  'reply.label': '问题与回答',
-  'reply.answerLabel': '回答：',
-  'reply.skipped': '已跳过',
-  'nav.prev': '上一题',
-  'nav.next': '下一题',
-  'nav.minimize': '收起问题卡片',
-  'nav.maximize': '展开问题卡片',
-  'nav.cancel': '放弃整组问题',
-  'nav.close': '收起问题面板，可从工具调用重新打开',
-  'text.expand': '展开',
-  'text.collapse': '收起',
-  'option.recommended': '推荐',
-  'custom.placeholder': '输入你的答案',
-  'action.skip': '跳过',
-  'action.next': '下一题',
-  'plan.header': '计划待审',
-  'plan.approve': '同意执行',
-  'plan.decline': '拒绝',
-  'plan.discuss': '要求修改',
-} satisfies Record<string, string>
+export type QuestionKey = keyof typeof en
 
-/** The question namespace key union. */
-export type QuestionKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'error.incomplete': 'Please complete this question first.',
   'error.unanswered': 'Please select an option or enter a custom answer.',
@@ -71,42 +34,45 @@ export const en = {
   'plan.approve': 'Approve',
   'plan.decline': 'Refuse',
   'plan.discuss': 'Request changes',
-} satisfies Record<QuestionKey, string>
+} as const
+
+export type UserQuestionsKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'error.incomplete': '先にこの質問に回答してください。',
-  'error.unanswered': 'オプションを選択するか、カスタム回答を入力してください。',
-  'error.unavailable': '現在送信できません。しばらくしてからもう一度お試しください。',
-  'error.resubmit': '作業が続行される前に回答が届きませんでした。もう一度送信してください。',
-  'status.sent': '返信は送信されましたが、パネルを閉じられませんでした。',
-  'wait.takeTime': '時間をかける',
-  'wait.countdown': '{seconds}秒後に続行',
-  'wait.paused': '一時停止中 · 残り{seconds}秒',
-  'wait.held': '回答するまで待機中',
-  'wait.continued': '作業は続行されました — まだ回答できます',
-  'review.status': '回答済み',
-  'review.skipped': 'この質問はスキップされました。',
-  'reply.label': '質問と回答',
-  'reply.answerLabel': '回答: ',
-  'reply.skipped': 'スキップ済み',
-  'nav.prev': '前の質問',
-  'nav.next': '次の質問',
-  'nav.minimize': '質問カードを折りたたむ',
-  'nav.maximize': '質問カードを展開',
-  'nav.cancel': 'すべての質問を閉じる',
-  'nav.close': 'パネルを閉じる — ツール呼び出しから再度開けます',
-  'text.expand': '展開',
-  'text.collapse': '折りたたむ',
-  'option.recommended': '推奨',
-  'custom.placeholder': '回答を入力',
+  'error.incomplete': 'Please complete this question first.',
+  'error.unanswered': 'Please select an option or enter a custom answer.',
+  'error.unavailable': 'Cannot submit right now; try again in a moment.',
+  'error.resubmit': 'The answer did not arrive before work continued; submit it again.',
+  'status.sent': 'Reply sent; the panel could not close.',
+  'wait.takeTime': 'Take time',
+  'wait.countdown': 'Continuing in {seconds}s',
+  'wait.paused': 'Paused · {seconds}s remaining',
+  'wait.held': 'Waiting until you answer',
+  'wait.continued': 'Work continued — you can still answer',
+  'review.status': 'Answered',
+  'review.skipped': 'This question was skipped.',
+  'reply.label': 'Questions and answers',
+  'reply.answerLabel': 'Answer: ',
+  'reply.skipped': 'Skipped',
+  'nav.prev': 'Previous question',
+  'nav.next': 'Next question',
+  'nav.minimize': 'Collapse the question card',
+  'nav.maximize': 'Expand the question card',
+  'nav.cancel': 'Dismiss all questions',
+  'nav.close': 'Close the panel — reopen it from the tool call',
+  'text.expand': 'Expand',
+  'text.collapse': 'Collapse',
+  'option.recommended': 'Recommended',
+  'custom.placeholder': 'Type your answer',
   'action.skip': 'スキップ',
-  'action.next': '次へ',
-  'plan.header': '計画のレビュー',
-  'plan.approve': '承認',
-  'plan.decline': '拒否',
-  'plan.discuss': '変更を依頼',
-} satisfies Record<keyof typeof en, string>
+  'action.next': 'Next',
+  'plan.header': 'Plan review',
+  'plan.approve': 'Approve',
+  'plan.decline': 'Refuse',
+  'plan.discuss': 'Request changes',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -141,7 +107,7 @@ export const es = {
   'plan.approve': 'Aprobar',
   'plan.decline': 'Rechazar',
   'plan.discuss': 'Solicitar cambios',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -176,7 +142,7 @@ export const fr = {
   'plan.approve': 'Approuver',
   'plan.decline': 'Refuser',
   'plan.discuss': 'Demander des modifications',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -211,7 +177,7 @@ export const de = {
   'plan.approve': 'Genehmigen',
   'plan.decline': 'Ablehnen',
   'plan.discuss': 'Fordern Sie Änderungen an',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -246,7 +212,7 @@ export const ru = {
   'plan.approve': 'Утвердить',
   'plan.decline': 'Отказаться',
   'plan.discuss': 'Запросить изменения',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -281,4 +247,4 @@ export const pt = {
   'plan.approve': 'Aprovar',
   'plan.decline': 'Recusar',
   'plan.discuss': 'Solicitar alterações',
-} satisfies Record<keyof typeof en, string>
+} as const

@@ -6,16 +6,16 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { TodoItem } from '@noharness/client-ui-conversation/client'
 import type { ToolResultNode } from '@noharness/client-ui-chat/client'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { TodoRow, todoToolview } from '../src/client/tool/toolviews/todo-row.tsx'
 import { planSummary } from '../src/client/tool/toolviews/plan-summary.ts'
 import { CONVERSATION_NS as NS } from '../src/client/locale.ts'
-import { zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 
 type TodoRowProps = Parameters<typeof TodoRow>[0]
 
-const t: TodoRowProps['t'] = makeTranslate(zh, commonZh)
+const t: TodoRowProps['t'] = makeTranslate(ja, commonJa)
 
 afterEach(cleanup)
 

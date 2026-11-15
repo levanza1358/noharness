@@ -10,14 +10,14 @@ import { webCardModel, webFetchHref } from '../src/client/tool/models/web-card-m
 import { GenericToolCard } from '../src/client/tool/toolviews/GenericToolCard.tsx'
 import { WebRow, webToolview } from '../src/client/tool/toolviews/web-row.tsx'
 import { contextMenuHook, makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
-import { zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
+import { ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 
 afterEach(cleanup)
 
 
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 const SEARCH_ARGS = '{"queries":["deepseek harness"]}'
 const FETCH_ARGS = '{"url":"https://example.com/page"}'

@@ -54,7 +54,7 @@ async function mockPlatform() {
           res.writeHead(400).end()
           return
         }
-        value = { user: null, token: 'nhs_mock_composition_test', authorized_url: `${origin}/nhs/authorized?result=test&locale=zh_CN` }
+        value = { user: null, token: 'nhs_mock_composition_test', authorized_url: `${origin}/nhs/authorized?result=test&locale=ja_JP` }
       }
       res.setHeader('content-type', 'application/json')
       res.end(JSON.stringify({ code: 0, data: { biz_code: 0, biz_data: value } }))
@@ -103,10 +103,10 @@ describe.skipIf(!existsSync(builtHost))('built Desktop welcome flow', () => {
       writeFileSync(join(paths.profile, 'cordis.patch.yml'),
         readFileSync(join(paths.profile, 'cordis.patch.yml'), 'utf8') + '- id: locale\n  config:\n    preference: zh\n')
       await restart()
-      expect(await status()).toMatchObject({ hasApiKey: false, localePreference: 'zh' })
+      expect(await status()).toMatchObject({ hasApiKey: false, localePreference: 'ja' })
       expect(fingerprint()).toBe(before)
       expect(await backend!.save('sk-local-onboarding-test')).toEqual({ ok: true })
-      expect(await status()).toMatchObject({ hasApiKey: true, localePreference: 'zh' })
+      expect(await status()).toMatchObject({ hasApiKey: true, localePreference: 'ja' })
       await restart()
       expect(await status()).toMatchObject({ hasApiKey: true })
       await backend!.account.start(desktopClientMetadata('en'))
@@ -122,7 +122,7 @@ describe.skipIf(!existsSync(builtHost))('built Desktop welcome flow', () => {
       await expect.poll(async () => (await backend!.account.state()).attempt?.phase).toBe('waiting-browser')
       const response = await fetch(platform.callback(), { redirect: 'manual' })
       expect(response.status).toBe(302)
-      expect(response.headers.get('location')).toBe(`${platform.origin}/nhs/authorized?result=test&locale=zh_CN&login_source=desktop`)
+      expect(response.headers.get('location')).toBe(`${platform.origin}/nhs/authorized?result=test&locale=ja_JP&login_source=desktop`)
       expect(await status()).toMatchObject({ hasApiKey: true, loggedIn: true })
       await restart()
       expect(await status()).toMatchObject({ hasApiKey: true, loggedIn: true })

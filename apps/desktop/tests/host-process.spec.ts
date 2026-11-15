@@ -93,7 +93,7 @@ function projectWithHost(source = HTTP_HOST): string {
   roots.push(project)
   const packageRoot = join(project, 'node_modules', '@noharness', 'nhs-desktop-host')
   mkdirSync(join(packageRoot, 'lib'), { recursive: true })
-  writeFileSync(join(packageRoot, 'package.json'), '{"name":"@noharness/desktop-host","type":"module"}\n')
+  writeFileSync(join(packageRoot, 'package.json'), '{"name":"@noharness/nhs-desktop-host","type":"module"}\n')
   writeFileSync(join(packageRoot, 'lib', 'index.js'), source)
   return project
 }
@@ -147,7 +147,7 @@ process.once('message', message => {
     const report = renderCrashReport({ source: 'host', phase: 'running', error: failure,
       rendererConsole: [], operationHistoryPlanned: true, time: new Date('2026-10-19T00:00:00Z'),
       app: { name: 'qualification', version: 'test', platform: process.platform, arch: process.arch,
-        electron: 'not-running', node: process.version, locale: 'zh-CN' },
+        electron: 'not-running', node: process.version, locale: 'ja-JP' },
     })
     expect(report).toContain(`qualification-${kind}`)
     expect(report).toContain('phase: running')

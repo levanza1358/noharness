@@ -25,23 +25,9 @@ export const en = {
 /** Locale dictionary key union. */
 export type CotTranslationKey = keyof typeof en
 
-/** Chinese copy. */
-export const zh: Record<CotTranslationKey, string> = {
-  provider: '翻译服务', google: 'Google', bing: 'Bing',
-  deepseekAccount: 'DeepSeek Flash · 账号（付费）', deepseekOfficial: 'DeepSeek Flash · 官方 API（付费）',
-  providerUnavailableOption: '{provider} — 不可用',
-  providerUnavailable: '此服务暂不可用，请配置 DeepSeek 账号或官方 API 服务，或选择可用的翻译服务',
-  paidNotice: '每个未缓存片段都会通过所选账号或官方 API 凭据单独发送一次付费的 DeepSeek Flash 请求；重新展开会复用已保存的译文，更改服务、语言、原文或请求设置可能发送新的付费请求',
-  anonymousNotice: 'Bing 和 Google 翻译无需额外登录或 API key，但匿名接口可能拒绝或限制请求', targetLanguage: '目标语言',
-  targetLanguageHint: 'auto 使用界面语言；也可填写语言代码，例如 zh、en、ja',
-  privacy: '展开的思考内容会发送给所选翻译服务，可能包含私有代码或对话细节。',
-  translation: '查看译文', original: '查看原文', retry: '重试', failed: '翻译暂不可用，已显示原文',
-  translating: '正在翻译思考内容', invalidProvider: '请选择翻译服务', invalidLanguage: '请填写 auto 或语言代码，例如 zh、en、ja',
-  overridden: '已覆盖', reset: '恢复默认',
-  unavailable: '翻译设置暂不可用', readOnly: '本部署的设置为只读',
-  saveFailed: '本部署没有接受这些值，已保留供你修改', save: '保存', saving: '保存中…',
-  copy: '复制', copied: '已复制', codeTitle: '代码块', wrap: '自动换行', unwrap: '不换行', footnotes: '脚注',
-}
+
+/** Locale dictionary key union. */
+
 
 /**
  * Read shared form chrome from the plugin dictionary.
@@ -59,13 +45,13 @@ export const ja = {
   'bing': 'Bing',
   'deepseekAccount': 'DeepSeek Flash — アカウント (有料)',
   'deepseekOfficial': 'DeepSeek Flash — 公式 API (有料)',
-  'providerUnavailableOption': '{provider} — 利用不可',
-  'providerUnavailable': 'このプロバイダーは利用できません。DeepSeek アカウントまたは公式 API プロバイダーを設定するか、利用可能なサービスを選択してください。',
-  'paidNotice': 'キャッシュされていないフラグメントごとに、選択したアカウントまたは公式 API の認証情報を通じて、個別の有料 DeepSeek Flash リクエストが送信されます。推論を再度開くと保存済みの結果が再利用されますが、プロバイダー、言語、ソーステキスト、またはリクエスト設定を変更すると、新たな有料リクエストが送信される場合があります。',
+  'providerUnavailableOption': '{provider} — unavailable',
+  'providerUnavailable': 'This provider is unavailable. Configure your DeepSeek account or official API provider, or choose an available service.',
+  'paidNotice': 'Each uncached fragment sends a separate paid DeepSeek Flash request through the selected account or official API credentials. Reopening reasoning reuses saved results; changing the provider, language, source text, or request settings may send a new paid request.',
   'anonymousNotice': 'Bing と Google は翻訳のログインや API キーが不要です。これらの匿名エンドポイントはリクエストを拒否したり制限したりする場合があります。',
   'targetLanguage': '翻訳先の言語',
-  'targetLanguageHint': 'auto は UI の言語に従います。zh、en、ja などの言語コードも使用できます。',
-  'privacy': '展開された推論は選択したサービスに送信されます。非公開のコードや会話の詳細が含まれている可能性があります。',
+  'targetLanguageHint': 'auto follows the UI language; language codes such as zh, en, and ja also work.',
+  'privacy': 'Expanded reasoning is sent to the selected service. It may contain private code or conversation details.',
   'translation': '翻訳を表示',
   'original': '原文を表示',
   'retry': '再試行',
@@ -86,7 +72,7 @@ export const ja = {
   'wrap': '折り返し',
   'unwrap': '折り返しを解除',
   'footnotes': '脚注',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -104,7 +90,7 @@ export const es = {
   unavailable: 'Las preferencias de traducción no están disponibles.', readOnly: 'Esta implementación almacena configuraciones de solo lectura.',
   saveFailed: 'El despliegue no aceptó estos valores; quedaron para que usted los corrigiera.', save: 'Guardar', saving: 'Guardando…',
   copy: 'Copiar', copied: 'Copiado', codeTitle: 'Bloque de código', wrap: 'Ajustar líneas', unwrap: 'Desenvolver líneas', footnotes: 'Notas a pie de página',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -122,7 +108,7 @@ export const fr = {
   unavailable: 'Les préférences de traduction ne sont pas disponibles.', readOnly: 'Ce déploiement stocke les paramètres en lecture seule.',
   saveFailed: "Le déploiement n'a pas accepté ces valeurs ; ils vous ont été laissés à corriger.", save: 'Enregistrer', saving: 'Sauvegarde…',
   copy: 'Copier', copied: 'Copié', codeTitle: 'Bloc de code', wrap: 'Activer le retour à la ligne', unwrap: 'Dérouler les lignes', footnotes: 'Notes de bas de page',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -140,7 +126,7 @@ export const de = {
   unavailable: 'Übersetzungseinstellungen sind nicht verfügbar.', readOnly: 'Diese Bereitstellung speichert Einstellungen schreibgeschützt.',
   saveFailed: 'Die Bereitstellung hat diese Werte nicht akzeptiert. Sie mussten sie korrigieren.', save: 'Speichern', saving: 'Speichern…',
   copy: 'Kopieren', copied: 'Kopiert', codeTitle: 'Codeblock', wrap: 'Zeilen umbrechen', unwrap: 'Zeilen abwickeln', footnotes: 'Fußnoten',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -158,7 +144,7 @@ export const ru = {
   unavailable: 'Настройки перевода недоступны.', readOnly: 'В этом развертывании параметры сохраняются только для чтения.',
   saveFailed: 'Развертывание не приняло эти значения; их оставили вам на исправление.', save: 'Сохранить', saving: 'Сохранение…',
   copy: 'Копировать', copied: 'Скопировано', codeTitle: 'Блок кода', wrap: 'Переносить строки', unwrap: 'Развернуть линии', footnotes: 'Сноски',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -176,4 +162,4 @@ export const pt = {
   unavailable: 'As preferências de tradução não estão disponíveis.', readOnly: 'Esta implantação armazena configurações somente leitura.',
   saveFailed: 'A implantação não aceitou esses valores; eles foram deixados para você corrigir.', save: 'Salvar', saving: 'Salvando…',
   copy: 'Copiar', copied: 'Copiado', codeTitle: 'Bloco de código', wrap: 'Quebrar linhas', unwrap: 'Desembrulhar linhas', footnotes: 'Notas de rodapé',
-} satisfies Record<keyof typeof en, string>
+} as const

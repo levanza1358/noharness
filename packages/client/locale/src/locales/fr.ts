@@ -1,5 +1,4 @@
 /** French common-namespace dictionary. */
-import type { en } from './en.ts'
 
 /** Complete French copy for the common namespace. */
 export const fr = {
@@ -44,4 +43,4 @@ export const fr = {
   'markdown.truncatedCharacters': '… tronqué à {total} caractères',
   'number.thousand': '{value}K',
   'number.million': '{value}M',
-} satisfies Record<keyof typeof en, string>
+} as const

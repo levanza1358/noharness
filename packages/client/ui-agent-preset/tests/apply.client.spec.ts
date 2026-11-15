@@ -86,7 +86,7 @@ async function bench(options: {
   const moveDefault = (): void => { ROSTER = ROSTER_MOVED }
   await ctx.plugin(SlotRegistry).await()
   const locale = new LocaleRuntime(ctx)
-  locale.setLocale('zh')
+  locale.setLocale('en')
   ctx.provide('locale', locale)
   const calls: string[] = []
   let savedDefault = ROSTER.value.presets.find(row => row.isDefault)?.id ?? 'standard'

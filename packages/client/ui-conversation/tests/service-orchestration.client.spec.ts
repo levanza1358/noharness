@@ -16,7 +16,7 @@ import { ComposerBlockRegistry } from '../src/client/input/blocks.ts'
 import { InputHub } from '../src/client/input/hub.ts'
 import { reportMessageSubmission } from '../src/client/input/submission-analytics.ts'
 import { ConversationController } from '../src/client/service.ts'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 
 const IMAGE_REF = {
   attachmentId: 'image-stored-1' as never,
@@ -61,7 +61,7 @@ async function bench(maxConcurrentFileUploads = 2) {
   await reference.ready
   // config.input is required (the apply shares its hub with the inject
   // factories); the bench passes its own instance explicitly.
-  const hub = new InputHub(runtime.ctx, makeTranslate(zh, {}))
+  const hub = new InputHub(runtime.ctx, makeTranslate(ja, {}))
   const fiber = runtime.ctx.plugin(ConversationController, {
     input: hub,
     blocks: new ComposerBlockRegistry(),
@@ -601,7 +601,7 @@ describe('ConversationController', () => {
     // No Client Sessions service at all: a bare context lacks the assembled controller.
     const bare = new Context()
     await bare.plugin(ConversationController, {
-      input: new InputHub(bare, makeTranslate(zh, {})),
+      input: new InputHub(bare, makeTranslate(ja, {})),
       blocks: new ComposerBlockRegistry(),
       maxConcurrentFileUploads: 2,
     }).await()

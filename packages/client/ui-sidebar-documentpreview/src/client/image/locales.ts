@@ -1,17 +1,7 @@
-import { zoomEn, zoomJa, zoomEs, zoomFr, zoomDe, zoomRu, zoomPt, zoomZh } from '../zoom/locales.ts'
+import { zoomEn, zoomJa, zoomEs, zoomFr, zoomDe, zoomRu, zoomPt } from '../zoom/locales.ts'
 
-/** Locale-owned image renderer labels and status text. */
-export const zh = {
-  ...zoomZh,
-  title: '图片',
-  preview: '图片预览：{name}',
-  loading: '文档渲染中...',
-  failed: '无法显示这张图片',
-  unsupported: '图片预览需要完整文件内容',
-} satisfies Record<string, string>
 
 /** Image renderer dictionary keys. */
-export type ImagePreviewKey = keyof typeof zh
 
 /** English dictionary with the same keys as the Chinese dictionary. */
 export const en = {
@@ -21,7 +11,9 @@ export const en = {
   loading: 'Rendering document...',
   failed: 'This image could not be displayed.',
   unsupported: 'Image preview requires the complete file contents.',
-} satisfies Record<ImagePreviewKey, string>
+} as const
+
+export type ImagePreviewKey = keyof typeof en
 
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -33,12 +25,12 @@ declare module '@noharness/client-ui-slots' {
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   ...zoomJa,
-  'title': '画像',
-  'preview': '画像プレビュー: {name}',
-  'loading': 'ドキュメントをレンダリング中...',
-  'failed': 'この画像を表示できませんでした。',
-  'unsupported': '画像プレビューには完全なファイル内容が必要です。',
-} satisfies Record<keyof typeof en, string>
+  'title': 'Image',
+  'preview': 'Image preview: {name}',
+  'loading': 'Rendering document...',
+  'failed': 'This image could not be displayed.',
+  'unsupported': 'Image preview requires the complete file contents.',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -48,7 +40,7 @@ export const es = {
   loading: 'Representando documento...',
   failed: 'Esta imagen no se pudo mostrar.',
   unsupported: 'La vista previa de la imagen requiere el contenido completo del archivo.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -58,7 +50,7 @@ export const fr = {
   loading: 'Rendu du document...',
   failed: "Cette image n'a pas pu être affichée.",
   unsupported: "L'aperçu de l'image nécessite le contenu complet du fichier.",
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -68,7 +60,7 @@ export const de = {
   loading: 'Dokument wird gerendert...',
   failed: 'Dieses Bild konnte nicht angezeigt werden.',
   unsupported: 'Für die Bildvorschau ist der vollständige Dateiinhalt erforderlich.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -78,7 +70,7 @@ export const ru = {
   loading: 'Оформление документа...',
   failed: 'Это изображение не может быть отображено.',
   unsupported: 'Для предварительного просмотра изображения требуется полное содержимое файла.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -88,4 +80,4 @@ export const pt = {
   loading: 'Renderizando documento...',
   failed: 'Esta imagem não pôde ser exibida.',
   unsupported: 'A visualização da imagem requer o conteúdo completo do arquivo.',
-} satisfies Record<keyof typeof en, string>
+} as const

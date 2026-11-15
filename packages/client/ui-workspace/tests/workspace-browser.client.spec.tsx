@@ -14,7 +14,7 @@ import type { SessionStatus, SessionStatusSnapshot } from '@noharness/client-ui-
 import type { SessionPendingInteraction } from '@noharness/client-ui-session/client'
 import type { SessionId } from '@noharness/session/types'
 import type { MainPanelId } from '@noharness/client-ui-layout/client'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { DirectoryFlowOwnerProps, WorkspaceActionRequest, WorkspaceBrowserProps } from '../src/client/contract/slots.ts'
 import { createWorkspaceShortcutControls } from '../src/client/shortcuts.ts'
 import { createWorkspaceViewStore, FLAT_SESSION_ORDER_KEY } from '../src/client/stores.ts'
@@ -22,7 +22,7 @@ import { UNGROUPED_KEY } from '../src/client/tree.ts'
 import { WorkspaceBrowser } from '../src/client/rows/WorkspaceBrowser.tsx'
 import { renderMenuButton } from './menu-button.tsx'
 import rowCss from '../src/client/rows/Rows.module.css'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 
 // Every fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
 const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined, reload: () => {} })) as GlobalStandardProps['useResource']
@@ -39,7 +39,7 @@ beforeEach(() => {
 
 // The seat's key domain is workspace ∪ common; the stub mirrors the real
 // lookup chain (namespace, then common vocabulary, then the key).
-const t: WorkspaceBrowserProps['t'] = makeTranslate(zh, commonZh)
+const t: WorkspaceBrowserProps['t'] = makeTranslate(ja, commonJa)
 
 const sid = (id: string) => id as SessionId
 const wid = (id: string) => id as WorkspaceId

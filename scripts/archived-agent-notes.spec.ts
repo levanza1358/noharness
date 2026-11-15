@@ -1,7 +1,7 @@
+import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import {
   extendArchiveManifest,
-  gitBlobHash,
   parseArchiveManifest,
   renderArchiveManifest,
   validateArchiveArtifacts,
@@ -10,11 +10,15 @@ import {
 } from './archived-agent-notes.ts'
 import { isArchivedAgentNotePath } from './repo-files.ts'
 
+function contentHash(content: Buffer): string {
+  return `sha256:${createHash('sha256').update(content).digest('hex')}`
+}
+
 function fixture(): Map<string, Buffer> {
   const base = '2026-07-26-example'
   const source = Buffer.from(`# Agent Note: Example\n\nStatus: implemented\nArchived: 2026-07-26\n\nEnglish | [中文](${base}.zh.md)\n\n## Problem\n\nExample.\n`)
   const zh = Buffer.from(`# Agent Note: 示例\n\nStatus: implemented\nArchived: 2026-07-26\n\n[English](${base}.md) | 中文\n\n## 问题\n\n示例。\n`)
-  const meta = Buffer.from(`${base}.md: ${gitBlobHash(source)}\n${base}.zh.md: ${gitBlobHash(zh)}\n`)
+  const meta = Buffer.from(`${base}.md: ${contentHash(source)}\n${base}.zh.md: ${contentHash(zh)}\n`)
   return new Map([
     [`process/${base}.md`, source],
     [`process/${base}.zh.md`, zh],
@@ -39,7 +43,7 @@ describe('archived Agent Notes', () => {
     const source = Buffer.from(`${title}\nStatus: implemented\nArchived: 2026-07-26\n[中文版本](${base}.zh.md)\n`)
     artifacts.set(`process/${base}.md`, source)
     const zh = artifacts.get(`process/${base}.zh.md`)!
-    artifacts.set(`process/${base}.i18n.yaml`, Buffer.from(`${base}.md: ${gitBlobHash(source)}\n${base}.zh.md: ${gitBlobHash(zh)}\n`))
+    artifacts.set(`process/${base}.i18n.yaml`, Buffer.from(`${base}.md: ${contentHash(source)}\n${base}.zh.md: ${contentHash(zh)}\n`))
     expect(validateArchiveArtifacts(artifacts)).toEqual([])
   })
 
@@ -56,7 +60,7 @@ describe('archived Agent Notes', () => {
     const source = Buffer.from(`# Historical decision\n${metadata}\n`)
     artifacts.set(`process/${base}.md`, source)
     const zh = artifacts.get(`process/${base}.zh.md`)!
-    artifacts.set(`process/${base}.i18n.yaml`, Buffer.from(`${base}.md: ${gitBlobHash(source)}\n${base}.zh.md: ${gitBlobHash(zh)}\n`))
+    artifacts.set(`process/${base}.i18n.yaml`, Buffer.from(`${base}.md: ${contentHash(source)}\n${base}.zh.md: ${contentHash(zh)}\n`))
     expect(validateArchiveArtifacts(artifacts).join('\n')).toMatch(error)
   })
 

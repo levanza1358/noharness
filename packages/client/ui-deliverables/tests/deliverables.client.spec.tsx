@@ -37,7 +37,7 @@ import {
   selectProducedFiles, type DeliverablesTurnData,
 } from '../src/client/turn-deliverables.ts'
 import { apply, inject } from '../src/client/index.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import type { SessionId } from '@noharness/session/types'
 import type { SessionEvent } from '@noharness/session/types'
 import { brandString } from '@noharness/brand'
@@ -615,7 +615,7 @@ describe('ChangedFiles card', () => {
     return { props, openFile, view }
   }
 
-  it.each([en, zh])('shows one edited filename without a list and opens its review', (locale) => {
+  it.each([en, ja])('shows one edited filename without a list and opens its review', (locale) => {
     const single = servedStore({ turn: 1, files: [changedFile('src/example.scss', 3, 1)], total: 1, added: 3, deleted: 1 })
     const { props, view } = renderCard(new PresentedOpenController(), locale, { changes, presented: [] }, single)
     const t = makeTranslate(locale)
@@ -764,12 +764,12 @@ describe('ChangedFiles card', () => {
 
   it('opens the review the same way without a desktop', () => {
     const controller = new PresentedOpenController()
-    const { openFile, props, view } = renderCard(controller, zh)
+    const { openFile, props, view } = renderCard(controller, ja)
     controller.host.set('error')
-    view.rerender(<Deliverables {...props} matched={{ changes, presented: [] }} openFile={openFile} sessionId={brandString<SessionId>('child-session')} t={makeTranslate(zh)} />)
+    view.rerender(<Deliverables {...props} matched={{ changes, presented: [] }} openFile={openFile} sessionId={brandString<SessionId>('child-session')} t={makeTranslate(ja)} />)
     expect(view.getByRole('button', { name: '在侧边栏查看本轮改动' })).toBeTruthy()
     controller.host.set({ name: 'server', available: false, fileManager: null })
-    view.rerender(<Deliverables {...props} matched={{ changes, presented: [] }} openFile={openFile} sessionId={brandString<SessionId>('child-session')} t={makeTranslate(zh)} />)
+    view.rerender(<Deliverables {...props} matched={{ changes, presented: [] }} openFile={openFile} sessionId={brandString<SessionId>('child-session')} t={makeTranslate(ja)} />)
     expect(view.getByText('已编辑 11 个文件')).toBeTruthy()
     fireEvent.click(view.getByRole('button', { name: '在侧边栏查看本轮改动' }))
     expect(props.openChangesReview).toHaveBeenLastCalledWith({ sessionId: 'child-session', seq: 5, turn: 1 }, 0)

@@ -12,7 +12,7 @@ import type { PanelInfo, MainPanelId } from '@noharness/client-ui-layout/client'
 import { ShortcutRegistry } from '../../shortcuts/src/client/registry.ts'
 import { provideSessionStatus } from './session-status.client.ts'
 import { createWorkspaceShortcutControls, installWorkspaceShortcuts } from '../src/client/shortcuts.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 const sid = (value: string) => value as SessionId
 const context = { region: 'page', modal: null, target: null } as const
@@ -53,7 +53,7 @@ async function bench(runtime: 'web' | 'desktop' = 'desktop', platform: ShortcutP
   const directory = createSnapshotStore(true)
   ctx.provide('slots', { entries: () => directory.getSnapshot() ? [{}] : [], subscribe: (_name: string, listener: () => void) => directory.subscribe(listener) })
   const locale = new LocaleRuntime(ctx)
-  locale.register('workspace', { en, zh })
+  locale.register('workspace', { en, ja })
   locale.setLocale('en')
   ctx.provide('locale', locale)
   const navigation = {

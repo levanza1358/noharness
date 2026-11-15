@@ -12,9 +12,9 @@ import type { AskUserQuestionAnswerItem } from '@noharness/user-questions/types'
 import { createWaterfallRequest, PendingQuestion, type QuestionCardSnapshot, type QuestionComposerProps } from '../src/client/contract/slots.ts'
 import { createQuestionDraftStore } from '../src/client/draft-store.ts'
 import { QuestionComposer as Composer, parseRecommendedLabel } from '../src/client/QuestionComposer.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 
 // Every session-scope fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
 const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined, reload: () => {} })) as GlobalStandardProps['useResource']
@@ -151,7 +151,7 @@ const kitBase: Omit<QuestionComposerProps, 'matched' | 'useStore' | 'useQuestion
     submit: () => { throw new Error('unused') },
   },
   // The seat's key domain is question ∪ common.
-  t: seatOver(zh, commonZh),
+  t: seatOver(ja, commonJa),
 }
 
 let kit: Omit<QuestionComposerProps, 'matched' | 'useQuestionCard'>
@@ -678,14 +678,14 @@ describe('PendingQuestion domain face', () => {
     // Expanded: the option list is visible.
     expect(screen.getByRole('radiogroup')).toBeTruthy()
     // Collapse: options leave the tree; the title and minimize toggle stay.
-    fireEvent.click(screen.getByLabelText(zh['nav.minimize']))
+    fireEvent.click(screen.getByLabelText(ja['nav.minimize']))
     expect(screen.queryByRole('radiogroup')).toBeNull()
     expect(screen.getByText('选择候选人类型')).toBeTruthy()
     // Expand: the options return (the toggle label flips while collapsed).
-    fireEvent.click(screen.getByLabelText(zh['nav.maximize']))
+    fireEvent.click(screen.getByLabelText(ja['nav.maximize']))
     expect(screen.getByRole('radiogroup')).toBeTruthy()
     // Expanded again: the toggle reports expanded and the option list is back.
-    expect(screen.getByLabelText(zh['nav.minimize']).getAttribute('aria-expanded')).toBe('true')
+    expect(screen.getByLabelText(ja['nav.minimize']).getAttribute('aria-expanded')).toBe('true')
   })
 
   it('keeps the collapse toggle out of the cancel path and preserves drafts across collapse', () => {
@@ -694,9 +694,9 @@ describe('PendingQuestion domain face', () => {
     fireEvent.click(screen.getByRole('radio', { name: /工程落地型/ }))
     // Single-select auto-advances to the second question; collapse and expand
     // must not lose either the picked option or the current position.
-    fireEvent.click(screen.getByLabelText(zh['nav.minimize']))
-    fireEvent.click(screen.getByLabelText(zh['nav.maximize']))
-    const custom = screen.getByPlaceholderText(zh['custom.placeholder'])
+    fireEvent.click(screen.getByLabelText(ja['nav.minimize']))
+    fireEvent.click(screen.getByLabelText(ja['nav.maximize']))
+    const custom = screen.getByPlaceholderText(ja['custom.placeholder'])
     fireEvent.change(custom, { target: { value: '要能独立排查线上问题' } })
     // Re-expanding must not steal focus back into the textarea: it was
     // autofocused on first presentation, so focus stays on the expand toggle.
@@ -742,7 +742,7 @@ describe('timed card', () => {
       (channel) => { carrier.detachWaterfall(channel) })
     try {
       render(<QuestionComposer matched={carrier} {...kit} />)
-      const field = screen.getByPlaceholderText(zh['custom.placeholder'])
+      const field = screen.getByPlaceholderText(ja['custom.placeholder'])
       expect(document.activeElement).not.toBe(field)
 
       fireEvent.focus(field)
@@ -905,7 +905,7 @@ describe('timed card', () => {
     fireEvent.click(screen.getByRole('button', { name: '提交' }))
     await vi.waitFor(() => { expect(hide).toHaveBeenCalledOnce() })
     expect(screen.getByRole<HTMLButtonElement>('button', { name: '提交' }).disabled).toBe(false)
-    expect(screen.queryByText(zh['status.sent'])).toBeNull()
+    expect(screen.queryByText(ja['status.sent'])).toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: '提交' }))
     expect(await screen.findByText('a reply is already queued for this question')).toBeTruthy()
@@ -1020,7 +1020,7 @@ describe('review card', () => {
     const { carrier } = reviewCard()
     render(<QuestionComposer matched={carrier} {...kit} />)
 
-    expect(screen.getByText(zh['review.status'])).toBeTruthy()
+    expect(screen.getByText(ja['review.status'])).toBeTruthy()
     // The recorded selection is paired by question id, not by record order.
     const chosen = screen.getByRole<HTMLButtonElement>('radio', { name: '工程落地型' })
     expect(chosen.getAttribute('aria-checked')).toBe('true')
@@ -1044,7 +1044,7 @@ describe('review card', () => {
     fireEvent.click(screen.getByLabelText('下一题'))
 
     expect(screen.getByText('3 / 3')).toBeTruthy()
-    expect(screen.getByText(zh['review.skipped'])).toBeTruthy()
+    expect(screen.getByText(ja['review.skipped'])).toBeTruthy()
     expect(screen.getByRole('checkbox', { name: '系统设计' }).getAttribute('aria-checked')).toBe('false')
     expect(screen.queryByPlaceholderText('输入你的答案')).toBeNull()
   })
@@ -1103,8 +1103,8 @@ describe('review card', () => {
     render(<QuestionComposer matched={carrier} {...kit} />)
 
     // The card is keyed by its tool call, so closing names the reopen path.
-    expect(screen.queryByLabelText(zh['nav.cancel'])).toBeNull()
-    fireEvent.click(screen.getByLabelText(zh['nav.close']))
+    expect(screen.queryByLabelText(ja['nav.cancel'])).toBeNull()
+    fireEvent.click(screen.getByLabelText(ja['nav.close']))
 
     expect(hide).toHaveBeenCalledOnce()
     expect(carrier.snapshot()).toEqual({

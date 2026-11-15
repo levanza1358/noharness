@@ -37,43 +37,15 @@ const PRODUCT_NAMES = {
   'app.konsole': 'Konsole',
 } as const
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'menu.openIn': '在应用中打开',
-  'menu.openInSidebar': '在侧边栏打开',
-  'menu.openInFloat': '在浮窗中打开',
-  'menu.finder': '在 Finder 中显示',
-  'menu.reveal': '在文件夹显示',
-  'menu.defaultApp': '使用默认应用打开',
-  'menu.external': '外部浏览器打开',
-  'menu.copyLink': '复制链接地址',
-  'menu.copyPath': '复制文件路径',
-  'menu.copyDirectoryPath': '复制文件夹路径',
-  'menu.copied': '已复制',
-  'menu.copyFailed': '无法复制，请检查内容是否可用后重试',
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'open-in-app': OpenInAppKey
+  }
+}
 
-  'open.title': '用 {app} 打开',
-  'path.appDefault': '{app}（默认）',
-  'path.appsError': '无法获取应用列表',
-  'shortcut.busy': '正在打开工作区',
-  'shortcut.unavailable': '当前工作区或本地应用不可用',
-  'open.tooltip': '在本地打开',
-  'path.open': '打开',
-  'path.more': '更多打开方式',
-  'path.reveal': '显示文件位置',
-  'path.opened': '已在其它设备打开',
-  'path.revealed': '已在其它设备显示文件位置',
-  'path.openError': '打开失败，请重试',
-  'path.revealError': '无法显示文件位置，请重试',
-  ...PRODUCT_NAMES,
-  'app.finder': '访达',
-  'app.explorer': '文件资源管理器',
-  'app.filemanager': '文件管理器',
-  'app.terminal': '终端',
-} as const
+export type OpenInAppKey = keyof typeof en
 
-/** English dictionary, key-identical to the Chinese source of truth. */
-export const en: Record<OpenInAppKey, string> = {
+export const en = {
   'menu.openIn': 'Open in',
   'menu.openInSidebar': 'Open in sidebar',
   'menu.openInFloat': 'Open in floating panel',
@@ -108,42 +80,40 @@ export const en: Record<OpenInAppKey, string> = {
 }
 
 /** Key domain of the `open-in-app` namespace (zh is the source of truth). */
-export type OpenInAppKey = keyof typeof zh
-
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'menu.openIn': 'アプリケーションで開く',
-  'menu.openInSidebar': 'サイドバーで開く',
-  'menu.openInFloat': 'フローティングパネルで開く',
-  'menu.finder': 'Finder に表示',
-  'menu.reveal': 'フォルダーに表示',
-  'menu.defaultApp': '既定のアプリで開く',
-  'menu.external': '外部ブラウザーで開く',
+  'menu.openIn': 'Open in',
+  'menu.openInSidebar': 'Open in sidebar',
+  'menu.openInFloat': 'Open in floating panel',
+  'menu.finder': 'Show in Finder',
+  'menu.reveal': 'Show in folder',
+  'menu.defaultApp': 'Open in default application',
+  'menu.external': 'Open in external browser',
   'menu.copyLink': 'リンクアドレスをコピー',
   'menu.copyPath': 'ファイルパスをコピー',
   'menu.copyDirectoryPath': 'フォルダーパスをコピー',
   'menu.copied': 'コピーしました',
-  'menu.copyFailed': 'コピーできません。内容を確認して再試行してください。',
+  'menu.copyFailed': 'Could not copy. Check that the content is available, then retry.',
 
   ...PRODUCT_NAMES,
-  'open.title': '{app}で開く',
+  'open.title': 'Open in {app}',
   'path.appDefault': '{app}（デフォルト）',
-  'path.appsError': 'アプリケーションを読み込めませんでした',
-  'shortcut.busy': 'ワークスペースを開いています',
-  'shortcut.unavailable': '現在のワークスペースまたはローカルアプリケーションを利用できません',
-  'open.tooltip': 'ローカルで開く',
-  'path.open': '開く',
-  'path.more': 'その他の開き方',
-  'path.reveal': 'ファイルの場所を表示',
-  'path.opened': '別のデバイスで開きました',
-  'path.revealed': '別のデバイスでファイルの場所を表示しました',
-  'path.openError': '開けませんでした。もう一度お試しください。',
-  'path.revealError': 'ファイルの場所を表示できませんでした。もう一度お試しください。',
+  'path.appsError': 'Could not load applications',
+  'shortcut.busy': 'Opening workspace',
+  'shortcut.unavailable': 'Current workspace or local application unavailable',
+  'open.tooltip': 'Open locally',
+  'path.open': 'Open',
+  'path.more': 'More ways to open',
+  'path.reveal': 'Show file location',
+  'path.opened': 'Opened on another device',
+  'path.revealed': 'File location shown on another device',
+  'path.openError': 'Could not open. Try again.',
+  'path.revealError': 'Could not show the file location. Try again.',
   'app.finder': 'Finder',
   'app.explorer': 'エクスプローラー',
   'app.filemanager': 'ファイル',
   'app.terminal': 'ターミナル',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -177,7 +147,7 @@ export const es = {
   'app.explorer': 'Explorador de archivos',
   'app.filemanager': 'Archivos',
   'app.terminal': 'terminales',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -211,7 +181,7 @@ export const fr = {
   'app.explorer': 'Explorateur de fichiers',
   'app.filemanager': 'Fichiers',
   'app.terminal': 'Borne',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -245,7 +215,7 @@ export const de = {
   'app.explorer': 'Datei-Explorer',
   'app.filemanager': 'Dateien',
   'app.terminal': 'Terminal',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -279,7 +249,7 @@ export const ru = {
   'app.explorer': 'Проводник файлов',
   'app.filemanager': 'Файлы',
   'app.terminal': 'Терминал',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -313,4 +283,4 @@ export const pt = {
   'app.explorer': 'Explorador de arquivos',
   'app.filemanager': 'Arquivos',
   'app.terminal': 'Terminais',
-} satisfies Record<keyof typeof en, string>
+} as const

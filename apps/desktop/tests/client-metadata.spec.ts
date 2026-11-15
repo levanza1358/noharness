@@ -6,7 +6,7 @@ afterEach(() => { vi.unstubAllEnvs() })
 it('reports the inlined client build version and the requested language', () => {
   vi.stubEnv('NHS_CLIENT_VERSION', '1.2.3')
   expect(desktopClientVersion()).toBe('1.2.3')
-  expect(desktopClientMetadata('zh-CN')).toMatchObject({ version: '1.2.3', locale: 'zh-CN',
+  expect(desktopClientMetadata('ja-JP')).toMatchObject({ version: '1.2.3', locale: 'ja-JP',
     timezoneOffsetSeconds: -new Date().getTimezoneOffset() * 60 })
 })
 

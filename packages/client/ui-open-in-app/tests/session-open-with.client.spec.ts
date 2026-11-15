@@ -7,7 +7,7 @@ import type { SessionId } from '@noharness/session/types'
 import { LocaleRuntime } from '@noharness/client-locale/client'
 import { OpenInAppController } from '../src/client/controller.ts'
 import { registerSessionOpenWith } from '../src/client/session-open-with.ts'
-import { en, zh, NS } from '../src/client/locales.ts'
+import { en, ja, NS } from '../src/client/locales.ts'
 import { brandString } from '@noharness/brand'
 
 function bench(apps: readonly string[] | null = ['finder', 'cursor'], cwd: string | undefined = '/captured') {
@@ -15,7 +15,7 @@ function bench(apps: readonly string[] | null = ['finder', 'cursor'], cwd: strin
   onTestFinished(() => ctx.fiber.dispose())
   const locale = new LocaleRuntime(ctx)
   ctx.provide('locale', locale)
-  locale.register(NS, { en, zh }); locale.setLocale('en')
+  locale.register(NS, { en, ja }); locale.setLocale('en')
   const failed = vi.fn(), report = vi.fn()
   const registry = new MenuRegistry(failed)
   onTestFinished(() => { registry.dispose() })
@@ -57,7 +57,7 @@ it('omits unknown directories and follows metadata, locale and applications with
   expect(menu.source.getSnapshot()[0]?.children?.map(row => row.label)).toEqual(['Finder', 'Cursor'])
   b.controller.choose('cursor')
   expect(menu.source.getSnapshot()[0]?.children?.map(row => row.label)).toEqual(['Finder', 'Cursor'])
-  b.locale.setLocale('zh')
+  b.locale.setLocale('en')
   expect(menu.source.getSnapshot()[0]?.label).toBe('在应用中打开')
   expect(header.source.getSnapshot()[0]?.children?.[1]?.label).toBe('Cursor')
   b.controller.apps.set(['cursor', 'unknown', 'finder'])

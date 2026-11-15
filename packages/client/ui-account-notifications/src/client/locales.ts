@@ -1,7 +1,11 @@
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'accountNotifications': NotificationKey
+  }
+}
+
 /** Close-control copy owned by account notifications; notification content is server-localized. */
 export const en = { close: 'Close' }
-/** Chinese notification controls. */
-export const zh = { close: '关闭' }
 /** Japanese notification controls. */
 export const ja = { close: '閉じる' }
 /** Spanish notification controls. */

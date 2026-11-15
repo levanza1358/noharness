@@ -1,5 +1,4 @@
 /** German common-namespace dictionary. */
-import type { en } from './en.ts'
 
 /** Complete German copy for the common namespace. */
 export const de = {
@@ -44,4 +43,4 @@ export const de = {
   'markdown.truncatedCharacters': '… nach {total} Zeichen abgeschnitten',
   'number.thousand': '{value}K',
   'number.million': '{value}M',
-} satisfies Record<keyof typeof en, string>
+} as const

@@ -28,7 +28,7 @@ import {
   WorkflowRunPanel, type WorkflowRunInjected, type WorkflowRunPanelProps,
 } from '../src/client/WorkflowRunPanel.tsx'
 import { apply, inject } from '../src/client/index.ts'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 import {
   workflowRunDefinition, type WorkflowRunChatData,
 } from '../src/client/workflow-definition.ts'
@@ -372,7 +372,7 @@ function panelProps(data: WorkflowRunChatData, sessions = listState(), openSessi
     forkAt: () => {},
     loadImage: () => Promise.reject(new Error('not used')),
     openSession,
-    t: makeTranslate(zh),
+    t: makeTranslate(ja),
   }
 }
 

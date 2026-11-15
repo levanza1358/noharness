@@ -6,7 +6,7 @@ import { LocaleRuntime } from '@noharness/client-locale/client'
 import type { WorkspaceSnapshot } from '@noharness/api-workspace-controller/client'
 import type { SessionId } from '@noharness/session/types'
 import { registerSessionMenus } from '../src/client/session-actions/context-menus.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import { brandString } from '@noharness/brand'
 import { provideSessionStatus } from './session-status.client.ts'
 
@@ -18,7 +18,7 @@ function bench() {
   ctx.provide('contextMenus', { register: registry.register.bind(registry) } as never)
   const locale = new LocaleRuntime(ctx)
   ctx.provide('locale', locale)
-  locale.register('workspace', { en, zh }); locale.setLocale('en')
+  locale.register('workspace', { en, ja }); locale.setLocale('en')
   const list = createSnapshotStore<WorkspaceSnapshot>({
     items: [], pinnedSessionIds: [], archivedSessionIds: [], state: 'idle', phase: 'ready', error: null,
   })
@@ -88,7 +88,7 @@ it('reacts to permission and locale updates, prevents withdrawn actions, and dis
   expect(menu.source.getSnapshot().map(item => item.id)).toEqual(['session.id/copy'])
   menu.select('session.rename/rename')
   expect(b.actions.requestSessionRename).not.toHaveBeenCalled()
-  b.locale.setLocale('zh')
+  b.locale.setLocale('en')
   expect(menu.source.getSnapshot()[0]?.label).toBe('复制 Session ID')
   b.access('session/rename').set(true)
   expect(menu.source.getSnapshot()[0]?.label).toBe('重命名')

@@ -9,11 +9,10 @@ import type { SessionId } from '@noharness/session/types'
 import { SlotTestRuntime } from '@noharness/client-test-runtime'
 import { LocaleRuntime } from '@noharness/client-locale/client'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
 import type { PropsRenderFactories, PropsRenderSlots, PropsRuntime } from '@noharness/client-ui-slots'
 import type { UserContentAttachment, UserContentData, UserContentInput } from '../src/client/contract/slots.ts'
 import { UserContent } from '../src/client/chat/UserContent.tsx'
-import { en, NS, zh } from '../src/client/locale.ts'
+import { en, ja, NS } from '../src/client/locale.ts'
 import type { UserTextInjected } from '@noharness/client-ui-conversation/client'
 import { UserTextRegistry } from '../../ui-conversation/src/client/conversation/user-text-registry.ts'
 import { UserText, PlainUserText, SessionReference } from '../../ui-conversation/src/client/user-text/UserText.tsx'
@@ -21,7 +20,7 @@ import { sessionReferenceRule } from '../../ui-conversation/src/client/user-text
 import { collapseWhitespaceRule, trimWhitespaceRule } from '../../ui-conversation/src/client/user-text/whitespace-rules.ts'
 import { fileReferenceRule, folderReferenceRule } from '../../ui-reference/src/client/user-text-rules.ts'
 import { FileReference, FolderReference } from '../../ui-reference/src/client/FileReference.tsx'
-import { en as referenceEn, zh as referenceZh } from '../../ui-reference/src/client/locales.ts'
+import { en as referenceEn, ja as referenceJa } from '../../ui-reference/src/client/locales.ts'
 import { skillReferenceRule } from '../../ui-skill/src/client/user-text-rules.ts'
 import { SkillReference } from '../../ui-skill/src/client/SkillReference.tsx'
 
@@ -47,9 +46,9 @@ async function bench() {
   onTestFinished(() => runtime.dispose())
   const locale = new LocaleRuntime(runtime.ctx)
   runtime.ctx.provide('locale', locale)
-  locale.register('common', { en: commonEn, zh: commonZh })
-  locale.register(NS, { en, zh })
-  locale.register('reference', { en: referenceEn, zh: referenceZh })
+  locale.register('common', { en: commonEn })
+  locale.register(NS, { en, ja })
+  locale.register('reference', { en: referenceEn, ja: referenceJa })
   locale.setLocale('en')
   runtime.slots.installLocale(locale)
   const imageCalls: PropsRuntime<'conversation.chat.user.images'>[] = []
@@ -211,11 +210,11 @@ describe('user Content Factory', () => {
     expect(view.container.querySelector('pre')?.textContent).toContain(
       `… truncated, ${JSON.stringify(block, null, 2).length} characters total`,
     )
-    act(() => { b.locale.setLocale('zh') })
-    expect(view.getByText('引用会话 · Alpha、Beta')).toBeTruthy()
-    expect(view.getByRole('button', { name: '▾ 附加内容块' })).toBeTruthy()
+    act(() => { b.locale.setLocale('en') })
+    expect(view.getByText('参照セッション · Alpha、Beta')).toBeTruthy()
+    expect(view.getByRole('button', { name: '▾ 追加のコンテンツブロック' })).toBeTruthy()
     expect(view.container.querySelector('pre')?.textContent).toContain(
-      `… 已截断，共 ${JSON.stringify(block, null, 2).length} 字符`,
+      `… 省略表示、全${JSON.stringify(block, null, 2).length}文字`,
     )
   })
 

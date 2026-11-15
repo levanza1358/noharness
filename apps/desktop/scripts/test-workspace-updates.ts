@@ -33,7 +33,7 @@ try {
   createPluginProfile(profile)
   await writeFile(join(project, 'desktop-runtime.json'), JSON.stringify({
     schemaVersion: 1, release, ...desktopTargetPlatform(target), files: [],
-    sharedPackages: ['@noharness/cli', '@noharness/desktop-host']
+    sharedPackages: ['@noharness/nhs', '@noharness/nhs-desktop-host']
       .map(name => ({ name, version: manifest.version, path: `node_modules/${name}` })),
   }))
   await cp(join(repo, 'apps/desktop/lib/types'), join(application, 'lib'), { recursive: true })

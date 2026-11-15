@@ -16,7 +16,7 @@ import { apply as menusApply, inject as menusInject } from '@noharness/client-ui
 import type { SessionId } from '@noharness/session/types'
 import { apply as resourcesApply, inject as resourcesInject } from '@noharness/client-resources/src/client/index.ts'
 import { apply as sidebarApply, inject as sidebarInject } from '@noharness/client-ui-sidebar-right/src/client/index.ts'
-import { en, NS, zh } from '../src/client/locales.ts'
+import { en, NS, ja } from '../src/client/locales.ts'
 import { apply, inject } from '../src/client/viewer-share-path.tsx'
 
 const SESSION = 'reader' as SessionId
@@ -45,9 +45,9 @@ async function boot() {
   const locale = new LocaleRuntime(rt.ctx)
   rt.ctx.provide('locale', locale)
   // The Liveshare client face registers the dictionaries this child plugin renders with.
-  locale.register(NS, { zh, en })
+  locale.register(NS, { ja, en })
   rt.slots.installLocale(locale)
-  await act(async () => { locale.setLocale('zh') })
+  await act(async () => { locale.setLocale('en') })
   await rt.declare({ rightbar: { kind: 'single', scope: 'root' } })
   await rt.sessions.add({ id: SESSION })
   await rt.sessions.retainFor(rt.ctx, SESSION, { source: 'mainView' }).ready

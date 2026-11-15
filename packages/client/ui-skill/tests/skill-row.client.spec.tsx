@@ -5,14 +5,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { StartedToolCall, ToolResultNode } from '@noharness/client-ui-chat/client'
 import type { ToolCallOwnerProps } from '@noharness/client-ui-tool/client'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { PartialArguments } from '@noharness/util-values'
 import { SkillRow } from '../src/client/SkillRow.tsx'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 
 type SkillRowProps = Parameters<typeof SkillRow>[0]
 
-const t: SkillRowProps['t'] = makeTranslate(zh, commonZh)
+const t: SkillRowProps['t'] = makeTranslate(ja, commonJa)
 
 afterEach(cleanup)
 

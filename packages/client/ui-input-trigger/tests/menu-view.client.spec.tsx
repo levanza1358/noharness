@@ -11,8 +11,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { createSnapshotStore } from '@noharness/client-store'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
-import { zh } from '../src/client/locales.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
+import { ja } from '../src/client/locales.ts'
 import type {
   InputTriggerCrumb, MenuState, TriggerHit,
 } from '@noharness/client-ui-input-trigger/client'
@@ -54,10 +54,10 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-// The framework-injected t seat, stubbed over the zh dictionaries (the
+// The framework-injected t seat, stubbed over the ja dictionaries (the
 // default locale); the stub mirrors the LocaleRuntime key fallback, so an
 // unknown source comes back verbatim (its raw name).
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 function mount(state: MenuState, crumbs: ReadonlyMap<string, readonly InputTriggerCrumb[]> = new Map()) {
   const menu = createSnapshotStore<MenuState>(state)

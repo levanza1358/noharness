@@ -22,12 +22,13 @@ import type {
   PermissionCatalog, PermissionSelection,
 } from '@noharness/permission-presets/client'
 import {
-  PermissionRow, type PermissionRowInjected,
+  PermissionRow,
+  type PermissionRowInjected,
 } from '../src/client/PermissionRow.tsx'
 import { PermissionSelect } from '../src/client/PermissionSelect.tsx'
 import type { PermissionSelectInjected } from '../src/client/PermissionSelect.tsx'
 import { apply, inject } from '../src/client/index.ts'
-import { accessEn, accessZh } from '../src/client/locales.ts'
+import { accessEn, accessJa } from '../src/client/locales.ts'
 
 const sid = (k: string): SessionId => k as SessionId
 
@@ -223,12 +224,12 @@ describe('ui-permission browser plugin', () => {
         confirmLabel: 'Enable Auto review',
       },
     })
-    b.locale.setLocale('zh')
+    b.locale.setLocale('en')
     const localized = await b.popup().options(proj, new AbortController().signal)
     expect(localized.map(option => option.label)).toEqual(['仅可查看', '工作区内修改', '完全权限', '自动审查'])
     expect(localized.find(option => option.id === 'danger-full-access')?.confirmation).toEqual({
       title: '确认启用完全权限？',
-      description: accessZh['confirm.description'],
+      description: accessJa['confirm.description'],
       acknowledgeLabel: '我已了解风险，并愿意继续',
       cancelLabel: '取消',
       confirmLabel: '启用完全权限',
@@ -304,7 +305,7 @@ describe('ui-permission browser plugin', () => {
 
   it('localizes the Auto description instead of displaying host English copy', async () => {
     const b = await bench()
-    b.ctx.locale.setLocale('zh')
+    b.ctx.locale.setLocale('en')
     const proj = { sessionId: sid('s1') }
     b.values.set(sid('s1'), { currentValue: 'workspace-write' })
     const options = await b.popup().options(proj, new AbortController().signal)

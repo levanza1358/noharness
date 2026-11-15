@@ -8,14 +8,14 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 
 import type { StartedToolCall, ToolResultNode } from '@noharness/client-ui-chat/client'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { localizeAutoReviewDenial, normalizeAutoReviewReason } from '../src/client/tool/models/auto-review-denial.ts'
 import {
   classifyTool, formatToolBody, resultText, toolRowModel,
 } from '../src/client/tool/models/tool-call-model.ts'
 import { ToolRow } from '../src/client/tool/components/ToolRow.tsx'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { en, zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { en, ja } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@noharness/util-values'
 import { brandString } from '@noharness/brand'
 
@@ -24,7 +24,7 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-const t: GenericToolCardProps['t'] = makeTranslate(zh, commonZh)
+const t: GenericToolCardProps['t'] = makeTranslate(ja, commonJa)
 
 const running = (over?: Partial<StartedToolCall>): StartedToolCall => {
   const argsRaw = over?.argsRaw ?? '{"command":"ls -la","description":"List files"}'

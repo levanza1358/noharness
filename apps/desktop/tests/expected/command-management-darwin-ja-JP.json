@@ -1,0 +1,67 @@
+{
+  "dialogs": [
+    {
+      "type": "info",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドをターミナルに追加します。",
+      "detail": "デスクトップコマンド: /usr/local/bin/nhs",
+      "buttons": [
+        "インストール",
+        "キャンセル"
+      ],
+      "defaultId": 0,
+      "cancelId": 1
+    },
+    {
+      "type": "info",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドがインストールされています。",
+      "detail": "デスクトップコマンド: /usr/local/bin/nhs\n\n現在の nhs コマンド: /usr/local/bin/nhs",
+      "buttons": [
+        "閉じる",
+        "修復",
+        "削除"
+      ],
+      "defaultId": 0,
+      "cancelId": 0
+    },
+    {
+      "type": "info",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドの修復が必要です。",
+      "detail": "デスクトップコマンド: /usr/local/bin/nhs",
+      "buttons": [
+        "閉じる",
+        "修復",
+        "削除"
+      ],
+      "defaultId": 0,
+      "cancelId": 0
+    },
+    {
+      "type": "warning",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドがインストールされています。",
+      "detail": "デスクトップコマンド: /usr/local/bin/nhs\n\n現在の nhs コマンド: /opt/homebrew/bin/nhs\n\n別の nhs が優先されています。デフォルトでデスクトップコマンドを使用するには、そのインストールを削除するか順序を変更してください。デスクトップコマンドはフルパスでも実行できます。",
+      "buttons": [
+        "閉じる",
+        "修復",
+        "削除"
+      ],
+      "defaultId": 0,
+      "cancelId": 0
+    },
+    {
+      "type": "info",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドをターミナルに追加します。",
+      "detail": "デスクトップコマンド: /usr/local/bin/nhs\n\nシェルコマンドを確認できませんでした。エイリアスや別の nhs インストールが優先されている可能性があります。",
+      "buttons": [
+        "インストール",
+        "キャンセル"
+      ],
+      "defaultId": 0,
+      "cancelId": 1
+    }
+  ]
+}

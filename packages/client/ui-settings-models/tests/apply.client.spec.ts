@@ -35,7 +35,7 @@ async function bench(mock = RemoteMock.create().load(remoteDefaultResponses), se
   const ctx = new Context()
   await ctx.plugin(SlotRegistry).await()
   const locale = new LocaleRuntime(ctx)
-  locale.setLocale('zh')
+  locale.setLocale('en')
   ctx.provide('locale', locale)
   const remote = new TestRemote(ctx, {
     credentials: {
@@ -175,7 +175,7 @@ describe('ui-settings-models apply', () => {
     expect(resolveSlotLabel(b.slots.entries('settings.section')[0]!.options.label)).toBe('Models')
     const injected = b.slots.entries('settings.section')[0]!.inject as unknown as () => import('../src/client/ModelsSection.tsx').ModelsSectionInjected
     expect(injected().t('deleteTitle')).toBe('Delete {provider}?')
-    b.locale.setLocale('zh')
+    b.locale.setLocale('en')
     expect(resolveSlotLabel(b.slots.entries('settings.section')[0]!.options.label)).toBe('模型')
     expect(injected().t('deleteTitle')).toBe('删除 {provider}？')
   })
@@ -185,7 +185,7 @@ describe('ui-settings-models apply', () => {
     await b.ctx.plugin({ inject: [...inject], apply }).await()
     b.locale.setLocale('en')
     expect(b.slots.entries('settings.section')).toHaveLength(0)
-    b.locale.setLocale('zh')
+    b.locale.setLocale('en')
   })
 
   it('re-registers after an HMR collapse re-declares the slot (stale disposer must not block)', async () => {
@@ -205,7 +205,7 @@ describe('ui-settings-models apply', () => {
     // The locale path also recovers through the same ledger re-check.
     b.locale.setLocale('en')
     expect(resolveSlotLabel(b.slots.entries('settings.section')[0]!.options.label)).toBe('Models')
-    b.locale.setLocale('zh')
+    b.locale.setLocale('en')
   })
 
   it('accepts extension entries under the declared seats and cascades them with the declarer', async () => {

@@ -20,12 +20,12 @@ import type { SessionStatusSnapshot } from '@noharness/client-ui-session-status/
 import type { SessionId } from '@noharness/session/types'
 import type { SubmitAttachment, SubmitOutcome } from '../src/client/contract/input.ts'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { DraftAttachmentId } from '../src/client/contract/input.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'
 import type { InputBarProps } from '../src/client/skeleton/InputBar.tsx'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 import { createComposerFileIntake } from '../src/client/input/file-intake.ts'
 
 // Every fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
@@ -95,7 +95,7 @@ function mountBar(shell: SessionInputShell, over?: { running?: boolean; disabled
     useMenuLauncher: bindSnapshotSelector(createSnapshotStore<string | null>(null)),
     renderSlot: (() => null) as InputBarProps['renderSlot'],
     stop: vi.fn(),
-    t: makeTranslate(zh, commonZh),
+    t: makeTranslate(ja, commonJa),
     variant: 'composer',
     occurrence: 'main',
   }
@@ -178,7 +178,7 @@ describe('matrix row: claimed', () => {
     expect(chip?.textContent).toBe('/goal')
     expect(chip?.getAttribute('contenteditable')).toBe('false')
     expect(shell.snapshot.draft).toBe('/goal ')
-    // The zh dictionary owns a hint.goal entry, which overrides the raw claim hint (production behavior).
+    // The ja dictionary owns a hint.goal entry, which overrides the raw claim hint (production behavior).
     expect(textarea.style.getPropertyValue('--nhs-composer-hint')).toBe(JSON.stringify('输入目标，智能体将持续执行'))
     expect(textarea.getAttribute('contenteditable')).toBe('true')
     // Free editing after the chip: hint drops, claim holds.

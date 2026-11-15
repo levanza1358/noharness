@@ -1,50 +1,5 @@
 /** Copy dictionaries for the plugin inventory Settings section. */
 
-/** Simplified Chinese dictionary and key source of truth. */
-export const zh = {
-  tab: '插件列表',
-  loading: '正在读取插件…',
-  clientSyncing: '正在同步本页面的插件…',
-  clientSyncFailed: '本页面的插件未能完成同步；服务端的启用状态保持不变。',
-  clientSyncRetry: '重试本页面同步',
-  error: '暂时无法读取插件。',
-  metadataError: '包元信息错误：{error}',
-  retry: '重试',
-  search: '搜索插件',
-  empty: '暂无插件。',
-  emptySearch: '没有匹配的插件。',
-  presetTitle: '会话插件',
-  presetSubtitle: '由 Agent 预设按会话组成',
-  switcherLabel: '选择要查看的 Agent 预设',
-  presetOptionDefault: '{name}（默认）',
-  presetOptionBroken: '{name}（加载失败）',
-  globalTitle: '全局插件',
-  globalSubtitle: '系统与所有会话共用',
-  presetProvidedDetail: '全局已停用，由 Agent 预设按会话提供',
-  enabledIn: '启用于',
-  matchesInOtherPresets: '其他预设中还有 {count} 个匹配：',
-  enabledTag: '已启用',
-  disabledTag: '已停用',
-  conditionalTag: '条件启用',
-  presetEnabledTag: '预设中启用',
-  failedTag: '启动失败',
-  moduleLabel: '完整名称',
-  fromPreset: '来自',
-  condition: '禁用条件',
-  configuration: '配置状态',
-  runtime: '运行状态',
-  unobserved: '未运行',
-  pending: '等待依赖',
-  loadingPhase: '加载中',
-  active: '运行中',
-  failed: '启动失败',
-  unloading: '卸载中',
-} satisfies Record<string, string>
-
-/** Plugin inventory locale key union. */
-export type PluginInventoryLocaleKey = keyof typeof zh
-
-/** English dictionary checked against the Chinese key set. */
 export const en = {
   tab: 'Plugin list',
   loading: 'Reading plugins…',
@@ -83,48 +38,54 @@ export const en = {
   active: 'Running',
   failed: 'Failed to start',
   unloading: 'Unloading',
-} satisfies Record<PluginInventoryLocaleKey, string>
+} as const
+
+export type SettingsPluginInventoryKey = keyof typeof en
+
+/** Dictionary keys for the plugin inventory Settings section. */
+export type PluginInventoryLocaleKey = SettingsPluginInventoryKey
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'tab': 'プラグイン一覧',
-  'loading': 'プラグインを読み込み中…',
-  'clientSyncing': 'このページでプラグインを同期中…',
-  'clientSyncFailed': '一部のプラグインをこのページで同期できませんでした。ホスト側の有効化状態は変更されていません。',
-  'clientSyncRetry': 'このページを再試行',
-  'error': 'プラグインは一時的に利用できません。',
+  'tab': 'Plugin list',
+  'loading': 'Reading plugins…',
+  'clientSyncing': 'Syncing plugins on this page…',
+  'clientSyncFailed': 'Some plugins could not sync on this page. Host enablement is unchanged.',
+  'clientSyncRetry': 'Retry this page',
+  'error': 'Plugins are temporarily unavailable.',
   'metadataError': 'パッケージメタデータのエラー: {error}',
-  'retry': '再試行',
-  'search': 'プラグインを検索',
-  'empty': '利用可能なプラグインはありません。',
-  'emptySearch': '一致するプラグインはありません。',
+  'retry': 'Retry',
+  'search': 'Search plugins',
+  'empty': 'No plugins are available.',
+  'emptySearch': 'No matching plugins.',
   'presetTitle': 'セッションプラグイン',
-  'presetSubtitle': 'エージェントプリセットによりセッションごとに構成されます',
-  'switcherLabel': '確認するエージェントプリセットを選択',
+  'presetSubtitle': 'Composed per session by agent presets',
+  'switcherLabel': 'Choose the agent preset to inspect',
   'presetOptionDefault': '{name} (デフォルト)',
-  'presetOptionBroken': '{name} (読み込み失敗)',
+  'presetOptionBroken': '{name} (failed to load)',
   'globalTitle': 'グローバルプラグイン',
-  'globalSubtitle': 'システムとすべてのセッションで共有',
-  'presetProvidedDetail': 'グローバルでは無効。エージェントプリセットがセッションごとに提供します',
-  'enabledIn': '有効化先',
-  'matchesInOtherPresets': '他のプリセットにさらに{count}件一致: ',
-  'enabledTag': '有効',
-  'disabledTag': '無効',
-  'conditionalTag': '条件付き',
-  'presetEnabledTag': 'プリセット経由',
-  'failedTag': '失敗',
+  'globalSubtitle': 'Shared by the system and every session',
+  'presetProvidedDetail': 'Disabled globally; agent presets provide it per session',
+  'enabledIn': 'Enabled in',
+  'matchesInOtherPresets': '{count} more matches in other presets: ',
+  'enabledTag': 'Enabled',
+  'disabledTag': 'Disabled',
+  'conditionalTag': 'Conditional',
+  'presetEnabledTag': 'Via presets',
+  'failedTag': 'Failed',
   'moduleLabel': 'モジュール',
-  'fromPreset': '提供元',
-  'condition': '無効になる条件',
-  'configuration': '構成',
+  'fromPreset': 'From',
+  'condition': 'Disabled when',
+  'configuration': 'Configuration',
   'runtime': 'ステータス',
-  'unobserved': '停止中',
-  'pending': '依存関係の待機中',
-  'loadingPhase': '読み込み中',
-  'active': '実行中',
-  'failed': '起動に失敗',
-  'unloading': 'アンロード中',
-} satisfies Record<keyof typeof en, string>
+  'unobserved': 'Not running',
+  'pending': 'Waiting for dependencies',
+  'loadingPhase': 'Loading',
+  'active': 'Running',
+  'failed': 'Failed to start',
+  'unloading': 'Unloading',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -165,7 +126,7 @@ export const es = {
   active: 'corriendo',
   failed: 'No se pudo iniciar',
   unloading: 'Descarga',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -206,7 +167,7 @@ export const fr = {
   active: 'Courir',
   failed: 'Échec du démarrage',
   unloading: 'Déchargement',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -247,7 +208,7 @@ export const de = {
   active: 'Laufen',
   failed: 'Start fehlgeschlagen',
   unloading: 'Entladen',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -288,7 +249,7 @@ export const ru = {
   active: 'Бег',
   failed: 'Не удалось запустить',
   unloading: 'Разгрузка',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -329,4 +290,4 @@ export const pt = {
   active: 'Correndo',
   failed: 'Falha ao iniciar',
   unloading: 'Descarregando',
-} satisfies Record<keyof typeof en, string>
+} as const

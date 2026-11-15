@@ -160,7 +160,7 @@ describe('progress display precision', () => {
 
   it('uses the short Chinese count and percentage for each work state', () => {
     const parts = measureAll(activeTasks(2), true).get(null)?.parts
-    const chinese: Readonly<Record<string, string>> = dictionaries.zh
+    const chinese: Readonly<Record<string, string>> = dictionaries.ja
     const translate: TranslateNS<'timeline'> = (key, params) =>
       (chinese[key] ?? key).replace(/\{(\w+)\}/gu, (match: string, name: string) =>
         typeof params?.[name] === 'number' || typeof params?.[name] === 'string' ? `${params[name]}` : match,

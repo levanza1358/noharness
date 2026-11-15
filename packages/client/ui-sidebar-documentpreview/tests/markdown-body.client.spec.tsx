@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import { makeTranslate } from '@noharness/client-test-runtime'
 import { MarkdownBody, type MarkdownBodyProps } from '../src/client/markdown/MarkdownBody.tsx'
-import { en, zh } from '../src/client/markdown/locales.ts'
+import { en, ja } from '../src/client/markdown/locales.ts'
 import type { DocumentContent } from '../src/client/document/contract.ts'
 
 afterEach(() => { cleanup(); vi.restoreAllMocks() })
@@ -117,16 +117,16 @@ describe('MarkdownBody', () => {
   })
 
   it('updates labels when translations change without replacing the translation function', () => {
-    let dictionary = en
+    let dictionary: typeof en | typeof ja = en
     const t: MarkdownBodyProps['t'] = key => Object.hasOwn(dictionary, key) ? dictionary[key as keyof typeof dictionary] : key
     const text = '```ts\nconst answer = 42\n```\n\nNote[^one].\n\n[^one]: Detail.'
     const value = content([text], true)
     const view = render(<MarkdownBody {...props(value, t)} />)
     expect(view.getByRole('button', { name: 'Copy' })).toBeDefined()
-    dictionary = zh
+    dictionary = ja
     view.rerender(<MarkdownBody {...props(value, t)} />)
-    expect(view.getByRole('button', { name: '复制' })).toBeDefined()
-    expect(view.getByRole('heading', { name: '脚注' })).toBeDefined()
+    expect(view.getByRole('button', { name: ja['code.copy'] })).toBeDefined()
+    expect(view.getByRole('heading', { name: ja.footnotes })).toBeDefined()
   })
 
   it('renders leading YAML frontmatter as fields instead of a heading', async () => {

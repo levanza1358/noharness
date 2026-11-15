@@ -2,72 +2,12 @@
 
 export const NS = 'cordis'
 
-/** Simplified Chinese Cordis UI messages. */
-export const zh = {
-  'row.defineTitle': '注册 Cordis 插件',
-  'a11y.preparing': '准备调用 Cordis 工具',
-  'row.runTitle': '运行 Cordis 插件',
-  'row.updateTitle': '更新 Cordis 插件',
-  'row.stopTitle': '停止 Cordis 插件',
-  'row.removeTitle': '移除 Cordis 插件',
-  'purpose.missing': '(未填写用途)',
-  'status.idle': '待激活',
-  'status.awaitingApproval': '待审批',
-  'status.failed': '运行失败',
-  'status.clientPending': 'Client 待激活',
-  'status.running': '运行中',
-  'status.removed': '已移除',
-  'status.superseded': '已有更新',
-  'run.removed': '包已不存在',
-  'run.superseded': '已有更新的运行卡片，请查看下方',
-  'panel.hint': '运行控制在左下角设置上方的 Cordis 面板',
-  'panel.plugins.aria': 'Cordis 插件',
-  'panel.approvals.aria': 'Cordis 审批',
-  'panel.trigger': 'Cordis Plugin',
-  'panel.runningCount': '{count} running',
-  'panel.title': 'Cordis 插件',
-  'panel.empty': '还没有定义任何插件',
-  'panel.loading': '读取中…',
-  'panel.readFailed': '读取插件清单失败：{message}',
-  'panel.group.current': '当前会话',
-  'panel.group.others': '其他会话',
-  'panel.version': '版本',
-  'panel.current': '当前：{packageId}',
-  'panel.next': '待切换：{packageId}',
-  'action.approve': '允许',
-  'action.approveOnce': '仅允许此版本',
-  'action.approvePlugin': '允许此插件的后续版本',
-  'action.decline': '拒绝',
-  'action.run': '运行',
-  'action.stop': '停止',
-  'action.remove': '移除',
-  'action.retry': '重试',
-  'action.rollback': '回退',
-  'action.inspect': '查看',
-  'render.failedAbdicated': '{slot} 渲染失败，已恢复默认界面：',
-  'render.failedHeld': '{slot} 渲染失败：',
-  'a11y.defining': '正在定义插件',
-  'a11y.failed': '定义失败',
-  'a11y.stopped': '定义已中断',
-  'body.source': '插件代码',
-  'body.hostCode': 'Host',
-  'body.clientCode': 'Client',
-  'body.output': '结果',
-  'body.copy': '复制',
-  'body.copied': '已复制',
-} satisfies Record<string, string>
-
-/** Translation keys owned by the Cordis UI namespace. */
-export type CordisKey = keyof typeof zh
-
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
-    /** Dynamic Cordis UI copy. */
-    cordis: CordisKey
+    'cordis': CordisKey
   }
 }
 
-/** English Cordis UI messages. */
 export const en = {
   'row.defineTitle': 'Register Cordis Plugin',
   'a11y.preparing': 'Preparing a Cordis tool call',
@@ -120,62 +60,65 @@ export const en = {
   'body.output': 'Result',
   'body.copy': 'Copy',
   'body.copied': 'Copied',
-} satisfies Record<CordisKey, string>
+} as const
+
+export type CordisKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'row.defineTitle': 'Cordis プラグインを登録',
-  'a11y.preparing': 'Cordis ツール呼び出しを準備中',
-  'row.runTitle': 'Cordis プラグインを実行',
-  'row.updateTitle': 'Cordis プラグインを更新',
-  'row.stopTitle': 'Cordis プラグインを停止',
-  'row.removeTitle': 'Cordis プラグインを削除',
-  'purpose.missing': '（目的未指定）',
-  'status.idle': '準備完了',
-  'status.awaitingApproval': '承認待ち',
-  'status.failed': '実行失敗',
-  'status.clientPending': 'クライアントのアクティベート準備完了',
-  'status.running': '実行中',
-  'status.removed': '削除済み',
-  'status.superseded': '新しい実行が利用可能',
-  'run.removed': 'このパッケージはもう存在しません',
-  'run.superseded': '新しい実行カードが下にあります',
-  'panel.hint': '実行コントロールは設定の上の Cordis パネルにあります',
+  'row.defineTitle': 'Register Cordis Plugin',
+  'a11y.preparing': 'Preparing a Cordis tool call',
+  'row.runTitle': 'Run Cordis Plugin',
+  'row.updateTitle': 'Update Cordis Plugin',
+  'row.stopTitle': 'Stop Cordis Plugin',
+  'row.removeTitle': 'Remove Cordis Plugin',
+  'purpose.missing': '(no purpose given)',
+  'status.idle': 'Ready',
+  'status.awaitingApproval': 'Awaiting approval',
+  'status.failed': 'Run failed',
+  'status.clientPending': 'Client ready to activate',
+  'status.running': 'Running',
+  'status.removed': 'Removed',
+  'status.superseded': 'Newer run available',
+  'run.removed': 'This package no longer exists',
+  'run.superseded': 'A newer run card is available below',
+  'panel.hint': 'Run controls live in the Cordis panel above Settings',
   'panel.plugins.aria': 'Cordis プラグイン',
-  'panel.approvals.aria': 'Cordis の承認',
+  'panel.approvals.aria': 'Cordis approvals',
   'panel.trigger': 'Cordis プラグイン',
-  'panel.runningCount': '{count} 件実行中',
+  'panel.runningCount': '{count} running',
   'panel.title': 'Cordis プラグイン',
-  'panel.empty': 'プラグインがまだ定義されていません',
-  'panel.loading': '読み込み中…',
-  'panel.readFailed': 'プラグイン一覧の読み込みに失敗しました: {message}',
+  'panel.empty': 'No plugins defined yet',
+  'panel.loading': 'Reading…',
+  'panel.readFailed': 'Reading the plugin inventory failed: {message}',
   'panel.group.current': 'このセッション',
-  'panel.group.others': '他のセッション',
+  'panel.group.others': 'Other sessions',
   'panel.version': 'バージョン',
-  'panel.current': '現在: {packageId}',
-  'panel.next': '次: {packageId}',
-  'action.approve': '許可',
-  'action.approveOnce': 'このバージョンのみ許可',
-  'action.approvePlugin': 'このプラグインの今後のバージョンを許可',
-  'action.decline': '拒否',
-  'action.run': '実行',
-  'action.stop': '停止',
-  'action.remove': '削除',
-  'action.retry': '再試行',
+  'panel.current': 'Current: {packageId}',
+  'panel.next': 'Next: {packageId}',
+  'action.approve': 'Allow',
+  'action.approveOnce': 'Allow this version only',
+  'action.approvePlugin': 'Allow future versions of this plugin',
+  'action.decline': 'Decline',
+  'action.run': 'Run',
+  'action.stop': 'Stop',
+  'action.remove': 'Remove',
+  'action.retry': 'Retry',
   'action.rollback': 'ロールバック',
-  'action.inspect': '検査',
-  'render.failedAbdicated': '{slot} でのレンダリングに失敗しました。デフォルト UI を復元しました:',
-  'render.failedHeld': '{slot} でのレンダリングに失敗しました:',
-  'a11y.defining': 'プラグインを定義中',
-  'a11y.failed': '定義に失敗しました',
-  'a11y.stopped': '定義が中断されました',
+  'action.inspect': 'Inspect',
+  'render.failedAbdicated': 'Rendering failed in {slot}; the default UI was restored:',
+  'render.failedHeld': 'Rendering failed in {slot}:',
+  'a11y.defining': 'Defining the plugin',
+  'a11y.failed': 'Definition failed',
+  'a11y.stopped': 'Definition interrupted',
   'body.source': 'プラグインのソース',
   'body.hostCode': 'ホスト',
   'body.clientCode': 'クライアント',
-  'body.output': '結果',
+  'body.output': 'Result',
   'body.copy': 'コピー',
   'body.copied': 'コピーしました',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -230,7 +173,7 @@ export const es = {
   'body.output': 'Resultado',
   'body.copy': 'Copiar',
   'body.copied': 'Copiado',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -285,7 +228,7 @@ export const fr = {
   'body.output': 'Résultat',
   'body.copy': 'Copier',
   'body.copied': 'Copié',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -340,7 +283,7 @@ export const de = {
   'body.output': 'Ergebnis',
   'body.copy': 'Kopieren',
   'body.copied': 'Kopiert',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -395,7 +338,7 @@ export const ru = {
   'body.output': 'Результат',
   'body.copy': 'Копировать',
   'body.copied': 'Скопировано',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -450,4 +393,4 @@ export const pt = {
   'body.output': 'Resultado',
   'body.copy': 'Copiar',
   'body.copied': 'Copiado',
-} satisfies Record<keyof typeof en, string>
+} as const

@@ -9,19 +9,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import { makeTranslate } from '@noharness/client-test-runtime'
 import type { PropsRenderSlots } from '@noharness/client-ui-slots'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type {
   ChatConversationViewNode, SteeringMessageNode, UserMessageNode,
 } from '@noharness/client-ui-chat/client'
 import type { ChatNodeViewProps, UserContentInput } from '../src/client/contract/slots.ts'
 import { UserMessageNodeView } from '../src/client/chat/MessageItem.tsx'
-import { zh } from '../src/client/locale.ts'
+import { ja } from '../src/client/locale.ts'
 import { createUserContentFixture } from './user-content-component-fixture.tsx'
 import { unusedImageLoader } from './reasoning-component-fixture.tsx'
 
 afterEach(cleanup)
 
-const t: ChatNodeViewProps['t'] = makeTranslate(zh, commonZh)
+const t: ChatNodeViewProps['t'] = makeTranslate(ja, commonJa)
 type UserSlots = PropsRenderSlots<'conversation.chat.user.before'>
 const userSlots: UserSlots = {
   renderSlot: () => null,

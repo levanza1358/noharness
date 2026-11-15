@@ -86,7 +86,7 @@ describe('packaged imports plugin', () => {
     }
   }
 
-  const unshipped = /imports @noharness\/nhs-home-paths, which the packaged application does not ship/u
+  const unshipped = /imports @noharness\/home-paths, which the packaged application does not ship/u
 
   it('fails the bundle whose static import the packaged application does not ship', async () => {
     await expect(generate('static', { ...MAIN, packages: new Set(['electron']) })).rejects.toThrow(unshipped)

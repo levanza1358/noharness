@@ -15,7 +15,7 @@ import {
   type SubagentCatalogActionProps, type SubagentHeaderLineageProps,
 } from '../src/client/SubagentHeaderLineage.tsx'
 import { SubagentReadOnlyComposer } from '../src/client/SubagentReadOnlyComposer.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 afterEach(() => {
   cleanup()
@@ -27,7 +27,7 @@ afterEach(() => {
 const PARENT = 'parent' as SessionId
 const CHILD = 'child' as SessionId
 const GRANDCHILD = 'grandchild' as SessionId
-const t: SubagentHeaderLineageProps['t'] = makeTranslate(zh)
+const t: SubagentHeaderLineageProps['t'] = makeTranslate(ja)
 
 type HeaderCatalogProps = SubagentHeaderLineageProps
   & Pick<SubagentCatalogActionProps, 'useFooterAvailable' | 'renderSlot'>
@@ -218,7 +218,7 @@ function HeaderCatalog(props: HeaderCatalogProps) {
 
 describe('SubagentHeaderLineage', () => {
   it.each([
-    { dictionary: zh, total: '2 个子智能体', running: '1 个子智能体，正在运行' },
+    { dictionary: ja, total: '2 个子智能体', running: '1 个子智能体，正在运行' },
     { dictionary: en, total: '2 subagents', running: '1 subagent running' },
   ])('keeps the total accessible name separate from the running description: $total', ({ dictionary, total, running }) => {
     const input = props(catalog())
@@ -294,7 +294,7 @@ describe('SubagentHeaderLineage', () => {
       expect(screen.getByRole('tree')).toBeTruthy()
       expect(screen.queryByRole('heading')).toBeNull()
       expect(document.querySelector('[data-subagent-section-header]')).toBeNull()
-      expect(screen.queryByText(zh['section.empty'])).toBeNull()
+      expect(screen.queryByText(ja['section.empty'])).toBeNull()
     },
   )
 
@@ -378,8 +378,8 @@ describe('SubagentHeaderLineage', () => {
     const tree = screen.getByRole('tree')
     const board = screen.getByRole('region', { name: 'Shared tasks' })
     expect(tree.compareDocumentPosition(board) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    expect(screen.getByRole('heading', { name: zh['section.title'] })).toBeTruthy()
-    expect(screen.getByText(zh['section.empty'])).toBeTruthy()
+    expect(screen.getByRole('heading', { name: ja['section.title'] })).toBeTruthy()
+    expect(screen.getByText(ja['section.empty'])).toBeTruthy()
     expect(screen.getAllByRole('dialog')).toHaveLength(1)
     mode.tasks = []
     view.rerender(<HeaderCatalog {...current} />)
@@ -388,14 +388,14 @@ describe('SubagentHeaderLineage', () => {
     mode.tasks = [{ ...sharedTask, status: 'deleted' }]
     view.rerender(<HeaderCatalog {...current} />)
     expect(screen.queryByRole('button')).toBeNull()
-    expect(screen.queryByText(zh['section.empty'])).toBeNull()
+    expect(screen.queryByText(ja['section.empty'])).toBeNull()
     mode.tasks = []
     mode.failure = 'Invalid task record'
     view.rerender(<HeaderCatalog {...current} />)
     fireEvent.click(screen.getByRole('button', { name: '0 个子智能体' }))
     expect(screen.getByRole('dialog')).toBeTruthy()
     expect(screen.queryByRole('heading')).toBeNull()
-    expect(screen.queryByText(zh['section.empty'])).toBeNull()
+    expect(screen.queryByText(ja['section.empty'])).toBeNull()
     expect(document.querySelector('[data-subagent-section-header]')).toBeNull()
     view.rerender(<HeaderCatalog {...current} useFooterAvailable={select => select(false)} />)
     expect(screen.queryByRole('button')).toBeNull()
@@ -421,7 +421,7 @@ describe('SubagentHeaderLineage', () => {
     expect(screen.getByRole('tree')).toBeTruthy()
     expect(screen.queryByRole('region', { name: 'Shared tasks' })).toBeNull()
     expect(screen.queryByRole('heading')).toBeNull()
-    expect(screen.queryByText(zh['section.empty'])).toBeNull()
+    expect(screen.queryByText(ja['section.empty'])).toBeNull()
     expect(document.querySelector('[data-subagent-section-header]')).toBeNull()
     expect(readProjection).not.toHaveBeenCalled()
     expect(readFooter).not.toHaveBeenCalled()
@@ -723,7 +723,7 @@ describe('SubagentHeaderLineage', () => {
       fireEvent.click(screen.getByRole('button'))
       const entry = screen.getByRole('treeitem', { name: new RegExp(sibling) })
       const anchor = within(entry).getByRole('button', { name: /在侧边栏打开/u })
-      const label = zh['open.sidebar']
+      const label = ja['open.sidebar']
       fireEvent.pointerEnter(anchor)
       act(() => { vi.advanceTimersByTime(499) })
       expect(screen.queryByRole('tooltip')).toBeNull()
@@ -1798,7 +1798,7 @@ describe('SubagentHeaderLineage', () => {
     fireEvent.click(switcher)
     expect(screen.getByRole('treeitem', { name: new RegExp(CHILD) })).toBeTruthy()
     expect(screen.queryByRole('heading')).toBeNull()
-    expect(screen.queryByText(zh['section.empty'])).toBeNull()
+    expect(screen.queryByText(ja['section.empty'])).toBeNull()
   })
 
   it('falls back to the catalog session id when the selected row has no label', () => {
@@ -1867,7 +1867,7 @@ describe('SubagentHeaderLineage', () => {
     hoverCatalog(switcher)
     expect(screen.getByRole('tree')).toBeTruthy()
     expect(screen.queryByRole('heading')).toBeNull()
-    expect(screen.queryByText(zh['section.empty'])).toBeNull()
+    expect(screen.queryByText(ja['section.empty'])).toBeNull()
     expect(document.querySelector('[data-subagent-section-header]')).toBeNull()
     fireEvent.click(switcher)
     expect(input.openTitle).toHaveBeenCalledTimes(2)
@@ -1908,8 +1908,8 @@ describe('SubagentHeaderLineage', () => {
       projectionsBySession: { [PARENT]: { state, error: null, values: {} } },
     })} />)
     hoverCatalog(screen.getByRole('button', { name: '切换子智能体：worker' }))
-    expect(screen.getByText(state === 'idle' ? zh['load.idle'] : zh['loading.label'])).toBeTruthy()
-    expect(screen.queryByText(state === 'idle' ? zh['loading.label'] : zh['load.idle'])).toBeNull()
+    expect(screen.getByText(state === 'idle' ? ja['load.idle'] : ja['loading.label'])).toBeTruthy()
+    expect(screen.queryByText(state === 'idle' ? ja['loading.label'] : ja['load.idle'])).toBeNull()
     expect(input.prepareCatalog).not.toHaveBeenCalled()
   })
 

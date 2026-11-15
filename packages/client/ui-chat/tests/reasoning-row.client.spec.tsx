@@ -4,8 +4,8 @@ import { renderReasoningSlot as renderSlot, unusedImageLoader } from './reasonin
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
 import { createSnapshotStore } from '@noharness/client-store'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
-import { zh } from '../src/client/locale.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
+import { ja } from '../src/client/locale.ts'
 import { AssistantMarkdown, type AssistantMarkdownProps } from '../src/client/chat/AssistantMarkdown.tsx'
 import { useDetailedPresentation } from './presentation-fixture.client.ts'
 import type { TranscriptViewMode } from '../src/chat-settings.ts'
@@ -18,7 +18,7 @@ afterEach(() => {
   cleanup()
 })
 
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 describe('AssistantMarkdown reasoning blocks', () => {
   const props = {

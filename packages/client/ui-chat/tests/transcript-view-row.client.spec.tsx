@@ -12,7 +12,7 @@ import { TranscriptViewRow, type TranscriptViewRowProps } from '../src/client/se
 import { PerformanceUsageRow } from '../src/client/settings/PerformanceUsageRow.tsx'
 import type { LinkOpening, PerformanceUsageMode, TranscriptViewMode } from '../src/chat-settings.ts'
 import { LinkOpeningRow } from '../src/client/settings/LinkOpeningRow.tsx'
-import { en, zh } from '../src/client/locale.ts'
+import { en, ja } from '../src/client/locale.ts'
 import type { CollapseTiming, FoldedReplies } from '../src/client/presentation-policy.ts'
 
 afterEach(cleanup)
@@ -36,7 +36,7 @@ function noPendingInteraction() {
 // The resource hook the resources plugin merges into GlobalStandardProps; this row reads no address.
 const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined })) as GlobalStandardProps['useResource']
 
-function mount(mode: TranscriptViewMode = 'standard', dictionary: typeof en | typeof zh = en) {
+function mount(mode: TranscriptViewMode = 'standard', dictionary: typeof en | typeof ja = en) {
   const source = createSnapshotStore<TranscriptViewMode>(mode)
   const collapseTiming = createSnapshotStore<CollapseTiming>('completion')
   const foldedReplies = createSnapshotStore<FoldedReplies>('all')
@@ -75,7 +75,7 @@ describe('TranscriptViewRow', () => {
   it.each([
     [en, 'Work details', 'When to Collapse Work Details',
       'Choose when to automatically collapse work details', 'On completion', 'On next message'],
-    [zh, '工作步骤展示', '工作步骤收起时机', '选择何时自动收起工作步骤', '回答结束后', '下次有新消息时'],
+    [ja, '工作步骤展示', '工作步骤收起时机', '选择何时自动收起工作步骤', '回答结束后', '下次有新消息时'],
   ] as const)('selects either collapse timing independently with localized labels (%s)', (dictionary, detailTitle, title, description, completion, nextInput) => {
     const b = mount('standard', dictionary)
     const titleElement = screen.getByText(title)
@@ -99,7 +99,7 @@ describe('TranscriptViewRow', () => {
 
   it.each([
     [en, 'Replies After Collapse', 'Choose which assistant replies stay visible when work details collapse', 'All replies', 'Final answer only'],
-    [zh, '收起后显示的回复', '工作步骤收起后，保留哪些助手回复', '全部回复', '仅最终回答'],
+    [ja, '收起后显示的回复', '工作步骤收起后，保留哪些助手回复', '全部回复', '仅最终回答'],
   ] as const)('selects which replies stay visible below collapse timing (%s)', (dictionary, title, description, all, final) => {
     const b = mount('standard', dictionary)
     const timingTitle = dictionary === en ? 'When to Collapse Work Details' : '工作步骤收起时机'
@@ -181,7 +181,7 @@ describe('TranscriptViewRow', () => {
   })
 
   it('shows all four work-detail values in Chinese', () => {
-    const b = mount('compact', zh)
+    const b = mount('compact', ja)
     expect(screen.getByText('工作步骤展示')).toBeDefined()
     expect(screen.getByText('选择希望看到多少工具调用细节')).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: '简洁' }))
@@ -243,7 +243,7 @@ describe('LinkOpeningRow', () => {
 
   it.each([
     [en, 'Open chat links in', 'Choose where to open web links', 'In-App Sidebar', 'Default Browser'],
-    [zh, '网页链接默认打开方式', '对话中网页链接的打开位置', '应用内侧边栏', '默认浏览器'],
+    [ja, '网页链接默认打开方式', '对话中网页链接的打开位置', '应用内侧边栏', '默认浏览器'],
   ] as const)('selects either destination using localized labels (%s)', (dictionary, title, description, sidebar, newTab) => {
     const b = mount('compact', dictionary)
     const source = createSnapshotStore<LinkOpening>('sidebar')

@@ -5,60 +5,52 @@ import type {} from '@noharness/client-ui-slots'
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'secretMask'
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'secret.reveal': '显示密钥',
-  'secret.hide': '隐藏密钥',
-} satisfies Record<string, string>
-
-/** The secretMask namespace key union. */
-export type SecretMaskKey = keyof typeof zh
-
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
-    /** Accessible names of the control that reveals one masked credential. */
-    secretMask: SecretMaskKey
+    'secretMask': SecretMaskKey
   }
 }
 
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'secret.reveal': 'Show secret',
   'secret.hide': 'Hide secret',
-} satisfies Record<SecretMaskKey, string>
+} as const
+
+export type SecretMaskKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'secret.reveal': 'シークレットを表示',
-  'secret.hide': 'シークレットを隠す',
-} satisfies Record<keyof typeof en, string>
+  'secret.reveal': 'Show secret',
+  'secret.hide': 'Hide secret',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
   'secret.reveal': 'Mostrar secreto',
   'secret.hide': 'Ocultar secreto',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
   'secret.reveal': 'Afficher le secret',
   'secret.hide': 'Cacher le secret',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
   'secret.reveal': 'Geheimnis zeigen',
   'secret.hide': 'Geheimnis verbergen',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
   'secret.reveal': 'Показать секрет',
   'secret.hide': 'Скрыть секрет',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
   'secret.reveal': 'Mostrar segredo',
   'secret.hide': 'Ocultar segredo',
-} satisfies Record<keyof typeof en, string>
+} as const

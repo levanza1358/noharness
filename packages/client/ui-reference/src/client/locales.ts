@@ -5,42 +5,12 @@ import type {} from '@noharness/client-ui-slots'
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'reference'
 
-/**
- * Simplified Chinese dictionary (the key-set source of truth).
- *
- * The `time.*` bucket words are this namespace's own copy of the session-row
- * vocabulary: locale-owned copy keeps the words per plugin, while the
- * bucketing they name is the one shared {@link relativeTime} in ui-primitives.
- */
-export const zh = {
-  'section.files': '文件与文件夹',
-  'section.subagents': '子智能体',
-  'section.sessions': '对话',
-  'candidate.noCwd': '（无工作目录）',
-  'crumb.root': '工作区',
-  'fileOpen.title': '无法打开文件',
-  'fileOpen.failed': '无法打开“{path}”，请重试或关闭此提示',
-  'fileOpen.close': '关闭',
-  'fileOpen.retry': '重试',
-  'time.now': '刚刚',
-  'time.minutes': '{n}分钟',
-  'time.hours': '{n}小时',
-  'time.days': '{n}天',
-  'time.months': '{n}个月',
-  'time.years': '{n}年',
-} satisfies Record<string, string>
-
-/** The reference namespace key union. */
-export type ReferenceKey = keyof typeof zh
-
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
-    /** Reference menu and per-file navigation feedback. */
-    reference: ReferenceKey
+    'reference': ReferenceKey
   }
 }
 
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'section.files': 'Files & folders',
   'section.subagents': 'Subagents',
@@ -57,7 +27,10 @@ export const en = {
   'time.days': '{n}d',
   'time.months': '{n}mo',
   'time.years': '{n}y',
-} satisfies Record<ReferenceKey, string>
+} as const
+
+export type ReferenceKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
@@ -66,17 +39,17 @@ export const ja = {
   'section.sessions': 'セッション',
   'candidate.noCwd': '（cwdなし）',
   'crumb.root': 'ワークスペース',
-  'fileOpen.title': 'ファイルを開けませんでした',
-  'fileOpen.failed': '「{path}」を開けませんでした。再試行するか、このメッセージを閉じてください。',
-  'fileOpen.close': '閉じる',
-  'fileOpen.retry': '再試行',
-  'time.now': '今',
-  'time.minutes': '{n}分',
-  'time.hours': '{n}時間',
-  'time.days': '{n}日',
-  'time.months': '{n}か月',
-  'time.years': '{n}年',
-} satisfies Record<keyof typeof en, string>
+  'fileOpen.title': 'Couldn’t open file',
+  'fileOpen.failed': 'Couldn’t open “{path}”. Try again or close this message.',
+  'fileOpen.close': 'Close',
+  'fileOpen.retry': 'Retry',
+  'time.now': 'now',
+  'time.minutes': '{n}min',
+  'time.hours': '{n}h',
+  'time.days': '{n}d',
+  'time.months': '{n}mo',
+  'time.years': '{n}y',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -95,7 +68,7 @@ export const es = {
   'time.days': '{n}d',
   'time.months': '{n}mo',
   'time.years': '{n}y',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -114,7 +87,7 @@ export const fr = {
   'time.days': '{n}d',
   'time.months': '{n}mo',
   'time.years': '{n}y',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -133,7 +106,7 @@ export const de = {
   'time.days': '{n}d',
   'time.months': '{n}mo',
   'time.years': '{n}y',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -152,7 +125,7 @@ export const ru = {
   'time.days': '{n}d',
   'time.months': '{n}mo',
   'time.years': '{n}y',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -171,4 +144,4 @@ export const pt = {
   'time.days': '{n}d',
   'time.months': '{n} mês',
   'time.years': '{n}s',
-} satisfies Record<keyof typeof en, string>
+} as const

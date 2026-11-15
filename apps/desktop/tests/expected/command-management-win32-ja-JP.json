@@ -1,0 +1,67 @@
+{
+  "dialogs": [
+    {
+      "type": "info",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドをターミナルに追加します。",
+      "detail": "デスクトップコマンド: C:\\Users\\user\\AppData\\Local\\Programs\\NoHarness\\resources\\runtime\\cli\\bin\\nhs.cmd",
+      "buttons": [
+        "インストール",
+        "キャンセル"
+      ],
+      "defaultId": 0,
+      "cancelId": 1
+    },
+    {
+      "type": "info",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドがインストールされています。",
+      "detail": "デスクトップコマンド: C:\\Users\\user\\AppData\\Local\\Programs\\NoHarness\\resources\\runtime\\cli\\bin\\nhs.cmd\n\n現在の nhs コマンド: C:\\Users\\user\\AppData\\Local\\Programs\\NoHarness\\resources\\runtime\\cli\\bin\\nhs.cmd",
+      "buttons": [
+        "閉じる",
+        "修復",
+        "削除"
+      ],
+      "defaultId": 0,
+      "cancelId": 0
+    },
+    {
+      "type": "info",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドの修復が必要です。",
+      "detail": "デスクトップコマンド: C:\\Users\\user\\AppData\\Local\\Programs\\NoHarness\\resources\\runtime\\cli\\bin\\nhs.cmd",
+      "buttons": [
+        "閉じる",
+        "修復",
+        "削除"
+      ],
+      "defaultId": 0,
+      "cancelId": 0
+    },
+    {
+      "type": "warning",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドがインストールされています。",
+      "detail": "デスクトップコマンド: C:\\Users\\user\\AppData\\Local\\Programs\\NoHarness\\resources\\runtime\\cli\\bin\\nhs.cmd\n\n現在の nhs コマンド: C:\\Program Files\\nodejs\\nhs.cmd\n\n別の nhs が優先されています。デフォルトでデスクトップコマンドを使用するには、そのインストールを削除するか順序を変更してください。デスクトップコマンドはフルパスでも実行できます。",
+      "buttons": [
+        "閉じる",
+        "修復",
+        "削除"
+      ],
+      "defaultId": 0,
+      "cancelId": 0
+    },
+    {
+      "type": "info",
+      "title": "nhs コマンドを管理",
+      "message": "デスクトップコマンドをターミナルに追加します。",
+      "detail": "デスクトップコマンド: C:\\Users\\user\\AppData\\Local\\Programs\\NoHarness\\resources\\runtime\\cli\\bin\\nhs.cmd\n\nシェルコマンドを確認できませんでした。エイリアスや別の nhs インストールが優先されている可能性があります。",
+      "buttons": [
+        "インストール",
+        "キャンセル"
+      ],
+      "defaultId": 0,
+      "cancelId": 1
+    }
+  ]
+}

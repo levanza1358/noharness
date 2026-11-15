@@ -3,9 +3,9 @@
 import { describe, expect, it } from 'vitest'
 import type { ToolResultNode } from '@noharness/client-ui-chat/client'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { en, zh } from '@noharness/client-ui-conversation/src/client/locales.ts'
+import { en, ja, ja as conversationJa } from '@noharness/client-ui-conversation/src/client/locales.ts'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import { statusLine } from '@noharness/tool-jobs/src/render.ts'
 import { presentation } from '@noharness/tool-session-query/src/presentation.ts'
 import { renderList, renderRead, renderSpawn } from '@noharness/tool-terminal/src/render.ts'
@@ -55,11 +55,11 @@ describe('shared detail values', () => {
 })
 
 describe('control detail adapters', () => {
-  it('localizes unreadable catalog statuses in English and Chinese', () => {
+  it('localizes unreadable catalog statuses in English and Japanese', () => {
     const states = ['corrupt', 'unsupported', 'unavailable']
     for (const [dictionary, common, locale, labels] of [
       [en, commonEn, 'en', ['Corrupt', 'Unsupported', 'Unavailable']],
-      [zh, commonZh, 'zh-CN', ['已损坏', '不支持', '不可用']],
+      [conversationJa, commonJa, 'ja', ['破損', '未対応', '利用不可']],
     ] as const) {
       const translate = makeTranslate(dictionary, common)
       const result = states.map(status => ({ name: status, status }))
@@ -69,25 +69,25 @@ describe('control detail adapters', () => {
   })
 
   it('localizes Team owners while preserving inspection owner fields', () => {
-    const translate = makeTranslate(zh, commonZh)
+    const translate = makeTranslate(ja, commonJa)
     for (const tool of ['team_task_get', 'team_task_create', 'team_task_update', 'team_task_list']) {
       const task = { subject: 'Review', owner: 'reviewer/checker' }
       const value = tool === 'team_task_list' ? { tasks: [task] } : task
-      expect(detailsCardModel(output(tool, JSON.stringify(value)), translate, 'zh-CN')?.items[0]?.fields)
-        .toContainEqual({ label: '负责人', value: 'reviewer/checker' })
+      expect(detailsCardModel(output(tool, JSON.stringify(value)), translate, 'ja')?.items[0]?.fields)
+        .toContainEqual({ label: '担当者', value: 'reviewer/checker' })
     }
     expect(inspectionItems({ owner: 'client-ui-tool' }, translate)[0]?.fields)
       .toEqual([{ label: 'owner', value: 'client-ui-tool' }])
   })
 
   it.each([
-    [{ timedOut: false }, '等待已结束'],
-    [{ timedOut: true }, '等待已超时'],
-    [{ timedOut: false, noProgress: { message: 'No pending work' } }, '没有正在运行的子智能体'],
+    [{ timedOut: false }, '待機が終了しました'],
+    [{ timedOut: true }, '待機がタイムアウトしました'],
+    [{ timedOut: false, noProgress: { message: 'No pending work' } }, '実行中のサブエージェントはありません'],
   ] as const)('renders inbox wait results and historical activity diagnostics (%j)', (value, summary) => {
-    const translate = makeTranslate(zh, commonZh)
-    expect(translate('tool.title.waitAgent')).toBe('等待消息…')
-    expect(detailsCardModel(output('wait_agent', JSON.stringify(value)), translate, 'zh-CN')?.summary).toBe(summary)
+    const translate = makeTranslate(ja, commonJa)
+    expect(translate('tool.title.waitAgent')).toBe('メッセージを待機中…')
+    expect(detailsCardModel(output('wait_agent', JSON.stringify(value)), translate, 'ja')?.summary).toBe(summary)
   })
 
   it('uses producer wording for agent, job, terminal, and LSP lists', () => {
@@ -155,7 +155,7 @@ describe('control detail adapters', () => {
     })
     expect(detailsCardModel({ ...block, content: [] }, t, 'en')).toEqual(model)
     expect(detailsCardModel({ ...block, isError: true }, t, 'en')).toBeNull()
-    expect(detailsCardModel(block, makeTranslate(zh, commonZh), 'zh-CN')?.items[0]?.fields).toEqual([
+    expect(detailsCardModel(block, makeTranslate(ja, commonJa), 'ja')?.items[0]?.fields).toEqual([
       { label: '智能体任务描述', value: args.description },
       { label: '智能体名称', value: 'reviewer' },
     ])

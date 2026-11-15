@@ -3,59 +3,15 @@
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'subagent'
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'section.title': '子智能体',
-  'section.empty': '暂无子智能体',
-  'progress.completed': '{count} 已完成',
-  'progress.active': '{count} 进行中',
-  'progress.inactive': '{count} 未运行',
-  'progress.external': '{count} 外部任务',
-  'duration.seconds': '{seconds}秒',
-  'duration.minutes': '{minutes}分{seconds}秒',
-  'duration.hours': '{hours}小时{minutes}分{seconds}秒',
-  'duration.days': '{days}天',
-  'duration.daysHours': '{days}天{hours}小时',
-  'duration.months': '约{months}个月',
-  'duration.monthsDays': '约{months}个月{days}天',
-  'duration.years': '约{years}年',
-  'duration.yearsMonths': '约{years}年{months}个月',
-  'duration.exactDays': '{days}天{hours}小时{minutes}分{seconds}秒',
-  'duration.exactTitle': '总活跃耗时：{duration}',
-  'tokens.thousand': '{value}K',
-  'tokens.million': '{value}M',
-  'tokens.total': '{value} tok',
-  'loading.label': '正在加载子智能体…',
-  'load.idle': '尚未加载子智能体',
-  'load.error': '无法加载子智能体',
-  'retry': '重试',
-  'mode.external': '外部任务',
-  'mode.oneShot': '一次性',
-  'mode.continuable': '可继续',
-  'mode.unknown': '模式未知',
-  'readonly.unknown.body': '读取子会话后才能确定是否可继续。',
-  'activity.running': '正在运行',
-  'activity.completed': '已完成',
-  'activity.inactive': '当前未运行',
-  'branch.collapse': '收起 {label} 的下级子智能体',
-  'branch.expand': '展开 {label} 的下级子智能体',
-  'count.total.one': '{count} 个子智能体',
-  'count.total.other': '{count} 个子智能体',
-  'count.running.one': '{count} 个子智能体，正在运行',
-  'count.running.other': '{count} 个子智能体，正在运行',
-  'switcher.aria': '切换子智能体：{title}',
-  'tree.aria': '子智能体会话',
-  'open.sidebar': '在侧边栏打开',
-  'open.floatWindow': '在浮窗中打开',
-  'open.sidebar.aria': '在侧边栏打开 {label}',
-  'sidebar.chat': '聊天',
-  'readonly.oneShot.title': '一次性子智能体记录',
-  'readonly.title': '此子智能体暂时只读',
-  'readonly.oneShot.body': '一次性任务不支持后续消息，可在这里查看完整执行记录。',
-} as const
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'subagent': SubagentKey
+  }
+}
 
-/** English dictionary, key-identical to the Chinese source of truth. */
-export const en: Record<SubagentKey, string> = {
+export type SubagentKey = keyof typeof en
+
+export const en = {
   'section.title': 'Subagents',
   'section.empty': 'No subagents',
   'progress.completed': '{count} completed',
@@ -106,58 +62,56 @@ export const en: Record<SubagentKey, string> = {
 }
 
 /** Key domain of the `subagent` namespace (zh is the source of truth). */
-export type SubagentKey = keyof typeof zh
-
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   'section.title': 'サブエージェント',
   'section.empty': 'サブエージェントはありません',
-  'progress.completed': '{count}件完了',
-  'progress.active': '{count}件進行中',
-  'progress.inactive': '{count}件停止中',
-  'progress.external': '{count}件外部タスク',
-  'duration.seconds': '{seconds}秒',
-  'duration.minutes': '{minutes}分{seconds}秒',
-  'duration.hours': '{hours}時間{minutes}分{seconds}秒',
-  'duration.days': '{days}日',
-  'duration.daysHours': '{days}日{hours}時間',
-  'duration.months': '約{months}ヶ月',
-  'duration.monthsDays': '約{months}ヶ月{days}日',
-  'duration.years': '約{years}年',
-  'duration.yearsMonths': '約{years}年{months}ヶ月',
-  'duration.exactDays': '{days}日{hours}時間{minutes}分{seconds}秒',
-  'duration.exactTitle': '合計アクティブ時間: {duration}',
+  'progress.completed': '{count} completed',
+  'progress.active': '{count} in progress',
+  'progress.inactive': '{count} not running',
+  'progress.external': '{count} external',
+  'duration.seconds': '{seconds}s',
+  'duration.minutes': '{minutes}m {seconds}s',
+  'duration.hours': '{hours}h {minutes}m {seconds}s',
+  'duration.days': '{days}d',
+  'duration.daysHours': '{days}d {hours}h',
+  'duration.months': '~{months}mo',
+  'duration.monthsDays': '~{months}mo {days}d',
+  'duration.years': '~{years}y',
+  'duration.yearsMonths': '~{years}y {months}mo',
+  'duration.exactDays': '{days}d {hours}h {minutes}m {seconds}s',
+  'duration.exactTitle': 'Total active duration: {duration}',
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': '{value} tok',
-  'loading.label': 'サブエージェントを読み込み中…',
-  'load.idle': 'サブエージェントは未読み込みです',
-  'load.error': 'サブエージェントを読み込めません',
-  'retry': '再試行',
-  'mode.external': '外部タスク',
-  'mode.oneShot': '単発',
-  'mode.continuable': '継続可能',
-  'mode.unknown': '不明なモード',
-  'readonly.unknown.body': '子セッションを確認して、継続できるかどうかを判断してください。',
-  'activity.running': '実行中',
-  'activity.completed': '完了',
-  'activity.inactive': '停止中',
-  'branch.collapse': '{label}の子孫を折りたたむ',
-  'branch.expand': '{label}の子孫を展開',
-  'count.total.one': 'サブエージェント{count}件',
-  'count.total.other': 'サブエージェント{count}件',
-  'count.running.one': '実行中のサブエージェント{count}件',
-  'count.running.other': '実行中のサブエージェント{count}件',
-  'switcher.aria': 'サブエージェントを切り替え: {title}',
+  'loading.label': 'Loading subagents…',
+  'load.idle': 'Subagents not loaded',
+  'load.error': 'Unable to load subagents',
+  'retry': 'Retry',
+  'mode.external': 'External task',
+  'mode.oneShot': 'one-shot',
+  'mode.continuable': 'continuable',
+  'mode.unknown': 'unknown mode',
+  'readonly.unknown.body': 'Read the child session to determine whether it can be continued.',
+  'activity.running': 'running',
+  'activity.completed': 'completed',
+  'activity.inactive': 'not running',
+  'branch.collapse': 'Collapse {label} descendants',
+  'branch.expand': 'Expand {label} descendants',
+  'count.total.one': '{count} subagent',
+  'count.total.other': '{count} subagents',
+  'count.running.one': '{count} subagent running',
+  'count.running.other': '{count} subagents running',
+  'switcher.aria': 'Switch subagent: {title}',
   'tree.aria': 'サブエージェントセッション',
-  'open.sidebar': 'サイドバーで開く',
-  'open.floatWindow': 'フローティングパネルで開く',
-  'open.sidebar.aria': '{label}をサイドバーで開く',
+  'open.sidebar': 'Open in sidebar',
+  'open.floatWindow': 'Open in floating panel',
+  'open.sidebar.aria': 'Open {label} in sidebar',
   'sidebar.chat': 'チャット',
-  'readonly.oneShot.title': '単発サブエージェントの記録',
-  'readonly.title': 'このサブエージェントは現在読み取り専用です',
-  'readonly.oneShot.body': '単発タスクは追加のメッセージを受け付けません。ここで実行記録の全体を確認できます。',
-} satisfies Record<keyof typeof en, string>
+  'readonly.oneShot.title': 'One-shot subagent record',
+  'readonly.title': 'This subagent is read-only for now',
+  'readonly.oneShot.body': 'One-shot tasks do not accept follow-ups; review the full execution record here.',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -208,7 +162,7 @@ export const es = {
   'readonly.oneShot.title': 'Registro de subagente de una sola vez',
   'readonly.title': 'Este subagente es de solo lectura por ahora',
   'readonly.oneShot.body': 'Las tareas únicas no aceptan seguimientos; revise el registro de ejecución completo aquí.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -259,7 +213,7 @@ export const fr = {
   'readonly.oneShot.title': 'Enregistrement de sous-agent unique',
   'readonly.title': 'Ce sous-agent est actuellement en lecture seule',
   'readonly.oneShot.body': 'Les tâches ponctuelles n’acceptent pas de messages de suivi ; consultez leur journal d’exécution complet ici.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -310,7 +264,7 @@ export const de = {
   'readonly.oneShot.title': 'Einmaliger Subagentendatensatz',
   'readonly.title': 'Dieser Subagent ist derzeit schreibgeschützt',
   'readonly.oneShot.body': 'Einmalige Aufgaben akzeptieren keine Folgeaufgaben; Sehen Sie sich hier den vollständigen Ausführungsbericht an.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -361,7 +315,7 @@ export const ru = {
   'readonly.oneShot.title': 'Разовая запись субагента',
   'readonly.title': 'Этот субагент пока доступен только для чтения.',
   'readonly.oneShot.body': 'Одноразовые задачи не допускают последующих действий; просмотреть полную запись выполнения можно здесь.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -412,4 +366,4 @@ export const pt = {
   'readonly.oneShot.title': 'Registro de subagente único',
   'readonly.title': 'Este subagente é somente leitura por enquanto',
   'readonly.oneShot.body': 'Tarefas únicas não aceitam acompanhamentos; revise o registro completo da execução aqui.',
-} satisfies Record<keyof typeof en, string>
+} as const

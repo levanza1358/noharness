@@ -1,5 +1,11 @@
 /** Account settings copy, owned by the account feature. */
-import { onboardingZh, onboardingEn, onboardingJa, onboardingEs, onboardingFr, onboardingDe, onboardingRu, onboardingPt } from './locales/onboarding.ts'
+import { onboardingEn, onboardingJa, onboardingEs, onboardingFr, onboardingDe, onboardingRu, onboardingPt } from './locales/onboarding.ts'
+
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'settings.account': AccountKey
+  }
+}
 
 /** English account dictionary. */
 export const en = {
@@ -36,45 +42,13 @@ export const en = {
 } as const
 /** Account locale keys. */
 export type AccountKey = keyof typeof en
-/** Chinese account settings copy. */
-export const zh: Record<AccountKey, string> = {
-  modelSignInRequired: '当前模型暂不可用，请登录后再试',
-  sessionExpired: '登录信息已失效，请重新登录',
-  ...onboardingZh,
-  close: '关闭', addApiKey: '添加 API Key', retry: '重新登录',
-  loginTitle: '开始使用', loginDescription: '登录 DeepSeek 账号，或添加 API Key，即可开始使用。你的项目和文件保存在本地。',
-  browserTitle: '等待登录', browserPrompt: '没有自动打开新页面？', copyLink: '复制登录链接', copiedLink: '链接已复制', copyFailed: '复制失败',
-  browserDescription: '，手动打开登录页完成登录。',
-  timeoutTitle: '登录已超时', timeoutDescription: '请重新登录后继续操作。',
-  failureTitle: '登录失败',
-  platformFailed: '操作未完成，请重试', platformRetry: '重试',
-  loading: '加载中…', backToHarness: '返回 NoHarness',
-  settings: '设置', contactUs: '意见反馈', menu: '账号菜单',
-  nav: '账号与余额', signedIn: '已登录 DeepSeek', signedOut: '尚未登录',
-  signIn: '登录', signOut: '退出登录',
-  signOutUnknownDescription: '暂时无法确认任务状态。退出登录可能会中断使用此账号的任务，是否继续？',
-  signOutDescription: '退出登录不会丢失任何数据，你仍可以登录此账号。',
-  signOutRunningDescription: '当前有进程正在执行中，点击“退出登录”，将会打断进程，是否即刻退出登录？', cancel: '取消', open: '打开浏览器',
-  initializing: '正在发起登录…', waiting: '请在浏览器中继续',
-  completing: '正在完成登录…', expired: '登录已过期，请重试。',
-  failed: '操作未完成，请重试。',
-  noResponse: '操作未完成，可能是网络异常，请检查你的网络状况后重试',
-  settingsSignedOutTitle: '当前未登录 NoHarness 账号',
-  settingsSignedOutDescription: '登录 NoHarness 账号获取专属 API Key',
-  signInDescription: '登录 DeepSeek 账号以开始使用',
-  profileUnavailable: '账号资料暂不可用',
-  balance: '充值余额', bonusBalance: '赠金余额', balanceUnavailable: '前往开放平台查看', balanceSignedOut: '登录后查看',
-  accountInfo: '更多账号信息', more: '更多', usage: '查询用量', topUp: '充值',
-  quotaTitle: '当前无可用余额',
-  quotaDescription: '没有可用额度时，NoHarness 无法开始新的任务，是否前往充值？或者可以稍后前往 设置 → 账号与余额 进行充值。',
-  quotaTopUp: '去充值',
-}
+/** Account locale keys. */
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   ...onboardingJa,
-  'modelSignInRequired': 'モデルを利用できません。ログインしてから再試行してください。',
-  'sessionExpired': 'アカウントからログアウトしました。もう一度ログインしてください。',
+  'modelSignInRequired': 'Model unavailable. Please sign in and try again.',
+  'sessionExpired': 'You have signed out of your account, please log in again.',
   'close': '閉じる',
   'addApiKey': 'API Key を追加',
   'retry': '再ログイン',
@@ -85,7 +59,7 @@ export const ja = {
   'copyLink': 'ログインリンクをコピー',
   'copiedLink': 'リンクをコピーしました',
   'copyFailed': 'コピーに失敗しました',
-  'browserDescription': 'をコピーし、ブラウザで開いてログインを完了してください。',
+  'browserDescription': ', then open it in your browser to finish signing in.',
   'timeoutTitle': 'ログインがタイムアウトしました',
   'timeoutDescription': '続行するには再ログインしてください。',
   'failureTitle': 'ログインできませんでした',
@@ -101,8 +75,8 @@ export const ja = {
   'signedOut': '未ログイン',
   'signIn': 'ログイン',
   'signOut': 'ログアウト',
-  'signOutUnknownDescription': '実行中のタスクを確認できませんでした。ログアウトすると、このアカウントを使用しているタスクが中断される可能性があります。今すぐログアウトしますか？',
-  'signOutDescription': 'ログアウトしてもデータは削除されません。このアカウントに再度ログインできます。',
+  'signOutUnknownDescription': 'Could not check running tasks. Signing out may interrupt tasks using this account. Sign out now?',
+  'signOutDescription': 'Signing out will not delete any data. You can sign in to this account again.',
   'signOutRunningDescription': '現在実行中のタスクがあります。ログアウトすると中断されます。今すぐログアウトしますか？',
   'cancel': 'キャンセル',
   'open': 'ブラウザで開く',
@@ -110,12 +84,12 @@ export const ja = {
   'waiting': 'ブラウザで続行してください',
   'completing': 'ログインを完了しています…',
   'expired': 'ログインの有効期限が切れました。もう一度お試しください。',
-  'failed': '操作を完了できませんでした。もう一度お試しください。',
-  'noResponse': '問題が発生しました。ネットワーク接続を確認して、もう一度お試しください。',
+  'failed': 'Could not complete the operation. Try again.',
+  'noResponse': 'Something went wrong. Please check your network connection and try again.',
   'settingsSignedOutTitle': 'NoHarness にログインしていません',
-  'settingsSignedOutDescription': 'NoHarness にログインして専用の API Key を取得してください',
-  'signInDescription': 'DeepSeek アカウントで始めましょう。',
-  'profileUnavailable': 'アカウント情報はまだ利用できません。',
+  'settingsSignedOutDescription': 'Sign in to NoHarness to get your dedicated API Key',
+  'signInDescription': 'Use your DeepSeek account to get started.',
+  'profileUnavailable': 'Account details are not available yet.',
   'balance': 'チャージ残高',
   'bonusBalance': '付与残高',
   'balanceUnavailable': 'Platform で表示',
@@ -124,10 +98,10 @@ export const ja = {
   'more': 'その他',
   'usage': '利用状況を表示',
   'topUp': 'チャージ',
-  'quotaTitle': '残高がありません',
-  'quotaDescription': '残高がない場合、NoHarness はこのアカウントで新しいタスクを開始できません。チャージしますか？後から設定 → アカウントでチャージすることもできます。',
+  'quotaTitle': 'No balance available',
+  'quotaDescription': 'NoHarness cannot start a new task with this account when no balance is available. Would you like to top up? You can also top up later in Settings → Account.',
   'quotaTopUp': 'チャージ',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -161,7 +135,7 @@ export const es = {
   quotaTitle: 'No hay saldo disponible',
   quotaDescription: 'NoHarness no puede iniciar una nueva tarea con esta cuenta cuando no hay saldo disponible. ¿Quieres recargar? También puedes recargar más tarde en Configuración → Cuenta.',
   quotaTopUp: 'Recargar',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -195,7 +169,7 @@ export const fr = {
   quotaTitle: 'Aucun solde disponible',
   quotaDescription: "NoHarness ne peut pas démarrer une nouvelle tâche avec ce compte lorsqu'aucun solde n'est disponible. Souhaitez-vous recharger ? Vous pouvez également recharger plus tard dans Paramètres → Compte.",
   quotaTopUp: 'Recharger',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -229,7 +203,7 @@ export const de = {
   quotaTitle: 'Kein Guthaben verfügbar',
   quotaDescription: 'NoHarness kann mit diesem Konto keine neue Aufgabe starten, wenn kein Guthaben verfügbar ist. Möchten Sie aufladen? Sie können das Guthaben auch später unter Einstellungen → Konto aufladen.',
   quotaTopUp: 'Auffüllen',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -263,7 +237,7 @@ export const ru = {
   quotaTitle: 'Нет доступного баланса',
   quotaDescription: 'NoHarness не может запустить новую задачу с этой учетной записью, если на ней нет баланса. Хотите пополнить счет? Вы также можете пополнить счет позже в «Настройки» → «Аккаунт».',
   quotaTopUp: 'Пополнить',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -297,4 +271,4 @@ export const pt = {
   quotaTitle: 'Nenhum saldo disponível',
   quotaDescription: 'NoHarness não pode iniciar uma nova tarefa com esta conta quando não houver saldo disponível. Você gostaria de recarregar? Você também pode recarregar mais tarde em Configurações → Conta.',
   quotaTopUp: 'Recarregar',
-} satisfies Record<keyof typeof en, string>
+} as const

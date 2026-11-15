@@ -1,40 +1,12 @@
-/** Shortcut reference copy; only implemented operations appear in the catalog. */
-export const zh = {
-  'edit-label': '修改{command}快捷键',
-  record: '按下快捷键', 'record-help': '松开组合键即保存。Tab 切换操作，Esc 退出录键。',
-  'web-help': '浏览器可用组合：Mod+/、Mod+Shift+,、Mod+Shift+.。Mod 在 Mac 上为 Command，其他系统为 Ctrl。',
-  'unsupported-key': '暂不支持这个按键。', reserved: '此组合由系统或文本编辑操作保留。',
-  'modifier-required': '请同时按下 Command、Ctrl 或 Alt 修饰键。',
-  'too-many-keys': '最多同时按下两个非修饰键。请松开后重试。',
-  'macos-web-help': '可设置 Command+/、Command+,、Command+反斜杠、Control+反引号、Command+Option+按键或 Command+Shift+按键。也支持三个或四个不同修饰键的组合。浏览器或系统占用的组合可能无法送达页面。',
-  'windows-web-help': '可设置 Ctrl+/、Ctrl+,、Ctrl+Alt+按键或 Ctrl+Shift+按键。也支持三个或四个不同修饰键的组合。浏览器或系统占用的组合可能无法送达页面。',
-  'unsupported-browser': '此浏览器暂不支持该组合。', conflict: '已被「{commands}」占用',
-  saved: '已修改', clear: '移除', 'retry-save': '重试保存', reset: '恢复默认',
-  'reset-all': '恢复全部默认', 'modified-count': '{count} 项已自定义',
-  'reset-title': '恢复全部默认快捷键？',
-  'reset-description': '将恢复当前平台的默认快捷键。你修改或移除的快捷键都会恢复，其他平台不受影响。',
-  cancel: '取消', 'reset-saved': '已恢复默认快捷键',
-  'close-confirmation': '关闭确认', 'reset-failed': '恢复默认失败。原快捷键已保留，请重试。',
-  review: '已核对最新配置',
-  stale: '快捷键配置或可用命令已更新。请核对最新键位后再保存。',
-  'write-failed': '保存失败。原快捷键和当前草稿已保留，请重试。',
-  'not-ready': '快捷键尚未准备好，请稍后重试。',
-  read: '无法读取 {location}。请检查访问权限后{reload}。',
-  invalid: '{location} 的快捷键配置内容损坏。请先备份并修复该配置，然后{reload}。',
-  future: '{location} 的快捷键配置由更新版本创建。请升级 Harness 后重试。',
-  'web-document': '当前网站本地存储中的 nhs.keybindings.v1', 'desktop-document': 'userData/keybindings.json',
-  'web-reload': '刷新页面', 'desktop-reload': '重新启动 Harness',
-  'using-defaults': '当前使用默认键位。', 'using-accepted': '当前继续使用上次读取成功的键位。',
-  'native-failed': '无法启用桌面录键保护，请关闭后重试。',
-  'global-hint': '全局唤起查看', 'clear-search': '清空搜索',
-  title: '快捷键', open: '快捷键速查', settings: '快捷键', view: '编辑快捷键',
-  description: '查看和编辑当前可用的快捷键和输入操作', search: '搜索快捷键', close: '关闭快捷键',
-  application: '应用操作', input: '消息输入', menus: '菜单与弹层', approval: '审批区域', unbound: '暂无快捷键',
-  empty: '没有匹配的快捷键',
-  move: '移动菜单选择', select: '选择菜单项', dismiss: '关闭菜单或顶层弹窗',
+export type ShortcutsKey = keyof typeof en
+
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'shortcuts': ShortcutsKey
+  }
 }
-/** Typed English counterpart. */
-export const en: Record<keyof typeof zh, string> = {
+
+export const en = {
   'edit-label': 'Edit shortcut for {command}',
   record: 'Press a shortcut', 'record-help': 'Release the keys to save. Tab moves between actions; Esc cancels.',
   'web-help': 'Browser combinations: Mod+/, Mod+Shift+,, Mod+Shift+.. Mod is Command on Mac and Ctrl elsewhere.',
@@ -71,16 +43,16 @@ export const en: Record<keyof typeof zh, string> = {
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'edit-label': '{command}のショートカットを編集',
+  'edit-label': 'Edit shortcut for {command}',
   'record': 'ショートカットを押してください',
   'record-help': 'キーを離すと保存されます。Tab でアクション間を移動、Esc でキャンセルします。',
-  'web-help': 'ブラウザの組み合わせ: Mod+/、Mod+Shift+,、Mod+Shift+.。Mod は Mac では Command、それ以外では Ctrl です。',
+  'web-help': 'Browser combinations: Mod+/, Mod+Shift+,, Mod+Shift+.. Mod is Command on Mac and Ctrl elsewhere.',
   'unsupported-key': 'このキーはサポートされていません。',
   'reserved': 'この組み合わせはシステム操作またはテキスト編集操作に予約されています。',
-  'modifier-required': '組み合わせに Command、Ctrl、または Alt を含めてください。',
-  'too-many-keys': '修飾キー以外のキーは最大 2 つまでです。キーを離して再試行してください。',
-  'macos-web-help': 'Command+/、Command+,、Command+バックスラッシュ、Control+バッククォート、Command+Option+キー、または Command+Shift+キーを使用してください。3 つまたは 4 つの異なる修飾キーを使った組み合わせもサポートされています。ブラウザやシステムのショートカットはページに届かない場合があります。',
-  'windows-web-help': 'Ctrl+/、Ctrl+,、Ctrl+Alt+キー、または Ctrl+Shift+キーを使用してください。3 つまたは 4 つの異なる修飾キーを使った組み合わせもサポートされています。ブラウザやシステムのショートカットはページに届かない場合があります。',
+  'modifier-required': 'Include Command, Ctrl, or Alt in the combination.',
+  'too-many-keys': 'Hold at most two non-modifier keys. Release the keys to try again.',
+  'macos-web-help': 'Use Command+/, Command+,, Command+Backslash, Control+Backquote, Command+Option+key, or Command+Shift+key. Combinations with three or four distinct modifiers are also supported. Browser or system shortcuts may not reach the page.',
+  'windows-web-help': 'Use Ctrl+/, Ctrl+,, Ctrl+Alt+key, or Ctrl+Shift+key. Combinations with three or four distinct modifiers are also supported. Browser or system shortcuts may not reach the page.',
   'unsupported-browser': 'このブラウザはこの組み合わせにまだ対応していません。',
   'conflict': '「{commands}」で既に使用されています',
   'saved': '変更済み',
@@ -89,26 +61,26 @@ export const ja = {
   'reset': 'デフォルトに戻す',
   'reset-all': 'すべてデフォルトに戻す',
   'modified-count': '{count} 件がカスタマイズ済み',
-  'reset-title': 'すべてのショートカットをデフォルトに戻しますか？',
-  'reset-description': 'このプラットフォームのショートカットをデフォルトに戻します。変更または削除されたすべてのショートカットが復元されます。他のプラットフォームには影響しません。',
+  'reset-title': 'Restore all default shortcuts?',
+  'reset-description': 'Restore the default shortcuts for this platform. All modified or removed shortcuts will be restored. Other platforms are unaffected.',
   'cancel': 'キャンセル',
   'reset-saved': 'デフォルトのショートカットを復元しました',
   'close-confirmation': '確認を閉じる',
   'reset-failed': 'デフォルトを復元できませんでした。ショートカットは変更されていません。再試行してください。',
-  'review': '最新の構成を確認しました',
-  'stale': 'ショートカット構成または利用可能なコマンドが変更されました。保存する前に最新のバインドを確認してください。',
-  'write-failed': '保存できませんでした。以前のショートカットと現在の下書きは保持されています。再試行してください。',
-  'not-ready': 'ショートカットの準備ができていません。もう一度お試しください。',
-  'read': '{location} を読み取れませんでした。アクセス権限を確認してから、{reload}してください。',
-  'invalid': '{location} のショートカット構成が破損しています。この構成をバックアップして修復してから、{reload}してください。',
-  'future': '{location} のショートカット構成は新しいバージョンで作成されています。Harness をアップグレードして再試行してください。',
+  'review': 'I have reviewed the latest configuration',
+  'stale': 'Shortcut configuration or available commands changed. Review the latest bindings before saving.',
+  'write-failed': 'Could not save. Your previous shortcuts and current draft are preserved. Please retry.',
+  'not-ready': 'Shortcuts are not ready. Please try again.',
+  'read': 'Could not read {location}. Check access permissions, then {reload}.',
+  'invalid': 'Shortcut configuration in {location} is damaged. Back up and repair this configuration, then {reload}.',
+  'future': 'Shortcut configuration in {location} was created by a newer version. Upgrade Harness and try again.',
   'web-document': 'このサイトの localStorage エントリ nhs.keybindings.v1',
   'desktop-document': 'userData/keybindings.json',
   'web-reload': 'ページを再読み込み',
   'desktop-reload': 'Harness を再起動',
   'using-defaults': 'デフォルトのバインドが有効です。',
   'using-accepted': '最後に正常に読み取られたバインドが有効なままです。',
-  'native-failed': 'デスクトップでのキー記録を保護できませんでした。記録を終了して再試行してください。',
+  'native-failed': 'Could not protect desktop key recording. Exit recording and try again.',
   'global-hint': 'どこからでも開く',
   'clear-search': '検索をクリア',
   'title': 'キーボードショートカット',
@@ -123,11 +95,11 @@ export const ja = {
   'menus': 'メニューとダイアログ',
   'approval': '承認エリア',
   'unbound': 'ショートカットなし',
-  'empty': '一致するショートカットがありません',
+  'empty': 'No matching shortcuts',
   'move': 'メニュー選択を移動',
   'select': 'メニュー項目を選択',
   'dismiss': 'メニューまたは最上位ダイアログを閉じる',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -163,7 +135,7 @@ export const es = {
   application: 'Solicitud', input: 'Entrada de mensaje', menus: 'Menús y cuadros de diálogo', approval: 'Área de aprobación', unbound: 'Sin atajos',
   empty: 'No hay atajos coincidentes',
   move: 'Mover selección de menú', select: 'Seleccionar elemento del menú', dismiss: 'Cerrar menú o cuadro de diálogo superior',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -199,7 +171,7 @@ export const fr = {
   application: 'Demande', input: 'Saisie des messages', menus: 'Menus et boîtes de dialogue', approval: "Zone d'approbation", unbound: 'Pas de raccourci',
   empty: 'Aucun raccourci correspondant',
   move: 'Déplacer la sélection du menu', select: 'Sélectionner un élément de menu', dismiss: 'Fermer le menu ou la boîte de dialogue supérieure',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -235,7 +207,7 @@ export const de = {
   application: 'Anwendung', input: 'Nachrichteneingabe', menus: 'Menüs und Dialoge', approval: 'Genehmigungsbereich', unbound: 'Keine Abkürzung',
   empty: 'Keine passenden Verknüpfungen',
   move: 'Menüauswahl verschieben', select: 'Menüpunkt auswählen', dismiss: 'Menü oder oberen Dialog schließen',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -271,7 +243,7 @@ export const ru = {
   application: 'Приложение', input: 'Ввод сообщения', menus: 'Меню и диалоги', approval: 'Область утверждения', unbound: 'Нет ярлыка',
   empty: 'Нет подходящих ярлыков',
   move: 'Переместить выбор меню', select: 'Выберите пункт меню', dismiss: 'Закрыть меню или верхний диалог',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -307,4 +279,4 @@ export const pt = {
   application: 'Aplicação', input: 'Entrada de mensagem', menus: 'Menus e caixas de diálogo', approval: 'Área de aprovação', unbound: 'Sem atalho',
   empty: 'Nenhum atalho correspondente',
   move: 'Mover seleção de menu', select: 'Selecione o item do menu', dismiss: 'Fechar menu ou caixa de diálogo superior',
-} satisfies Record<keyof typeof en, string>
+} as const

@@ -11,7 +11,7 @@ import type { SessionListState } from '@noharness/api-session-controller/client'
 import type { SessionId } from '@noharness/session/types'
 import type { SettingsRootComponentProps } from '../src/client/shell-contract.ts'
 import { SettingsRoot } from '../src/client/SettingsRoot.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import type { DesktopUpdateView } from '../src/types.ts'
 import { Modal } from '@noharness/client-ui-primitives'
 import { brandString } from '@noharness/brand'
@@ -72,7 +72,7 @@ function mount({
 }: {
   shortcuts?: readonly ShortcutCatalogEntry[]
   wide?: boolean
-  dictionary?: typeof en | typeof zh
+  dictionary?: typeof en | typeof ja
   connectionState?: ConnectionSnapshot
   desktopUpdate?: DesktopUpdateView
   onboardingActive?: boolean
@@ -186,7 +186,7 @@ function openPanel() {
 describe('SettingsRoot trigger', () => {
   it('shows installation instead of expected backend reconnection and restores connection feedback after failure', () => {
     const presentation = { phase: 'installing' as const, version: '1.0.1' }
-    const f = mount({ dictionary: zh, connectionState: 'connecting',
+    const f = mount({ dictionary: ja, connectionState: 'connecting',
       desktopUpdate: { failed: false, opening: false, presentation } })
     expect(screen.getByRole('button', { name: '正在准备重启…' })).toBeTruthy()
     expect(screen.queryByText('重新连接中')).toBeNull()
@@ -198,8 +198,8 @@ describe('SettingsRoot trigger', () => {
   it.each([
     { column: 'expanded English', wide: true, dictionary: en, name: 'Settings' },
     { column: 'collapsed English', wide: false, dictionary: en, name: 'Settings' },
-    { column: 'expanded Chinese', wide: true, dictionary: zh, name: '设置' },
-    { column: 'collapsed Chinese', wide: false, dictionary: zh, name: '设置' },
+    { column: 'expanded Chinese', wide: true, dictionary: ja, name: '设置' },
+    { column: 'collapsed Chinese', wide: false, dictionary: ja, name: '设置' },
   ])('uses the locale name and accepts keyboard-style activation for the $column trigger', ({
     wide, dictionary, name,
   }) => {
@@ -248,7 +248,7 @@ describe('SettingsRoot trigger', () => {
 
   it('keeps the attempt label steady through the hold and confirms for the full window', () => {
     vi.useFakeTimers()
-    const mounted = mount({ dictionary: zh })
+    const mounted = mount({ dictionary: ja })
     mounted.setConnectionState('connecting')
     const attempt = screen.getByRole('button', { name: '连接中断，正在重试，点击立即重连' })
     expect(attempt.textContent).toContain('重新连接中')

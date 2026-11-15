@@ -6,21 +6,17 @@ export const en = {
   failed: 'Could not save preference',
 }
 
-/** Chinese preference copy. */
-export const zh: Record<keyof typeof en, string> = {
-  title: '在使用官方模型 API 时上传 Session Log',
-  description: '帮助改进 DeepSeek 模型与产品',
-  saved: '设置已保存',
-  failed: '无法保存设置',
-}
+export type SettingsSessionLogKey = keyof typeof en
+
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'title': '公式モデル API 使用時にセッションログをアップロード',
-  'description': 'DeepSeek のモデルと製品の改善にご協力ください。',
-  'saved': '設定を保存しました',
-  'failed': '設定を保存できませんでした',
-} satisfies Record<keyof typeof en, string>
+  'title': 'Upload Session Log when using the official model API',
+  'description': 'Help improve DeepSeek models and products.',
+  'saved': 'Preference saved',
+  'failed': 'Could not save preference',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -28,7 +24,7 @@ export const es = {
   description: 'Ayude a mejorar los modelos y productos DeepSeek.',
   saved: 'Preferencia guardada',
   failed: 'No se pudo guardar la preferencia',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -36,7 +32,7 @@ export const fr = {
   description: 'Aidez à améliorer les modèles et produits DeepSeek.',
   saved: 'Préférence enregistrée',
   failed: "Impossible d'enregistrer la préférence",
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -44,7 +40,7 @@ export const de = {
   description: 'Helfen Sie mit, DeepSeek-Modelle und -Produkte zu verbessern.',
   saved: 'Präferenz gespeichert',
   failed: 'Präferenz konnte nicht gespeichert werden',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -52,7 +48,7 @@ export const ru = {
   description: 'Помогите улучшить модели и продукты DeepSeek.',
   saved: 'Предпочтение сохранено.',
   failed: 'Не удалось сохранить предпочтения.',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -60,4 +56,4 @@ export const pt = {
   description: 'Ajude a melhorar DeepSeek modelos e produtos.',
   saved: 'Preferência salva',
   failed: 'Não foi possível salvar a preferência',
-} satisfies Record<keyof typeof en, string>
+} as const

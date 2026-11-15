@@ -1,5 +1,5 @@
 /** Browser-safe formatting shared by Session and Host reminder catalogs. */
-import type { Translate } from '@noharness/client-ui-slots'
+import type { Translate, TranslateNS } from '@noharness/client-ui-slots'
 import type { ScheduleRecord } from '@noharness/schedule/client'
 import { hostFrequencyKind, ruleFields, taskNextRunAt } from './task-record.ts'
 import { assertNever } from '@noharness/util-values'
@@ -34,8 +34,8 @@ export type FrequencyKey =
   | UnitKey
   | CronDescriptionKey
 
-/** Namespace-independent translator for reminder frequencies and time units. */
-export type FrequencyTranslator = Translate<FrequencyKey>
+/** Translator for reminder frequencies and time units from any of the reminder namespaces. */
+export type FrequencyTranslator = TranslateNS<'schedule.catalog'> | TranslateNS<'schedule.manager'>
 
 /** Dictionary keys required to localize a zone and mark the host's zone. */
 export type ZoneLabelKey = 'time.locale' | 'time.utcPrefix' | 'rule.zone.system'

@@ -1,17 +1,5 @@
-/** Locale-owned Excel preview controls and parser feedback. */
-export const zh = {
-  title: '表格', language: 'zh', loading: '文档渲染中...',
-  invalid: '无法打开此表格。请检查文件格式、内容或密码保护。',
-  tooLarge: '此表格超过预览大小限制。', timeout: '打开表格超时。请缩小文件后重试。',
-  encoding: '无法识别此文本文件的编码。请另存为 UTF-8 或带 BOM 的 UTF-16 后重试。',
-  formulaWarning: '此工作簿包含公式，显示结果可能缺失或不准确。',
-  unsupportedNotice: '当前预览不支持此工作簿中的{features}。请使用系统应用打开，以获得完整体验。',
-  charts: '图表', images: '图片', shapes: '形状', conditionalFormatting: '条件格式', featureSeparator: '、',
-  retry: '重试',
-} satisfies Record<string, string>
 
 /** Excel preview dictionary keys. */
-export type ExcelPreviewKey = keyof typeof zh
 
 /** English Excel preview copy. */
 export const en = {
@@ -23,7 +11,9 @@ export const en = {
   unsupportedNotice: 'This preview does not support {features} in this workbook. Open it in a system application for the full experience.',
   charts: 'charts', images: 'images', shapes: 'shapes', conditionalFormatting: 'conditional formatting', featureSeparator: ', ',
   retry: 'Retry',
-} satisfies Record<ExcelPreviewKey, string>
+} as const
+
+export type ExcelPreviewKey = keyof typeof en
 
 declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -37,19 +27,19 @@ export const ja = {
   'title': 'スプレッドシート',
   'language': 'ja-JP',
   'loading': 'ドキュメントをレンダリング中...',
-  'invalid': 'このスプレッドシートを開けませんでした。形式、内容、またはパスワード保護を確認してください。',
+  'invalid': 'This spreadsheet could not be opened. Check its format, contents, or password protection.',
   'tooLarge': 'このブックはプレビューのサイズ上限を超えています。',
   'timeout': 'このブックを開く際にタイムアウトしました。より小さいファイルをお試しください。',
-  'encoding': 'このテキストエンコーディングを読み取れませんでした。ファイルをBOM付きのUTF-8またはUTF-16で保存して再試行してください。',
-  'formulaWarning': 'このブックには数式が含まれています。表示される結果が欠落または不正確な場合があります。',
-  'unsupportedNotice': 'このプレビューはこのブックの{features}をサポートしていません。完全な表示にはシステムアプリケーションで開いてください。',
+  'encoding': 'This text encoding could not be read. Save the file as UTF-8 or UTF-16 with a BOM and retry.',
+  'formulaWarning': 'This workbook contains formulas. Displayed results may be missing or inaccurate.',
+  'unsupportedNotice': 'This preview does not support {features} in this workbook. Open it in a system application for the full experience.',
   'charts': 'グラフ',
   'images': '画像',
   'shapes': '図形',
   'conditionalFormatting': '条件付き書式',
   'featureSeparator': '、',
-  'retry': '再試行',
-} satisfies Record<keyof typeof en, string>
+  'retry': 'Retry',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -61,7 +51,7 @@ export const es = {
   unsupportedNotice: 'Esta vista previa no es compatible con {features} en este libro. Ábralo en una aplicación del sistema para disfrutar de la experiencia completa.',
   charts: 'gráficos', images: 'imágenes', shapes: 'formas', conditionalFormatting: 'formato condicional', featureSeparator: ', ',
   retry: 'Reintentar',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -73,7 +63,7 @@ export const fr = {
   unsupportedNotice: 'Cet aperçu ne prend pas en charge {features} dans ce classeur. Ouvrez-le dans une application système pour une expérience complète.',
   charts: 'graphiques', images: 'photos', shapes: 'formes', conditionalFormatting: 'mise en forme conditionnelle', featureSeparator: ', ',
   retry: 'Réessayer',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -85,7 +75,7 @@ export const de = {
   unsupportedNotice: 'Diese Vorschau unterstützt {features} in dieser Arbeitsmappe nicht. Öffnen Sie es in einer Systemanwendung, um das volle Erlebnis zu genießen.',
   charts: 'Diagramme', images: 'Bilder', shapes: 'Formen', conditionalFormatting: 'bedingte Formatierung', featureSeparator: ', ',
   retry: 'Erneut versuchen',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -97,7 +87,7 @@ export const ru = {
   unsupportedNotice: 'Эта предварительная версия не поддерживает {features} в этой книге. Откройте его в системном приложении, чтобы получить полную информацию.',
   charts: 'графики', images: 'изображения', shapes: 'формы', conditionalFormatting: 'условное форматирование', featureSeparator: ', ',
   retry: 'Повторить',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -109,4 +99,4 @@ export const pt = {
   unsupportedNotice: 'Esta visualização não oferece suporte a {features} nesta pasta de trabalho. Abra-o em um aplicativo do sistema para ter uma experiência completa.',
   charts: 'gráficos', images: 'imagens', shapes: 'formas', conditionalFormatting: 'formatação condicional', featureSeparator: ', ',
   retry: 'Tentar novamente',
-} satisfies Record<keyof typeof en, string>
+} as const

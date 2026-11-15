@@ -16,7 +16,7 @@ import type { PropsRenderSlots } from '@noharness/client-ui-slots'
 import { TrajectoryTable as LocalizedTrajectoryTable } from '../src/client/TrajectoryTable.tsx'
 import { deriveTrajectoryLayout, type TrajectoryTurnModel } from '../src/client/layout.ts'
 import { trajectoryRecordId, type TrajectoryCellProps } from '../src/client/trajectory-record.ts'
-import { t, tZh } from './locale.client.ts'
+import { t, tJa } from './locale.client.ts'
 
 const loadImage: MessageImageLoader = async () => 'blob:trajectory'
 const renderNoImages: PropsRenderSlots<'conversation.trajectory.images'>['renderSlot'] = () => null
@@ -206,7 +206,7 @@ describe('TrajectoryTable', () => {
     const assistant = TURNS[0]!.groups[0]!.cells[0]!
     render(
       <LocalizedTrajectoryTable
-        t={tZh}
+        t={tJa}
         renderSlot={renderNoImages} loadImage={loadImage}
         turns={TURNS}
         collapsedTurns={new Set<number>()}
@@ -1014,7 +1014,7 @@ describe('TrajectoryTable', () => {
 
   it.each([
     ['English', t, 'Pending', 'Completed', 'Failed', 'Last attempt error', 'Error'],
-    ['Chinese', tZh, '等待中', '已完成', '失败', '上次尝试错误', '错误'],
+    ['Chinese', tJa, '等待中', '已完成', '失败', '上次尝试错误', '错误'],
   ] as const)('distinguishes retry history from the current request status in %s', (
     _locale, translate, pending, completed, failed, lastAttemptError, error,
   ) => {
@@ -1264,7 +1264,7 @@ describe('TrajectoryTable', () => {
   })
 
   it.each([['English', t, 'Attachments', 'Image 1', 'Summary', 'Preview', 'Raw'],
-    ['Chinese', tZh, '附件', '图片 1', '概述', '预览', '原始内容']] as const)(
+    ['Chinese', tJa, '附件', '图片 1', '概述', '预览', '原始内容']] as const)(
     'keeps mixed attachments ordered and raw fields complete in %s',
     async (_locale, translate, listLabel, imageLabel, summaryTab, previewTab, rawTab) => {
       const attachment = {

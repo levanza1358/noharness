@@ -17,7 +17,7 @@ import { ReviewQueue } from '../src/client/review-queue.ts'
 import { ViewedFiles } from '../src/client/viewed-files.ts'
 import { createChangesStore } from '../src/client/changes-store.ts'
 import { ChangesTab, type ChangesTabInjected, type ChangesTabProps } from '../src/client/ChangesTab.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import type { HostStream, PanelSnapshot, StreamSnapshot } from '../src/client/source.ts'
 import type { ForgeLensDescription } from '../src/client/changes-service.ts'
 import type { ViewAnnotations } from '../src/client/annotations.ts'
@@ -607,7 +607,7 @@ describe('ChangesTab local reads', () => {
     expect(m.view.getByRole('button', { name: 'All 0 files' }).hasAttribute('disabled')).toBe(true)
   })
 
-  it.each([['en', en], ['zh', zh]] as const)('explains a filter configuration failure in %s and retries the comparison', async (_locale, dictionary) => {
+  it.each([['en', en], ['ja', ja]] as const)('explains a filter configuration failure in %s and retries the comparison', async (_locale, dictionary) => {
     const m = mount({
       translate: makeTranslate(dictionary),
       setup: (faces) => { faces.localDiff.mockResolvedValueOnce(REFUSED.filterConfig) },

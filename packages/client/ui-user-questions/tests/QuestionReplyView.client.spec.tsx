@@ -4,7 +4,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { makeTranslate } from '@noharness/client-test-runtime'
 import { useDisclosure } from '@noharness/client-ui-chat/src/client/chat/use-disclosure.ts'
-import { ja, zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 import { QuestionReplyBubble, QuestionReplyView } from '../src/client/QuestionReplyView.tsx'
 import type { QuestionReplyData } from '../src/client/question-reply.ts'
 
@@ -33,7 +33,7 @@ function renderView(data: QuestionReplyData) {
   return render(<QuestionReplyView {...props as ComponentProps<typeof QuestionReplyView>} />)
 }
 
-const t = makeTranslate(zh)
+const t = makeTranslate(ja)
 const data = {
   callId: 'call-reply',
   outcome: 'answered',

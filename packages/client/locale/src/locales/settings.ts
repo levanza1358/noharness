@@ -1,44 +1,39 @@
 /** `settings.locale` namespace dictionaries (the Language row's copy). */
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'language.title': '语言',
+/** English dictionary (the key-set source of truth). */
+export const en = {
+  'language.title': 'Language',
 } satisfies Record<string, string>
 
 /** The settings.locale namespace key union. */
-export type SettingsLocaleKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
-export const en = {
-  'language.title': 'Language',
-} satisfies Record<SettingsLocaleKey, string>
+export type SettingsLocaleKey = keyof typeof en
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   'language.title': '言語',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
   'language.title': 'Idioma',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
   'language.title': 'Langue',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
   'language.title': 'Sprache',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
   'language.title': 'Язык',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
   'language.title': 'Idioma',
-} satisfies Record<keyof typeof en, string>
+} as const

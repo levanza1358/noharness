@@ -5,24 +5,24 @@ import { Context } from '@noharness/cordis'
 import { LocaleRuntime } from '@noharness/client-locale/client'
 import { describe, expect, it } from 'vitest'
 import {
-  en, NS, viewerReasonText, viewerRefusalText, zh, type LiveshareKey,
+  en, NS, viewerReasonText, viewerRefusalText, ja, type LiveshareKey,
 } from '../src/client/locales.ts'
 
 // The page's copy comes from the client locale seat, the same one the owner's dialogs use, so the
 // reader's chosen language decides it. Bind it the way the served page's client tree does.
 const locale = new LocaleRuntime(new Context())
-locale.register(NS, { zh, en })
-locale.setLocale('zh')
+locale.register(NS, { ja, en })
+locale.setLocale('en')
 const t = locale.bind(NS)
 
 describe('viewer reason copy', () => {
   it('states a known reason code in the reader\'s language', () => {
-    expect(viewerReasonText(t, 'share-stopped')).toBe(zh['viewer.reason.share-stopped'])
-    expect(viewerReasonText(t, 'fork-not-permitted')).toBe(zh['viewer.reason.fork-not-permitted'])
+    expect(viewerReasonText(t, 'share-stopped')).toBe(ja['viewer.reason.share-stopped'])
+    expect(viewerReasonText(t, 'fork-not-permitted')).toBe(ja['viewer.reason.fork-not-permitted'])
     // The reader's own language wins over the browser's: a language chosen in Settings decides.
     locale.setLocale('en')
     expect(viewerReasonText(t, 'share-stopped')).toBe(en['viewer.reason.share-stopped'])
-    locale.setLocale('zh')
+    locale.setLocale('en')
   })
 
   it('states a branch the Host created without limits as unusable, and a reused request as no branch', () => {
@@ -67,20 +67,20 @@ describe('viewer reason copy', () => {
   })
 
   it('names both languages for every reason code the page maps', () => {
-    const keys = Object.keys(zh).filter(key => key.startsWith('viewer.reason.'))
+    const keys = Object.keys(ja).filter(key => key.startsWith('viewer.reason.'))
     expect(keys.length).toBeGreaterThan(0)
-    for (const language of ['zh', 'en'] as const) {
+    for (const language of ['ja', 'en'] as const) {
       locale.setLocale(language)
-      const dictionary: Readonly<Record<string, string>> = language === 'zh' ? zh : en
+      const dictionary: Readonly<Record<string, string>> = language === 'ja' ? ja : en
       for (const key of keys) {
         const code = key.slice('viewer.reason.'.length)
         expect(viewerReasonText(t, code), `${language} ${code}`)
           .toBe(dictionary[key as LiveshareKey])
-        expect(zh[key as LiveshareKey]).toBeTruthy()
+        expect(ja[key as LiveshareKey]).toBeTruthy()
         expect(en[key as LiveshareKey]).toBeTruthy()
       }
     }
-    locale.setLocale('zh')
+    locale.setLocale('en')
   })
 
   it('states a code it does not know instead of inventing copy', () => {

@@ -6,17 +6,17 @@ import type { AttachmentId } from '@noharness/attachment/types'
 import { brandString } from '@noharness/brand'
 import type { SessionId } from '@noharness/session/types'
 import { makeTranslate, SlotTestRuntime } from '@noharness/client-test-runtime'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { MessageImagesOwnerProps } from '@noharness/client-ui-conversation/client'
 import { AssistantMarkdown, type AssistantMarkdownProps } from '../src/client/chat/AssistantMarkdown.tsx'
 import { useDetailedPresentation } from './presentation-fixture.client.ts'
 import { useDisclosure } from '../src/client/chat/use-disclosure.ts'
 import { useSearchableHidden } from '../src/client/chat/searchable-hidden.ts'
-import { zh } from '../src/client/locale.ts'
+import { ja } from '../src/client/locale.ts'
 
 afterEach(cleanup)
 
-const t = makeTranslate(zh, commonZh)
+const t = makeTranslate(ja, commonJa)
 
 const attachment = {
   attachmentId: brandString<AttachmentId>(`sha256:${'a'.repeat(64)}`),

@@ -51,7 +51,7 @@ function browserEnvironment() {
 describe.skipIf(!existsSync(preload('preload-app')))('built sandboxed Desktop preloads', () => {
   it.each(['preload-app', 'preload-welcome'])('%s loads without filesystem module access', async (name) => {
     const exposed = new Map<string, Record<string, unknown>>()
-    const invoke = vi.fn<(...args: unknown[]) => Promise<unknown>>(() => Promise.resolve({ languages: ['en-US'], preference: 'zh' }))
+    const invoke = vi.fn<(...args: unknown[]) => Promise<unknown>>(() => Promise.resolve({ languages: ['en-US'], preference: 'ja' }))
     const send = vi.fn()
     const browser = browserEnvironment()
     const electron = {
@@ -80,8 +80,8 @@ describe.skipIf(!existsSync(preload('preload-app')))('built sandboxed Desktop pr
       const bridge = exposed.get('__NHS_LOCALE__') as { read(): unknown; onChange(locale: string): void }
       bridge.read()
       expect(invoke).toHaveBeenCalledWith('nhs-desktop:locale-bootstrap')
-      bridge.onChange('zh')
-      expect(send).toHaveBeenCalledWith('nhs-desktop:locale-changed', 'zh')
+      bridge.onChange('ja')
+      expect(send).toHaveBeenCalledWith('nhs-desktop:locale-changed', 'ja')
     } else {
       expect(exposed.has('nhsWelcome')).toBe(true)
       const bridge = exposed.get('nhsWelcome') as { takeNotice(): Promise<unknown> }

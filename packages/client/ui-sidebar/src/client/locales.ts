@@ -1,23 +1,5 @@
 /** `sidebar` namespace dictionaries for shell controls and global panels. */
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'panels.unpinTooltip': '从左侧栏取消固定',
-  'panels.unpin': '从侧边栏取消固定{name}',
-  'session.new': '新会话',
-  'session.new.label': '新建会话',
-  'toggle.open': '打开侧边栏',
-  'toggle.collapse': '收起侧边栏',
-  'panels.label': '全局面板',
-  'navigation.label': '导航',
-  'panels.more': '更多',
-  'version.copied': '版本号复制成功',
-} satisfies Record<string, string>
-
-/** The sidebar namespace key union. */
-export type SidebarKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'panels.unpinTooltip': 'Unpin from left sidebar',
   'panels.unpin': 'Unpin {name} from sidebar',
@@ -29,21 +11,24 @@ export const en = {
   'navigation.label': 'Navigation',
   'panels.more': 'More',
   'version.copied': 'Version copied',
-} satisfies Record<SidebarKey, string>
+} as const
+
+export type SidebarKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'panels.unpinTooltip': '左サイドバーから固定解除',
-  'panels.unpin': '{name}をサイドバーから固定解除',
-  'session.new': '新規セッション',
-  'session.new.label': '新規セッション',
-  'toggle.open': 'サイドバーを開く',
-  'toggle.collapse': 'サイドバーを折りたたむ',
+  'panels.unpinTooltip': 'Unpin from left sidebar',
+  'panels.unpin': 'Unpin {name} from sidebar',
+  'session.new': 'New Session',
+  'session.new.label': 'New session',
+  'toggle.open': 'Open sidebar',
+  'toggle.collapse': 'Collapse sidebar',
   'panels.label': 'グローバルパネル',
   'navigation.label': 'ナビゲーション',
-  'panels.more': 'その他',
+  'panels.more': 'More',
   'version.copied': 'バージョンをコピーしました',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -57,7 +42,7 @@ export const es = {
   'navigation.label': 'Navegación',
   'panels.more': 'Más',
   'version.copied': 'Versión copiada',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -71,7 +56,7 @@ export const fr = {
   'navigation.label': 'Navigation',
   'panels.more': 'Plus',
   'version.copied': 'Version copiée',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -85,7 +70,7 @@ export const de = {
   'navigation.label': 'Navigation',
   'panels.more': 'Mehr',
   'version.copied': 'Version kopiert',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -99,7 +84,7 @@ export const ru = {
   'navigation.label': 'Навигация',
   'panels.more': 'Ещё',
   'version.copied': 'Версия скопирована',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -113,4 +98,4 @@ export const pt = {
   'navigation.label': 'Navegação',
   'panels.more': 'Mais',
   'version.copied': 'Versão copiada',
-} satisfies Record<keyof typeof en, string>
+} as const

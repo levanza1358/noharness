@@ -1,36 +1,9 @@
-/** Typed product copy for recommendation cards. */
-export const zh = {
-  heading: '推荐插件',
-  official: '官方',
-  detailsFor: '查看详情：{title}',
-  'version-error': '插件与当前 NHS 版本不兼容，请更新 NHS 后重试。',
-  'management-error': '无法启用插件，请打开详情检查错误后重试。',
-  enable: '启用',
-  dismiss: '暂不需要',
-  working: '正在处理…',
-  scope: '启用后可在所有会话中使用',
-  enabled: '已启用',
-  'already-enabled': '已在插件页开启，可查看详情了解运行状态',
-  dismissed: '已忽略',
-  replaced: '已替换',
-  'restart-required': '已保存，重启 NHS 后生效',
-  failed: '启用失败。可重试或在插件页检查。',
-  retry: '重试启用',
-  unconfirmed: '无法确认插件是否已启用，可重试确认。',
-  'lookup-failed': '无法读取插件信息，请重试。',
-  retryLookup: '重试',
-  unavailable: '这个插件当前无法启用，请在插件页检查。',
-  unknown: '找不到这条推荐，请重新打开会话。',
-  'access-denied': '没有修改此配置的权限。',
-  'not-live-root': '请在原会话中操作这条推荐。',
-  closing: '服务正在重载，请稍后重试。',
-  transport: '无法确认操作结果，请刷新后重试。',
-} satisfies Record<string, string>
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'pluginRecommendation': UiPluginRecommendationsKey
+  }
+}
 
-/** Keys shared by every card dictionary. */
-export type RecommendationKey = keyof typeof zh
-
-/** English card copy. */
 export const en = {
   heading: 'Recommended plugin',
   official: 'Official',
@@ -57,36 +30,41 @@ export const en = {
   'not-live-root': 'Use this recommendation in its original conversation.',
   closing: 'The service is reloading. Try again shortly.',
   transport: 'Could not confirm the result. Refresh and try again.',
-} satisfies Record<RecommendationKey, string>
+} as const
+
+export type RecommendationKey = keyof typeof en
+
+export type UiPluginRecommendationsKey = keyof typeof en
+
 
 /** Japanese card copy. */
 export const ja = {
   heading: 'おすすめのプラグイン',
-  official: '公式',
-  detailsFor: '詳細を表示：{title}',
-  'version-error': 'このプラグインは現在の NHS バージョンと互換性がありません。NHS を更新してから再試行してください。',
-  'management-error': 'プラグインを有効にできませんでした。詳細を開いてエラーを確認し、再試行してください。',
-  enable: '有効にする',
-  dismiss: '今はしない',
-  working: '処理中…',
-  scope: '有効にするとすべての会話で使えます',
-  enabled: '有効化済み',
-  'already-enabled': 'プラグイン画面で有効になっています。詳細で動作状況を確認できます。',
-  dismissed: '却下済み',
-  replaced: '置き換え済み',
-  'restart-required': '保存しました。適用するには NHS を再起動してください。',
-  failed: '有効にできませんでした。再試行するか、プラグイン画面を確認してください。',
-  retry: '再度有効にする',
-  unconfirmed: 'プラグインが有効になったか確認できませんでした。再試行して確認してください。',
-  'lookup-failed': 'プラグインの情報を読み込めませんでした。もう一度お試しください。',
-  retryLookup: '再試行',
-  unavailable: 'このプラグインは現在有効にできません。プラグイン画面を確認してください。',
-  unknown: 'この推薦は利用できません。会話を開き直してください。',
-  'access-denied': 'このプロファイルを変更する権限がありません。',
-  'not-live-root': '元の会話でこの推薦を操作してください。',
-  closing: 'サービスを再読み込み中です。しばらくしてから再試行してください。',
-  transport: '結果を確認できませんでした。更新してから再試行してください。',
-} satisfies Record<RecommendationKey, string>
+  official: 'Official',
+  detailsFor: 'View details: {title}',
+  'version-error': 'This plugin is incompatible with this NHS version. Update NHS and retry.',
+  'management-error': 'Could not enable the plugin. Open its details to check the error and retry.',
+  enable: 'Enable',
+  dismiss: 'Not now',
+  working: 'Working…',
+  scope: 'Available in all conversations when enabled',
+  enabled: 'Enabled',
+  'already-enabled': 'Already selected in Plugins. Open details to check its runtime status.',
+  dismissed: 'Dismissed',
+  replaced: 'Replaced',
+  'restart-required': 'Saved. Restart NHS to apply.',
+  failed: 'Could not enable. Retry or check Plugins.',
+  retry: 'Retry enabling',
+  unconfirmed: 'Could not confirm whether the plugin was enabled. Retry to check.',
+  'lookup-failed': 'Could not load this plugin’s details. Try again.',
+  retryLookup: 'Try again',
+  unavailable: 'This plugin cannot be enabled now. Check Plugins.',
+  unknown: 'This recommendation is unavailable. Reopen the conversation.',
+  'access-denied': 'You do not have permission to change this profile.',
+  'not-live-root': 'Use this recommendation in its original conversation.',
+  closing: 'The service is reloading. Try again shortly.',
+  transport: 'Could not confirm the result. Refresh and try again.',
+} as const
 
 /** Spanish card copy. */
 export const es = {
@@ -115,7 +93,7 @@ export const es = {
   'not-live-root': 'Usa esta recomendación en su conversación original.',
   closing: 'El servicio se está recargando. Inténtalo de nuevo en breve.',
   transport: 'No se pudo confirmar el resultado. Actualiza e inténtalo de nuevo.',
-} satisfies Record<RecommendationKey, string>
+} as const
 
 /** French card copy. */
 export const fr = {
@@ -144,7 +122,7 @@ export const fr = {
   'not-live-root': 'Utilisez cette recommandation dans sa conversation d’origine.',
   closing: 'Le service se recharge. Réessayez dans un instant.',
   transport: 'Impossible de confirmer le résultat. Actualisez et réessayez.',
-} satisfies Record<RecommendationKey, string>
+} as const
 
 /** German card copy. */
 export const de = {
@@ -173,7 +151,7 @@ export const de = {
   'not-live-root': 'Verwenden Sie diese Empfehlung in ihrem ursprünglichen Gespräch.',
   closing: 'Der Dienst wird neu geladen. Versuchen Sie es gleich erneut.',
   transport: 'Das Ergebnis konnte nicht bestätigt werden. Aktualisieren Sie die Seite und versuchen Sie es erneut.',
-} satisfies Record<RecommendationKey, string>
+} as const
 
 /** Russian card copy. */
 export const ru = {
@@ -202,7 +180,7 @@ export const ru = {
   'not-live-root': 'Используйте эту рекомендацию в исходном разговоре.',
   closing: 'Сервис перезагружается. Повторите попытку чуть позже.',
   transport: 'Не удалось подтвердить результат. Обновите страницу и повторите попытку.',
-} satisfies Record<RecommendationKey, string>
+} as const
 
 /** Portuguese card copy. */
 export const pt = {
@@ -231,4 +209,4 @@ export const pt = {
   'not-live-root': 'Use esta recomendação na conversa original.',
   closing: 'O serviço está sendo recarregado. Tente novamente em instantes.',
   transport: 'Não foi possível confirmar o resultado. Atualize e tente novamente.',
-} satisfies Record<RecommendationKey, string>
+} as const

@@ -12,7 +12,7 @@ import type {
 import { makeTranslate } from '@noharness/client-test-runtime'
 import type { PropsRenderFactories } from '@noharness/client-ui-slots'
 import { createUserTextFixture } from '../../ui-conversation/tests/user-text-component-fixture.client.tsx'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { SessionEvent } from '@noharness/session/types'
 import { commandDefinition } from '@noharness/client-ui-chat/src/client/conversation-nodes/command.ts'
 import { chatViewDefinition } from '@noharness/client-ui-chat/src/client/conversation-nodes/chat-snapshot-builder.ts'
@@ -20,7 +20,7 @@ import { GoalCommandInputView } from '../src/client/GoalCommandInputView.tsx'
 import {
   goalCommandInputDefinition, goalCommandText,
 } from '../src/client/goal-command-input.ts'
-import { zh } from '../src/client/locales.ts'
+import { ja } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
@@ -131,7 +131,7 @@ describe('goal command input projection', () => {
   })
 
   it('renders the user-style command bubble without ordinary message actions', () => {
-    const t = makeTranslate(zh, commonZh)
+    const t = makeTranslate(ja, commonJa)
     const props = {
       node: {
         key: 'goal-command-input:one',
@@ -154,7 +154,7 @@ describe('goal command input projection', () => {
     const commands: UserTextInput['facts']['commands'][] = []
     const props = {
       node: { key: 'goal-command-input:stable', data: { commandId: 'command-goal', text: '/goal ship it', time: 1 } },
-      t: makeTranslate(zh, commonZh),
+      t: makeTranslate(ja, commonJa),
       renderFactorySlot: textFactories((input) => { commands.push(input.facts.commands) }),
     } as Parameters<typeof GoalCommandInputView>[0]
     const view = render(<GoalCommandInputView {...props} />)
@@ -166,7 +166,7 @@ describe('goal command input projection', () => {
   })
 
   it('renders a bare /goal as one command chip and nothing else', () => {
-    const t = makeTranslate(zh, commonZh)
+    const t = makeTranslate(ja, commonJa)
     const props = {
       node: {
         key: 'goal-command-input:bare',
@@ -182,7 +182,7 @@ describe('goal command input projection', () => {
   })
 
   it('decorates only the leading command token: a /goal inside the objective stays plain', () => {
-    const t = makeTranslate(zh, commonZh)
+    const t = makeTranslate(ja, commonJa)
     const props = {
       node: {
         key: 'goal-command-input:two',

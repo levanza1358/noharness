@@ -30,18 +30,18 @@ export function writePackage(modules: string, name: string, fields: Record<strin
  * @returns Sealed runtime metadata.
  */
 export function runtimeFixture(root: string, version = '1.0.0', nodeVersion = '24.17.0'): DesktopRuntimeDescriptor {
-  const names = ['@noharness/cli', '@noharness/desktop-host', '@noharness/base', '@noharness/web-app', '@noharness/cordis']
+  const names = ['@noharness/nhs', '@noharness/nhs-desktop-host', '@noharness/base', '@noharness/web-app', '@noharness/cordis']
   for (const name of names) {
     const bundle = name === '@noharness/base' || name === '@noharness/web-app'
     const path = writePackage(join(root, 'node_modules'), name, {
       version,
-      ...(name === '@noharness/cli' ? { dependencies: Object.fromEntries(names.slice(1).map(dependency => [dependency, version])) } : {}),
+      ...(name === '@noharness/nhs' ? { dependencies: Object.fromEntries(names.slice(1).map(dependency => [dependency, version])) } : {}),
       ...(bundle ? { nhs: { bundle: { patch: './bundle.yml' } } } : {}),
     })
     if (bundle) writeFileSync(join(path, 'bundle.yml'), '[]\n')
   }
   for (const file of DESKTOP_HOST_RUNTIME_FILES) {
-    const path = join(root, 'node_modules', '@noharness/desktop-host', file)
+    const path = join(root, 'node_modules', '@noharness/nhs-desktop-host', file)
     mkdirSync(join(path, '..'), { recursive: true })
     writeFileSync(path, '')
   }

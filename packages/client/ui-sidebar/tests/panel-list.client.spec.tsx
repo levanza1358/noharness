@@ -7,7 +7,6 @@ import { act, cleanup, fireEvent, waitFor, within } from '@testing-library/react
 import { SlotTestRuntime } from '@noharness/client-test-runtime'
 import { LocaleRuntime } from '@noharness/client-locale/client'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
 import { IconGlobeOutlineRegular } from '@noharness/client-ui-primitives'
 import type { ILayout, MainPanelId } from '@noharness/client-ui-layout/client'
 import type { PropsRenderSlots, PropsRuntime, SlotLabel } from '@noharness/client-ui-slots'
@@ -57,9 +56,9 @@ async function bench(collapsed = false, track?: TrackProductEvent) {
       ctx.provide('uiWorkspace', { startSession: vi.fn() } as never)
       ctx.provide('locale', locale)
       if (track !== undefined) ctx.provide('productAnalytics', { track } as never)
-      ctx.effect(() => locale.register('common', { zh: commonZh, en: commonEn }), 'panel test: common locale')
+      ctx.effect(() => locale.register('common', { en: commonEn }), 'panel test: common locale')
       ctx.effect(() => locale.register('sidebar-panel-test', {
-        zh: { alpha: '甲面板' }, en: { alpha: 'Alpha panel' },
+        ja: { alpha: '甲面板' }, en: { alpha: 'Alpha panel' },
       }), 'panel test: panel locale')
       ctx.slots.installLocale(locale)
       ctx.slots.inject('main', () => ctx.slots.register({ name: 'main', key: 'conversation' }, () => (
@@ -268,7 +267,7 @@ describe('sidebar global panels', () => {
     await mountPanels(runtime, locale)
     const navigation = await view.findByRole('navigation', { name: 'Global panels' })
     const entries = runtime.slots.entries('sidebar.panellist')
-    act(() => { locale.setLocale('zh') })
+    act(() => { locale.setLocale('en') })
     await waitFor(() => {
       expect(within(navigation).getByRole('button', { name: '甲面板' }).textContent).toBe('甲面板')
     })
@@ -322,7 +321,7 @@ describe('sidebar global panels', () => {
     expect(runtime.slots.spec('sidebar.panellist')).toBeUndefined()
     expect(runtime.slots.entries('sidebar.panellist')).toEqual([])
     expect(view.getByRole('heading', { name: 'Alpha content' })).toBeTruthy()
-    act(() => { locale.setLocale('zh') })
+    act(() => { locale.setLocale('en') })
     expect(view.queryByRole('navigation')).toBeNull()
     await runtime.mount({ inject: [...inject], apply })
     const restored = await view.findByRole('button', { name: '甲面板' })

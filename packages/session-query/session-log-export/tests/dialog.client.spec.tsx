@@ -7,7 +7,7 @@ import type { SessionId } from '@noharness/session/types'
 import { SessionLogDownloadController } from '../src/client/controller.ts'
 import { SessionLogDownloadDialog } from '../src/client/Dialog.tsx'
 import type { SessionLogDownloadDialogProps } from '../src/client/Dialog.tsx'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 const SID = 'session-export-dialog' as SessionId
 const OTHER = 'other-session' as SessionId
@@ -127,8 +127,8 @@ describe('SessionLogDownloadDialog', () => {
       } })
     })
     expect(b.view.getByRole('dialog').textContent).toContain('Could not start the Session export.')
-    b.view.rerender(<SessionLogDownloadDialog {...b.props} t={makeTranslate(zh)} />)
+    b.view.rerender(<SessionLogDownloadDialog {...b.props} t={makeTranslate(ja)} />)
     expect(b.view.getByRole('dialog').textContent).toContain(`Session：${SID}`)
-    expect(b.view.getByRole('dialog').textContent).toContain(zh['dialog.commandFailed'])
+    expect(b.view.getByRole('dialog').textContent).toContain(ja['dialog.commandFailed'])
   })
 })

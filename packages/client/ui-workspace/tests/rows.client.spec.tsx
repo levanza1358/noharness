@@ -9,13 +9,13 @@ import { allowAllAccess, makeTranslate } from '@noharness/client-test-runtime'
 import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
 import { HoverCardGroup, Tooltip } from '@noharness/client-ui-primitives'
 import type { PropsRenderSlots } from '@noharness/client-ui-slots'
-import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
+import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
 import type { RowDragProps } from '../src/client/rows/Rows.tsx'
 import {
   ProjectRowItem as ProjectRowItemComponent, SearchResultItem, SessionNodeItem as SessionNodeItemComponent,
 } from '../src/client/rows/Rows.tsx'
 import type { GroupNode, SearchResultNode, SessionNode } from '../src/client/tree.ts'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 import rowCss from '../src/client/rows/Rows.module.css'
 import { renderMenuButton } from './menu-button.tsx'
 
@@ -23,7 +23,7 @@ afterEach(cleanup)
 beforeEach(() => { vi.stubGlobal('matchMedia', (query: string) => ({ matches: query === '(any-hover: hover)' })) })
 afterEach(() => { vi.unstubAllGlobals() })
 
-const t = makeTranslate(zh, commonZh) as never
+const t = makeTranslate(ja, commonJa) as never
 const tEn = makeTranslate(en, commonEn) as never
 
 const sid = (id: string) => id as SessionId
@@ -314,13 +314,13 @@ describe('workspace browser rows', () => {
     const view = render(<SearchResultItem result={result} currentId={undefined}
       onOpen={vi.fn()} onUnarchive={vi.fn()} useSessionAccess={denied} t={t} />)
     expect(denied).toHaveBeenCalledWith(result.id, 'workspace/unarchiveSession')
-    expect(view.queryByRole('button', { name: zh['menu.unarchiveSession'] })).toBeNull()
+    expect(view.queryByRole('button', { name: ja['menu.unarchiveSession'] })).toBeNull()
     cleanup()
     // The allowed answer renders the same verb.
     const allowed = vi.fn(() => true)
     const restored = render(<SearchResultItem result={result} currentId={undefined}
       onOpen={vi.fn()} onUnarchive={vi.fn()} useSessionAccess={allowed} t={t} />)
-    expect(restored.getByRole('button', { name: zh['menu.unarchiveSession'] })).toBeTruthy()
+    expect(restored.getByRole('button', { name: ja['menu.unarchiveSession'] })).toBeTruthy()
   })
 
   it.each([

@@ -3,15 +3,15 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { en as commonEn, zh as commonZh } from '@noharness/client-locale/src/locales/index.ts'
+import { en as commonEn, ja as commonJa } from '@noharness/client-locale/src/locales/index.ts'
 import { ContextMeter, type ContextMeterProps } from '../src/client/skeleton/ContextMeter.tsx'
 import { contextOccupancy } from '../src/client/context-occupancy.ts'
 import css from '../src/client/skeleton/ContextMeter.module.css'
-import { en, zh } from '../src/client/locales.ts'
+import { en, ja } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
-const t = makeTranslate(zh, commonZh) as ContextMeterProps['t']
+const t = makeTranslate(ja, commonJa) as ContextMeterProps['t']
 const tEn = makeTranslate(en, commonEn) as ContextMeterProps['t']
 
 const BREAKDOWN = { systemTokens: 120, toolsTokens: 21_500, messageTokens: 477_000 }
@@ -86,12 +86,12 @@ describe('ContextMeter', () => {
       contextPressure: { pressureTokens: 32_000, contextWindow: 128_000 },
       contextBreakdown: BREAKDOWN,
     }
-    const zhView = meter(values)
-    fireEvent.click(zhView.getByRole('button', { name: '上下文已用 25%' }))
-    // The reading follows the label in Chinese and leads it in English; both
+    const jaView = meter(values)
+    fireEvent.click(jaView.getByRole('button', { name: 'コンテキストの25%を使用中' }))
+    // The reading follows the label in Japanese and leads it in English; both
     // headers read as one sentence rather than a concatenated fragment.
-    expect(zhView.queryByRole('dialog')!.textContent)
-      .toMatch(/^上下文已用25%/)
+    expect(jaView.queryByRole('dialog')!.textContent)
+      .toMatch(/^コンテキスト使用量25%/)
     const enView = meter(values, tEn)
     fireEvent.click(enView.getByRole('button', { name: '25% of context used' }))
     expect(enView.queryByRole('dialog', { name: 'of context used' })!.textContent)

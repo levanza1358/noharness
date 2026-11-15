@@ -7,10 +7,11 @@ import type {
   PermissionCatalog, PermissionSelection,
 } from '@noharness/permission-presets/client'
 import {
-  PermissionSelect, type PermissionSelectProps,
+  PermissionSelect,
+  type PermissionSelectProps,
 } from '../src/client/PermissionSelect.tsx'
 import type { PermissionCatalogState } from '../src/client/catalog.ts'
-import { accessZh } from '../src/client/locales.ts'
+import { accessJa } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
@@ -28,7 +29,7 @@ const CATALOG: PermissionCatalog = {
   ],
 }
 
-const t: PermissionSelectProps['t'] = makeTranslate(accessZh)
+const t: PermissionSelectProps['t'] = makeTranslate(accessJa)
 
 function setup(options: {
   selection?: PermissionSelection | undefined

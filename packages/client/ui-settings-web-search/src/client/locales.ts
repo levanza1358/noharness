@@ -64,52 +64,9 @@ export const en: Record<WebSearchSettingsLocaleKey, string> = {
   billingAdvancedOverride: 'Overridden by {fields}',
 }
 
-/** Simplified Chinese copy. */
-export const zh: Record<WebSearchSettingsLocaleKey, string> = {
-  title: '网页搜索与获取',
-  description: '选择网页搜索与网页获取使用的提供方。',
-  searchSection: '网页搜索提供方',
-  fetchSection: '网页获取提供方',
-  providerDeepSeek: 'DeepSeek Search API',
-  providerLegacy: 'DeepSeek（旧版）',
-  legacyKeyHint: '账号模型发起的请求使用已登录账号；其他请求使用此 API Key（{ref}），默认与「模型」页共用',
-  maxUses: '单次请求最多搜索次数',
-  maxUsesHint: '每次 Messages 请求允许的服务端搜索次数上限，须为正整数，默认 5',
-  invalidMaxUses: '请填正整数；留空表示使用默认值',
-  providerLocal: '本机直接获取',
-  providerDeepSeekFetch: 'DeepSeek Fetch API',
-  providerMissing: '{id}（未加载）',
-  providerAuto: '自动选择',
-  providersFailed: '无法读取提供方列表，此菜单可能不完整',
-  retry: '重试',
-  pluginProviderHint: '请在该插件自己的设置中配置',
-  credential: 'API Key',
-  baseUrl: 'Base URL',
-  baseUrlHint: '填写含 API 前缀的地址；留空时使用官方地址；程序追加 {path}',
-  apiKeyUnsetApi: '未配置密钥。',
-  searchGuide: '网页搜索与获取指南',
-  searchGuideUrl: 'https://api-docs.deepseek.com/zh-cn/guides/search',
-  apiKeySet: '已配置密钥。',
-  count: '每次搜索结果数',
-  countHint: '每次搜索返回的结果条数，1–50，默认 10。',
-  overridden: '已覆盖',
-  reset: '恢复默认',
-  readOnly: '本部署的设置为只读。',
-  unavailable: '该插件当前未加载，暂时无法配置。',
-  save: '保存',
-  saving: '保存中…',
-  saveFailed: '本部署没有接受这些值，已保留供你修改。',
-  invalidNumber: '请填数字；留空表示使用默认值。',
-  invalidCount: '请填 1–50 的整数；留空表示使用默认值。',
-  billing: '计费方式',
-  billingAuto: '自动',
-  billingAutoHint: '跟随当前会话的 DeepSeek 账号或 API Key；会话用其他模型时，优先用 API Key，没有则用已登录账号。',
-  billingAccount: '已登录的 DeepSeek 账号',
-  billingAccountHint: '需要先登录 DeepSeek 账号。',
-  billingApiKey: 'DeepSeek API Key',
-  billingApiKeyHint: '使用「模型」页配置的 API Key，需要先配置。',
-  billingAdvancedOverride: '已被 {fields} 覆盖',
-}
+export type SettingsWebSearchKey = keyof typeof en
+
+
 
 /**
  * The form frame's copy, read from this page's dictionary.
@@ -122,50 +79,50 @@ export function formLabels(t: (key: WebSearchSettingsLocaleKey) => string): Sett
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'title': 'Web 検索と取得',
-  'description': 'Web 検索と Web 取得に使用するプロバイダーを選択します。',
-  'searchSection': 'Web 検索プロバイダー',
-  'fetchSection': 'Web 取得プロバイダー',
+  'title': 'Web search and fetch',
+  'description': 'Choose the providers web search and web fetch use.',
+  'searchSection': 'Web search provider',
+  'fetchSection': 'Web fetch provider',
   'providerDeepSeek': 'DeepSeek Search API',
-  'providerLegacy': 'DeepSeek（旧版）',
-  'legacyKeyHint': 'アカウントモデルのリクエストではログイン中のアカウントを使い、それ以外ではこの API キー（{ref}、既定ではモデル設定と共有）を使います。',
-  'maxUses': 'リクエストごとの最大検索回数',
-  'maxUsesHint': 'Messages リクエストごとのサーバー側検索回数の上限です。正の整数で、既定値は 5 です。',
-  'invalidMaxUses': '正の整数を入力するか、既定値を使う場合は空欄にしてください。',
-  'providerLocal': '直接取得',
+  'providerLegacy': 'DeepSeek (legacy)',
+  'legacyKeyHint': 'Uses the signed-in account on account-model requests; otherwise uses this API key ({ref}), shared with Models by default.',
+  'maxUses': 'Maximum searches per request',
+  'maxUsesHint': 'Maximum server-side searches per Messages request: a positive integer, default 5.',
+  'invalidMaxUses': 'Enter a positive integer, or leave blank to use the default.',
+  'providerLocal': 'Direct fetch',
   'providerDeepSeekFetch': 'DeepSeek Fetch API',
-  'providerMissing': '{id}（未読み込み）',
-  'providerAuto': '自動',
+  'providerMissing': '{id} (not loaded)',
+  'providerAuto': 'Automatic',
   'providersFailed': 'プロバイダー一覧を読み込めなかったため、このメニューは不完全な可能性があります。',
-  'retry': '再試行',
-  'pluginProviderHint': 'このプロバイダーは、そのプラグイン自身の設定で構成してください。',
+  'retry': 'Retry',
+  'pluginProviderHint': 'Configure this provider in its own plugin settings.',
   'credential': 'API キー',
   'baseUrl': 'ベース URL',
-  'baseUrlHint': 'API プレフィックスを含めてください。空欄の場合は公式アドレスを使用します。プロバイダーは {path} を追加します。',
-  'apiKeyUnsetApi': 'キーが設定されていません。',
-  'searchGuide': '検索と取得のガイド',
+  'baseUrlHint': 'Include the API prefix. Leave blank to use the official address. The provider appends {path}.',
+  'apiKeyUnsetApi': 'No key is configured.',
+  'searchGuide': 'Search & Fetch guide',
   'searchGuideUrl': 'https://api-docs.deepseek.com/guides/search',
-  'apiKeySet': 'キーが設定されています。',
-  'count': '検索あたりの結果数',
-  'countHint': '検索ごとに返す結果数です。1〜50、既定値は 10 です。',
-  'overridden': '上書き済み',
-  'reset': 'デフォルトに戻す',
-  'readOnly': 'このデプロイでは設定は読み取り専用で保存されます。',
-  'unavailable': 'このプラグインは読み込まれていないため、現在設定できません。',
-  'save': '保存',
-  'saving': '保存中…',
-  'saveFailed': 'デプロイがこれらの値を受け入れませんでした。修正用に残されています。',
-  'invalidNumber': '数値を入力するか、デフォルトを使用するには空欄にしてください。',
-  'invalidCount': '1〜50 の整数を入力するか、デフォルトを使用するには空欄にしてください。',
-  'billing': '課金方法',
-  'billingAuto': '自動',
+  'apiKeySet': 'A key is configured.',
+  'count': 'Results per search',
+  'countHint': 'Results returned per search: 1 to 50, default 10.',
+  'overridden': 'Overridden',
+  'reset': 'Reset to default',
+  'readOnly': 'This deployment stores settings read-only.',
+  'unavailable': 'This plugin is not loaded, so it cannot be configured right now.',
+  'save': 'Save',
+  'saving': 'Saving…',
+  'saveFailed': 'The deployment did not accept these values; they were left for you to correct.',
+  'invalidNumber': 'Enter a number, or leave blank to use the default.',
+  'invalidCount': 'Enter an integer from 1 to 50, or leave blank to use the default.',
+  'billing': 'Billing',
+  'billingAuto': 'Automatic',
   'billingAutoHint': '会話の DeepSeek アカウントまたは API キーに従います。他のモデルでは API キーを優先し、ない場合はログイン中のアカウントを使います。',
-  'billingAccount': 'ログイン中の DeepSeek アカウント',
-  'billingAccountHint': 'DeepSeek へのログインが必要です。',
+  'billingAccount': 'Signed-in DeepSeek account',
+  'billingAccountHint': 'Requires signing in to DeepSeek.',
   'billingApiKey': 'DeepSeek API キー',
-  'billingApiKeyHint': 'モデルページの API キーを使います。先に設定してください。',
-  'billingAdvancedOverride': '{fields} により上書き済み',
-} satisfies Record<keyof typeof en, string>
+  'billingApiKeyHint': 'Uses the API key from the Models page; set one first.',
+  'billingAdvancedOverride': 'Overridden by {fields}',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -212,7 +169,7 @@ export const es = {
   billingApiKey: 'Clave de API de DeepSeek',
   billingApiKeyHint: 'Usa la clave de API de la página Modelos; configúrela primero.',
   billingAdvancedOverride: 'Anulado por {fields}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -259,7 +216,7 @@ export const fr = {
   billingApiKey: 'Clé API DeepSeek',
   billingApiKeyHint: "Utilise la clé API de la page Modèles ; définissez-en une d'abord.",
   billingAdvancedOverride: 'Remplacé par {fields}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -306,7 +263,7 @@ export const de = {
   billingApiKey: 'DeepSeek-API-Schlüssel',
   billingApiKeyHint: 'Verwendet den API-Schlüssel der Seite Modelle; legen Sie zuerst einen fest.',
   billingAdvancedOverride: 'Überschrieben durch {fields}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -353,7 +310,7 @@ export const ru = {
   billingApiKey: 'Ключ API DeepSeek',
   billingApiKeyHint: 'Использует ключ API со страницы моделей; сначала задайте его.',
   billingAdvancedOverride: 'Переопределено: {fields}',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -400,4 +357,4 @@ export const pt = {
   billingApiKey: 'Chave de API da DeepSeek',
   billingApiKeyHint: 'Usa a chave de API da página Modelos; defina uma primeiro.',
   billingAdvancedOverride: 'Substituído por {fields}',
-} satisfies Record<keyof typeof en, string>
+} as const

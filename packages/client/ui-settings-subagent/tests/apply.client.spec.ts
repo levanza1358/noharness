@@ -22,7 +22,7 @@ async function bench(served?: string[]) {
   const ctx = new Context()
   await ctx.plugin(SlotRegistry).await()
   const locale = new LocaleRuntime(ctx)
-  locale.setLocale('zh')
+  locale.setLocale('en')
   ctx.provide('locale', locale)
   const models = vi.fn(() => Promise.resolve({ ok: true as const, value: { groups: [], failures: [] } }))
   const describeSettings = vi.fn(() => Promise.resolve(served === undefined

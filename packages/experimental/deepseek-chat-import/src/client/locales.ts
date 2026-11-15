@@ -3,45 +3,6 @@
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'deepseekChatImport'
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'action.label': '导入 DeepSeek 会话',
-  'dialog.title': '导入 DeepSeek 会话记录',
-  'dialog.description': '选择从 DeepSeek 官网导出的 ZIP 文件（deepseek_data-*.zip），以及接收这些会话的工作区。',
-  'dialog.file': '导出文件',
-  'dialog.chooseFile': '选择文件…',
-  'dialog.changeFile': '重新选择',
-  'dialog.workspace': '工作区',
-  'dialog.chooseWorkspace': '选择工作区',
-  'dialog.cancel': '取消',
-  'dialog.close': '关闭',
-  'dialog.import': '导入',
-  'dialog.importing': '正在导入…',
-  'dialog.importingCount': '正在导入 {done}/{total}',
-  'dialog.uploading': '正在上传 {percent}%',
-  'dialog.done': '完成',
-  'result.imported.one': '已导入 {count} 个会话到工作区 {name}。',
-  'result.imported.other': '已导入 {count} 个会话到工作区 {name}。',
-  'result.omitted.one': '{count} 个较早的会话超出导入上限，未导入。',
-  'result.omitted.other': '{count} 个较早的会话超出导入上限，未导入。',
-  'result.skipped.one': '{count} 个会话无法导入。',
-  'result.skipped.other': '{count} 个会话无法导入。',
-  'error.missing-manifest': '这不是 DeepSeek 导出数据：缺少 manifest.json。',
-  'error.missing-index': '这不是 DeepSeek 导出数据：缺少 chat_session_index.json，或该文件无法读取。',
-  'error.unsupported-version': '不支持该导出格式版本。',
-  'error.unreadable-archive': '该文件不是可读取的 ZIP 压缩包。',
-  'error.no-conversations': '导出数据中没有可导入的会话。',
-  'error.too-large': '文件过大：最多 {limit}。',
-  'error.workspace-not-found': '所选工作区已不存在，请重新选择。',
-  'error.busy': '已有一个导入正在进行，请稍后再试。',
-  'error.upload-failed': '上传失败：{message}',
-  'error.unknown': '导入失败：{message}',
-} satisfies Record<string, string>
-
-/** The namespace key union. */
-export type DeepseekChatImportKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'action.label': 'Import DeepSeek chats',
   'dialog.title': 'Import DeepSeek chat history',
@@ -74,42 +35,45 @@ export const en = {
   'error.busy': 'Another import is running. Try again later.',
   'error.upload-failed': 'Upload failed: {message}',
   'error.unknown': 'Import failed: {message}',
-} satisfies Record<DeepseekChatImportKey, string>
+} as const
+
+export type DeepseekChatImportKey = keyof typeof en
+
 
 /** Japanese dictionary, checked complete against the zh key set. */
 export const ja = {
   'action.label': 'DeepSeek のチャットをインポート',
-  'dialog.title': 'DeepSeek のチャット履歴をインポート',
-  'dialog.description': 'DeepSeek の Web サイトからエクスポートした ZIP ファイル（deepseek_data-*.zip）と、セッションを受け取るワークスペースを選択してください。',
+  'dialog.title': 'Import DeepSeek chat history',
+  'dialog.description': 'Choose the ZIP file exported from the DeepSeek website (deepseek_data-*.zip) and the workspace that receives the sessions.',
   'dialog.file': 'エクスポートファイル',
-  'dialog.chooseFile': 'ファイルを選択…',
-  'dialog.changeFile': '変更',
+  'dialog.chooseFile': 'Choose file…',
+  'dialog.changeFile': 'Change',
   'dialog.workspace': 'ワークスペース',
-  'dialog.chooseWorkspace': 'ワークスペースを選択',
+  'dialog.chooseWorkspace': 'Choose workspace',
   'dialog.cancel': 'キャンセル',
-  'dialog.close': '閉じる',
+  'dialog.close': 'Close',
   'dialog.import': 'インポート',
-  'dialog.importing': 'インポート中…',
-  'dialog.importingCount': 'インポート中 {done}/{total}',
-  'dialog.uploading': 'アップロード中 {percent}%',
-  'dialog.done': '完了',
-  'result.imported.one': '{count} 件のセッションをワークスペース {name} にインポートしました。',
-  'result.imported.other': '{count} 件のセッションをワークスペース {name} にインポートしました。',
-  'result.omitted.one': '古い {count} 件の会話はインポート上限を超えたため、インポートされませんでした。',
-  'result.omitted.other': '古い {count} 件の会話はインポート上限を超えたため、インポートされませんでした。',
-  'result.skipped.one': '{count} 件の会話をインポートできませんでした。',
-  'result.skipped.other': '{count} 件の会話をインポートできませんでした。',
+  'dialog.importing': 'Importing…',
+  'dialog.importingCount': 'Importing {done}/{total}',
+  'dialog.uploading': 'Uploading {percent}%',
+  'dialog.done': 'Done',
+  'result.imported.one': 'Imported {count} session into the {name} workspace.',
+  'result.imported.other': 'Imported {count} sessions into the {name} workspace.',
+  'result.omitted.one': '{count} older conversation exceeded the import limit and was not imported.',
+  'result.omitted.other': '{count} older conversations exceeded the import limit and were not imported.',
+  'result.skipped.one': '{count} conversation could not be imported.',
+  'result.skipped.other': '{count} conversations could not be imported.',
   'error.missing-manifest': 'DeepSeek のエクスポートではありません: manifest.json がありません。',
-  'error.missing-index': 'DeepSeek のエクスポートではありません: chat_session_index.json がないか、読み取れません。',
-  'error.unsupported-version': 'このエクスポート形式のバージョンには対応していません。',
-  'error.unreadable-archive': 'このファイルは読み取り可能な ZIP アーカイブではありません。',
-  'error.no-conversations': 'エクスポートにインポートできる会話がありません。',
-  'error.too-large': 'ファイルが大きすぎます。上限は {limit} です。',
-  'error.workspace-not-found': '選択したワークスペースはもう存在しません。別のワークスペースを選択してください。',
-  'error.busy': '別のインポートが実行中です。しばらくしてからやり直してください。',
-  'error.upload-failed': 'アップロードに失敗しました: {message}',
-  'error.unknown': 'インポートに失敗しました: {message}',
-} satisfies Record<DeepseekChatImportKey, string>
+  'error.missing-index': 'This is not a DeepSeek export: chat_session_index.json is missing or unreadable.',
+  'error.unsupported-version': 'This export format version is not supported.',
+  'error.unreadable-archive': 'The file is not a readable ZIP archive.',
+  'error.no-conversations': 'The export contains no conversations that can be imported.',
+  'error.too-large': 'The file is too large: the limit is {limit}.',
+  'error.workspace-not-found': 'The chosen workspace no longer exists. Choose another one.',
+  'error.busy': 'Another import is running. Try again later.',
+  'error.upload-failed': 'Upload failed: {message}',
+  'error.unknown': 'Import failed: {message}',
+} as const
 
 /** Spanish dictionary, checked complete against the zh key set. */
 export const es = {
@@ -144,7 +108,7 @@ export const es = {
   'error.busy': 'Ya hay una importación en curso. Inténtalo más tarde.',
   'error.upload-failed': 'Error al subir: {message}',
   'error.unknown': 'Error al importar: {message}',
-} satisfies Record<DeepseekChatImportKey, string>
+} as const
 
 /** French dictionary, checked complete against the zh key set. */
 export const fr = {
@@ -179,7 +143,7 @@ export const fr = {
   'error.busy': 'Une autre importation est en cours. Réessayez plus tard.',
   'error.upload-failed': 'Échec de l’envoi : {message}',
   'error.unknown': 'Échec de l’importation : {message}',
-} satisfies Record<DeepseekChatImportKey, string>
+} as const
 
 /** German dictionary, checked complete against the zh key set. */
 export const de = {
@@ -214,7 +178,7 @@ export const de = {
   'error.busy': 'Ein anderer Import läuft bereits. Versuche es später erneut.',
   'error.upload-failed': 'Hochladen fehlgeschlagen: {message}',
   'error.unknown': 'Import fehlgeschlagen: {message}',
-} satisfies Record<DeepseekChatImportKey, string>
+} as const
 
 /** Russian dictionary, checked complete against the zh key set. */
 export const ru = {
@@ -249,7 +213,7 @@ export const ru = {
   'error.busy': 'Уже выполняется другой импорт. Повторите попытку позже.',
   'error.upload-failed': 'Ошибка загрузки: {message}',
   'error.unknown': 'Ошибка импорта: {message}',
-} satisfies Record<DeepseekChatImportKey, string>
+} as const
 
 /** Portuguese dictionary, checked complete against the zh key set. */
 export const pt = {
@@ -284,4 +248,4 @@ export const pt = {
   'error.busy': 'Outra importação está em andamento. Tente novamente mais tarde.',
   'error.upload-failed': 'Falha no envio: {message}',
   'error.unknown': 'Falha na importação: {message}',
-} satisfies Record<DeepseekChatImportKey, string>
+} as const

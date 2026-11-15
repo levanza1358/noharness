@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, it, onTestFinished, vi } from 'vitest'
 import { readDesktopLocaleCache, writeDesktopLocaleCache } from '../src/locale-cache.ts'
-import { resolveDesktopLocale, resolveDesktopStartupLocale } from '../src/locale.ts'
+import { en, resolveDesktopLocale, resolveDesktopStartupLocale } from '../src/locale.ts'
 
 function fixture() {
   const directory = mkdtempSync(join(tmpdir(), 'desktop-locale-'))
@@ -12,15 +12,15 @@ function fixture() {
   return directory
 }
 
-it('uses the confirmed Chinese language for recovery before Host settings are available', () => {
+it('uses the confirmed English language for recovery before Host settings are available', () => {
   const directory = fixture()
   expect(readDesktopLocaleCache(directory)).toBeUndefined()
-  writeDesktopLocaleCache(directory, 'zh-CN')
-  const cached = readDesktopLocaleCache(directory)
-  const locale = cached === undefined ? resolveDesktopStartupLocale(null, ['en-US']) : resolveDesktopLocale(cached)
-  expect(locale.messages.fatalSummary).toBe('应用无法启动或已意外停止。')
   writeDesktopLocaleCache(directory, 'en')
-  expect(readDesktopLocaleCache(directory)).toBe('en')
+  const cached = readDesktopLocaleCache(directory)
+  const locale = cached === undefined ? resolveDesktopStartupLocale(null, ['ja-JP']) : resolveDesktopLocale(cached)
+  expect(locale.messages.fatalSummary).toBe(en.fatalSummary)
+  writeDesktopLocaleCache(directory, 'ja')
+  expect(readDesktopLocaleCache(directory)).toBe('ja')
 })
 
 it('uses the confirmed Japanese language for recovery before Host settings are available', () => {
@@ -56,7 +56,7 @@ it('keeps read and write failures from blocking recovery', () => {
   writeFileSync(join(directory, 'desktop'), 'not a directory')
   const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
   onTestFinished(() => { warn.mockRestore() })
-  expect(() => { writeDesktopLocaleCache(directory, 'zh-CN') }).not.toThrow()
+  expect(() => { writeDesktopLocaleCache(directory, 'ja') }).not.toThrow()
   expect(readDesktopLocaleCache(directory)).toBeUndefined()
   expect(warn).toHaveBeenCalled()
 })

@@ -3,22 +3,12 @@
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'skill'
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'row.title': '加载技能',
-  'row.running': '正在加载 skill',
-  'row.preparing': '准备加载技能',
-  'row.failed': 'skill 加载失败',
-  'row.stopped': 'skill 加载已中止',
-  'row.instructions': '说明',
-  'row.inspect': '查看',
-  'menu.userOnly': '仅用户',
-} satisfies Record<string, string>
+declare module '@noharness/client-ui-slots' {
+  interface LocaleNamespaceMap {
+    'skill': SkillKey
+  }
+}
 
-/** The skill namespace key union. */
-export type SkillKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'row.title': 'Skill',
   'row.running': 'Loading skill',
@@ -28,19 +18,22 @@ export const en = {
   'row.instructions': 'Instructions',
   'row.inspect': 'Inspect',
   'menu.userOnly': 'user-only',
-} satisfies Record<SkillKey, string>
+} as const
+
+export type SkillKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
   'row.title': 'スキル',
-  'row.running': 'スキルを読み込み中',
-  'row.preparing': 'スキルの読み込みを準備中',
-  'row.failed': 'スキルの読み込みに失敗しました',
-  'row.stopped': 'スキルの読み込みが停止しました',
-  'row.instructions': '手順',
-  'row.inspect': '詳細を確認',
-  'menu.userOnly': 'ユーザー専用',
-} satisfies Record<keyof typeof en, string>
+  'row.running': 'Loading skill',
+  'row.preparing': 'Preparing to load a skill',
+  'row.failed': 'Skill load failed',
+  'row.stopped': 'Skill load stopped',
+  'row.instructions': 'Instructions',
+  'row.inspect': 'Inspect',
+  'menu.userOnly': 'user-only',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -52,7 +45,7 @@ export const es = {
   'row.instructions': 'Instrucciones',
   'row.inspect': 'inspeccionar',
   'menu.userOnly': 'solo usuario',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -64,7 +57,7 @@ export const fr = {
   'row.instructions': 'Instructions',
   'row.inspect': 'Inspecter',
   'menu.userOnly': 'utilisateur uniquement',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -76,7 +69,7 @@ export const de = {
   'row.instructions': 'Anweisungen',
   'row.inspect': 'Inspizieren',
   'menu.userOnly': 'Nur für Benutzer',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -88,7 +81,7 @@ export const ru = {
   'row.instructions': 'Инструкции',
   'row.inspect': 'Осмотреть',
   'menu.userOnly': 'только для пользователей',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -100,4 +93,4 @@ export const pt = {
   'row.instructions': 'Instruções',
   'row.inspect': 'Inspecionar',
   'menu.userOnly': 'somente usuário',
-} satisfies Record<keyof typeof en, string>
+} as const

@@ -1,25 +1,5 @@
 /** `goal` namespace dictionaries. */
 
-/** Simplified Chinese dictionary (the key-set source of truth). */
-export const zh = {
-  'phase.active': '进行中的目标',
-  'phase.active.disarmed': '待继续的目标',
-  'phase.paused': '已暂停的目标',
-  'phase.blocked': '受阻的目标',
-  'objective.aria': '目标内容',
-  'commandInput.aria': '指令输入',
-  'action.save': '保存目标',
-  'action.cancel': '取消编辑',
-  'action.pause': '暂停目标',
-  'action.resume': '恢复目标',
-  'action.edit': '编辑目标',
-  'action.clear': '清除目标',
-} satisfies Record<string, string>
-
-/** The goal namespace key union. */
-export type GoalKey = keyof typeof zh
-
-/** English dictionary, checked complete against the zh key set. */
 export const en = {
   'phase.active': 'Ongoing Goal',
   'phase.active.disarmed': 'Inactive Goal',
@@ -33,23 +13,26 @@ export const en = {
   'action.resume': 'Resume goal',
   'action.edit': 'Edit goal',
   'action.clear': 'Clear goal',
-} satisfies Record<GoalKey, string>
+} as const
+
+export type GoalKey = keyof typeof en
+
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
-  'phase.active': '進行中の目標',
-  'phase.active.disarmed': '非アクティブな目標',
-  'phase.paused': '一時停止中の目標',
-  'phase.blocked': 'ブロックされた目標',
-  'objective.aria': '目標の目的',
-  'commandInput.aria': 'コマンド入力',
-  'action.save': '目標を保存',
-  'action.cancel': '編集をキャンセル',
-  'action.pause': '目標を一時停止',
-  'action.resume': '目標を再開',
-  'action.edit': '目標を編集',
-  'action.clear': '目標をクリア',
-} satisfies Record<keyof typeof en, string>
+  'phase.active': 'Ongoing Goal',
+  'phase.active.disarmed': 'Inactive Goal',
+  'phase.paused': 'Paused Goal',
+  'phase.blocked': 'Blocked Goal',
+  'objective.aria': 'Goal objective',
+  'commandInput.aria': 'Command input',
+  'action.save': 'Save goal',
+  'action.cancel': 'Cancel edit',
+  'action.pause': 'Pause goal',
+  'action.resume': 'Resume goal',
+  'action.edit': 'Edit goal',
+  'action.clear': 'Clear goal',
+} as const
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
@@ -65,7 +48,7 @@ export const es = {
   'action.resume': 'Reanudar objetivo',
   'action.edit': 'Editar objetivo',
   'action.clear': 'Objetivo claro',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
@@ -81,7 +64,7 @@ export const fr = {
   'action.resume': "Reprendre l'objectif",
   'action.edit': "Modifier l'objectif",
   'action.clear': 'Objectif clair',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** German dictionary, checked against the English keys. */
 export const de = {
@@ -97,7 +80,7 @@ export const de = {
   'action.resume': 'Ziel fortsetzen',
   'action.edit': 'Ziel bearbeiten',
   'action.clear': 'Klares Ziel',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
@@ -113,7 +96,7 @@ export const ru = {
   'action.resume': 'Возобновить цель',
   'action.edit': 'Изменить цель',
   'action.clear': 'Четкая цель',
-} satisfies Record<keyof typeof en, string>
+} as const
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
@@ -129,4 +112,4 @@ export const pt = {
   'action.resume': 'Retomar meta',
   'action.edit': 'Editar meta',
   'action.clear': 'Objetivo claro',
-} satisfies Record<keyof typeof en, string>
+} as const

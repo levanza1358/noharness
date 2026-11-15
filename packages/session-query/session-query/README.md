@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/session-query
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-session-query` lets application code list, filter, read, and search session history, inspect bounded event context, and trace session or event relationships. Reads prefer live sessions over persisted copies and return detached clones from one consistent observation. Exact reads, filters, and traces work with any supported storage setup; ranked full-text search requires a backend such as `nhs-session-query-sqlite`. Use it when application code needs programmatic access to the history presented to the model.

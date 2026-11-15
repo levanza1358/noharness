@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/client-modules
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-client-modules` turns a plugin package's `nhs.client` declaration into a loadable browser bundle: the host half scans enabled Loader entries and composes the boot graph, an available Web carrier serves each bundle over `/plugins`, and a shell-owned carrier dispatches the same exact bundle responses through `fetchBundle()`. The browser half loads those bundles lazily on demand. Plugin bundles execute lazily — running a bundle only registers a factory, and module side effects run at materialization — so nothing runs until a plugin is first used. Everything here is browser-kernel machinery; the model never sees it.

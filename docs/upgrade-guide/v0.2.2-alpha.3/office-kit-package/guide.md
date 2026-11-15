@@ -5,8 +5,6 @@ description: "`@noharness/office-kit` replaces `@noharness/office-to-pdf`, renam
 
 # `@noharness/office-kit` replaces `@noharness/office-to-pdf`
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 The Office conversion provider moved from `@noharness/office-to-pdf` to `@noharness/office-kit`. Compositions, plugins, and Clients that name the old package, service, Remote methods, or exported symbols are affected:

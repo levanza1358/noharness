@@ -150,7 +150,7 @@ function Frame({ renderSlot }: PropsRenderSlots<Seats>) {
 }
 
 async function bench(
-  language: 'en' | 'zh' = 'en',
+  language: 'en' = 'en',
   { analytics = true, navigation = true }: { analytics?: boolean; navigation?: boolean } = {},
 ) {
   const runtime = await SlotTestRuntime.create()
@@ -219,16 +219,13 @@ describe('More menu registrations', () => {
   })
 
   it.each([
-    ['en', 'sidebar.panellist.actions', 'Create a NHS plugin with a left sidebar entry.'],
-    ['en', 'conversation.session.header.views.actions', 'Create a NHS conversation view plugin.'],
-    ['en', 'sidebar.right.tab.guide.actions', 'Create a NHS plugin with a right sidebar entry.'],
-    ['zh', 'sidebar.panellist.actions', '创建一个带左侧栏入口的 NHS 插件。'],
-    ['zh', 'conversation.session.header.views.actions', '创建一个 NHS 会话视图插件。'],
-    ['zh', 'sidebar.right.tab.guide.actions', '创建一个带右侧栏入口的 NHS 插件。'],
-  ] as const)('starts an unsent %s Creator draft from %s', async (language, seat, prompt) => {
-    const b = await bench(language)
+    ['sidebar.panellist.actions', 'Create a NHS plugin with a left sidebar entry.'],
+    ['conversation.session.header.views.actions', 'Create a NHS conversation view plugin.'],
+    ['sidebar.right.tab.guide.actions', 'Create a NHS plugin with a right sidebar entry.'],
+  ] as const)('starts an unsent Creator draft from %s', async (seat, prompt) => {
+    const b = await bench()
     fireEvent.click(within(b.view.getByRole('menu', { name: seat }))
-      .getByRole('menuitem', { name: language === 'zh' ? '创建你的插件' : 'Create your plugin' }))
+      .getByRole('menuitem', { name: 'Create your plugin' }))
     expect(b.startSession).toHaveBeenCalledExactlyOnceWith(undefined, {
       agentPreset: 'cordis', prompt, whenDraftExists: 'append',
     })

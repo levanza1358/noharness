@@ -50,7 +50,7 @@ const LISTING: MarketSearchResult = {
   fetchedAt: 1,
   total: 6,
   nextOffset: null,
-  title: { en: 'Alpha index', ja: '甲索引' },
+  title: { en: 'Alpha index', ja: 'Alpha index ja' },
   metadata: {
     categories: { tools: { title: 'Tools' }, themes: { title: 'Themes' } },
     labels: { official: { title: 'Official' }, beta: { title: 'Beta' } },
@@ -58,7 +58,7 @@ const LISTING: MarketSearchResult = {
   },
   entries: [
     entry('nhs-a', {
-      title: { en: 'Alpha', ja: '甲' }, description: 'Does A', author: 'Jane', icon: 'https://cdn.example/a.png',
+      title: { en: 'Alpha', ja: 'Alpha ja' }, description: 'Does A', author: 'Jane', icon: 'https://cdn.example/a.png',
       homepage: 'https://example.com/alpha#readme', repository: { url: 'https://github.com/o/plugins', directory: 'packages/a' },
     }, { category: 'tools', labels: ['official', 'beta'], sortKeys: { downloads: 1 } }, {
       source: { type: 'npm', registry: 'https://r.example/' }, install: { spec: 'nhs-a@1.0.0', registry: 'https://r.example/' },
@@ -494,11 +494,11 @@ describe('DiscoverSection', () => {
     expect(screen.queryByRole('list', { name: en.sourcesLabel })).toBeNull()
   })
 
-  it('renders the Chinese copy and dates', () => {
+  it('renders the localized copy and dates', () => {
     renderTab({}, ja)
-    expect(screen.getByRole('button', { name: '切换插件索引，当前为 甲索引' })).toBeTruthy()
-    expect(card('nhs-a').getByText('甲')).toBeTruthy()
-    expect(card('nhs-a').getByText(/^1\.0\.0 · Jane · 2026年9月/)).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Switch plugin index, currently Alpha index ja' })).toBeTruthy()
+    expect(card('nhs-a').getByText('Alpha ja')).toBeTruthy()
+    expect(card('nhs-a').getByText(/^1\.0\.0 · Jane · /)).toBeTruthy()
     expect(card('nhs-b').getByText(ja.statusInstalled)).toBeTruthy()
   })
 })

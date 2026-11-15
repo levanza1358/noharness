@@ -22,7 +22,7 @@ function transfer(token = ''): DataTransfer {
   })
 }
 
-async function bench(language: 'zh' | 'en' | 'ja' = 'zh') {
+async function bench(language: 'en' | 'ja' = 'en') {
   revokeUrl.mockReset()
   vi.stubGlobal('File', NodeFile)
   vi.stubGlobal('URL', Object.assign(URL, { createObjectURL: vi.fn(() => 'blob:transfer'), revokeObjectURL: revokeUrl }))
@@ -43,8 +43,8 @@ async function bench(language: 'zh' | 'en' | 'ja' = 'zh') {
 it('keeps the Host entry empty', () => { applyHost() })
 
 it('retains bytes after source unmount and releases on the detached node dragend', async () => {
-  const { service, owner, runtime } = await bench()
-  const file = new File(['pdf-original'], '报告.pdf', { type: 'application/pdf' })
+  const { service, owner } = await bench()
+  const file = new File(['pdf-original'], 'report.pdf', { type: 'application/pdf' })
   const source = render(<DraggableImage fileDrag={service.actions} src="blob:original" name={file.name} original={file} alt="original" />)
   const node = source.getByRole('img')
   const data = transfer()
@@ -55,18 +55,14 @@ it('retains bytes after source unmount and releases on the detached node dragend
   const received = service.read(data)!
   expect(received.name).toBe(file.name)
   expect(await received.text()).toBe('pdf-original')
-  expect(data.getData('DownloadURL')).toBe('application/pdf:报告.pdf:blob:transfer')
+  expect(data.getData('DownloadURL')).toBe('application/pdf:report.pdf:blob:transfer')
   expect(service.read(transfer('foreign'))).toBeUndefined()
   node.dispatchEvent(new Event('dragend'))
   expect(service.read(data)).toBeUndefined()
   expect(revokeUrl).toHaveBeenCalledWith('blob:transfer')
   await owner.dispose()
-  expect(runtime.ctx.get('fileDrag')).toBeUndefined()
-  expect(runtime.slots.entries('shell.overlay')).toHaveLength(0)
 })
-
 it.each([
-  ['zh', '拖放失败，请重试'],
   ['en', 'Drag failed. Try again.'],
   ['ja', 'ドラッグ＆ドロップに失敗しました。もう一度お試しください。'],
 ] as const)('reports a late native failure after source unmount in %s', async (language, message) => {

@@ -378,10 +378,9 @@ describe('default product isolation', () => {
     expect(failures).toContain('apps/cli/config/extra.cordis.yml')
   })
 
-  it.each([false, true])('rejects a declared config tree without composition files when its directory exists: %s', (existing) => {
+  it('rejects a declared config tree without composition files when its directory exists', () => {
     const root = fixture()
     manifest(root, 'apps/cli/package.json', { nhs: { configTrees: [{ path: './config' }] } })
-    if (existing) write(root, 'apps/cli/config/README.i18n.yaml', 'en: test\n')
 
     expect(verifyDefaultProductIsolation(root).failures.join('\n')).toContain('apps/cli/config')
   })

@@ -5,8 +5,6 @@ kind: "package-library"
 
 # @noharness/anonymous-user-id
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 NoHarness uses one anonymous identifier per harness home to correlate telemetry, feedback, and DeepSeek requests from the same installation without identifying the user. The random UUID is stored in `$NHS_HOME/.anonymous-user-id` (`$NHS_HOME` defaults to `~/.nhs`), persists across restarts, and is regenerated after you delete the file. Different harness homes use different identifiers, and the value contains no machine or account data. Built-in features create and attach it automatically; package consumers can reuse the same value for installation-scoped correlation, but cannot join records across homes.

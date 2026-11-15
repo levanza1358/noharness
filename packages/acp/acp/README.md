@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/acp
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-acp` lets trusted programs automate persistent NoHarness agents through the standard [ACP](https://agentclientprotocol.com): create or resume sessions, select a model and reasoning effort, attach MCP servers, submit or cancel work, receive semantic updates, and close sessions independently. Choose it for out-of-process subagents, test runners, and scripted controllers; it intentionally omits NHS-specific presentation data and interactive UI features. Persistence supports listing, resuming, and closing sessions across process restarts, but deletion, forks, transcript replay, and additional directories are unsupported. Run `pnpm nhs --profile acp` to start the server; use `nhs-subagent-acp` as the repository client.

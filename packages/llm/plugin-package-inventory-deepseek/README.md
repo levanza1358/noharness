@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/plugin-package-inventory-deepseek
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 Best-effort active Loader-backed plugin package inventory for official DeepSeek LLM API requests. This function plugin injects the Loader, live Agent registry, and `ctx.deepseekLlmApiExtensions`, then owns the `nhs_plugin_packages` field. Enable it when the official API needs the active package list for request diagnostics.

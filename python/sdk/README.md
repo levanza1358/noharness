@@ -1,7 +1,5 @@
 # NoHarness Python SDK
 
-English | [中文](README.zh.md)
-
 Python subprocess SDK for driving NoHarness over newline-delimited JSON-RPC on stdio. Install `noharness-sdk`; it installs the exact same-version `noharness-runtime-bin` wheel for the current platform.
 
 ```sh

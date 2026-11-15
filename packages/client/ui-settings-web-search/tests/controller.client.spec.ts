@@ -724,7 +724,7 @@ describe('WebSearchCardController providers', () => {
     const resolveText = vi.fn(() => 'resolved')
     const b = bench({ ctx: { remote: { credentials: { describe, set }, web: { listProviders } }, locale: { resolveText } } as never })
     try {
-      const description = { en: 'English.', zh: '中文' }
+      const description = { en: 'English.', ja: '日本語' }
       expect(b.face.resolveText(description)).toBe('resolved')
       expect(resolveText).toHaveBeenCalledExactlyOnceWith(description)
     } finally { b.controller.dispose() }
@@ -734,7 +734,7 @@ describe('WebSearchCardController providers', () => {
     const b = bench()
     try {
       b.credentials.listProviders.mockResolvedValue({
-        ok: true, value: { search: [...SHIPPED_PROVIDERS.search, { id: 'exa', title: 'Exa', description: { en: 'Exa search.', zh: 'Exa 搜索' } }], fetch: SHIPPED_PROVIDERS.fetch },
+        ok: true, value: { search: [...SHIPPED_PROVIDERS.search, { id: 'exa', title: 'Exa', description: { en: 'Exa search.', ja: 'Exa 検索' } }], fetch: SHIPPED_PROVIDERS.fetch },
       })
       b.controller.refreshProviders()
       serve(b, { value: { searchProvider: 'exa', fetchProvider: 'http' } })
@@ -744,7 +744,7 @@ describe('WebSearchCardController providers', () => {
         options: [
           { id: 'deepseek-search-api', missing: false },
           { id: 'deepseek-official', missing: false },
-          { id: 'exa', title: 'Exa', description: { en: 'Exa search.', zh: 'Exa 搜索' }, missing: false },
+          { id: 'exa', title: 'Exa', description: { en: 'Exa search.', ja: 'Exa 検索' }, missing: false },
         ],
       })
       expect(b.state().fetch).toMatchObject({ selected: 'http', kind: 'local' })

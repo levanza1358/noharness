@@ -564,7 +564,7 @@ exports[`sidebar shell snapshots > renders the expanded column (wordmark, capsul
 </div>
 `;
 
-exports[`sidebar shell snapshots > renders the expanded column in the default locale (zh, no setLocale) 1`] = `
+exports[`sidebar shell snapshots > renders the expanded column in the default locale (en, no setLocale) 1`] = `
 <div
   data-slot="sidebar"
   style="display: contents;"
@@ -578,7 +578,7 @@ exports[`sidebar shell snapshots > renders the expanded column in the default lo
       data-window-drag="true"
     >
       <button
-        aria-label="新建会话"
+        aria-label="New session"
         class="brand wide"
         type="button"
       >
@@ -622,7 +622,7 @@ exports[`sidebar shell snapshots > renders the expanded column in the default lo
                 <span
                   class="localBuildTitle"
                 >
-                  NHS 本地构建
+                  NHS Local Build
                 </span>
                 <span
                   class="buildVersion"
@@ -635,7 +635,7 @@ exports[`sidebar shell snapshots > renders the expanded column in the default lo
         </span>
       </button>
       <button
-        aria-label="收起侧边栏"
+        aria-label="Collapse sidebar"
         class="iconButton toggle"
         data-sidebar-toggle="true"
         type="button"
@@ -658,7 +658,7 @@ exports[`sidebar shell snapshots > renders the expanded column in the default lo
         style="display: contents;"
       >
         <button
-          aria-label="新建会话"
+          aria-label="New session"
           class="newSession"
           type="button"
         >
@@ -678,7 +678,7 @@ exports[`sidebar shell snapshots > renders the expanded column in the default lo
               <span
                 class="newSessionLabel wide"
               >
-                新会话
+                New Session
               </span>
             </span>
           </span>

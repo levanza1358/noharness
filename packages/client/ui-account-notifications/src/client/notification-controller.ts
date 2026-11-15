@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Lifecycle of account notifications: one foreground card in a stack, one read result in
  * force at a time, and independent display, action-click, and dismissal reports. Account activation
  * and Settings entry replace the polling cycle with an immediate read. Each read
@@ -147,7 +147,7 @@ export function createNotificationController(options: NotificationControllerOpti
     const requestedLocale = locale
     const responses = await Promise.allSettled(current.map(async notice => options.readContent(notice.id, requestedLocale)))
     if (scope !== scopeAtCall || generation !== contentGeneration) return
-    if (responses.some(response => response.status === 'rejected')) console.error('[deepseek-account] notification content read failed')
+    if (responses.some(response => response.status === 'rejected')) console.error('[noharness-account] notification content read failed')
     const updates = responses.flatMap(response => response.status === 'fulfilled' && response.value !== null ? [response.value] : [])
     setCurrent(current.map((notice) => {
       const update = updates.find(value => value.id === notice.id)
@@ -167,7 +167,7 @@ export function createNotificationController(options: NotificationControllerOpti
     try { batch = await options.read(requestedLocale) }
     catch (_error) {
       if (poll !== pollAtRead) return
-      console.error('[deepseek-account] notification read failed; retaining cards and retrying on the next poll')
+      console.error('[noharness-account] notification read failed; retaining cards and retrying on the next poll')
       batch = null
     }
     if (poll !== pollAtRead) return
@@ -198,7 +198,7 @@ export function createNotificationController(options: NotificationControllerOpti
     try { await options.reportEvent(id, event) }
     catch (_error) {
       if (scope === scopeAtReport) {
-        console.error('[deepseek-account] notification event report failed; keeping local state without retry', { event })
+        console.error('[noharness-account] notification event report failed; keeping local state without retry', { event })
       }
     }
   }

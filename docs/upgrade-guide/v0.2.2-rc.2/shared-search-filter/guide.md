@@ -5,8 +5,6 @@ description: "ui-primitives no longer exports rankByName, and popupSelect comman
 
 # Shared search filter replaces rankByName and searchMode
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 `@noharness/client-ui-primitives` exported `rankByName(items, query)`, which ranked items by an ordered subsequence of `name` or `label`. It is removed. `@noharness/client-ui-commands` accepted `searchMode: 'substring' | 'fuzzy-label'` on a `popupSelect` command spec and exported the `PopupSearchMode` type; both are removed. Every popup now filters its options one way: labels match fuzzily and details match as substrings, ranked within each group. The shared search is [`TextSearchIndex`](../../../../packages/util/text-search/README.md) in `@noharness/util-text-search`. Plugin authors who import `rankByName`, or who set `searchMode` or import `PopupSearchMode`, are affected.

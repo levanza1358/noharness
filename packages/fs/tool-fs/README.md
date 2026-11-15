@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/tool-fs
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 Use `nhs-tool-fs` to let a model read UTF-8 files with line numbers, read supported images, create or atomically replace files, apply targeted literal edits, and apply multi-file patches. Results are capped, and failures provide stable error codes and recovery instructions. Add `nhs-fs-observation-policy` when writes and edits must follow a successful read; without it, mutations remain atomic but are unconditional. Image reads require durable attachment storage and an image-capable routed model. Choose the sibling discovery package for glob or grep searches.

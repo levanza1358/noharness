@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/subagent
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 Use `nhs-subagent` to delegate work through named providers and collect managed activation results. Local spawn and fork children retain durable sessions for later messages; ACP, NHS SDK, Codex, and Claude Code execute once. Every child shares admission, cancellation, ownership, and discovery. Compose the service with a provider and a delegation tool.

@@ -1,7 +1,5 @@
 # Uninstall NHS Desktop
 
-English | [中文](desktop-uninstall-cleanup.zh.md)
-
 Use this guide to uninstall NoHarness Desktop on macOS or Windows. Local data cleanup is optional.
 
 ## 1. Uninstall the app

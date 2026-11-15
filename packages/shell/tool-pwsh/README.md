@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/tool-pwsh
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-tool-pwsh` lets the agent run PowerShell commands through a mounted shell executor. Each call uses a fresh process; with a job registry composed every command is a job from the moment it starts, so `run_in_background` returns the id at once and a foreground command that outlives its timeout returns the same id, with observable output. Commands use native Windows paths and `$env:NAME` variables without dialect translation. Calls receive the managed `NHS_*` environment, and sandboxed execution enforces Windows language-mode and named-pipe requirements. Mount it with a PowerShell executor such as `nhs-pwsh-local` and the `nhs-shell-env` plugin.

@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/message-quotes
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-message-quotes` registers quotation controls and transcript rendering on the Client. Messages retain ordinary Markdown text without quote metadata or content indexes.

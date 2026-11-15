@@ -113,8 +113,6 @@ describe('ui-jobs browser half', () => {
   it('registers both dictionaries under its own namespace and releases them with the fiber', async () => {
     const { ctx, fiber } = await bench()
     const translate = ctx.locale.bind(NS)
-    expect(translate('list.aria')).toBe(ja['list.aria'])
-    ctx.locale.setLocale('en')
     expect(translate('list.aria')).toBe(en['list.aria'])
 
     // Withdrawn dictionaries leave the key unresolved rather than translated.

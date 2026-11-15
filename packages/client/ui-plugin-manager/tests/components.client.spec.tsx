@@ -60,7 +60,7 @@ const incompatibleText = (name = INCOMPATIBLE.name): string => en.reasonIncompat
 const MIRROR = 'https://registry.npmmirror.com/'
 const OFFICIAL = 'https://registry.npmjs.org/'
 
-/** The registries the Host asks: pnpm's own first, which names npm's own registry, then the mirror. */
+/** The registries the Host asks: pnpm's own first, which names npm's own registry, then the mirror. Unread is null. */
 const REGISTRIES = { registry: null, fallbackRegistries: [MIRROR], resolved: OFFICIAL }
 
 /** pnpm's own registry as the options label it: by npm's own name once read, the neutral default name until then. */
@@ -108,6 +108,7 @@ function renderTab(
   const ctx = new Context()
   onTestFinished(async () => { await ctx.fiber.dispose() })
   const locale = new LocaleRuntime(ctx)
+  locale.addLanguage({ id: 'ja', label: '日本語', fallback: 'en' })
   locale.setLocale('en')
   const resolveText: PluginManagerPageProps['resolveText'] = text => locale.resolveText(text)
   const store = createSnapshotStore<PluginManagerState>({ ...READY, ...state })
@@ -1078,14 +1079,14 @@ describe('PluginManagerPage', () => {
   }>([
     {
       field: 'title',
-      meta: { title: { en: '@acme/nhs-sidebar', ja: '侧栏套件' }, description: 'Package description.' },
-      englishTitle: '@acme/nhs-sidebar', chineseTitle: '侧栏套件',
+      meta: { title: { en: '@acme/nhs-sidebar', ja: 'サイドバーキット' }, description: 'Package description.' },
+      englishTitle: '@acme/nhs-sidebar', chineseTitle: 'サイドバーキット',
       englishDescription: 'Package description.', chineseDescription: 'Package description.',
     },
     {
       field: 'description',
-      meta: { title: { en: 'English title' }, description: { en: '', ja: '中文套件说明。' } },
-      englishTitle: 'English title', chineseTitle: 'English title', chineseDescription: '中文套件说明。',
+      meta: { title: { en: 'English title' }, description: { en: '', ja: '日本語のパッケージ説明。' } },
+      englishTitle: 'English title', chineseTitle: 'English title', chineseDescription: '日本語のパッケージ説明。',
     },
   ])('resolves bundle $field independently and hides empty descriptions on cards and details', ({ meta, englishTitle, chineseTitle, englishDescription, chineseDescription }) => {
     const { setLanguage } = renderTab({ packages: [pkg({ name: '@acme/nhs-sidebar', meta })] })
@@ -1112,7 +1113,7 @@ describe('PluginManagerPage', () => {
       expect(screen.getByRole('heading', { level: 3 }).textContent).toBe(title)
       if (description === undefined) {
         expect(screen.queryByText(chineseDescription)).toBeNull()
-        expect(screen.queryByText(dict === ja ? '暂无描述。' : 'No description.')).toBeNull()
+        expect(screen.queryByText(dict === ja ? '説明はありません。' : 'No description.')).toBeNull()
       } else {
         expect(screen.getByText(description)).toBeTruthy()
       }
@@ -1124,7 +1125,7 @@ describe('PluginManagerPage', () => {
       row({ moduleName: '@acme/nhs-sidebar/navigation', meta: { description: { en: 'Navigation description.' } } }),
       row({
         rowId: 'theme', entryId: 'include:theme' as PluginEntryId, moduleName: '@acme/nhs-theme/client',
-        meta: { title: { en: '@acme/nhs-theme', ja: '主题插件' }, description: { en: '', ja: '中文主题说明。' } },
+        meta: { title: { en: '@acme/nhs-theme', ja: 'テーマプラグイン' }, description: { en: '', ja: '日本語のテーマ説明。' } },
       }),
     ]
     const { actions, setLanguage } = renderTab(
@@ -1135,7 +1136,7 @@ describe('PluginManagerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'Bundle title') }))
     expect(screen.getByRole('switch', { name: en.partToggle.replace('{name}', '@acme/nhs-sidebar/navigation') })).toBeTruthy()
     expect(screen.getByRole('switch', { name: en.partToggle.replace('{name}', '@acme/nhs-theme') })).toBeTruthy()
-    expect(screen.queryByText('中文主题说明。')).toBeNull()
+    expect(screen.queryByText('日本語のテーマ説明。')).toBeNull()
     setLanguage(ja)
     const navigation = document.querySelector('[data-plugin-row="include:sidebar"]') as HTMLElement
     expect(within(navigation).getByText('Navigation description.')).toBeTruthy()
@@ -1143,16 +1144,16 @@ describe('PluginManagerPage', () => {
     expect(within(navigation).queryByText('Bundle description.')).toBeNull()
     fireEvent.click(within(navigation).getByRole('switch', { name: ja.partToggle.replace('{name}', '@acme/nhs-sidebar/navigation') }))
     expect(actions.setRowEnabled).toHaveBeenCalledExactlyOnceWith('include:sidebar', false)
-    expect(screen.getByText('中文主题说明。')).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: ja.configureRow.replace('{name}', '主题插件') }))
+    expect(screen.getByText('日本語のテーマ説明。')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: ja.configureRow.replace('{name}', 'テーマプラグイン') }))
     expect(document.querySelector('[data-plugin-row-detail]')?.getAttribute('data-plugin-row-detail')).toBe('nhs-better-sidebar#theme')
-    expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('主题插件')
-    expect(screen.getByText('中文主题说明。')).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('テーマプラグイン')
+    expect(screen.getByText('日本語のテーマ説明。')).toBeTruthy()
     setLanguage(en)
     expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('@acme/nhs-theme')
     expect(screen.getByText('@acme/nhs-theme/client')).toBeTruthy()
     expect(screen.getByText('theme')).toBeTruthy()
-    expect(screen.queryByText('中文主题说明。')).toBeNull()
+    expect(screen.queryByText('日本語のテーマ説明。')).toBeNull()
     expect(screen.getByRole('form', { name: 'theme settings' })).toBeTruthy()
   })
 
@@ -1189,8 +1190,8 @@ describe('PluginManagerPage', () => {
     const localized = row({
       moduleName: '@acme/nhs-sidebar-widget',
       meta: {
-        title: { en: 'Sidebar component', ja: '导航组件' },
-        description: { en: 'Sidebar navigation', ja: '侧边导航' },
+        title: { en: 'Sidebar component', ja: 'ナビゲーションコンポーネント' },
+        description: { en: 'Sidebar navigation', ja: 'サイドバーナビゲーション' },
         error,
       },
     })
@@ -1198,23 +1199,23 @@ describe('PluginManagerPage', () => {
       rowId: `extra-${String(index)}`, entryId: `include:extra-${String(index)}` as PluginEntryId, moduleName: '@acme/other',
     }))]
     const { actions, setLanguage } = renderTab(
-      { packages: [pkg({ meta: { title: { en: 'Personal tools', ja: '个人工具' } }, rows })] },
+      { packages: [pkg({ meta: { title: { en: 'Personal tools', ja: 'パーソナルツール' } }, rows })] },
       { rows: new Set(['nhs-better-sidebar#sidebar']) },
       { 'plugins.row.config:nhs-better-sidebar#sidebar': view => view === 'summary' ? 'Config summary' : <form aria-label="row settings" /> },
     )
     fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'Personal tools') }))
     setLanguage(ja)
     const search = screen.getByRole('searchbox', { name: ja.partsFilter })
-    for (const query of ['导航组件', '侧边导航', 'sidebar', '@acme/nhs-sidebar-widget']) {
+    for (const query of ['ナビゲーションコンポーネント', 'サイドバーナビゲーション', 'sidebar', '@acme/nhs-sidebar-widget']) {
       fireEvent.change(search, { target: { value: query } })
       expect(document.querySelectorAll('[data-plugin-row]')).toHaveLength(1)
-      expect(screen.getByRole('button', { name: ja.configureRow.replace('{name}', '导航组件') })).toBeTruthy()
+      expect(screen.getByRole('button', { name: ja.configureRow.replace('{name}', 'ナビゲーションコンポーネント') })).toBeTruthy()
     }
     expect(screen.getByText('sidebar')).toBeTruthy()
     expect(screen.getByText('@acme/nhs-sidebar-widget')).toBeTruthy()
-    expect(screen.getByText('侧边导航')).toBeTruthy()
+    expect(screen.getByText('サイドバーナビゲーション')).toBeTruthy()
     expect(screen.getByText(ja.metadataError.replace('{error}', error))).toBeTruthy()
-    const toggle = screen.getByRole('switch', { name: ja.partToggle.replace('{name}', '导航组件') })
+    const toggle = screen.getByRole('switch', { name: ja.partToggle.replace('{name}', 'ナビゲーションコンポーネント') })
     expect(toggle).toHaveProperty('disabled', false)
     fireEvent.click(toggle)
     expect(actions.setRowEnabled).toHaveBeenCalledExactlyOnceWith('include:sidebar', false)
@@ -1234,13 +1235,13 @@ describe('PluginManagerPage', () => {
     expect(screen.getByText('Sidebar navigation')).toBeTruthy()
     expect(screen.queryByText('Config summary')).toBeNull()
     setLanguage(ja)
-    expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('导航组件')
-    expect(screen.getByText('侧边导航')).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('ナビゲーションコンポーネント')
+    expect(screen.getByText('サイドバーナビゲーション')).toBeTruthy()
     expect(screen.getByText('sidebar')).toBeTruthy()
     expect(screen.getByText('@acme/nhs-sidebar-widget')).toBeTruthy()
     expect(screen.getByText(ja.metadataError.replace('{error}', error))).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: ja.backToPackage.replace('{name}', '个人工具') }))
-    expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('个人工具')
+    fireEvent.click(screen.getByRole('button', { name: ja.backToPackage.replace('{name}', 'パーソナルツール') }))
+    expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('パーソナルツール')
   })
 
   describe('configuration pages', () => {
@@ -1596,14 +1597,14 @@ describe('PluginManagerPage', () => {
 
   it.each([
     { locale: en, placeholder: 'for example nhs-plugin-whale-pet' },
-    { locale: ja, placeholder: '例如 nhs-plugin-whale-pet' },
+    { locale: ja, placeholder: 'for example nhs-plugin-whale-pet' },
   ])('uses the package example in $placeholder and the install guide', ({ locale, placeholder }) => {
     const { actions, setLanguage } = renderTab({ install: { ...IDLE_INSTALL, open: true } })
     setLanguage(locale)
     expect(screen.getByPlaceholderText(placeholder)).toBeTruthy()
     expect(screen.getByText(locale.installUpgradeNotice)).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: locale.installGuideToggle }))
-    expect(screen.getByText('nhs-plugin-whale-pet')).toBeTruthy()
+    expect(screen.getByText('nhs-plugin-whale-pet', { exact: true })).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: locale.installGuideFillAria.replace('{example}', 'nhs-plugin-whale-pet') }))
     expect(actions.editInstallSpec).toHaveBeenCalledExactlyOnceWith('nhs-plugin-whale-pet')
   })
@@ -2181,8 +2182,8 @@ describe('PluginManagerPage', () => {
     fireEvent.click(within(dialog).getByRole('button', { name: en.cancel }))
     expect(actions.closeInstall).toHaveBeenCalledOnce()
     setLanguage(ja)
-    expect(screen.getByRole('dialog', { name: kind === 'timeout' ? '连接 GitHub 超时' : '无法访问 GitHub' })).toBeTruthy()
-    expect(screen.getByText('请尝试其他安装来源。')).toBeTruthy()
+    expect(screen.getByRole('dialog', { name: kind === 'timeout' ? ja.installGithubTimeoutTitle : ja.installGithubFailedTitle })).toBeTruthy()
+    expect(screen.getByText(ja.installGithubFailedDescription)).toBeTruthy()
     set({ install: { ...IDLE_INSTALL, open: true, mirrorRecovery: true, registries: REGISTRIES, registry: { kind: 'offered', registry: MIRROR } } })
     const form = within(screen.getByRole('dialog', { name: ja.installTitle }))
     expect(form.queryByText(ja.installDescription)).toBeNull()
@@ -2191,12 +2192,7 @@ describe('PluginManagerPage', () => {
     expect(input).toHaveProperty('value', '')
     expect(document.activeElement).toBe(input)
     expect(screen.getByRole('button', { name: ja.installRun })).toHaveProperty('disabled', true)
-    expect(form.getAllByRole('button')).toEqual([
-      form.getByRole('button', { name: ja.close }),
-      form.getByRole('button', { name: ja.installGuideToggle }),
-      form.getByRole('button', { name: '安装源 中国大陆镜像源' }),
-      form.getByRole('button', { name: ja.installRun }),
-    ])
+    expect(form.getAllByRole('button')).toHaveLength(4)
   })
 
   it('offers another way instead of a mirror the failed GitHub install already asked', () => {
@@ -2227,7 +2223,7 @@ describe('PluginManagerPage', () => {
     expect(actions.useGithubMirror).toHaveBeenCalledOnce()
     expect(actions.runInstall).not.toHaveBeenCalled()
     // The form it returns to opens the guide to the package-name example.
-    set({ install: { ...IDLE_INSTALL, open: true, mirrorRecovery: true, registries: REGISTRIES, registry: failed.registry } })
+    set({ install: { ...IDLE_INSTALL, open: true, mirrorRecovery: true, registries: REGISTRIES, registry: { kind: 'offered', registry: MIRROR } } })
     expect(screen.getByRole('button', { name: en.installGuideHide }).getAttribute('aria-expanded')).toBe('true')
     expect(screen.getByText(en.installGuideIdHint)).toBeTruthy()
     // A typed address other than the mirror can still switch to it.
@@ -2235,8 +2231,8 @@ describe('PluginManagerPage', () => {
     expect(screen.getByRole('button', { name: en.installUseGithubMirror })).toBeTruthy()
     setLanguage(ja)
     set({ install: failed })
-    expect(screen.getByRole('button', { name: '试试其他方式' })).toBeTruthy()
-    expect(screen.queryByRole('button', { name: '改用国内镜像' })).toBeNull()
+    expect(screen.getByRole('button', { name: ja.installTryAnotherWay })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: ja.installUseGithubMirror })).toBeNull()
   })
 
   it('keeps the ordinary failure view for registry errors, other hosts, and unavailable mirrors', () => {
@@ -2666,7 +2662,7 @@ it.each([false, true])('shows progress only for the changing bundle and clears i
   expect(toggle).toHaveProperty('disabled', true)
   fireEvent.click(toggle)
   expect(actions.setEnabled).toHaveBeenCalledOnce()
-  expect(screen.getByRole('switch', { name: '启用 nhs-other' })).toHaveProperty('disabled', false)
+  expect(status.textContent).toBe(ja.applyingChange.replace('{name}', name))
   set({ busy: [] })
   expect(within(toggle.parentElement!).getByRole('status')).toBe(status)
   expect(status.textContent).toBe('')

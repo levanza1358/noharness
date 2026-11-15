@@ -14,7 +14,7 @@ import { ReferenceChipNode } from '../src/client/input/editor/chip-node.tsx'
 import { TextRefNode } from '../src/client/input/editor/text-ref.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { InputHub } from '../src/client/input/hub.ts'
-import { ja } from '../src/client/locales.ts'
+import { en } from '../src/client/locales.ts'
 import { brandString } from '@noharness/brand'
 
 const mention = '@src/main.ts'
@@ -48,7 +48,7 @@ async function storedSession(draft: unknown) {
   onTestFinished(() => { reference.release() })
   await reference.ready
   const binding = reference.binding
-  const hub = new InputHub(ctx, makeTranslate(ja, {}))
+  const hub = new InputHub(ctx, makeTranslate(en, {}))
   return { ctx, sessions, id, key, raw, reference, binding, hub }
 }
 
@@ -192,8 +192,8 @@ it('reuses one shell during synchronous catalog retention and restores its initi
 })
 
 it('restores legacy text before a view and reuses the live draft on later shell lookups', async () => {
-  const b = await fixture('/saved legacy\n🙂 中文')
-  expect(b.shell.draftSnapshot).toEqual({ text: '/saved legacy\n🙂 中文', references: [] })
+  const b = await fixture('/saved legacy\n🙂 draft')
+  expect(b.shell.draftSnapshot).toEqual({ text: '/saved legacy\n🙂 draft', references: [] })
   expect(textReferences(b.shell)).toEqual([])
   expect(localStorage.getItem(b.key)).toBe(b.raw)
   b.shell.setDraft('edited before mounting a view')

@@ -5,8 +5,6 @@ description: "The maxBytes budget of @noharness/agent-instructions caps each ins
 
 # Size `maxBytes` of `@noharness/agent-instructions` per instruction chain
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 `maxBytes` of `@noharness/agent-instructions` bounded the complete workspace-instruction baseline and each reconciliation message. It now bounds the user-global chain (`$NHS_HOME/AGENTS.md` and the shared agents root) and the project chain separately, so a message holding both chains can reach twice the configured size. The exported `loadBaselineInstructions` and `renderAgentInstructions` follow the same bound. Deployments that sized `maxBytes` as a total prompt budget observe the larger maximum.

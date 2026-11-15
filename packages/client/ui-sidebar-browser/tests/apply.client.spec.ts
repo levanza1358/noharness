@@ -127,7 +127,7 @@ describe('ui-sidebar-browser apply', () => {
       .toEqual([[30, 'guide.title', 'guide.description']])
     expect(dictionaries.get('sidebarBrowser')).toEqual({ ja, en, es, fr, de, ru, pt })
     expect(dictionaries.get('sidebarBrowser')).toMatchObject({
-      ja: { 'guide.description': 'ウェブを閲覧' },
+      ja: { 'guide.description': 'ウェブページを閲覧' },
       en: { 'guide.description': 'Browse web pages' },
     })
     expect(registered.map(entry => [entry.name, entry.key, entry.locale, entry.component])).toEqual([

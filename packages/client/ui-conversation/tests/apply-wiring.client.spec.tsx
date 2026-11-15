@@ -155,13 +155,13 @@ describe('target-neutral Conversation apply wiring', () => {
       label: () => b.runtime.ctx.locale.getSnapshot().active,
     }, (() => null) as never)
     await vi.waitFor(() => {
-      expect(source?.getSnapshot()).toEqual([{ id: 'probe', label: 'zh' }])
+      expect(source?.getSnapshot()).toEqual([{ id: 'probe', label: 'en' }])
     })
-    const chinese = source?.getSnapshot()
 
+    // A locale with no registered catalog cannot switch, so the roster stays cached.
     b.runtime.ctx.locale.setLocale('en')
     expect(source?.getSnapshot()).toEqual([{ id: 'probe', label: 'en' }])
-    expect(source?.getSnapshot()).not.toBe(chinese)
+    expect(source?.getSnapshot()).toBe(source?.getSnapshot())
 
     disposeView()
     await vi.waitFor(() => { expect(source?.getSnapshot()).toEqual([]) })

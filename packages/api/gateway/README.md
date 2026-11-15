@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/api-gateway
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 Two-sided Typert RPC endpoint for Host and Client Cordis environments. The Host entry provides `ctx.typertGateway`, while `@noharness/api-gateway/client` provides `ctx.remote`; both consume the same generated `InvocationDescriptor` contract and leave business selection to API Remotes. Connection carries unary request correlation, trust, and response envelopes, while Gateway owns multiplexed Remote streams, each carrying a Client-to-Host uplink on the same logical stream.

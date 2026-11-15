@@ -60,7 +60,7 @@ describe('render branch tails', () => {
         <UsagePill {...pillProps} />
       </>,
     )
-    expect(view.container.textContent).toBe('2 轮 3 步')
+    expect(view.container.textContent).toBe(ja['stats.counts'].replace('{turns}', '2').replace('{steps}', '3'))
     // Window-fold counts carry no timed figure, so the pill is a static reading.
     expect(view.queryAllByRole('button')).toHaveLength(0)
   })

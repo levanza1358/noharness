@@ -3442,7 +3442,7 @@ export interface Config {
 export interface Config extends SessionTitleLlmConfig {
   /** Target word count for non-CJK titles. */
   readonly targetWords: number
-  /** Target character count for Chinese, Japanese, or Korean titles. */
+  /** Target character count for Japanese titles. */
   readonly targetCjkCharacters: number
 }
 ```
@@ -3462,7 +3462,7 @@ export interface Config extends SessionTitleLlmConfig {
 export interface Config extends SessionTitleLlmConfig {
   /** Target word count for non-CJK titles. */
   readonly targetWords: number
-  /** Target character count for Chinese, Japanese, or Korean titles. */
+  /** Target character count for Japanese titles. */
   readonly targetCjkCharacters: number
 }
 ```

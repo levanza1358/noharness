@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/client-ui-theme
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-client-ui-theme` lets Web GUI users choose `light`, `dark`, or `system`, and set the font and font size of text, code, and the terminal separately in Settings. Every authenticated browser stores these values in the `ui-theme` settings namespace, which the local provider persists in `$NHS_HOME/cordis.patch.yml` by default. The plugin resolves `system` through `prefers-color-scheme` and publishes immutable `ThemeSnapshot`s; ui-layout applies each snapshot to the document. The package also ships the `--dsw-*` token stylesheets and injects a synchronous bootstrap so the selected palette, font size, and fonts apply before the shell loads. Third-party themes can register alias-token overrides through `ctx.theme`.

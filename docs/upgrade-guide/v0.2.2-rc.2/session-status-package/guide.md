@@ -5,8 +5,6 @@ description: "Session status types and the useSessionStatus hook move to @noharn
 
 # Session status moves to `@noharness/client-ui-session-status` and completion reminders follow Host reading records
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 `@noharness/client-ui-session/client` no longer exports `SessionStatus`, `SessionStatusSnapshot`, or `UseSessionStatus`, and ui-session no longer declares or provides the `useSessionStatus` root hook. Both now belong to the Client plugin [`@noharness/client-ui-session-status`](../../../../packages/client/ui-session-status/README.md), one Web bundle row with a Host reading service and the Client table. A Client composition that loads ui-session without ui-session-status has no status table and no `useSessionStatus` hook.

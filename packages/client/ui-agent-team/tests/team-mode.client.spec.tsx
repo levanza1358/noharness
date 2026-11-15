@@ -26,14 +26,13 @@ function props(enabled: boolean | undefined, selectTeamMode = vi.fn(async () => 
   } as TestProps
 }
 
-it.each(Object.entries({ ja, en, es, fr, de, ru, pt }).flatMap(([locale, dictionary]) =>
-  [false, true].map(enabled => ({ locale, dictionary, enabled })),
-))('opens Team settings from the $locale summary without changing mode (enabled: $enabled)', ({ locale, dictionary, enabled }) => {
+it.each(Object.entries({ ja, en, es, fr, de, ru, pt }).flatMap(([, dictionary]) =>
+  [false, true].map(enabled => ({ dictionary, enabled })),
+))('opens Team settings from the $locale summary without changing mode (enabled: $enabled)', ({ dictionary, enabled }) => {
   const input = props(enabled)
   render(<TeamModeToggle {...input} t={makeTranslate(dictionary)} />)
   const summary = screen.getByRole('menuitem', { name: new RegExp(dictionary['command.title']) })
   expect(summary.textContent).toBe(dictionary['command.title'] + dictionary[enabled ? 'mode.on' : 'mode.off'])
-  if (locale === 'ja') expect(summary.textContent).toBe(`智能体团队协作${enabled ? '开启' : '关闭'}`)
   expect(summary.getAttribute('data-model-menu-pane')).toBe('agent-team')
   expect(screen.queryByRole('switch')).toBeNull()
   expect(screen.queryByRole('tooltip', { hidden: true })).toBeNull()
@@ -48,10 +47,10 @@ it.each(Object.entries({ ja, en, es, fr, de, ru, pt }).flatMap(([locale, diction
 it('keeps summary state projection-owned and blocks navigation while locked', () => {
   const input = props(false)
   const view = render(<TeamModeToggle {...input} />)
-  expect(screen.getByText('关闭')).toBeTruthy()
+  expect(screen.getByText('Off')).toBeTruthy()
   const lockedInput = props(true)
   view.rerender(<TeamModeToggle {...lockedInput} locked />)
-  expect(screen.getByText('开启')).toBeTruthy()
+  expect(screen.getByText('On')).toBeTruthy()
   const summary = screen.getByRole('menuitem')
   expect(summary.hasAttribute('disabled')).toBe(true)
   fireEvent.click(summary)
@@ -71,7 +70,7 @@ it.each([false, true])('blocks repeated writes while waiting for persisted mode 
   onTestFinished(async () => { await act(async () => { pending.resolve(null) }) })
   const select = vi.fn(() => pending.promise)
   const view = render(<TeamModePane {...props(enabled, select)} />)
-  const toggle = screen.getByRole('switch', { name: '开启智能体团队协作' })
+  const toggle = screen.getByRole('switch', { name: 'Enable agent teamwork' })
   toggle.focus()
   fireEvent.click(toggle)
   expect(select).toHaveBeenCalledExactlyOnceWith(!enabled)

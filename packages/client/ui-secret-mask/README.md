@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/client-ui-secret-mask
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 Use `nhs-client-ui-secret-mask` when Web users paste API keys, tokens, or passwords into messages that others may see on a shared screen or in a screenshot. Sent user text draws each recognized credential masked: a key or token keeps its first eight characters, and each remaining character is drawn as `*`. Masking changes only what is drawn; the message text, the copy action, and the model input keep the original characters.

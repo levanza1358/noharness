@@ -5,8 +5,6 @@ kind: "package-library"
 
 # @noharness/chunked-list
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-chunked-list` lets callers append values while retaining earlier list versions without copying the whole collection. Callers can iterate every value in insertion order and validate JSON checkpoints with their own value schema. The subagent catalog uses it for immutable projection state.

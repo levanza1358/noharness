@@ -258,7 +258,7 @@ describe('ui-plugin-manager browser plugin', () => {
     expect(glyph.container.querySelector('svg')?.getAttribute('width')).toBe('18')
     expect(icon.options).toMatchObject({ id: PANEL_ID, order: 0 })
     expect(icon.locale).toBe(NS)
-    expect(resolveSlotLabel(icon.options.label)).toBe('插件')
+    expect(resolveSlotLabel(icon.options.label)).toBe('Plugins')
     // The page declares the slots a plugin's configuration arrives through, and binds their projection beside its state.
     expect(b.slots.spec('plugins.add.actions')).toMatchObject({ kind: 'list', scope: 'root' })
     expect(b.slots.spec('plugins.item')).toMatchObject({ kind: 'list', scope: 'root' })
@@ -279,8 +279,10 @@ describe('ui-plugin-manager browser plugin', () => {
     expect(overlayFace.dismissNotice).toBe(face.dismissNotice)
     expect(Object.keys(overlayFace).sort()).toEqual(['dismissNotice', 'hooks'])
     expect(Object.keys(overlayFace.hooks)).toEqual(['pluginManager'])
-    const text = { en: 'Local tools', zh: '本地工具' }
-    expect(face.resolveText(text)).toBe('本地工具')
+    b.locale.addLanguage({ id: 'ja', label: '日本語', fallback: 'en' })
+    b.locale.setLocale('ja')
+    const text = { en: 'Local tools', ja: 'ローカルツール' }
+    expect(face.resolveText(text)).toBe('ローカルツール')
     b.locale.setLocale('en')
     expect(face.resolveText(text)).toBe('Local tools')
     b.locale.setLocale('en')
@@ -299,7 +301,7 @@ describe('ui-plugin-manager browser plugin', () => {
     const loadedDetails = face.hooks.bundleDetails.getSnapshot()
     face.retryDetail('nhs-a', '1.0.0', 'en', false)
     expect(face.detailImage('nhs-a', 'README.md', 'a.png', false)).toContain('api/plugin-manager/detail-file?bundle=nhs-a')
-    expect(face.hooks.locale.getSnapshot().active).toBe('zh')
+    expect(face.hooks.locale.getSnapshot().active).toBe('en')
     b.remote.emit('plugin-manager/changed', [{ reason: 'bundle' }])
     await vi.waitFor(() => { expect(b.list).toHaveBeenCalledTimes(2) })
     expect(face.hooks.bundleDetails.getSnapshot()).toEqual(loadedDetails)

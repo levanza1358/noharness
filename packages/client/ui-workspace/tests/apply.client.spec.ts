@@ -303,7 +303,7 @@ describe('ui-workspace apply', () => {
     // Copy rides the standard locale seat: the entry declares the namespace
     // and apply registered both dictionaries.
     expect(before.slots.entries('sidebar.workspaces')[0]!.locale).toBe('workspace')
-    expect(before.locale.bind('workspace')('session.new')).toBe('新会话')
+    expect(before.locale.bind('workspace')('session.new')).toBe('New Session')
 
     const after = await bench()
     await after.ctx.plugin({ inject: [...inject], apply }).await()
@@ -997,13 +997,13 @@ it('keeps one archive notice for queued cleanup and replaces it on failure', asy
   const archive = faceOf(entry(b.slots, ROW_ACTION, 'archive')) as ArchiveSessionInjected
   b.ctx.on('workspace/archive-notice', async (_id, next) => {
     await next()
-    return { text: '已归档，工作树将被清理', tone: 'success' }
+    return { text: 'Archived; the worktree will be cleaned up', tone: 'success' }
   })
   archive.archiveSession(sid('one'))
-  await vi.waitFor(() => { expect(toast.hooks.toast.getSnapshot()).toMatchObject({ kind: 'archived', message: '已归档，工作树将被清理', seq: 1 }) })
+  await vi.waitFor(() => { expect(toast.hooks.toast.getSnapshot()).toMatchObject({ kind: 'archived', message: 'Archived; the worktree will be cleaned up', seq: 1 }) })
   b.setWorkspaces(workspaceState([], [sid('one')]))
-  b.ctx.emit('workspace/archive-followup-failed', sid('one'), '已归档，工作树清理失败')
-  expect(toast.hooks.toast.getSnapshot()).toMatchObject({ kind: 'archived', message: '已归档，工作树清理失败', tone: 'warning', seq: 2 })
+  b.ctx.emit('workspace/archive-followup-failed', sid('one'), 'Archived; worktree cleanup failed')
+  expect(toast.hooks.toast.getSnapshot()).toMatchObject({ kind: 'archived', message: 'Archived; worktree cleanup failed', tone: 'warning', seq: 2 })
   b.setWorkspaces(workspaceState([]))
   b.ctx.emit('workspace/archive-followup-failed', sid('one'), 'late failure')
   expect(toast.hooks.toast.getSnapshot()?.seq).toBe(2)
@@ -1018,10 +1018,10 @@ it('returns to the ordinary archive notice when a queued cleanup settles without
   const archive = faceOf(entry(b.slots, ROW_ACTION, 'archive')) as ArchiveSessionInjected
   b.ctx.on('workspace/archive-notice', async (_id, next) => {
     await next()
-    return { text: '已归档，工作树将被清理', tone: 'success' }
+    return { text: 'Archived; the worktree will be cleaned up', tone: 'success' }
   })
   archive.archiveSession(sid('one'))
-  await vi.waitFor(() => { expect(toast.hooks.toast.getSnapshot()).toMatchObject({ kind: 'archived', message: '已归档，工作树将被清理', seq: 1 }) })
+  await vi.waitFor(() => { expect(toast.hooks.toast.getSnapshot()).toMatchObject({ kind: 'archived', message: 'Archived; the worktree will be cleaned up', seq: 1 }) })
   b.setWorkspaces(workspaceState([], [sid('one')]))
   b.ctx.emit('workspace/archive-followup-settled', sid('one'))
   const settled = toast.hooks.toast.getSnapshot()

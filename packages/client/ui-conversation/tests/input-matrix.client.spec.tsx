@@ -20,12 +20,12 @@ import type { SessionStatusSnapshot } from '@noharness/client-ui-session-status/
 import type { SessionId } from '@noharness/session/types'
 import type { SubmitAttachment, SubmitOutcome } from '../src/client/contract/input.ts'
 import { makeTranslate } from '@noharness/client-test-runtime'
-import { ja as commonJa } from '@noharness/client-locale/src/locales/ja.ts'
+import { en as commonEn } from '@noharness/client-locale/src/locales/en.ts'
 import type { DraftAttachmentId } from '../src/client/contract/input.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'
 import type { InputBarProps } from '../src/client/skeleton/InputBar.tsx'
-import { ja } from '../src/client/locales.ts'
+import { en } from '../src/client/locales.ts'
 import { createComposerFileIntake } from '../src/client/input/file-intake.ts'
 
 // Every fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
@@ -95,7 +95,7 @@ function mountBar(shell: SessionInputShell, over?: { running?: boolean; disabled
     useMenuLauncher: bindSnapshotSelector(createSnapshotStore<string | null>(null)),
     renderSlot: (() => null) as InputBarProps['renderSlot'],
     stop: vi.fn(),
-    t: makeTranslate(ja, commonJa),
+    t: makeTranslate(en, commonEn),
     variant: 'composer',
     occurrence: 'main',
   }
@@ -115,7 +115,7 @@ function bench(over?: {
   const wiring = shell
   const view = mountBar(shell, over)
   const textarea = view.container.querySelector<HTMLDivElement>('[data-composer-input]')!
-  const claim = (token = '/goal ', hint = '目标', attachments?: true) => {
+  const claim = (token = '/goal ', hint = 'goal', attachments?: true) => {
     act(() => {
       shell.setDraft(token)
       shell.beginCommand(
@@ -157,12 +157,12 @@ describe('matrix row: plain', () => {
 
   it('enter falls to the default sink; no claim on the currency; the draft clears once accepted', async () => {
     const { textarea, shell, sink } = bench()
-    act(() => { shell.setDraft('普通消息') })
+    act(() => { shell.setDraft('ordinary message') })
     expect(shell.snapshot.claim).toBeUndefined()
     fireEvent.keyDown(textarea, { key: 'Enter' })
-    expect(sink).toHaveBeenCalledWith('普通消息', [], 'queue', expect.any(AbortSignal), expect.any(Function))
+    expect(sink).toHaveBeenCalledWith('ordinary message', [], 'queue', expect.any(AbortSignal), expect.any(Function))
     // The composer holds the message, read-only, until the Host accepts it.
-    expect(shell.snapshot).toMatchObject({ phase: 'sending', draft: '普通消息' })
+    expect(shell.snapshot).toMatchObject({ phase: 'sending', draft: 'ordinary message' })
     await vi.waitFor(() => { expect(shell.snapshot.phase).toBe('plain') })
     expect(shell.snapshot.draft).toBe('')
     expect(shell.snapshot.claim).toBeUndefined()
@@ -173,38 +173,38 @@ describe('matrix row: claimed', () => {
   it('publishes the claim currency, renders the command chip, hints while args are blank, and edits stay free', () => {
     const { view, textarea, shell, claim, typeAtCaret } = bench()
     claim()
-    expect(shell.snapshot.claim).toEqual({ name: 'goal', token: '/goal ', hint: '目标' })
+    expect(shell.snapshot.claim).toEqual({ name: 'goal', token: '/goal ', hint: 'goal' })
     const chip = view.container.querySelector('[data-composer-command="goal"]')
     expect(chip?.textContent).toBe('/goal')
     expect(chip?.getAttribute('contenteditable')).toBe('false')
     expect(shell.snapshot.draft).toBe('/goal ')
-    // The ja dictionary owns a hint.goal entry, which overrides the raw claim hint (production behavior).
-    expect(textarea.style.getPropertyValue('--nhs-composer-hint')).toBe(JSON.stringify('输入目标，智能体将持续执行'))
+    // The en dictionary owns a hint.goal entry, which overrides the raw claim hint (production behavior).
+    expect(textarea.style.getPropertyValue('--nhs-composer-hint')).toBe(JSON.stringify('describe the objective for a long-running task'))
     expect(textarea.getAttribute('contenteditable')).toBe('true')
     // Free editing after the chip: hint drops, claim holds.
-    typeAtCaret('发布版本')
-    expect(shell.snapshot.draft).toBe('/goal 发布版本')
+    typeAtCaret('release revision')
+    expect(shell.snapshot.draft).toBe('/goal release revision')
     expect(shell.snapshot.phase).toBe('claimed')
     expect(textarea.style.getPropertyValue('--nhs-composer-hint')).toBe('')
   })
 
   it('enter routes to claim.submit (command lane, never the queue sink)', async () => {
-    const submit = vi.fn(() => Promise.resolve({ kind: 'success' as const, text: '完成', source: 'command', name: 'goal' }))
+    const submit = vi.fn(() => Promise.resolve({ kind: 'success' as const, text: 'finished', source: 'command', name: 'goal' }))
     const { view, textarea, shell, sink, claim, typeAtCaret } = bench({ submit })
     claim()
-    typeAtCaret('发布')
+    typeAtCaret('release')
     fireEvent.keyDown(textarea, { key: 'Enter' })
     expect(sink).not.toHaveBeenCalled()
-    await vi.waitFor(() => { expect(submit).toHaveBeenCalledWith('发布', SCTX, []) })
+    await vi.waitFor(() => { expect(submit).toHaveBeenCalledWith('release', SCTX, []) })
     // Commit: draft cleared, notice surfaced, back to plain.
     await vi.waitFor(() => { expect(shell.snapshot.draft).toBe('') })
-    expect(view.getByText('完成')).toBeTruthy()
+    expect(view.getByText('finished')).toBeTruthy()
   })
 
   it('replacing the whole draft removes the chip and releases to plain', () => {
     const { view, shell, claim } = bench()
     claim()
-    act(() => { shell.setDraft('/goal 发布') })
+    act(() => { shell.setDraft('/goal release') })
     expect(shell.snapshot.phase).toBe('plain')
     expect(shell.snapshot.claim).toBeUndefined()
     expect(view.container.querySelector('[data-composer-command]')).toBeNull()
@@ -234,9 +234,9 @@ describe('matrix row: claimed with attachments', () => {
     const png: SubmitAttachment = { type: 'image', mediaType: 'image/png', data: 'AA==' }
     const file: SubmitAttachment = { type: 'file', receiptId: 'receipt-x' }
     const { textarea, shell, claim, serialize, release } = bench({ submit, serialize: () => Promise.resolve([png, file]) })
-    claim('/goal ', '目标', true)
+    claim('/goal ', 'goal', true)
     // The claim currency carries the acceptance flag the pre-gate reads.
-    expect(shell.snapshot.claim).toEqual({ name: 'goal', token: '/goal ', hint: '目标', attachments: true })
+    expect(shell.snapshot.claim).toEqual({ name: 'goal', token: '/goal ', hint: 'goal', attachments: true })
     act(() => { shell.addAttachments([img]) })
     fireEvent.keyDown(textarea, { key: 'Enter' })
     await vi.waitFor(() => { expect(submit).toHaveBeenCalledWith('', SCTX, [png, file]) })
@@ -248,13 +248,13 @@ describe('matrix row: claimed with attachments', () => {
   })
 
   it('a handler error keeps a serialized file unreleased beside the notice and draft', async () => {
-    const submit = vi.fn(() => Promise.resolve({ kind: 'error' as const, text: '处理失败' }))
+    const submit = vi.fn(() => Promise.resolve({ kind: 'error' as const, text: 'processing failed' }))
     const file: SubmitAttachment = { type: 'file', receiptId: 'receipt-x' }
     const { view, textarea, shell, claim, release } = bench({ submit, serialize: () => Promise.resolve([file]) })
-    claim('/goal ', '目标', true)
+    claim('/goal ', 'goal', true)
     act(() => { shell.addAttachments([img]) })
     fireEvent.keyDown(textarea, { key: 'Enter' })
-    await vi.waitFor(() => { expect(view.getByText('处理失败')).toBeTruthy() })
+    await vi.waitFor(() => { expect(view.getByText('processing failed')).toBeTruthy() })
     expect(shell.snapshot.phase).toBe('claimed')
     expect(shell.snapshot.attachmentIds).toEqual([img])
     expect(release).not.toHaveBeenCalled()
@@ -263,11 +263,11 @@ describe('matrix row: claimed with attachments', () => {
 
   it('a serialize rejection blocks the transaction: notice, no submit call, images kept', async () => {
     const submit = vi.fn(() => Promise.resolve({ kind: 'success' as const }))
-    const { view, textarea, shell, claim, release } = bench({ submit, serialize: () => Promise.reject(new Error('附件已失效')) })
-    claim('/goal ', '目标', true)
+    const { view, textarea, shell, claim, release } = bench({ submit, serialize: () => Promise.reject(new Error('the attachment is no longer valid')) })
+    claim('/goal ', 'goal', true)
     act(() => { shell.addAttachments([img]) })
     fireEvent.keyDown(textarea, { key: 'Enter' })
-    await vi.waitFor(() => { expect(view.getByText('附件已失效')).toBeTruthy() })
+    await vi.waitFor(() => { expect(view.getByText('the attachment is no longer valid')).toBeTruthy() })
     expect(submit).not.toHaveBeenCalled()
     expect(shell.snapshot.attachmentIds).toEqual([img])
     expect(release).not.toHaveBeenCalled()
@@ -281,7 +281,7 @@ describe('matrix row: claimed with attachments', () => {
       submit,
       serialize: () => new Promise((resolve) => { resolveSerialize = resolve }),
     })
-    claim('/goal ', '目标', true)
+    claim('/goal ', 'goal', true)
     act(() => { shell.addAttachments([img]) })
     fireEvent.keyDown(textarea, { key: 'Enter' })
     await vi.waitFor(() => { expect(resolveSerialize).toBeDefined() })
@@ -295,7 +295,7 @@ describe('matrix row: claimed with attachments', () => {
   it('image removal is refused while a command submit is in flight', async () => {
     const submit = vi.fn(() => new Promise<SubmitOutcome>(() => {})) // never settles
     const { shell, textarea, claim } = bench({ submit, serialize: () => Promise.resolve([]) })
-    claim('/goal ', '目标', true)
+    claim('/goal ', 'goal', true)
     act(() => { shell.addAttachments([img]) })
     fireEvent.keyDown(textarea, { key: 'Enter' })
     expect(shell.snapshot.phase).toBe('submitting')
@@ -335,10 +335,10 @@ describe('matrix row: submitting', () => {
     first.claim()
     fireEvent.keyDown(first.textarea, { key: 'Enter' })
     await vi.waitFor(() => { expect(submit).toHaveBeenCalled() })
-    act(() => { rejectSubmit(new Error('执行失败')) })
+    act(() => { rejectSubmit(new Error('execution failed')) })
     await vi.waitFor(() => { expect(first.shell.snapshot.phase).toBe('claimed') })
     expect(first.shell.snapshot.draft).toBe('/goal ')
-    expect(first.view.getByText('执行失败')).toBeTruthy()
+    expect(first.view.getByText('execution failed')).toBeTruthy()
     cleanup()
     // Drift: typing during flight wins; no restore, plain, notice only.
     const submit2 = vi.fn(() => new Promise<SubmitOutcome>((_res, rej) => { rejectSubmit = rej }))
@@ -346,11 +346,11 @@ describe('matrix row: submitting', () => {
     second.claim()
     fireEvent.keyDown(second.textarea, { key: 'Enter' })
     await vi.waitFor(() => { expect(submit2).toHaveBeenCalled() })
-    act(() => { second.shell.setDraft('用户飞行中打的新稿') })
-    act(() => { rejectSubmit(new Error('晚到失败')) })
+    act(() => { second.shell.setDraft('draft typed while in flight') })
+    act(() => { rejectSubmit(new Error('late failure')) })
     await vi.waitFor(() => { expect(second.shell.snapshot.phase).toBe('plain') })
-    expect(second.shell.snapshot.draft).toBe('用户飞行中打的新稿')
-    expect(second.view.getByText('晚到失败')).toBeTruthy()
+    expect(second.shell.snapshot.draft).toBe('draft typed while in flight')
+    expect(second.view.getByText('late failure')).toBeTruthy()
   })
 })
 
@@ -358,16 +358,16 @@ describe('matrix row: locked (session disabled)', () => {
   it('disables the textarea and chrome; the machine currency is untouched', () => {
     const { view, textarea, shell } = bench({ disabled: true })
     expect(textarea.getAttribute('aria-disabled')).toBe('true')
-    expect((view.getByLabelText('添加文件或调用指令') as HTMLButtonElement).disabled).toBe(true)
+    expect((view.getByLabelText('Add files or run commands') as HTMLButtonElement).disabled).toBe(true)
     expect(shell.snapshot.phase).toBe('plain')
   })
 
   it('running does NOT lock: typing and enter-queue stay live', () => {
     const { textarea, shell, sink } = bench({ running: true })
     expect(textarea.getAttribute('aria-disabled')).not.toBe('true')
-    act(() => { shell.setDraft('排队') })
+    act(() => { shell.setDraft('queued') })
     fireEvent.keyDown(textarea, { key: 'Enter' })
-    expect(sink).toHaveBeenCalledWith('排队', [], 'queue', expect.any(AbortSignal), expect.any(Function))
+    expect(sink).toHaveBeenCalledWith('queued', [], 'queue', expect.any(AbortSignal), expect.any(Function))
   })
 })
 

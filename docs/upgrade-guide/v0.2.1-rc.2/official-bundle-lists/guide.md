@@ -5,8 +5,6 @@ description: "The bundle lists and profile templates move from @noharness/app-bo
 
 # Import bundle lists from `@noharness/official-bundles`
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 `@noharness/app-boot` no longer exports `PROFILE_TEMPLATES`, `ProfileTemplate`, `DEFAULT_PROFILE_BUNDLES`, `OPTIONAL_BUNDLES`, `ON_DEMAND_BUNDLES`, `OFFICIAL_ON_DEMAND_CATALOG`, or `OfficialBundleCatalogEntry`. The new published package `@noharness/official-bundles` exports them with unchanged values and types. Code that imports any of these names from `@noharness/app-boot` fails to compile or load. The `nhs` launcher, profiles, and bundle selection behave as before.

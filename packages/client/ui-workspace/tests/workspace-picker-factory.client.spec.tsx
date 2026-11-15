@@ -31,7 +31,7 @@ afterEach(cleanup)
 beforeEach(() => { localStorage.clear() })
 
 const ALPHA = 'w-alpha' as WorkspaceId
-const ADD = '添加工作区…'
+const ADD = 'Add workspace…'
 
 /** Test-owned consumer surface: another plugin's dialog that owns the anchor, open state, and pick meaning. */
 function ImportDialog({ renderFactorySlot }: PropsRenderFactories) {

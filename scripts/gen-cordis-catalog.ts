@@ -2,11 +2,8 @@
  * Generate the per-subsystem Cordis service/event reference regions from the
  * Typert catalog projection. Every harness `ctx.<key>` service and event scope
  * maps to exactly one `docs/subsystems/` page through the curated tables below;
- * the generator injects each page's Cordis API reference between its GENERATED markers —
- * into both language sides of the pair, localizing paired document paths for
- * the Chinese side while retaining every other byte — and re-records a pair's
- * `.i18n.yaml` only when nothing outside the region changed. The
- * projection enforces event modes, JSDoc parameter/return completeness, and
+ * the generator injects each page's Cordis API reference between its GENERATED
+ * markers while retaining every other byte. The projection enforces event modes, JSDoc parameter/return completeness, and
  * signature type-link coverage; the inherited (vendor) tier renders to
  * `docs/cordis-api/inherited.md`. `--check` verifies every generated artifact.
  *
@@ -1367,8 +1364,8 @@ export function walkPartitionProblems(input: WalkPartitionInput, maps: WalkParti
 
 /**
  * Compute every generated artifact: the inherited-tier page, the model-facing
- * runtime API module, plus, per mapped subsystems page, the pair's two updated
- * documents with the injected region. Fail-loud partition checks live here: an
+ * runtime API module, plus, per mapped subsystems page, the updated document
+ * with the injected region. Fail-loud partition checks live here: an
  * unmapped service/event scope, a mapping whose page file does not exist, a
  * curated entry whose key/scope the projection no longer discovers, a declared
  * Context key or Events member the projection cannot see without a named walk

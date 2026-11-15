@@ -5,8 +5,6 @@ description: "AttachmentError now extends HarnessError, so tool and model-reques
 
 # Attachment failures keep their codes
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 `AttachmentError` from `@noharness/attachment` now extends `HarnessError` from `@noharness/error`. Its `name` (`AttachmentError`) and every `ATTACHMENT_*` and image admission code are unchanged. Two persisted results change:

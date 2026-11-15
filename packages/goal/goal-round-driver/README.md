@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/goal-round-driver
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-goal-round-driver` automatically continues an active goal in the same session while the agent is idle, continuation is armed, and the configured round allowance remains. Each round gives the model another turn toward the objective; only goal rounds that reach model history consume the allowance, and exhaustion records a blocker. The driver has no configuration: the goal defines the round limit, and `nhs-tool-goal` defines when repeated blocking stops continuation. Mount it with `nhs-goal` and `nhs-tool-goal` for unattended multi-round progress; omit it when each step requires human steering.

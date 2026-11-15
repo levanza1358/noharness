@@ -129,7 +129,6 @@
     "verify-skill-invocation-metadata": "tsx scripts/verify-skill-invocation-metadata.ts",
     "verify-upgrade-guides": "tsx scripts/verify-upgrade-guides.ts",
     "verify-translation-prompt": "tsx scripts/verify-translation-prompt.ts",
-    "verify-translation-pairing": "tsx scripts/verify-translation-pairing.ts",
     "test:docs": "tsx scripts/run-gates.ts doc-quick",
     "gen-translation-brief": "tsx scripts/gen-translation-brief.ts",
     "verify-doc-budgets": "tsx scripts/verify-doc-budgets.ts",

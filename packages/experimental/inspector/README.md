@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/experimental-inspector
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 Inspect one running nhs Host and its browser Clients in Chrome DevTools: Host and Client Console contexts, Host Sources and debugging, captured Host fetches, and a shared Cordis tree, with all CDP state in a Worker.

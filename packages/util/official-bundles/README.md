@@ -5,8 +5,6 @@ kind: "package-library"
 
 # @noharness/official-bundles
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `@noharness/official-bundles` holds the bundle package names the nhs installation decides on: which bundles each shipped profile starts with, which bundles it ships switched off, which official bundles install on request, which bundles earlier releases shipped and profiles drop, and which packages the plugin manager protects, hides, orders, or marks experimental. [`nhs-app-boot`](../../boot/app-boot/README.md) applies these lists when it loads a profile; the plugin manager, the CLI, Desktop, the image packer, and repository checks read them directly. The package holds data only, so changing a list leaves app-boot and the plugin manager untouched. Use it as a direct library dependency, not through `cordis.yml`.

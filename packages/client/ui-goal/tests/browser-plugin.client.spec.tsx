@@ -379,9 +379,9 @@ describe('GoalDock adapter', () => {
     const t = makeTranslate(ja, commonJa)
     const props = { useProjection, useGoalActivation, ...actions, t } as unknown as Parameters<typeof GoalDock>[0]
     const rendered = render(<GoalDock {...props} />)
-    expect(rendered.getByText('待继续的目标')).toBeTruthy()
-    expect(screen.getByRole('button', { name: '恢复目标' })).toBeTruthy()
-    expect(rendered.queryByRole('button', { name: '暂停目标' })).toBeNull()
+    expect(rendered.getByText(ja['phase.active.disarmed'])).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Resume goal' })).toBeTruthy()
+    expect(rendered.queryByRole('button', { name: 'Pause goal' })).toBeNull()
   })
 })
 

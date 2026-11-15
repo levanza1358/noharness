@@ -2,7 +2,7 @@
 import { spawnSync } from 'node:child_process'
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { dirname, join, resolve } from 'node:path'
+import { basename, dirname, join, resolve } from 'node:path'
 import { createRequire } from 'node:module'
 import { runInNewContext } from 'node:vm'
 import { describe, expect, it } from 'vitest'
@@ -24,6 +24,9 @@ const licenseNames = [
   'wasm/LICENSE_QCMS',
 ] as const
 
+/** `pnpm pack` runs a full pack lifecycle, which the default per-test timeout cuts short on a loaded host. */
+const PACK_TIMEOUT_MS = 120_000
+
 function run(command: string, args: string[], cwd: string, timeout: number): string {
   const result = spawnSync(command, args, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, timeout })
   expect(result.error).toBeUndefined()
@@ -34,10 +37,7 @@ function run(command: string, args: string[], cwd: string, timeout: number): str
 
 function runPnpm(args: string[], cwd: string, timeout: number): string {
   const entrypoint = process.env.npm_execpath
-  if (entrypoint === undefined || entrypoint === '') {
-    if (process.platform === 'win32') throw new Error('npm_execpath is required to run pnpm on Windows')
-    return run('pnpm', args, cwd, timeout)
-  }
+  if (entrypoint === undefined || entrypoint === '') return run('pnpm', args, cwd, timeout)
   return /\.[cm]?js$/iu.test(entrypoint)
     ? run(process.execPath, [entrypoint, ...args], cwd, timeout)
     : run(entrypoint, args, cwd, timeout)
@@ -48,16 +48,18 @@ describe('published document preview licenses', () => {
     expect(existsSync(pdfChunkPath)).toBe(true)
     const output = mkdtempSync(join(tmpdir(), 'nhs-document-preview-pack-'))
     try {
-      const packed = JSON.parse(runPnpm([
+      const [packed] = JSON.parse(runPnpm([
         'pack', '--json', '--pack-destination', output,
-      ], packageRoot, task.timeout)) as { filename: string; files: { path: string }[] }
+      ], packageRoot, PACK_TIMEOUT_MS)) as [{ filename: string; files: { path: string }[] }]
       expect(packed.files.map(file => file.path)).toContain('lib/client.js')
       expect(packed.files.map(file => file.path)).toContain('lib/client.pdf.js')
       expect(packed.files.map(file => file.path)).toContain('lib/client.frontmatter-fields.js')
       expect(packed.files.some(file => file.path.endsWith('pdfjs-NOTICES.txt'))).toBe(false)
 
-      const client = run('tar', ['-xOf', resolve(packageRoot, packed.filename), 'package/lib/client.js'], packageRoot, task.timeout)
-      const pdf = run('tar', ['-xOf', resolve(packageRoot, packed.filename), 'package/lib/client.pdf.js'], packageRoot, task.timeout)
+      const archive = resolve(output, basename(packed.filename))
+      expect(existsSync(archive)).toBe(true)
+      const client = run('tar', ['-xOf', archive, 'package/lib/client.js'], packageRoot, task.timeout)
+      const pdf = run('tar', ['-xOf', archive, 'package/lib/client.pdf.js'], packageRoot, task.timeout)
       expect([...client.matchAll(/require\.async\((["'`])(\.\/client[^"'`/]*\.js)\1\)/gu)].map(match => match[2]))
         .toEqual(['./client.frontmatter-fields.js', './client.pdf.js', './client.excel.js'])
       expect(client).not.toMatch(/\brequire\((["'`])\.\/client[^"'`/]*\.js\1\)/u)
@@ -66,7 +68,7 @@ describe('published document preview licenses', () => {
       expect(client).not.toContain('//! Bundled PDF.js license notices')
       expect(client).not.toContain('/pdfjs-dist/')
       expect(pdf).toContain('//! Bundled PDF.js license notices')
-      const excel = run('tar', ['-xOf', resolve(packageRoot, packed.filename), 'package/lib/client.excel.js'], packageRoot, task.timeout)
+      const excel = run('tar', ['-xOf', archive, 'package/lib/client.excel.js'], packageRoot, task.timeout)
       expect(excel).not.toMatch(/\brequire\((["'`])\.\/client[^"'`/]*\.js\1\)/u)
       expect(client).not.toContain('FortuneSheet')
       expect(excel).toContain('//! Bundled spreadsheet license notices')
@@ -77,7 +79,7 @@ describe('published document preview licenses', () => {
         const license = readFileSync(join(root, 'LICENSE'), 'utf8').trimEnd()
         expect(excel).toContain(license.split('\n').map(line => `// ${line}`).join('\n'))
       }
-      const frontmatter = run('tar', ['-xOf', resolve(packageRoot, packed.filename), 'package/lib/client.frontmatter-fields.js'], packageRoot, task.timeout)
+      const frontmatter = run('tar', ['-xOf', archive, 'package/lib/client.frontmatter-fields.js'], packageRoot, task.timeout)
       expect(frontmatter).not.toMatch(/\brequire\((["'`])\.\/client[^"'`/]*\.js\1\)/u)
       let frontmatterInitialized = false
       runInNewContext(frontmatter, { window: { __ModuleLoader__: { load: (registration: {
@@ -113,5 +115,5 @@ describe('published document preview licenses', () => {
     } finally {
       rmSync(output, { recursive: true, force: true })
     }
-  })
+  }, PACK_TIMEOUT_MS)
 })

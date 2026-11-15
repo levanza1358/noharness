@@ -113,7 +113,7 @@ it('clears notification cards and ignores old event failures when credentials ch
     await vi.advanceTimersByTimeAsync(3_000)
     expect(c.mock.remote.account.reportNotificationEvent).toHaveBeenCalledTimes(1)
     expect(c.mock.remote.account.getNotifications).toHaveBeenCalledTimes(2)
-    expect(log).toHaveBeenCalledWith('[deepseek-account] notification read failed; retaining cards and retrying on the next poll')
+    expect(log).toHaveBeenCalledWith('[noharness-account] notification read failed; retaining cards and retrying on the next poll')
   } finally { vi.useRealTimers() }
 }, 60_000)
 
@@ -139,7 +139,7 @@ it('keeps the notice without retrying its event across repeated signed-in frames
     expect(c.mock.remote.account.getNotifications).toHaveBeenCalledOnce()
     expect(c.mock.remote.account.reportNotificationEvent).toHaveBeenCalledOnce()
     expect(log).toHaveBeenCalledWith(
-      '[deepseek-account] notification event report failed; keeping local state without retry', { event: 'displayed' })
+      '[noharness-account] notification event report failed; keeping local state without retry', { event: 'displayed' })
   } finally { vi.useRealTimers() }
 }, 60_000)
 
@@ -258,19 +258,19 @@ it('refreshes consumed notification content on a locale change without reading t
   const id = '4c1b0000-0000-4000-8000-000000000000'
   c.mock.remote.account.getNotifications.mockResolvedValue(ok(bonus(id)))
   c.mock.remote.account.reportNotificationEvent.mockResolvedValue(ok(true))
-  c.mock.remote.account.getNotificationContent.mockResolvedValue(ok(notification(id, { title: '公告', body: '新的中文内容' })))
+  c.mock.remote.account.getNotificationContent.mockResolvedValue(ok(notification(id, { title: 'Product news', body: 'New Chinese content' })))
   c.mock.streams.push('account/watch', { type: 'snapshot', state: stored })
   await vi.waitFor(() => { expect(notificationOperations(c).hooks.notices.getSnapshot()?.[0]?.id).toBe(id) })
   notificationOperations(c).shown(id as AccountNotificationId)
   await vi.waitFor(() => { expect(c.mock.remote.account.reportNotificationEvent).toHaveBeenCalledTimes(1) })
   const reads = c.mock.remote.account.getNotifications.mock.calls.length
   c.mock.remote.settings.mutate.mockResolvedValue(ok({
-    ns: 'locale', autoGenerate: false, schema: { type: 'object' }, value: { preference: 'zh' },
+    ns: 'locale', autoGenerate: false, schema: { type: 'object' }, value: { preference: 'de' },
     applies: 'live', secrets: [], revision: 1,
   }))
-  c.ctx.locale.setLocale('en')
-  await vi.waitFor(() => { expect(notificationOperations(c).hooks.notices.getSnapshot()?.[0]?.body).toBe('新的中文内容') })
-  expect(c.mock.remote.account.getNotificationContent).toHaveBeenCalledWith( id, expect.objectContaining({ locale: 'zh' }))
+  c.ctx.locale.setLocale('de')
+  await vi.waitFor(() => { expect(notificationOperations(c).hooks.notices.getSnapshot()?.[0]?.body).toBe('New Chinese content') })
+  expect(c.mock.remote.account.getNotificationContent).toHaveBeenCalledWith( id, expect.objectContaining({ locale: 'de' }))
   expect(c.mock.remote.account.getNotifications).toHaveBeenCalledTimes(reads)
   expect(c.mock.remote.account.reportNotificationEvent).toHaveBeenCalledTimes(1)
 }, 60_000)
@@ -284,11 +284,11 @@ it('retains notification content when the localization RPC is refused', async ({
   c.mock.streams.push('account/watch', { type: 'snapshot', state: stored })
   await c.flush()
   c.mock.remote.settings.mutate.mockResolvedValue(ok({
-    ns: 'locale', autoGenerate: false, schema: { type: 'object' }, value: { preference: 'zh' },
+    ns: 'locale', autoGenerate: false, schema: { type: 'object' }, value: { preference: 'de' },
     applies: 'live', secrets: [], revision: 1,
   }))
-  c.ctx.locale.setLocale('en')
-  await vi.waitFor(() => { expect(output).toHaveBeenCalledWith('[deepseek-account] notification content read failed') })
+  c.ctx.locale.setLocale('de')
+  await vi.waitFor(() => { expect(output).toHaveBeenCalledWith('[noharness-account] notification content read failed') })
   expect(notificationOperations(c).hooks.notices.getSnapshot()?.[0]?.body).toBe('Awarded 5.00')
 }, 60_000)
 

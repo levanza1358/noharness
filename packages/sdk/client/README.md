@@ -5,8 +5,6 @@ kind: "package-library"
 
 # @noharness/sdk-client
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-sdk-client` lets TypeScript programs drive a complete NoHarness runtime over stdio JSON-RPC. Use `run()` for ordinary text, supported slash commands, and image content blocks, and `onNotification` to observe its notifications. `HarnessClient` provides direct protocol access. Callers may provide `nhsBin`; otherwise the client resolves the same-version `@noharness/cli` executable. The client owns the subprocess, reports typed failures, and reaps it on `close()` or `await using`.

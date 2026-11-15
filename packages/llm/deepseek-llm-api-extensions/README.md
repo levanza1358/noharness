@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/deepseek-llm-api-extensions
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 Provider-specific registry for additive top-level fields on official DeepSeek LLM API requests. `DeepSeekLlmApiExtensionRegistry` registers `ctx.deepseekLlmApiExtensions`; contributor plugins claim one declaration-merged field, and `nhs-llm-deepseek` prepares the current contributions after serializing its base request. Use it when a plugin must add a validated provider-specific field without changing the base adapter.

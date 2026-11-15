@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/client-ui-entry-customization
 
-English | [中文](README.zh.md)
-
 Desktop product events use the optional [product analytics service](../product-analytics/README.md); ordinary Web interactions are excluded.
 
 ## Summary

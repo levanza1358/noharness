@@ -5,8 +5,6 @@ description: "`NHS_BUNDLED_OFFICE_SKILLS` and the `office-skills/` resource dire
 
 # Office skills load from the packaged assets
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 The Web and SDK profiles no longer set `assetRoot` on the `skill-office` row, so [`@noharness/skill-office`](../../../../packages/skill/skill-office/README.md) reads the Office skills from its packaged `assets/` in every deployment:

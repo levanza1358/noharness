@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/subagent-nhs-sdk
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-subagent-nhs-sdk` runs each delegated task in a fresh NoHarness subprocess with its own profile, session, model route, and tools. The parent provides the task and working directory, while each child uses its configured runtime and remains isolated from the parent conversation. The parent receives the child's final assistant text or a safe error; intermediate messages and tool traffic stay inside the child process. Choose this backend when delegation needs a complete Harness runtime rather than shared in-process state, and accept the cost of starting a new process for every run.

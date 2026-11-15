@@ -5,8 +5,6 @@ kind: "package-bundle"
 
 # `@noharness/sdk-app`
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 The SDK stdio application as a `nhs` profile bundle over [`nhs-base`](../base/README.md). It inherits the base's disabled module-HMR policy; its patch mounts an app-owned zero-option command provider, and starts [`nhs-sdk-jsonrpc-server`](../../sdk/server/README.md) only after that provider accepts the invocation. `nhs --profile sdk --help` therefore writes help and exits without claiming stdin or stdout. The standalone [`sdk-minimal`](../sdk-minimal/README.md) bundle reuses the same startup provider with its own profile name.

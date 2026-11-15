@@ -5,8 +5,6 @@ description: "viewProfilePackage from @noharness/plugin-manager/operations requi
 
 # `viewProfilePackage` takes the fields it prints
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 `viewProfilePackage(dir, spec, options)` from `@noharness/plugin-manager/operations` used to print a fixed field list: `name`, `version`, `description`, and `nhs`. `PackageViewOptions` now requires `fields`, the manifest or registry fields `pnpm view` prints, so the same lookup reads version lists and per-version peers. Code that calls `viewProfilePackage` directly no longer type-checks without `fields`, and a JavaScript caller that omits it runs `pnpm view` with no fields.

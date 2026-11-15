@@ -211,10 +211,10 @@ describe('user Content Factory', () => {
       `… truncated, ${JSON.stringify(block, null, 2).length} characters total`,
     )
     act(() => { b.locale.setLocale('en') })
-    expect(view.getByText('参照セッション · Alpha、Beta')).toBeTruthy()
-    expect(view.getByRole('button', { name: '▾ 追加のコンテンツブロック' })).toBeTruthy()
+    expect(view.getByText(ja['message.referenceSummary'].replace('{labels}', 'Alpha, Beta'))).toBeTruthy()
+    expect(view.getByRole('button', { name: '▾ ' + ja['message.extraBlock'] })).toBeTruthy()
     expect(view.container.querySelector('pre')?.textContent).toContain(
-      `… 省略表示、全${JSON.stringify(block, null, 2).length}文字`,
+      ja['json.truncated'].replace('{total}', String(JSON.stringify(block, null, 2).length)),
     )
   })
 

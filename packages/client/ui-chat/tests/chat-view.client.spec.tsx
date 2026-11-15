@@ -4053,7 +4053,7 @@ describe('ChatView', () => {
       expect(screen.getByRole('dialog', { name: 'Couldn’t open file' })).toBeTruthy()
     })
     expect(screen.getByRole('dialog', { name: 'Couldn’t open file' }).textContent).toContain('xdg-open is not available')
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: '再試行' })) })
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: commonJa['retry'] })) })
     await waitFor(() => {
       expect(screen.queryByRole('dialog')).toBeNull()
     })
@@ -4072,7 +4072,7 @@ describe('ChatView', () => {
     await waitFor(() => {
       expect(screen.getByRole('dialog', { name: 'Couldn’t open file' }).textContent).toContain('permission denied')
     })
-    fireEvent.click(screen.getByRole('button', { name: 'キャンセル' }))
+    fireEvent.click(screen.getByRole('button', { name: commonJa['cancel'] }))
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(openFile).toHaveBeenCalledTimes(1)
   })
@@ -4103,8 +4103,8 @@ describe('ChatView', () => {
     await waitFor(() => {
       expect(screen.getByRole('dialog', { name: 'Couldn’t open file' }).textContent).toContain('first refusal')
     })
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: '再試行' })) })
-    fireEvent.click(screen.getByRole('button', { name: 'キャンセル' }))
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: commonJa['retry'] })) })
+    fireEvent.click(screen.getByRole('button', { name: commonJa['cancel'] }))
     expect(screen.queryByRole('dialog')).toBeNull()
     await act(async () => { rejectRetry(new Error('late refusal')) })
     expect(screen.queryByRole('dialog')).toBeNull()
@@ -4124,8 +4124,8 @@ describe('ChatView', () => {
     await waitFor(() => {
       expect(screen.getByRole('dialog', { name: 'Couldn’t open file' }).textContent).toContain('first refusal')
     })
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: '再試行' })) })
-    fireEvent.click(screen.getByRole('button', { name: 'キャンセル' }))
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: commonJa['retry'] })) })
+    fireEvent.click(screen.getByRole('button', { name: commonJa['cancel'] }))
     await act(async () => { resolveRetry() })
     expect(screen.queryByRole('dialog')).toBeNull()
   })

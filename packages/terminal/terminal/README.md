@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/terminal
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-terminal` provides persistent, owner-scoped terminal sessions to the harness: a session keeps shell or REPL state across tool calls, and every operation is fenced to the exact agent that created it. It provides the `ctx.terminals` service, which mints opaque session ids, routes session creation through registered backends, and waits for quiescent cleanup when an owner or the service disposes. It defines no terminal mechanics itself: backends such as the shipped `nhs-terminal-bash` own spawning and readiness, and the model-facing tools in `nhs-tool-terminal` own presentation. Sessions are process-local: they do not survive a harness restart.

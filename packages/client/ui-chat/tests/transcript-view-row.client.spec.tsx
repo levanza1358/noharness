@@ -75,7 +75,7 @@ describe('TranscriptViewRow', () => {
   it.each([
     [en, 'Work details', 'When to Collapse Work Details',
       'Choose when to automatically collapse work details', 'On completion', 'On next message'],
-    [ja, '工作步骤展示', '工作步骤收起时机', '选择何时自动收起工作步骤', '回答结束后', '下次有新消息时'],
+    [ja, ja['settings.transcript.title'], ja['settings.collapse.title'], ja['settings.collapse.description'], ja['settings.collapse.completion'], ja['settings.collapse.nextInput']],
   ] as const)('selects either collapse timing independently with localized labels (%s)', (dictionary, detailTitle, title, description, completion, nextInput) => {
     const b = mount('standard', dictionary)
     const titleElement = screen.getByText(title)
@@ -99,10 +99,10 @@ describe('TranscriptViewRow', () => {
 
   it.each([
     [en, 'Replies After Collapse', 'Choose which assistant replies stay visible when work details collapse', 'All replies', 'Final answer only'],
-    [ja, '收起后显示的回复', '工作步骤收起后，保留哪些助手回复', '全部回复', '仅最终回答'],
+    [ja, ja['settings.foldedReplies.title'], ja['settings.foldedReplies.description'], ja['settings.foldedReplies.all'], ja['settings.foldedReplies.final']],
   ] as const)('selects which replies stay visible below collapse timing (%s)', (dictionary, title, description, all, final) => {
     const b = mount('standard', dictionary)
-    const timingTitle = dictionary === en ? 'When to Collapse Work Details' : '工作步骤收起时机'
+    const timingTitle = dictionary === en ? 'When to Collapse Work Details' : ja['settings.collapse.title']
     expect(screen.getByText(timingTitle).compareDocumentPosition(screen.getByText(title)) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0)
     expect(screen.getByText(description)).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: all }))
@@ -180,20 +180,20 @@ describe('TranscriptViewRow', () => {
     expect(screen.queryByRole('menuitem', { name: 'Compact' })).toBeNull()
   })
 
-  it('shows all four work-detail values in Chinese', () => {
+  it('shows all four work-detail values in Japanese', () => {
     const b = mount('compact', ja)
-    expect(screen.getByText('工作步骤展示')).toBeDefined()
-    expect(screen.getByText('选择希望看到多少工具调用细节')).toBeDefined()
-    fireEvent.click(screen.getByRole('button', { name: '简洁' }))
-    fireEvent.click(screen.getByRole('menuitem', { name: '标准' }))
+    expect(screen.getByText(ja['settings.transcript.title'])).toBeDefined()
+    expect(screen.getByText(ja['settings.transcript.description'])).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: ja['settings.transcript.compact'] }))
+    fireEvent.click(screen.getByRole('menuitem', { name: ja['settings.transcript.standard'] }))
     expect(b.setTranscriptView).toHaveBeenLastCalledWith('standard')
-    fireEvent.click(screen.getByRole('button', { name: '标准' }))
-    fireEvent.click(screen.getByRole('menuitem', { name: '详细' }))
+    fireEvent.click(screen.getByRole('button', { name: ja['settings.transcript.standard'] }))
+    fireEvent.click(screen.getByRole('menuitem', { name: ja['settings.transcript.detailed'] }))
     expect(b.setTranscriptView).toHaveBeenLastCalledWith('detailed')
-    fireEvent.click(screen.getByRole('button', { name: '详细' }))
-    fireEvent.click(screen.getByRole('menuitem', { name: '完全展开' }))
+    fireEvent.click(screen.getByRole('button', { name: ja['settings.transcript.detailed'] }))
+    fireEvent.click(screen.getByRole('menuitem', { name: ja['settings.transcript.verbose'] }))
     expect(b.setTranscriptView).toHaveBeenLastCalledWith('verbose')
-    expect(screen.getByRole('button', { name: '完全展开' })).toBeDefined()
+    expect(screen.getByRole('button', { name: ja['settings.transcript.verbose'] })).toBeDefined()
   })
 
   it('returns focus before publishing a mode change without refocusing after the menu closes', async () => {
@@ -243,7 +243,7 @@ describe('LinkOpeningRow', () => {
 
   it.each([
     [en, 'Open chat links in', 'Choose where to open web links', 'In-App Sidebar', 'Default Browser'],
-    [ja, '网页链接默认打开方式', '对话中网页链接的打开位置', '应用内侧边栏', '默认浏览器'],
+    [ja, ja['settings.links.title'], ja['settings.links.description'], ja['settings.links.sidebar'], ja['settings.links.newTab']],
   ] as const)('selects either destination using localized labels (%s)', (dictionary, title, description, sidebar, newTab) => {
     const b = mount('compact', dictionary)
     const source = createSnapshotStore<LinkOpening>('sidebar')

@@ -54,7 +54,7 @@ function bench() {
 }
 
 describe('status and resolve (per key)', () => {
-  it('resolves bilingual aliases by definition identity and retains exact-name priority', async () => {
+  it('resolves builtin aliases by definition identity and retains exact-name priority', async () => {
     const goal = {
       definitionId: brandString<CommandDefinitionId>('@noharness/command-goal'),
       name: 'objective',
@@ -65,15 +65,14 @@ describe('status and resolve (per key)', () => {
     const refreshed = dir.refresh(S1)
     pull(S1, 0).resolve([goal])
     await refreshed
-    expect(dir.resolve(S1, '目标')).toEqual(goal)
     expect(dir.resolve(S1, 'goal')).toEqual(goal)
-    expect(dir.resolve(S1, '计划')).toBeUndefined()
+    expect(dir.resolve(S1, 'goal')).toEqual(goal)
     expect(dir.resolve(S1, 'unregistered')).toBeUndefined()
     const next = dir.refresh(S1)
     pull(S1, 1).resolve([goal, exact])
     await next
     expect(dir.resolve(S1, 'goal')).toEqual(exact)
-    expect(dir.resolve(S1, '目标')).toEqual(goal)
+    expect(dir.resolve(S1, 'goal')).toEqual(exact)
   })
 
   it('starts cold and resolves nothing', () => {

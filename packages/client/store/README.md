@@ -4,8 +4,6 @@ kind: "package-library"
 ---
 # @noharness/client-store
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 React-free observable and snapshot-store primitives shared by Client controllers and renderer adapters. The package owns synchronous and animation-frame publication, Immer-backed updates, shallow equality, and optional browser persistence; React hook construction remains in `@noharness/client-ui-renderer`. Use it when Client state must publish stable snapshots without depending on React.

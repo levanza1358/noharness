@@ -229,15 +229,16 @@ it.each(['primary', 'secondary'] as const)('reports non-dismiss %s actions and k
   const onDismiss = vi.fn()
   const onOpenAccount = vi.fn()
   const onCtaClicked = vi.fn()
-  const content = (chinese: boolean) => notification('notice', {
-    title: chinese ? '产品公告' : 'Product news', body: chinese ? '新功能已上线' : 'New features',
+  const content = (localized: boolean) => notification('notice', {
+    title: localized ? 'Produktneuigkeiten' : 'Product news',
+    body: localized ? 'Neue Funktionen sind live' : 'New features',
     actions: [
-      { label: chinese ? '查看余额' : 'View balance', style, target: { type: 'app_route', name: 'account' } },
-      { label: chinese ? '知道了' : 'Got it', style, target: { type: 'dismiss' } },
+      { label: localized ? 'Kontostand ansehen' : 'View balance', style, target: { type: 'app_route', name: 'account' } },
+      { label: localized ? 'Verstanden' : 'Got it', style, target: { type: 'dismiss' } },
     ],
   })
-  const tree = (chinese: boolean) => <>
-    <AccountNoticeStack closeLabel="Close" notices={[content(chinese)]}
+  const tree = (localized: boolean) => <>
+    <AccountNoticeStack closeLabel="Close" notices={[content(localized)]}
       onShown={onShown} onCtaClicked={onCtaClicked} onDismiss={onDismiss} onOpenAccount={onOpenAccount} />
   </>
   const view = render(tree(false))
@@ -249,11 +250,11 @@ it.each(['primary', 'secondary'] as const)('reports non-dismiss %s actions and k
   expect(onCtaClicked).toHaveBeenCalledExactlyOnceWith('notice')
   expect(onDismiss).not.toHaveBeenCalled()
   view.rerender(tree(true))
-  expect(screen.getByRole('button', { name: '查看余额' })).toBe(button)
+  expect(screen.getByRole('button', { name: 'Kontostand ansehen' })).toBe(button)
   expect(document.activeElement).toBe(button)
   await presentFrames()
   expect(onShown).toHaveBeenCalledExactlyOnceWith('notice')
-  fireEvent.click(screen.getByRole('button', { name: '知道了' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Verstanden' }))
   expect(onDismiss).toHaveBeenCalledExactlyOnceWith('notice')
   expect(onCtaClicked).toHaveBeenCalledOnce()
 })

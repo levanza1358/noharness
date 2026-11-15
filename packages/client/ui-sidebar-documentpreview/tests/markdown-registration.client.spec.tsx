@@ -89,7 +89,7 @@ describe('Markdown implementation registration', () => {
     const t = locale.bind('documentMarkdown')
     await act(async () => { locale.setLocale('en') })
     expect(locale.bind('documentMarkdown')).toBe(t)
-    expect(view.getByRole('button', { name: '复制' })).toBeDefined()
+    expect(view.getByRole('button', { name: 'Copy' })).toBeDefined()
     expect(useTabInfo).not.toHaveBeenCalled()
 
     await feature.dispose()
@@ -99,6 +99,6 @@ describe('Markdown implementation registration', () => {
     expect(t('code.copy')).toBe('code.copy')
     await runtime.mount({ inject: ['slots', 'locale', 'documentPreviews'], apply })
     expect(previews.getSnapshot()).toHaveLength(1)
-    expect(view.getByRole('button', { name: '复制' })).toBeDefined()
+    expect(view.getByRole('button', { name: 'Copy' })).toBeDefined()
   })
 })

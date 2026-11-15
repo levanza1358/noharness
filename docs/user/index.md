@@ -7,5 +7,3 @@ head:
 ---
 
 # NoHarness
-
-English | [中文](index.zh.md)

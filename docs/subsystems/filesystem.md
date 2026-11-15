@@ -1,7 +1,5 @@
 # Filesystem
 
-English | [中文](filesystem.zh.md)
-
 The optional filesystem capability composes these roles: [nhs-fs](../../packages/fs/fs) owns `ctx.fs` and guarded file mutations, [nhs-fs-local](../../packages/fs/fs-local) implements local disk, [nhs-fs-observation-policy](../../packages/fs/fs-observation-policy) records observed presence or absence and adds freshness rules through events rather than a service, and [nhs-tool-fs](../../packages/fs/tool-fs) directly executes model-facing read/write/edit calls and renders windows. It is outside the agent-loop spine; alternate backends do not change policy or tool schemas. The pure [nhs-fs-patch](../../packages/fs/fs-patch/README.md) library supplies patch parsing and text application.
 
 `nhs-fs-observation-policy` is optional. Without it, the `FileSystem` Service Definition, a provider, and the `nhs-tool-fs` Consumer form the complete, unconstrained filesystem seam: `write` unconditionally creates or overwrites, and `edit` unconditionally replaces literal text. The policy plugin changes these operations by deciding the `fs/*` waterfalls. Removing it does not break the tool because the tool calls `ctx.fs` and dispatches events; it does not call policy methods. The shipped compositions run without it: `nhs-base` lists the `fs-observation-policy` row `disabled: true`, and a deployment that wants read-before-write/edit sets that row to `disabled: false`.

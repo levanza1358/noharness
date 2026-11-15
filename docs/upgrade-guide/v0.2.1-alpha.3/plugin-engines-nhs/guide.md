@@ -5,8 +5,6 @@ description: "Plugin compatibility checks read engines.nhs before NHS peerDepend
 
 # Plugin compatibility reads `engines.nhs` first
 
-English | [中文](guide.zh.md)
-
 ## Change
 
 In v0.2.1-alpha.3, installation and profile startup judged a plugin or bundle only by its `peerDependencies` on `@noharness/cli` and `@noharness/*`, and ignored `engines.nhs`. In the next release, an own `engines.nhs` range decides alone and those peers are ignored; the peer rule applies only when `engines.nhs` is absent. `workspace:` values are valid only in peers; in `engines.nhs` they are incompatible. A non-object `engines` or a non-string `engines.nhs` makes the manifest unreadable for compatibility, which refuses the package. Plugin authors whose package declares `engines.nhs`, or declares `engines` as something other than an object, are affected.

@@ -87,7 +87,7 @@ describe('OpenInAppToast', () => {
 
   it('shows the other-device confirmation in Chinese', () => {
     mount({ kind: 'opened', seq: 1 }, ja)
-    expect(screen.getByRole('alert').textContent).toBe('已在其它设备打开')
+    expect(screen.getByRole('alert').textContent).toBe('Opened on another device')
   })
 
   it.each([

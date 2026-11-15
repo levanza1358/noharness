@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Registration: the General row, the settings section, the new-session chip,
  * and the header label all come from one apply, and each defers until the slot
  * it fills has been declared. A pushed settings change refreshes the surfaces
@@ -366,7 +366,7 @@ describe('ui-agent-preset apply', () => {
     expect(section.component).toBe(AgentPresetSection)
     expect(section.options).toMatchObject({ id: 'agent-presets', order: 20 })
     // The nav label is a locale-following thunk; owners resolve it at read time.
-    expect(resolveSlotLabel(section.options.label)).toBe('Agent 预设')
+    expect(resolveSlotLabel(section.options.label)).toBe('Agent presets')
   })
 
   it('registers into a declaration that arrives after apply', async () => {
@@ -533,8 +533,8 @@ describe('ui-agent-preset apply', () => {
     expect(seat.hooks.agentPresetSeat.getSnapshot().current).toBe('standard')
 
     // The chip opens on the deployment default, and the setting it comes from
-    // lives on another screen: without this the next session — the very one
-    // the setting governs — would be composed from the previous default until
+    // lives on another screen: without this the next session â€” the very one
+    // the setting governs â€” would be composed from the previous default until
     // a reload.
     // An unrelated namespace moves nothing: the chip re-reads on its own
     // setting, not on every settings write in the process.
@@ -1068,8 +1068,8 @@ describe('ui-agent-preset apply', () => {
     await section.load()
     section.startCreatorDraft?.()
 
-    // The pick is staged on the chip's own controller — the session the
-    // workspace start produces is what the stage lands on — and exactly one
+    // The pick is staged on the chip's own controller â€” the session the
+    // workspace start produces is what the stage lands on â€” and exactly one
     // new-session flow began.
     expect(section.startCreatorDraft).toBeDefined()
     expect(seat.hooks.agentPresetSeat.getSnapshot().current).toBe('cordis')
@@ -1165,7 +1165,7 @@ describe('ui-agent-preset apply', () => {
 
     // The chip mounts with the flow's session, so its roster load can land
     // AFTER the stage was consumed; the session's own composition is what
-    // the display must keep — not the deployment default.
+    // the display must keep â€” not the deployment default.
     state.byId['s1'] = {
       id: 's1', blank: true, projectionValues: { agentPreset: refused ? null : 'cordis' },
     }

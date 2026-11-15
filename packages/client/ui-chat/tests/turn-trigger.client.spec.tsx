@@ -26,7 +26,7 @@ function trigger(source: unknown): ChatNode<'turn-trigger'> {
 describe('Turn trigger notices', () => {
   it.each([
     [en, 'Requested to continue generation'],
-    [ja, '已请求继续生成'],
+    [ja, ja['message.continuation.requested']],
   ])('shows an empty retry as a compact continuation receipt', (locale, title) => {
     const node = trigger({ kind: 'retry' })
     node.data.content = []
@@ -63,7 +63,7 @@ describe('Turn trigger notices', () => {
 
   it.each([
     [en, 'Task message received'],
-    [ja, '收到任务消息'],
+    [ja, ja['message.trigger.agent']],
   ])('presents Team relays as Agent messages while retaining the sender name', (locale, title) => {
     const node = trigger({ kind: 'agent-message', form: 'relay', senderSessionId: 'sender' })
     node.data.content = [{ type: 'text', text: 'Team message from reviewer-2:' }, { type: 'text', text: 'Ready.' }]
@@ -76,7 +76,7 @@ describe('Turn trigger notices', () => {
 
   it.each([
     { locale: en, title: 'Automation task' },
-    { locale: ja, title: '自动化任务' },
+    { locale: ja, title: ja['message.trigger.schedule'] },
   ])('uses the automation task label $title and shared clock', ({ locale, title }) => {
     const node = trigger({ kind: 'schedule' })
     const view = render(<TurnTriggerNodeView node={node} t={makeTranslate(locale)} />)
@@ -88,12 +88,12 @@ describe('Turn trigger notices', () => {
   })
 
   it.each([
-    ['completed', 'Subagent run completed', '子智能体已完成任务'],
-    ['aborted', 'Subagent run stopped', '子智能体任务已停止'],
-    ['error', 'Subagent run failed', '子智能体执行失败'],
-    ['max-tokens', 'Subagent reached the token limit', '子智能体已达 token 上限'],
-    ['refusal', 'Subagent declined the task', '子智能体拒绝执行'],
-    ['backend-specific', 'Subagent run ended unexpectedly', '子智能体异常结束'],
+    ['completed', en['message.trigger.subagent.completed'], ja['message.trigger.subagent.completed']],
+    ['aborted', en['message.trigger.subagent.aborted'], ja['message.trigger.subagent.aborted']],
+    ['error', en['message.trigger.subagent.error'], ja['message.trigger.subagent.error']],
+    ['max-tokens', en['message.trigger.subagent.maxTokens'], ja['message.trigger.subagent.maxTokens']],
+    ['refusal', en['message.trigger.subagent.refusal'], ja['message.trigger.subagent.refusal']],
+    ['backend-specific', en['message.trigger.subagent.unknown'], ja['message.trigger.subagent.unknown']],
   ])('presents only the recorded %s outcome in both locales', (stopReason, english, chinese) => {
     const source = { kind: 'subagent-settled', stopReason, senderSessionId: 'child-1' }
     const node = trigger(source)

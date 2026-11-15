@@ -147,7 +147,7 @@ describe('CodeBody', () => {
 
   it('passes localized controls and ignores byte contents outside its loading mode', () => {
     const view = render(<CodeBody {...props(contents(['const a = 1'], true), { t: key => ja[key as keyof typeof ja] })} />)
-    expect(view.getByRole('button', { name: '复制' })).toBeTruthy()
+    expect(view.getByRole('button', { name: ja.copy })).toBeTruthy()
     view.rerender(<CodeBody {...props({ kind: 'bytes', data: new TextEncoder().encode('a') })} />)
     expect(view.container.querySelector('.md-code-block')).toBeNull()
   })

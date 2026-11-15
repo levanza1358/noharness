@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/shell-env
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 `nhs-shell-env` provides the trusted `NHS_*` environment that every model shell call — bash or pwsh — runs with: built-in facts such as `NHS_HOME`, `NHS_SHELL=1`, the agent's `NHS_SESSION_ID`, and the launched profile's `NHS_PROFILE` and `NHS_PROFILE_DIR`. Plugin authors can register their own facts with declared keys, collected per execution and disposed with their plugin; duplicate ownership or undeclared runtime keys fail loudly instead of silently overwriting. The registry changes nothing else the model sees — the shell tools own their own schemas and prompts. Choose it in any composition that mounts a model shell tool; configuration only picks the Harness home directory.

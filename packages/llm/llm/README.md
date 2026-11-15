@@ -5,8 +5,6 @@ kind: "package-reference"
 
 # @noharness/llm
 
-English | [中文](README.zh.md)
-
 ## Summary
 
 Use `@noharness/llm` to stream model calls through configured provider adapters, discover models, and resolve model capabilities and call defaults. Callers must keep all model-visible input reconstructable from the session log. Loop-built requests arrive deep-frozen, so extensions and adapters cannot rewrite them. Each stream is one provider attempt: provider-specific translation stays with its adapter, while the optional `@noharness/llm-retry` package re-runs failed requests. Streams always end with a terminal result, so callers can handle success, failure, and cancellation consistently.

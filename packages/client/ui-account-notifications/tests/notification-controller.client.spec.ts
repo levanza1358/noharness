@@ -34,7 +34,7 @@ function setup() {
   const stacks: (readonly AccountNotice[])[] = []
   const published: (AccountNotice | null)[] = []
   const controller = createNotificationController({
-    ...TIMING, locale: 'en', read, readContent,
+    ...TIMING, locale: 'de', read, readContent,
     reportEvent: (id, event) => ({ displayed: displayed, cta_clicked: clicked, dismissed })[event](id),
     publish: (notices) => { stacks.push(notices); published.push(notices[0] ?? null) },
   })
@@ -129,7 +129,7 @@ it('does not resume polling after sign-out while a list reply is refreshing lang
   await controller.setLocale('en')
   response.resolve(batch('first'))
   await vi.advanceTimersByTimeAsync(0)
-  expect(readContent).toHaveBeenCalledWith('first', 'zh')
+  expect(readContent).toHaveBeenCalledWith('first', 'en')
   controller.end()
   content.resolve(notification('first'))
   await vi.advanceTimersByTimeAsync(TIMING.pollIntervalMs * 2)
@@ -544,11 +544,11 @@ it('refreshes a consumed card in place on language changes without another list 
     await vi.advanceTimersByTimeAsync(0)
     controller.shown('first' as AccountNotificationId)
     await vi.advanceTimersByTimeAsync(0)
-    const actions = [{ label: '知道了', style: 'secondary', target: { type: 'dismiss' } }] as const
-    readContent.mockResolvedValue(notification('first', { title: '通知', body: '新的中文内容', actions }))
+    const actions = [{ label: 'Got it', style: 'secondary', target: { type: 'dismiss' } }] as const
+    readContent.mockResolvedValue(notification('first', { title: 'Notice', body: 'Refreshed German content', actions }))
     await controller.setLocale('en')
-    expect(readContent).toHaveBeenCalledExactlyOnceWith('first', 'zh')
-    expect(latest()).toMatchObject({ id: 'first', title: '通知', body: '新的中文内容', actions })
+    expect(readContent).toHaveBeenCalledExactlyOnceWith('first', 'en')
+    expect(latest()).toMatchObject({ id: 'first', title: 'Notice', body: 'Refreshed German content', actions })
     expect(read).toHaveBeenCalledTimes(1)
     controller.shown('first' as AccountNotificationId)
     await vi.advanceTimersByTimeAsync(0)
@@ -567,12 +567,12 @@ it('ignores an earlier language response after a later language change', async (
     controller.begin()
     await vi.advanceTimersByTimeAsync(0)
     readContent.mockReturnValueOnce(first.promise)
-    const changing = controller.setLocale('en')
-    readContent.mockResolvedValueOnce(notification('first', { body: 'Latest English content' }))
+    const changing = controller.setLocale('fr')
+    readContent.mockResolvedValueOnce(notification('first', { body: 'Latest German content' }))
     await controller.setLocale('en')
-    first.resolve(notification('first', { body: '过时的中文内容' }))
+    first.resolve(notification('first', { body: 'Stale German content' }))
     await changing
-    expect(latest()?.body).toBe('Latest English content')
+    expect(latest()?.body).toBe('Latest German content')
   } finally { first.resolve(null); controller.end() }
 })
 
@@ -594,7 +594,7 @@ it.each(['dismiss', 'sign-out', 'account-change'] as const)('does not restore co
       controller.begin()
       await Promise.resolve()
     }
-    response.resolve(notification('first', { body: '迟到的内容' }))
+    response.resolve(notification('first', { body: 'Late content' }))
     await changing
     expect(latest()?.id ?? null).toBe(change === 'account-change' ? 'second' : null)
   } finally { response.resolve(null); controller.end() }
@@ -625,11 +625,11 @@ it('localizes notifications returned by a list request started before the langua
     controller.begin()
     await controller.setLocale('en')
     expect(readContent).not.toHaveBeenCalled()
-    readContent.mockResolvedValueOnce(notification('first', { body: '当前语言内容' }))
+    readContent.mockResolvedValueOnce(notification('first', { body: 'Current locale content' }))
     response.resolve(batch('first', null))
     await vi.advanceTimersByTimeAsync(0)
-    expect(readContent).toHaveBeenCalledExactlyOnceWith('first', 'zh')
-    expect(latest()?.body).toBe('当前语言内容')
+    expect(readContent).toHaveBeenCalledExactlyOnceWith('first', 'en')
+    expect(latest()?.body).toBe('Current locale content')
   } finally { response.resolve(null); controller.end() }
 })
 
@@ -643,13 +643,13 @@ it('keeps localized copy while an older list response refreshes other notificati
     await vi.advanceTimersByTimeAsync(0)
     read.mockReturnValueOnce(response.promise)
     const refreshing = controller.refresh()
-    readContent.mockResolvedValue(notification('first', { body: '新的中文内容' }))
+    readContent.mockResolvedValue(notification('first', { body: 'Refreshed German content' }))
     await controller.setLocale('en')
     const count = published.length
     response.resolve(batch('first', null))
     await refreshing
-    expect(latest()?.body).toBe('新的中文内容')
-    expect(published.slice(count).every(notice => notice?.body === '新的中文内容')).toBe(true)
+    expect(latest()?.body).toBe('Refreshed German content')
+    expect(published.slice(count).every(notice => notice?.body === 'Refreshed German content')).toBe(true)
   } finally { response.resolve(null); controller.end() }
 })
 

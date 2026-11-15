@@ -358,8 +358,8 @@ describe('scenario H: the command chip deletes whole', () => {
     b.type(`/${name}`)
     await b.space()
     expect(b.shell.snapshot.phase).toBe('claimed')
-    b.append('this is the goal')
-    for (let i = 0; i < 5; i++) {
+    b.append('goal content')
+    for (let i = 0; i < 'goal content'.length + 1; i++) {
       const { end } = b.shell.caretSpan()
       b.erase(end - 1, end)
     }
@@ -381,8 +381,8 @@ describe('scenario H: the command chip deletes whole', () => {
     b.type('/goal')
     await vi.waitFor(() => { expect(b.controller.menu.getSnapshot().open).toBe(true) })
     await b.space()
-    b.append('release')
-    for (let i = 0; i < 3; i++) {
+    b.append('goal content')
+    for (let i = 0; i < 'goal content'.length + 1; i++) {
       const { end } = b.shell.caretSpan()
       b.erase(end - 1, end)
     }

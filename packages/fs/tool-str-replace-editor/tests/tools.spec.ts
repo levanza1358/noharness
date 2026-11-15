@@ -1,25 +1,25 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import type { FsVersion } from '@deepseek-ai/dsh-fs'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@deepseek-ai/dsh-session'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import LocalFileSystem from '@deepseek-ai/dsh-fs-local'
-import * as FsPolicy from '@deepseek-ai/dsh-fs-observation-policy'
-import SandboxedFileSystem from '@deepseek-ai/dsh-fs-sandbox'
-import SandboxPolicy from '@deepseek-ai/dsh-sandbox-policy'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import * as ToolStrReplaceEditor from '@deepseek-ai/dsh-tool-str-replace-editor'
-import { unsupportedModel, unsupportedInbox } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context } from '@noharness/cordis'
+import type { FsVersion } from '@noharness/fs'
+import type { ToolCallId } from '@noharness/llm'
+import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@noharness/session'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import LocalFileSystem from '@noharness/fs-local'
+import * as FsPolicy from '@noharness/fs-observation-policy'
+import SandboxedFileSystem from '@noharness/fs-sandbox'
+import SandboxPolicy from '@noharness/sandbox-policy'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
+import * as ToolStrReplaceEditor from '@noharness/tool-str-replace-editor'
+import { unsupportedModel, unsupportedInbox } from '@noharness/agent-loop-testkit'
+import { brandString } from '@noharness/brand'
 
 const contexts: Context[] = []
 const roots: string[] = []
@@ -74,7 +74,7 @@ async function setup(
   config: ToolStrReplaceEditor.Config = {},
   options: { fsPolicy?: boolean; sandboxMode?: 'read-only' | 'workspace-write' | 'danger-full-access'; root?: string } = {},
 ) {
-  const root = options.root ?? await mkdtemp(join(tmpdir(), 'dsh-tool-str-replace-editor-'))
+  const root = options.root ?? await mkdtemp(join(tmpdir(), 'nhs-tool-str-replace-editor-'))
   if (options.root === undefined) roots.push(root)
   const ctx = new Context()
   contexts.push(ctx)
@@ -617,7 +617,7 @@ describe('tool-str-replace-editor', () => {
   })
 
   it('reports missing sandbox-policy composition during plugin startup', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-tool-str-replace-editor-missing-policy-'))
+    const root = await mkdtemp(join(tmpdir(), 'nhs-tool-str-replace-editor-missing-policy-'))
     roots.push(root)
     const ctx = new Context()
     contexts.push(ctx)

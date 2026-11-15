@@ -5,22 +5,22 @@
  * every other search reuses `DEEPSEEK_API_KEY`. The provider does not reuse `DEEPSEEK_BASE_URL`;
  * auxiliary search has its own endpoint configuration. The provider reports itself not ready for a
  * model request whose search would have no credential.
- * @module @deepseek-ai/dsh-web-search-deepseek
+ * @module @noharness/web-search-deepseek
  */
-import type { Volatile } from '@deepseek-ai/cordis'
+import type { Volatile } from '@noharness/cordis'
 
-import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import type {} from '@deepseek-ai/dsh-agent'
-import { credentialRef } from '@deepseek-ai/dsh-credentials'
-import type { CredentialRef } from '@deepseek-ai/dsh-credentials'
-import type {} from '@deepseek-ai/dsh-deepseek-account'
-import { launchEnvironmentOf } from '@deepseek-ai/dsh-launch-environment'
+import type { Context } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import type {} from '@noharness/agent'
+import { credentialRef } from '@noharness/credentials'
+import type { CredentialRef } from '@noharness/credentials'
+import type {} from '@noharness/deepseek-account'
+import { launchEnvironmentOf } from '@noharness/launch-environment'
 import {
   deepSeekApiKeyConfigured, rejectDeepSeekAccountToken, resolveDeepSeekAccountToken, resolveDeepSeekApiKey,
-} from '@deepseek-ai/dsh-llm-deepseek'
-import type {} from '@deepseek-ai/dsh-session'
-import type {} from '@deepseek-ai/dsh-web'
+} from '@noharness/llm-deepseek'
+import type {} from '@noharness/session'
+import type {} from '@noharness/web'
 import {
   DeepSeekSearchProvider,
   DEEPSEEK_DEFAULT_API_VERSION,
@@ -87,7 +87,7 @@ export const Config = z.object({
  */
 const SEARCH_BASE_URL_ENV = 'DEEPSEEK_SEARCH_BASE_URL'
 
-/** Provider route id `dsh-llm-deepseek-account` registers; `request/context` events record it per Session. */
+/** Provider route id `nhs-llm-deepseek-account` registers; `request/context` events record it per Session. */
 const ACCOUNT_PROVIDER = 'deepseek-account'
 
 /** Settings namespace carrying this provider's endpoint, model, and key reference. */

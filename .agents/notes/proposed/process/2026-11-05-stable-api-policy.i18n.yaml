@@ -3,44 +3,44 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/process/2026-11-05-stable-api-policy.md
 /agent-note-stable-api-policy:
-  en: efcff6bc65d1ae54
-  zh: 2b32885373cb788d
+  en: 37b929f8cdbb3274
+  zh: 006d2a58d691dd3a
 /agent-note-stable-api-policy/problem:
-  en: b6492a320d28ff1c
-  zh: 0105277d71fe43ab
+  en: 6056ba71c46aadda
+  zh: 28b57791a68864f7
 /agent-note-stable-api-policy/proposal:
-  en: 88384462c8232e93
-  zh: 355ad48f96efc95e
+  en: d1c34564c736abbe
+  zh: 09af33477c93d963
 /agent-note-stable-api-policy/proposal/stability-levels:
-  en: ad9ea5e151e05ac2
-  zh: baa08299dac43ee4
+  en: 64359f1ad041caf1
+  zh: 6ae934af412c2cc5
 /agent-note-stable-api-policy/proposal/unit-one-capability-seam:
-  en: 2d33b23a61c8dae4
-  zh: 4d781899433069d5
+  en: 4d4197856abe1b2b
+  zh: ad94ae3b1b2cd4cd
 /agent-note-stable-api-policy/proposal/what-stable-covers:
   en: 0a637e21cfbabeb3
   zh: 76078282bf686e17
 /agent-note-stable-api-policy/proposal/api-report-and-ci:
-  en: 772026ec3f2512b0
-  zh: d6cf271248e85a0e
+  en: 5a1d15d44c3dedc3
+  zh: ec5ff84bdef0dc1d
 /agent-note-stable-api-policy/proposal/plugin-author-warnings:
   en: e9bdb925a73e14e4
   zh: e04aa39a43407070
 /agent-note-stable-api-policy/proposal/plugin-requirements:
-  en: cce626a0c5dff76f
-  zh: d85d04d33ddcff48
+  en: b713135830f778c0
+  zh: af322ae020d9b350
 /agent-note-stable-api-policy/proposal/compatibility-layer:
   en: 40445e93d1bb8561
   zh: 05a845c5093f4abd
 /agent-note-stable-api-policy/proposal/rollout:
-  en: 16e88b03b3f1bc38
-  zh: 5628adf979269b92
+  en: 66eb91dcfc3acab7
+  zh: 4db6dcfb7f5a77f5
 /agent-note-stable-api-policy/proposal/open-questions:
-  en: b33cf00ac8a10a94
-  zh: e0a041a07879d2d5
+  en: 51cd761c79c6fd65
+  zh: dabcc3ac3120048d
 /agent-note-stable-api-policy/alternatives-considered:
-  en: 4154f0aadc2f0017
-  zh: cc1e120f80e7fbb8
+  en: 082d6c49727ef1a4
+  zh: 87fe0ab224c42016
 /agent-note-stable-api-policy/acceptance-criteria:
   en: a858ac77edabe3d3
   zh: 63f0872b73eef7f3

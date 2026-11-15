@@ -1,25 +1,25 @@
-import { IconFolderOpenOutlineRegular, IconCopyOutlineRegular, IconPanelLeftOutlineRegular, IconRightUpOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives'
+import { IconFolderOpenOutlineRegular, IconCopyOutlineRegular, IconPanelLeftOutlineRegular, IconRightUpOutlineRegular } from '@noharness/client-ui-primitives'
 import { ContextMenuApplicationIcon, registerContextMenus } from './context-menus.tsx'
-import type {} from '@deepseek-ai/dsh-client-ui-context-menu/client'
+import type {} from '@noharness/client-ui-context-menu/client'
 /**
  * Shared native opening controls for workspace directories, document previews,
  * delivery cards, and changed-file review. Directory choices persist in the browser;
  * file defaults and application lists come from the serving Host desktop.
  */
 
-import type { ShortcutCommandId } from '@deepseek-ai/dsh-client-shortcuts/client'
-import type { Context as ClientContext } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-client-locale/client'
-import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
-import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
-import type {} from '@deepseek-ai/dsh-client-ui-session/client'
-import type {} from '@deepseek-ai/dsh-client-ui-conversation/client'
-import type {} from '@deepseek-ai/dsh-client-ui-sidebar-documentpreview/client'
-import type {} from '@deepseek-ai/dsh-client-ui-sidebar-files/client'
-import type {} from '@deepseek-ai/dsh-api-gateway/client'
-import type {} from '@deepseek-ai/dsh-api-remotes/client'
-import type {} from '@deepseek-ai/dsh-api-session-controller/remote'
-import { OPEN_IN_APP_ICON_PREFIX_ROUTE } from '@deepseek-ai/dsh-host-open-in-app/shared'
+import type { ShortcutCommandId } from '@noharness/client-shortcuts/client'
+import type { Context as ClientContext } from '@noharness/cordis'
+import type {} from '@noharness/client-locale/client'
+import type {} from '@noharness/client-ui-renderer/client'
+import type {} from '@noharness/client-ui-layout/client'
+import type {} from '@noharness/client-ui-session/client'
+import type {} from '@noharness/client-ui-conversation/client'
+import type {} from '@noharness/client-ui-sidebar-documentpreview/client'
+import type {} from '@noharness/client-ui-sidebar-files/client'
+import type {} from '@noharness/api-gateway/client'
+import type {} from '@noharness/api-remotes/client'
+import type {} from '@noharness/api-session-controller/remote'
+import { OPEN_IN_APP_ICON_PREFIX_ROUTE } from '@noharness/host-open-in-app/shared'
 import { OpenInAppController } from './controller.ts'
 import { registerSessionOpenWith } from './session-open-with.ts'
 import { OpenInAppAction, type OpenInAppActionInjected } from './OpenInAppAction.tsx'
@@ -31,7 +31,7 @@ import type { OpenTargetReporter } from './OpenTargetButton.tsx'
 import { en, ja, es, fr, de, ru, pt, NS, zh, type OpenInAppKey } from './locales.ts'
 import { createOpenInAppToastSource, OpenInAppToast } from './open-toast.tsx'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Native application menu and control copy. */
     'open-in-app': OpenInAppKey

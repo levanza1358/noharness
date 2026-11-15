@@ -1,23 +1,23 @@
 /**
  * Same-session goal domain: event-sourced state, compare-and-set mutations,
  * and process-local continuation activation.
- * @module @deepseek-ai/dsh-goal
+ * @module @noharness/goal
  */
 
 import { randomUUID } from 'node:crypto'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 import type { GoalId } from './types.ts'
-import { Context, Service } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+import { Context, Service } from '@noharness/cordis'
+import z from '@noharness/schemastery'
 import { z as zod } from 'zod'
 import type { ZodType } from 'zod'
-import { agentEvents } from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { SessionSeq } from '@deepseek-ai/dsh-session'
-import type { Session, SessionEvent, SessionLogOffset } from '@deepseek-ai/dsh-session'
-import { TypertRemoteService, Remote } from '@deepseek-ai/dsh-typert-protocol'
-import type { ProjectionHandle } from '@deepseek-ai/dsh-session-projection'
-import type { ProjectionDefinition } from '@deepseek-ai/dsh-session-projection'
+import { agentEvents } from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import { SessionSeq } from '@noharness/session'
+import type { Session, SessionEvent, SessionLogOffset } from '@noharness/session'
+import { TypertRemoteService, Remote } from '@noharness/typert-protocol'
+import type { ProjectionHandle } from '@noharness/session-projection'
+import type { ProjectionDefinition } from '@noharness/session-projection'
 import {
   applyGoalEvent,
   goalChangeRef,
@@ -53,7 +53,7 @@ export type * from './domain.ts'
 export { GOAL_CHANGE_VERSION, GoalError, GoalId } from './runtime.ts'
 export { decodeGoalChange, foldGoal, goalChangeRef } from './fold.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     goals: GoalService
   }

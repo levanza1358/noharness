@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/office-kit.md
 /office-kit:
-  en: ba1e27aece3a68c3
-  zh: 50ca71dd6c6a5438
+  en: a2b73587bad9db0e
+  zh: 4bf6bc384d6b6d76
 /office-kit/ownership:
-  en: 26905a1cd6947042
-  zh: 16c00f451ddd15b0
+  en: 19bd4a2d2f3c7592
+  zh: 54600c8cf0b15db5
 /office-kit/requests-and-results:
-  en: 4ae99f63ed85ce7f
-  zh: 0db77cfc734788b1
+  en: 43bd89b429d1ec22
+  zh: b1b32d2f58dc4511
 /office-kit/preview-reads:
-  en: 3a373dfc9dd945c3
-  zh: ff5f9a16d0e7b96f
+  en: 58b1a04ef1fdaf5d
+  zh: b39eb0119f794804
 /office-kit/engine-selection-and-limits:
-  en: a26e451e9e481c52
-  zh: da1f4a160a6c2094
+  en: dcbd5c00005e1c64
+  zh: 5da25467c904a940

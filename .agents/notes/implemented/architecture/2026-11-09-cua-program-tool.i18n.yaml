@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-11-09-cua-program-tool.md
 /agent-note-cua-programs-outside-the-ptc-preset:
-  en: a283f005c51274e7
-  zh: 1f697efb2dbac3ba
+  en: ffe2f1425481ad78
+  zh: 5a45d6fc4408a0da
 /agent-note-cua-programs-outside-the-ptc-preset/problem:
   en: 87ce83e36a6ab68e
   zh: 8aa98dc7dae03c41
 /agent-note-cua-programs-outside-the-ptc-preset/decision:
-  en: a9124b9053b16a12
-  zh: 7d4005cbca138015
+  en: 2d3cd2b2ded10c1e
+  zh: 9646c56d0892ccf4
 /agent-note-cua-programs-outside-the-ptc-preset/alternatives-considered:
   en: b5d8e00cbe4b53ae
   zh: 4ef81611150a8d75
 /agent-note-cua-programs-outside-the-ptc-preset/consequences:
-  en: 22f25d54373ba06b
-  zh: ee335578caaf1ab3
+  en: 3487d3c4b3073f40
+  zh: 55cdb885d8747776

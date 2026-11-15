@@ -9,26 +9,26 @@
  * formatted-result spill handoff, and the no-background-job invariant.
  * Real-`rg` behavior is pinned separately in integration.spec.ts.
  */
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
 
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import { provideWorkingDirectoryFixture } from '@deepseek-ai/dsh-agent-loop-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import { provideWorkingDirectoryFixture } from '@noharness/agent-loop-testkit'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { createScope, type Scope } from '@deepseek-ai/dsh-scope'
+import { Context } from '@noharness/cordis'
+import { createScope, type Scope } from '@noharness/scope'
 import { join, sep } from 'node:path'
-import { createUserMessage, type ToolCallId } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import SystemPrompt, { renderPrompt } from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecution, type ToolExecutionToken } from '@deepseek-ai/dsh-tools'
-import { SubprocessRuntime } from '@deepseek-ai/dsh-subprocess'
-import type { SubprocessCollectedOutputs, SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessOutputReader, SubprocessSpawnSpec } from '@deepseek-ai/dsh-subprocess'
-import { MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
+import { createUserMessage, type ToolCallId } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import SystemPrompt, { renderPrompt } from '@noharness/system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecution, type ToolExecutionToken } from '@noharness/tools'
+import { SubprocessRuntime } from '@noharness/subprocess'
+import type { SubprocessCollectedOutputs, SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessOutputReader, SubprocessSpawnSpec } from '@noharness/subprocess'
+import { MAX_TIMER_DELAY_MS } from '@noharness/timeout'
 import { rgPath } from '@vscode/ripgrep'
-import { type SpillLocator, SpillStore } from '@deepseek-ai/dsh-spill'
-import type { SaveTextSpill, SpillRef } from '@deepseek-ai/dsh-spill'
-import * as ToolFsSearch from '@deepseek-ai/dsh-tool-fs-search'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { type SpillLocator, SpillStore } from '@noharness/spill'
+import type { SaveTextSpill, SpillRef } from '@noharness/spill'
+import * as ToolFsSearch from '@noharness/tool-fs-search'
+import { brandString } from '@noharness/brand'
 import {
   buildGlobCommand,
   buildGrepCommand,
@@ -43,9 +43,9 @@ import {
   runRipgrep,
   sampleAcrossTopLevel,
   toWorkdirRelative,
-} from '@deepseek-ai/dsh-tool-fs-search'
+} from '@noharness/tool-fs-search'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }
@@ -1346,5 +1346,5 @@ describe('scope-aware search guidance', () => {
 
 /** Preserve the default persona and exact section separators in the oracle. */
 function withPersona(...sections: string[]): string {
-  return ['You are an AI agent powered by DeepSeek Harness.', ...sections].join('\n\n')
+  return ['You are an AI agent powered by NoHarness.', ...sections].join('\n\n')
 }

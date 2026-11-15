@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Compétence du badge DSH",
-    "description": "Laissez les agents ajouter un badge « propulsé par dsh » aux documents, demandes d'extraction et autres sorties.",
+    "title": "Compétence du badge NHS",
+    "description": "Laissez les agents ajouter un badge « propulsé par nhs » aux documents, demandes d'extraction et autres sorties.",
     "detail": "docs/DETAIL.md"
   }
 }

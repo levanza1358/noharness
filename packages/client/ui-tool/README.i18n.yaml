@@ -3,50 +3,50 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-tool/README.md
 /:
-  en: d5ef8fa5a5ebfbc2
-  zh: 9870b3f207a248cc
-/deepseek-ai-dsh-client-ui-tool:
-  en: 03bfcfbf7f1cea76
-  zh: 142abbf07affee63
-/deepseek-ai-dsh-client-ui-tool/summary:
-  en: e7ef510d1764f9b2
-  zh: 236bc66607211f0f
-/deepseek-ai-dsh-client-ui-tool/table-of-contents:
+  en: 1dbdfdf09593b46a
+  zh: 3ea61b075501bd0c
+/noharness-client-ui-tool:
+  en: e1110492b0d65c22
+  zh: c71866b32d61da42
+/noharness-client-ui-tool/summary:
+  en: adfa33096b165096
+  zh: a4249677ef6929e9
+/noharness-client-ui-tool/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
-/deepseek-ai-dsh-client-ui-tool/use-this-package:
+/noharness-client-ui-tool/use-this-package:
   en: 5afd42f0761ff21b
   zh: 5a22eee65019a03e
-/deepseek-ai-dsh-client-ui-tool/use-this-package/registering-a-business-tool-view:
+/noharness-client-ui-tool/use-this-package/registering-a-business-tool-view:
   en: 3dd6bd71dfc5527d
   zh: 9fe3c2135014bb7b
-/deepseek-ai-dsh-client-ui-tool/use-this-package/built-in-views:
-  en: 33f41ad70d0728f7
-  zh: b7c65108c5921134
-/deepseek-ai-dsh-client-ui-tool/understand-the-implementation:
+/noharness-client-ui-tool/use-this-package/built-in-views:
+  en: eeba1153b758c209
+  zh: 527dc9d0dfe4815e
+/noharness-client-ui-tool/understand-the-implementation:
   en: 00bc7b0c84edc603
   zh: 1cfcf5b435248a91
-/deepseek-ai-dsh-client-ui-tool/understand-the-implementation/rendering-contract:
-  en: 672e63b2f92e689b
-  zh: ba950ecb480325a6
-/deepseek-ai-dsh-client-ui-tool/understand-the-implementation/cards:
-  en: cf7e57801571d443
-  zh: fee3b0b00c6aab69
-/deepseek-ai-dsh-client-ui-tool/understand-the-implementation/declared-optional-capabilities:
+/noharness-client-ui-tool/understand-the-implementation/rendering-contract:
+  en: 31ee2053a7918636
+  zh: 73f2c587d1797205
+/noharness-client-ui-tool/understand-the-implementation/cards:
+  en: 9fc29f7ef17e5185
+  zh: f075e5014563c166
+/noharness-client-ui-tool/understand-the-implementation/declared-optional-capabilities:
   en: c1926deb4e5f3734
   zh: c5845f465b94a459
-/deepseek-ai-dsh-client-ui-tool/further-exploration:
-  en: b37600769951cbca
-  zh: 816589549d21d176
-/deepseek-ai-dsh-client-ui-tool/model-experience:
+/noharness-client-ui-tool/further-exploration:
+  en: 8d77a3ef5620a668
+  zh: d981f388e32c29ba
+/noharness-client-ui-tool/model-experience:
   en: 1e5e72dd269855d5
   zh: 81a4756d460e3af9
-/deepseek-ai-dsh-client-ui-tool/model-experience/kv-cache-effect:
+/noharness-client-ui-tool/model-experience/kv-cache-effect:
   en: ca75c51c89c2c9b0
   zh: de54f3467ef3b9be
-/deepseek-ai-dsh-client-ui-tool/known-limitations-and-deferred-work:
+/noharness-client-ui-tool/known-limitations-and-deferred-work:
   en: 49f7008105e804df
   zh: e773f101126b01b4
-/deepseek-ai-dsh-client-ui-tool/known-limitations-and-deferred-work/dev-note:
+/noharness-client-ui-tool/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

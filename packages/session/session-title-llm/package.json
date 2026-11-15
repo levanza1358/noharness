@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-session-title-llm",
-  "description": "Shared LLM generation policy for DeepSeek Harness session-title providers",
+  "name": "@noharness/session-title-llm",
+  "description": "Shared LLM generation policy for NoHarness session-title providers",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/session/session-title-llm"
   },
   "type": "module",
@@ -30,22 +30,22 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-title": "workspace:*",
-    "@deepseek-ai/dsh-timeout": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-title": "workspace:*",
+    "@noharness/timeout": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-util-values": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~"
+    "@noharness/util-values": "workspace:*",
+    "@noharness/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-title": "workspace:*",
-    "@deepseek-ai/dsh-timeout": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/brand": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-title": "workspace:*",
+    "@noharness/timeout": "workspace:*"
   }
 }

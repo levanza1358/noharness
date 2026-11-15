@@ -10,18 +10,18 @@
  */
 
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { createAssistantMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import SessionStore, { type SessionId, SessionLogOffset, SessionSeq } from '@deepseek-ai/dsh-session'
-import type { Session, SessionEvent } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import * as SessionTurnOutlinePlugin from '@deepseek-ai/dsh-session-turn-outline'
-import { turnOutlineProjectionDefinition } from '@deepseek-ai/dsh-session-turn-outline/src/projection.ts'
-import type { TurnOutlineEntry, TurnOutlineState } from '@deepseek-ai/dsh-session-turn-outline/types'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context } from '@noharness/cordis'
+import { createAssistantMessage, createUserMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import SessionStore, { type SessionId, SessionLogOffset, SessionSeq } from '@noharness/session'
+import type { Session, SessionEvent } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import * as SessionTurnOutlinePlugin from '@noharness/session-turn-outline'
+import { turnOutlineProjectionDefinition } from '@noharness/session-turn-outline/src/projection.ts'
+import type { TurnOutlineEntry, TurnOutlineState } from '@noharness/session-turn-outline/types'
+import { brandString } from '@noharness/brand'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test-injector': { kind: 'test-injector' } & ContextFormed
   }

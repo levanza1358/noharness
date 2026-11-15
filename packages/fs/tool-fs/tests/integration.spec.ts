@@ -4,28 +4,28 @@
  * policy-service dependency. Assertions read files back byte-for-byte rather than trusting tool
  * messages.
  */
-import { executeToolFixture, executeModelToolFixture } from '@deepseek-ai/dsh-tool-testkit'
+import { executeToolFixture, executeModelToolFixture } from '@noharness/tool-testkit'
 
-import * as PtcToolExecutor from '@deepseek-ai/dsh-tool-executor-ptc'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import { mountAgentLoopTestDependencies, provideWorkingDirectoryFixture } from '@deepseek-ai/dsh-agent-loop-testkit'
+import * as PtcToolExecutor from '@noharness/tool-executor-ptc'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import { mountAgentLoopTestDependencies, provideWorkingDirectoryFixture } from '@noharness/agent-loop-testkit'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { chmod, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { PtcRuntime, type PtcRunRequest, type PtcRunResult, type PtcRunSpec } from '@deepseek-ai/dsh-ptc-runtime'
-import SandboxPolicyService from '@deepseek-ai/dsh-sandbox-policy'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import type { FsVersion } from '@deepseek-ai/dsh-fs'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@deepseek-ai/dsh-tools'
-import { LocalFileSystem } from '@deepseek-ai/dsh-fs-local'
-import * as FsPolicy from '@deepseek-ai/dsh-fs-observation-policy'
-import * as ToolFs from '@deepseek-ai/dsh-tool-fs'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context } from '@noharness/cordis'
+import type { SessionId } from '@noharness/session'
+import AgentLoop from '@noharness/agent-loop'
+import { PtcRuntime, type PtcRunRequest, type PtcRunResult, type PtcRunSpec } from '@noharness/ptc-runtime'
+import SandboxPolicyService from '@noharness/sandbox-policy'
+import type { ToolCallId } from '@noharness/llm'
+import type { FsVersion } from '@noharness/fs'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@noharness/tools'
+import { LocalFileSystem } from '@noharness/fs-local'
+import * as FsPolicy from '@noharness/fs-observation-policy'
+import * as ToolFs from '@noharness/tool-fs'
+import { brandString } from '@noharness/brand'
 
 const testToolSignal = new AbortController().signal
 
@@ -62,9 +62,9 @@ afterEach(async () => {
 // --------------------------------------------------------------------------
 // GUARDED deployment: the policy gate plugin is loaded (shipped compositions leave it disabled).
 // --------------------------------------------------------------------------
-describe('guarded deployment (with dsh-fs-observation-policy)', () => {
+describe('guarded deployment (with nhs-fs-observation-policy)', () => {
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-'))
+    dir = await mkdtemp(join(tmpdir(), 'nhs-tool-fs-'))
     ctx = new Context()
     provideWorkingDirectoryFixture(ctx)
     await ctx.plugin(SystemPrompt)
@@ -337,9 +337,9 @@ describe('guarded deployment (with dsh-fs-observation-policy)', () => {
 // --------------------------------------------------------------------------
 // BARE deployment: the tool suite WITHOUT the policy gate, as the shipped compositions run.
 // --------------------------------------------------------------------------
-describe('bare provider (no dsh-fs-observation-policy)', () => {
+describe('bare provider (no nhs-fs-observation-policy)', () => {
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-bare-'))
+    dir = await mkdtemp(join(tmpdir(), 'nhs-tool-fs-bare-'))
     ctx = new Context()
     provideWorkingDirectoryFixture(ctx)
     await ctx.plugin(SystemPrompt)
@@ -425,12 +425,12 @@ describe('bare provider (no dsh-fs-observation-policy)', () => {
 
 // Per-session cwd: a relative file_path resolves against the calling session's workspace
 // (`exec.agent.session.header.cwd`), not the backend's config.cwd, so the
-// caller-selected session workspace wins, matching dsh-tool-bash.
+// caller-selected session workspace wins, matching nhs-tool-bash.
 describe('per-session cwd', () => {
   let sessionDir: string
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-cfg-'))
-    sessionDir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-session-'))
+    dir = await mkdtemp(join(tmpdir(), 'nhs-tool-fs-cfg-'))
+    sessionDir = await mkdtemp(join(tmpdir(), 'nhs-tool-fs-session-'))
     ctx = new Context()
     provideWorkingDirectoryFixture(ctx)
     await ctx.plugin(SystemPrompt)
@@ -477,7 +477,7 @@ describe('per-session cwd', () => {
 // --------------------------------------------------------------------------
 describe('signal, concurrency, and the fs/observed contract', () => {
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-'))
+    dir = await mkdtemp(join(tmpdir(), 'nhs-tool-fs-'))
     ctx = new Context()
     provideWorkingDirectoryFixture(ctx)
     await ctx.plugin(SystemPrompt)
@@ -590,7 +590,7 @@ describe('signal, concurrency, and the fs/observed contract', () => {
 
 describe('current working directory', () => {
   it('routes subsequent files to the new directory while keeping the original permission root', async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-current-'))
+    dir = await mkdtemp(join(tmpdir(), 'nhs-tool-fs-current-'))
     const next = join(dir, 'next')
     await mkdir(next)
     await writeFile(join(dir, 'note.txt'), 'original')

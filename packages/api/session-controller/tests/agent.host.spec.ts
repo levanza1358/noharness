@@ -1,23 +1,23 @@
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { agentPresetProjectionDefinition } from '@deepseek-ai/dsh-agent-preset-registry'
-import SessionStore, { SESSION_FORMAT_VERSION, type SessionId } from '@deepseek-ai/dsh-session'
-import type { SessionHeader } from '@deepseek-ai/dsh-session'
-import { SessionAlreadyOwnedError } from '@deepseek-ai/dsh-session-persistence'
-import type { SessionObservation } from '@deepseek-ai/dsh-session-query'
-import TypertRegistry from '@deepseek-ai/dsh-typert-registry'
+import { Context } from '@noharness/cordis'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import { agentPresetProjectionDefinition } from '@noharness/agent-preset-registry'
+import SessionStore, { SESSION_FORMAT_VERSION, type SessionId } from '@noharness/session'
+import type { SessionHeader } from '@noharness/session'
+import { SessionAlreadyOwnedError } from '@noharness/session-persistence'
+import type { SessionObservation } from '@noharness/session-query'
+import TypertRegistry from '@noharness/typert-registry'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   ApiSessionAgentController,
   ApiSessionCwdConflict,
 } from '../src/agent.ts'
 import { installSessionReadTestServices, testSessionPersistence } from './test-remote.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const roots: Context[] = []
 
@@ -256,7 +256,7 @@ describe('ApiSession creation', () => {
 
   it('surfaces directory creation failure', async () => {
     const { agents } = await harness()
-    const parent = mkdtempSync(join(tmpdir(), 'dsh-session-controller-file-'))
+    const parent = mkdtempSync(join(tmpdir(), 'nhs-session-controller-file-'))
     tempDirs.push(parent)
     const file = join(parent, 'file')
     writeFileSync(file, 'not a directory')

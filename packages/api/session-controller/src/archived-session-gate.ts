@@ -9,10 +9,10 @@
  * intermediate Session cannot hide an archived ancestor.
  */
 
-import type { Context, Plugin } from '@deepseek-ai/cordis'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type {} from '@deepseek-ai/dsh-workspace'
+import type { Context, Plugin } from '@noharness/cordis'
+import type { Agent } from '@noharness/agent'
+import type { SessionId } from '@noharness/session'
+import type {} from '@noharness/workspace'
 
 /**
  * The gate as a plugin for `ctx.plugin(...)`: it loads once the Agent

@@ -6,15 +6,15 @@
  * entry, installation-carried bundles, and unaddressable rows stay protected by their own rules.
  */
 export const PROTECTED_PLUGINS: ReadonlySet<string> = new Set([
-  '@deepseek-ai/dsh-plugin-manager', '@deepseek-ai/cordis-plugin-loader',
-  '@deepseek-ai/cordis-plugin-include', '@deepseek-ai/dsh-api-gateway',
-  '@deepseek-ai/dsh-host-webserver', '@deepseek-ai/dsh-client-modules',
-  '@deepseek-ai/dsh-client-ui-settings-plugin-inventory', '@deepseek-ai/dsh-client-ui-plugin-manager',
-  '@deepseek-ai/dsh-host-plugin-inventory', '@deepseek-ai/dsh-typert-registry',
-  '@deepseek-ai/dsh-api-remotes', '@deepseek-ai/dsh-api-remote-access',
-  '@deepseek-ai/cordis-plugin-timer', '@deepseek-ai/dsh-client-connection',
-  '@deepseek-ai/dsh-host-frontend-static', '@deepseek-ai/dsh-tools',
-  '@deepseek-ai/dsh-hmr',
+  '@noharness/plugin-manager', '@noharness/cordis-plugin-loader',
+  '@noharness/cordis-plugin-include', '@noharness/api-gateway',
+  '@noharness/host-webserver', '@noharness/client-modules',
+  '@noharness/client-ui-settings-plugin-inventory', '@noharness/client-ui-plugin-manager',
+  '@noharness/host-plugin-inventory', '@noharness/typert-registry',
+  '@noharness/api-remotes', '@noharness/api-remote-access',
+  '@noharness/cordis-plugin-timer', '@noharness/client-connection',
+  '@noharness/host-frontend-static', '@noharness/tools',
+  '@noharness/hmr',
 ])
 
 /**
@@ -23,15 +23,15 @@ export const PROTECTED_PLUGINS: ReadonlySet<string> = new Set([
  * Their Host availability and activation stay intact.
  */
 export const HIDDEN_BUNDLES: ReadonlySet<string> = new Set([
-  '@deepseek-ai/dsh-base',
-  '@deepseek-ai/dsh-web-app',
-  '@deepseek-ai/dsh-headless',
-  '@deepseek-ai/dsh-sdk-app',
-  '@deepseek-ai/dsh-acp-app',
-  '@deepseek-ai/dsh-sdk-minimal',
-  '@deepseek-ai/dsh-experimental-terminal-bundle',
-  '@deepseek-ai/dsh-experimental-tool-worktree',
-  '@deepseek-ai/dsh-cua-mcp',
+  '@noharness/base',
+  '@noharness/web-app',
+  '@noharness/headless',
+  '@noharness/sdk-app',
+  '@noharness/acp-app',
+  '@noharness/sdk-minimal',
+  '@noharness/experimental-terminal-bundle',
+  '@noharness/experimental-tool-worktree',
+  '@noharness/cua-mcp',
 ])
 
 /**
@@ -39,9 +39,9 @@ export const HIDDEN_BUNDLES: ReadonlySet<string> = new Set([
  * this list, decides whether a bundle appears on the main list.
  */
 export const EXTENSION_BUNDLES: readonly string[] = [
-  '@deepseek-ai/dsh-experimental-voice-input-bundle',
-  '@deepseek-ai/dsh-experimental-plugin-market-bundle',
-  '@deepseek-ai/dsh-experimental-auto-review',
+  '@noharness/experimental-voice-input-bundle',
+  '@noharness/experimental-plugin-market-bundle',
+  '@noharness/experimental-auto-review',
 ]
 
 /**
@@ -49,37 +49,37 @@ export const EXTENSION_BUNDLES: readonly string[] = [
  * which includes every eligible bundle, ranks them last in this order.
  */
 export const MORE_BUNDLES: readonly string[] = [
-  '@deepseek-ai/dsh-personalized-recommendations',
-  '@deepseek-ai/dsh-experimental-inspector-profile',
-  '@deepseek-ai/dsh-cua-bundle',
-  '@deepseek-ai/dsh-timeline',
-  '@deepseek-ai/dsh-experimental-cot-translation-bundle',
-  '@deepseek-ai/dsh-experimental-session-search',
-  '@deepseek-ai/dsh-experimental-session-titles-bundle',
-  '@deepseek-ai/dsh-experimental-badge-skill-bundle',
-  '@deepseek-ai/dsh-experimental-ralph-bundle',
-  '@deepseek-ai/dsh-deepseek-chat-import',
-  '@deepseek-ai/dsh-subagent-codex',
-  '@deepseek-ai/dsh-subagent-claude-code',
+  '@noharness/personalized-recommendations',
+  '@noharness/experimental-inspector-profile',
+  '@noharness/cua-bundle',
+  '@noharness/timeline',
+  '@noharness/experimental-cot-translation-bundle',
+  '@noharness/experimental-session-search',
+  '@noharness/experimental-session-titles-bundle',
+  '@noharness/experimental-badge-skill-bundle',
+  '@noharness/experimental-ralph-bundle',
+  '@noharness/deepseek-chat-import',
+  '@noharness/subagent-codex',
+  '@noharness/subagent-claude-code',
 ]
 
 /** Official bundles the plugin manager marks with the Experimental badge. */
 export const EXPERIMENTAL_BUNDLES: ReadonlySet<string> = new Set([
-  '@deepseek-ai/dsh-personalized-recommendations',
-  '@deepseek-ai/dsh-cua-bundle',
-  '@deepseek-ai/dsh-cua-mcp',
-  '@deepseek-ai/dsh-timeline',
-  '@deepseek-ai/dsh-experimental-voice-input-bundle',
-  '@deepseek-ai/dsh-experimental-auto-review',
-  '@deepseek-ai/dsh-experimental-inspector-profile',
-  '@deepseek-ai/dsh-experimental-forge-bundle',
-  '@deepseek-ai/dsh-experimental-tool-worktree',
-  '@deepseek-ai/dsh-experimental-cot-translation-bundle',
-  '@deepseek-ai/dsh-experimental-session-search',
-  '@deepseek-ai/dsh-experimental-session-titles-bundle',
-  '@deepseek-ai/dsh-experimental-badge-skill-bundle',
-  '@deepseek-ai/dsh-experimental-ralph-bundle',
-  '@deepseek-ai/dsh-experimental-plugin-market-bundle',
-  '@deepseek-ai/dsh-experimental-liveshare',
-  '@deepseek-ai/dsh-deepseek-chat-import',
+  '@noharness/personalized-recommendations',
+  '@noharness/cua-bundle',
+  '@noharness/cua-mcp',
+  '@noharness/timeline',
+  '@noharness/experimental-voice-input-bundle',
+  '@noharness/experimental-auto-review',
+  '@noharness/experimental-inspector-profile',
+  '@noharness/experimental-forge-bundle',
+  '@noharness/experimental-tool-worktree',
+  '@noharness/experimental-cot-translation-bundle',
+  '@noharness/experimental-session-search',
+  '@noharness/experimental-session-titles-bundle',
+  '@noharness/experimental-badge-skill-bundle',
+  '@noharness/experimental-ralph-bundle',
+  '@noharness/experimental-plugin-market-bundle',
+  '@noharness/experimental-liveshare',
+  '@noharness/deepseek-chat-import',
 ])

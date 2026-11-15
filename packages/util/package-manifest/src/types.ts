@@ -1,7 +1,7 @@
 /**
  * Shared declarations for package.json fields and plugin display metadata.
  * Each reader owns JSON validation and resolved defaults.
- * @module @deepseek-ai/dsh-package-manifest/types
+ * @module @noharness/package-manifest/types
  */
 
 /** Package identity and metadata; local profile readers may accept a partial declaration. */
@@ -22,13 +22,13 @@ export interface DshPackageManifest {
   optionalDependencies?: Record<string, string>
   /** Compatible versions of packages supplied by the consuming project. */
   peerDependencies?: Record<string, string>
-  /** Runtime requirements; DSH compatibility is declarative until a reader enforces it. */
+  /** Runtime requirements; NHS compatibility is declarative until a reader enforces it. */
   engines?: DshEnginesManifest
-  /** DSH-specific author declarations. */
-  dsh?: DshManifest
+  /** NHS-specific author declarations. */
+  nhs?: DshManifest
 }
 
-/** Public author fields under `package.json.dsh`; a package may declare several roles. */
+/** Public author fields under `package.json.nhs`; a package may declare several roles. */
 export interface DshManifest {
   /** Manifest format version, independent of the npm package and Session format versions. */
   manifestVersion?: 1
@@ -57,8 +57,8 @@ export interface PluginLocalizedMeta {
 
 /** Runtime version requirements under `package.json.engines`. */
 export interface DshEnginesManifest {
-  /** Compatible DSH versions as a SemVer range, including an exact version. */
-  dsh?: string
+  /** Compatible NHS versions as a SemVer range, including an exact version. */
+  nhs?: string
   /** Compatible Node.js versions. */
   node?: string
   /** Compatible npm versions. */

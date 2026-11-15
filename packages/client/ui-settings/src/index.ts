@@ -1,9 +1,9 @@
 /** Host registration of shared Web and desktop developer-tool preferences. */
-import type {} from '@deepseek-ai/dsh-settings'
+import type {} from '@noharness/settings'
 
-import type { Volatile, Context } from '@deepseek-ai/cordis'
+import type { Volatile, Context } from '@noharness/cordis'
 
-import z from '@deepseek-ai/schemastery'
+import z from '@noharness/schemastery'
 import { DeveloperToolsSettingsFields } from './developer-tools-settings.ts'
 
 /** Runtime preferences projected to the browser. */

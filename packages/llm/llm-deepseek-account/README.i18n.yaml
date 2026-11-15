@@ -5,42 +5,42 @@
 /:
   en: fc1ff226d5dca691
   zh: 770a99ef368c4767
-/deepseek-ai-dsh-llm-deepseek-account:
-  en: 8fa1148e0ee9d351
-  zh: 634ec9d79d5ffbf0
-/deepseek-ai-dsh-llm-deepseek-account/summary:
-  en: b80e34cdfb51009d
-  zh: eda44bcc181793d8
-/deepseek-ai-dsh-llm-deepseek-account/table-of-contents:
+/noharness-llm-deepseek-account:
+  en: 4e5a351a2060811e
+  zh: 204b21f1f27099ed
+/noharness-llm-deepseek-account/summary:
+  en: 3990c4e069486265
+  zh: 2820c0bc6edfb3d2
+/noharness-llm-deepseek-account/table-of-contents:
   en: 23386452a66b2fbd
   zh: 4cf93c4bf17b3da2
-/deepseek-ai-dsh-llm-deepseek-account/use-this-package:
-  en: b1a9453e08198023
-  zh: 630e7f566ad4d9db
-/deepseek-ai-dsh-llm-deepseek-account/understand-the-implementation:
+/noharness-llm-deepseek-account/use-this-package:
+  en: d3c6d4b9473fdce8
+  zh: 188a7ba30754d2c0
+/noharness-llm-deepseek-account/understand-the-implementation:
   en: 06629c312d0cb860
   zh: f33b2773b0ab1d25
-/deepseek-ai-dsh-llm-deepseek-account/further-exploration:
-  en: 30a69b9c66d89580
-  zh: fcc026a6373c1bee
-/deepseek-ai-dsh-llm-deepseek-account/model-experience:
+/noharness-llm-deepseek-account/further-exploration:
+  en: 90f0e5b61ad0a204
+  zh: a6f77a496b16ac55
+/noharness-llm-deepseek-account/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/deepseek-ai-dsh-llm-deepseek-account/model-experience/authenticated-model-requests:
+/noharness-llm-deepseek-account/model-experience/authenticated-model-requests:
   en: 5cf024f0d3370159
   zh: ed480db8f348a42f
-/deepseek-ai-dsh-llm-deepseek-account/model-experience/authenticated-model-requests/what-the-model-sees:
+/noharness-llm-deepseek-account/model-experience/authenticated-model-requests/what-the-model-sees:
   en: bd62360e6e6965ab
   zh: 519626fc34672187
-/deepseek-ai-dsh-llm-deepseek-account/model-experience/authenticated-model-requests/token-effect:
+/noharness-llm-deepseek-account/model-experience/authenticated-model-requests/token-effect:
   en: b0f531baf29daf52
   zh: c89837e35981c318
-/deepseek-ai-dsh-llm-deepseek-account/model-experience/authenticated-model-requests/kv-cache-effect:
+/noharness-llm-deepseek-account/model-experience/authenticated-model-requests/kv-cache-effect:
   en: 2ecaa7bbbdd638e9
   zh: bb067520885d877b
-/deepseek-ai-dsh-llm-deepseek-account/known-limitations-and-deferred-work:
+/noharness-llm-deepseek-account/known-limitations-and-deferred-work:
   en: ee8b7ff23c806e18
   zh: bd26832c8d455012
-/deepseek-ai-dsh-llm-deepseek-account/known-limitations-and-deferred-work/dev-note:
+/noharness-llm-deepseek-account/known-limitations-and-deferred-work/dev-note:
   en: 0525041e573e96b6
   zh: b05ed8d852498e6b

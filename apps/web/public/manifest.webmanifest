@@ -1,6 +1,6 @@
 {
-  "name": "DeepSeek Harness",
-  "short_name": "DSH",
+  "name": "NoHarness",
+  "short_name": "NHS",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

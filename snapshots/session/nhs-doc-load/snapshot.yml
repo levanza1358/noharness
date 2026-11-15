@@ -1,0 +1,9 @@
+version: 1
+scenario: nhs-doc-load
+profile: headless
+composition: default
+recording: authored
+header:
+  class: skill
+workspace:
+  setup: nhs-doc-resources

@@ -1,11 +1,11 @@
-import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
+import type {} from '@noharness/client-ui-renderer/client'
 /** Window-local menu capability and its Web overlay. */
-import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
-import type {} from '@deepseek-ai/dsh-client-locale/client'
-import z from '@deepseek-ai/schemastery'
-import { MENU_TRANSITION_MS } from '@deepseek-ai/dsh-client-ui-primitives'
+import { createSnapshotStore } from '@noharness/client-store'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/client-ui-layout/client'
+import type {} from '@noharness/client-locale/client'
+import z from '@noharness/schemastery'
+import { MENU_TRANSITION_MS } from '@noharness/client-ui-primitives'
 import { menuTargetKey } from './target-key.ts'
 import { MenuRegistry } from './registry.ts'
 import { createMenuStore } from './store.ts'
@@ -23,10 +23,10 @@ export type { ContextMenuBindings, ContextMenuTriggerProps, UseContextMenu } fro
 export type { ContextMenuIcon, ContextMenuButtonProps } from './types.ts'
 export { createMenuStore } from './store.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context { /** Extensible context menus for explicit clicked objects. */ contextMenus: ContextMenus }
 }
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@noharness/client-ui-slots' {
   interface GlobalStandardProps {
     /** Menu bindings for explicit objects, available in every Slot scope. */
     useContextMenu: UseContextMenu

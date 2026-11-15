@@ -1,11 +1,11 @@
-import { Context } from '@deepseek-ai/cordis'
-import Sessions, { type SessionId } from '@deepseek-ai/dsh-session'
-import SandboxPolicy, { setSandboxMode } from '@deepseek-ai/dsh-sandbox-policy'
-import SessionProjections from '@deepseek-ai/dsh-session-projection'
+import { Context } from '@noharness/cordis'
+import Sessions, { type SessionId } from '@noharness/session'
+import SandboxPolicy, { setSandboxMode } from '@noharness/sandbox-policy'
+import SessionProjections from '@noharness/session-projection'
 import { expect, it, onTestFinished, vi } from 'vitest'
 import { PtcCalls } from '../src/ptc-calls.ts'
 import { CodeRunFailedError } from '../src/errors.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 async function setup() {
   const ctx = new Context()

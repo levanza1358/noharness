@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { LlmAttemptId } from '@deepseek-ai/dsh-llm'
-import { SessionSeq } from '@deepseek-ai/dsh-session'
+import { brandString } from '@noharness/brand'
+import type { LlmAttemptId } from '@noharness/llm'
+import { SessionSeq } from '@noharness/session'
 import { SessionAssistantStreamAccumulator } from '../src/assistant-stream.ts'
 
 describe('SessionAssistantStreamAccumulator', () => {

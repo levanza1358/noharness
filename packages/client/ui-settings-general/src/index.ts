@@ -1,9 +1,9 @@
 /** Welcome acknowledgement stored in the plugin configuration. */
-import type {} from '@deepseek-ai/dsh-settings'
+import type {} from '@noharness/settings'
 
-import type { Volatile, Context } from '@deepseek-ai/cordis'
+import type { Volatile, Context } from '@noharness/cordis'
 
-import z from '@deepseek-ai/schemastery'
+import z from '@noharness/schemastery'
 
 /** Runtime preferences projected to the browser. */
 export interface Config {

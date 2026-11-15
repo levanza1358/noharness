@@ -4,13 +4,13 @@
  * keep no state; an image request resolves its bundle and document again.
  */
 import semver from 'semver'
-import { resolveBundleDir } from '@deepseek-ai/dsh-app-boot'
-import type { ProfileContext } from '@deepseek-ai/dsh-app-boot'
+import { resolveBundleDir } from '@noharness/app-boot'
+import type { ProfileContext } from '@noharness/app-boot'
 import {
   DetailFailure, detailImage, languageChain, localFiles, npmFileSourceOrder, npmFiles, readPackageDocument,
   type DetailFiles, type NpmFileSource,
-} from '@deepseek-ai/dsh-plugin-detail'
-import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
+} from '@noharness/plugin-detail'
+import { RemoteError } from '@noharness/typert-protocol'
 import type { BundleDetail, BundleInfo } from './types.ts'
 
 /** Limits and sources of bundle detail reads. */
@@ -37,7 +37,7 @@ function filesOf(bundle: BundleInfo, preferred: readonly string[], options: Bund
   if (bundle.availability !== 'missing') {
     let dir: string
     try {
-      dir = resolveBundleDir('dsh', bundle.name, options.profile.installAnchor, options.profile.dir)
+      dir = resolveBundleDir('nhs', bundle.name, options.profile.installAnchor, options.profile.dir)
     } catch (error) {
       throw new RemoteError('plugin-manager/unknown-bundle', (error as Error).message, { name: bundle.name }, { cause: error })
     }

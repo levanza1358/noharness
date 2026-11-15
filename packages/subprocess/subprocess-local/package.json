@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-subprocess-local",
-  "description": "Local-subprocess implementation of the DeepSeek Harness subprocess seam",
+  "name": "@noharness/subprocess-local",
+  "description": "Local-subprocess implementation of the NoHarness subprocess seam",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/subprocess/subprocess-local"
   },
   "type": "module",
@@ -47,20 +47,20 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-subprocess": "workspace:*",
-    "@deepseek-ai/dsh-timeout": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/subprocess": "workspace:*",
+    "@noharness/timeout": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-lazy-require": "workspace:*",
-    "@deepseek-ai/dsh-win32-process": "workspace:*",
+    "@noharness/lazy-require": "workspace:*",
+    "@noharness/win32-process": "workspace:*",
     "koffi": "3.1.1",
     "node-pty": "1.2.0-beta.15"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-loader-smoke": "workspace:*",
-    "@deepseek-ai/dsh-subprocess": "workspace:*",
-    "@deepseek-ai/dsh-timeout": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/loader-smoke": "workspace:*",
+    "@noharness/subprocess": "workspace:*",
+    "@noharness/timeout": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   }
 }

@@ -108,7 +108,7 @@ const homeAndGuide = pairedPages([
   {
     source: 'docs/user/index.md',
     route: 'index.md',
-    label: { root: 'DeepSeek Harness', en: 'DeepSeek Harness' },
+    label: { root: 'NoHarness', en: 'NoHarness' },
     sidebar: { root: null, en: null },
     section: { root: '首页', en: 'Home' },
     order: 0,
@@ -149,7 +149,7 @@ const homeAndGuide = pairedPages([
   {
     source: 'docs/user/guide/desktop-uninstall-cleanup.md',
     route: 'guide/desktop-uninstall-cleanup.md',
-    label: { root: '卸载 DSH 桌面端', en: 'Uninstall DSH Desktop' },
+    label: { root: '卸载 NHS 桌面端', en: 'Uninstall NHS Desktop' },
     sidebar: { root: 'zh-guide', en: 'en-guide' },
     section: { root: '入门', en: 'Guide' },
     order: 5,

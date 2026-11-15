@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-session-turn-outline",
-  "description": "Whole-log turn outline projection (turnOutline) for the DeepSeek Harness",
+  "name": "@noharness/session-turn-outline",
+  "description": "Whole-log turn outline projection (turnOutline) for the NoHarness",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/session/session-turn-outline"
   },
   "type": "module",
@@ -41,21 +41,21 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-projection": "workspace:*"
   },
   "dependencies": {
     "zod": "4.6.6"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/cordis-plugin-include": "workspace:~",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/cordis-plugin-include": "workspace:~",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-projection": "workspace:*"
   }
 }

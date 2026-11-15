@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { AttachmentId } from '@deepseek-ai/dsh-attachment/types'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import type { AttachmentId } from '@noharness/attachment/types'
+import { brandString } from '@noharness/brand'
 import { retainContent, type RetainableBlock } from '../src/retention.ts'
 
 const text = (value: string): RetainableBlock => ({ type: 'text', text: value })

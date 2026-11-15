@@ -27,22 +27,22 @@
  * chevron, and each row whose value that selection carries shows one in place
  * of its check mark.
  */
-import { MenuGroup, MenuSurface, observeStickyMenuGroups } from '@deepseek-ai/dsh-client-ui-primitives'
+import { MenuGroup, MenuSurface, observeStickyMenuGroups } from '@noharness/client-ui-primitives'
 import {
   useEffect, useId, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore,
   type CSSProperties, type KeyboardEvent, type FocusEvent,
 } from 'react'
 import { createPortal } from 'react-dom'
 import clsx from 'clsx'
-import type { ModelReasoningEffort, ModelSelection } from '@deepseek-ai/dsh-api-remotes/client'
+import type { ModelReasoningEffort, ModelSelection } from '@noharness/api-remotes/client'
 import {
   IconCheckOutlineRegular, IconChevronDownOutlineRegular, IconChevronRightOutlineRegular, IconCloseFillRegular,
   IconDataOutlineRegular, IconWarningOutlineRegular, Input, isMobileDevice, StateDot, Tag, Toast,
-} from '@deepseek-ai/dsh-client-ui-primitives'
-import type { PropsLocale, PropsRenderSlots, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
+} from '@noharness/client-ui-primitives'
+import type { PropsLocale, PropsRenderSlots, PropsRuntime } from '@noharness/client-ui-slots'
 import type { ModelLabelOwner, ModelMenuControls, ModelMenuPaneRef, ModelSelectInjected } from './slots.ts'
 import css from './ModelSelect.module.css'
-import { TextSearchIndex } from '@deepseek-ai/dsh-util-text-search'
+import { TextSearchIndex } from '@noharness/util-text-search'
 import { orderModelProviders } from './provider-order.ts'
 
 /** Which pane the dropdown shows: the root menu, one drilled-in list, or a plugin-owned detail pane. */
@@ -100,8 +100,8 @@ export function ModelSelect(
   const groupsRef = useRef<HTMLDivElement | null>(null)
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
   const id = useId()
-  const anchorStyle: CSSProperties & Record<'--dsh-model-anchor', string> = {
-    '--dsh-model-anchor': `--dsh-model-${id.replaceAll(':', '')}`,
+  const anchorStyle: CSSProperties & Record<'--nhs-model-anchor', string> = {
+    '--nhs-model-anchor': `--nhs-model-${id.replaceAll(':', '')}`,
   }
 
   const accountProviderName = t('provider.account')

@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-goal-round-driver",
+  "name": "@noharness/goal-round-driver",
   "description": "Race-fenced same-session goal-round driver",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/goal/goal-round-driver"
   },
   "type": "module",
@@ -32,29 +32,29 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-goal": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-subagent": "workspace:*"
+    "@noharness/agent": "workspace:*",
+    "@noharness/goal": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/subagent": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
-    "@deepseek-ai/dsh-goal": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-system-prompt": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-subagent": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/agent": "workspace:*",
+    "@noharness/agent-loop": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*",
+    "@noharness/goal": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/system-prompt": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/subagent": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@deepseek-ai/dsh-subagent": {
+    "@noharness/subagent": {
       "optional": true
     }
   }

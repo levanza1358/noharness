@@ -1,18 +1,18 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { createMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { TokenUsage } from '@deepseek-ai/dsh-llm'
-import SessionStore from '@deepseek-ai/dsh-session'
-import type { Session, SessionSeq } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import TokenMeter from '@deepseek-ai/dsh-token-meter'
-import type { ContextPressureProjection, TokenUsageProjection } from '@deepseek-ai/dsh-token-meter/client'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { RetryId } from '@deepseek-ai/dsh-llm-retry/types'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import type { CompactionId } from '@deepseek-ai/dsh-compaction/types'
+import { Context } from '@noharness/cordis'
+import { createMessage, createUserMessage } from '@noharness/llm'
+import type { TokenUsage } from '@noharness/llm'
+import SessionStore from '@noharness/session'
+import type { Session, SessionSeq } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import TokenMeter from '@noharness/token-meter'
+import type { ContextPressureProjection, TokenUsageProjection } from '@noharness/token-meter/client'
+import { brandString } from '@noharness/brand'
+import type { RetryId } from '@noharness/llm-retry/types'
+import type { ContextFormed } from '@noharness/llm'
+import type { CompactionId } from '@noharness/compaction/types'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }

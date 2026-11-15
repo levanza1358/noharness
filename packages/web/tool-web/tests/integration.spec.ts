@@ -1,30 +1,30 @@
 /**
- * Integration: the real fetch backend (`dsh-web-fetch-http`) + a real search provider
- * (`dsh-web-deepseek-api`) + the real seam (`dsh-web`) + the model tool (`dsh-tool-web`) + the
- * tool-call timeout policy (`dsh-tool-call-timeout-policy`), exercised through `executeToolFixture()` —
+ * Integration: the real fetch backend (`nhs-web-fetch-http`) + a real search provider
+ * (`nhs-web-deepseek-api`) + the real seam (`nhs-web`) + the model tool (`nhs-tool-web`) + the
+ * tool-call timeout policy (`nhs-tool-call-timeout-policy`), exercised through `executeToolFixture()` —
  * nothing bypasses the tool registry. Fetch verifies world effects against loopback HTTP; search uses the real
  * DeepSeek Search API provider with only its network boundary stubbed.
  */
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
 
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http'
 import { AddressInfo } from 'node:net'
-import { Context } from '@deepseek-ai/cordis'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot } from '@deepseek-ai/dsh-launch-environment'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm/types'
-import { createScope } from '@deepseek-ai/dsh-scope'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { type ToolExecutionResult } from '@deepseek-ai/dsh-tools'
-import WebRuntime from '@deepseek-ai/dsh-web'
-import * as WebFetchLocal from '@deepseek-ai/dsh-web-fetch-http'
-import * as WebDeepSeekApi from '@deepseek-ai/dsh-web-deepseek-api'
-import * as ToolWeb from '@deepseek-ai/dsh-tool-web'
-import * as TimeoutPolicy from '@deepseek-ai/dsh-tool-call-timeout-policy'
+import { Context } from '@noharness/cordis'
+import type { Agent } from '@noharness/agent'
+import { NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot } from '@noharness/launch-environment'
+import { brandString } from '@noharness/brand'
+import type { ToolCallId } from '@noharness/llm/types'
+import { createScope } from '@noharness/scope'
+import type { SessionId } from '@noharness/session'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime, { type ToolExecutionResult } from '@noharness/tools'
+import WebRuntime from '@noharness/web'
+import * as WebFetchLocal from '@noharness/web-fetch-http'
+import * as WebDeepSeekApi from '@noharness/web-deepseek-api'
+import * as ToolWeb from '@noharness/tool-web'
+import * as TimeoutPolicy from '@noharness/tool-call-timeout-policy'
 
 const testToolSignal = new AbortController().signal
 const SEARCH_API_BASE = 'https://api.deepseek.test/v1/tools'
@@ -54,7 +54,7 @@ beforeEach(async () => {
     fetchProvider: WebFetchLocal.LOCAL_FETCH_PROVIDER_ID,
   })
   await ctx.plugin(WebFetchLocal, {})
-  ctx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'search-key' } }]))
+  ctx.provide(NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'search-key' } }]))
   await ctx.plugin(WebDeepSeekApi, { searchBaseURL: SEARCH_API_BASE, sendOriginalQuestion: false })
   // The shipped deployment shape: the tool-call budget is declared by tool-web
   // config (default 30s, attached as ToolDefinition.timeoutMs) and enforced by
@@ -180,7 +180,7 @@ describe('tool-call timeout returns TOOL_TIMEOUT (deadline wins over a slow fetc
   it('returns a structured TOOL_TIMEOUT (not the provider WEB_FETCH_TIMEOUT) when the tool-call budget wins', async () => {
     const out = await call('web_fetch', { url: slowBase }, tctx)
     expect(out.isError).toBe(true)
-    // The outer tool-call deadline won: TOOL_TIMEOUT, owned by dsh-tool-call-timeout-policy,
+    // The outer tool-call deadline won: TOOL_TIMEOUT, owned by nhs-tool-call-timeout-policy,
     // NOT the provider's own WEB_FETCH_TIMEOUT (its 30s backstop never fired).
     expect(out.error?.info?.code).toBe('TOOL_TIMEOUT')
     const text = out.content.map(b => (b.type === 'text' ? b.text : '')).join('')

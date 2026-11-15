@@ -1,21 +1,21 @@
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
+import { createUserMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { CompactionId } from '@deepseek-ai/dsh-compaction/types'
+import { Context } from '@noharness/cordis'
+import { brandString } from '@noharness/brand'
+import type { CompactionId } from '@noharness/compaction/types'
 import {
   CompactionEngine,
   compactCheckpointSource,
   isCompactCheckpointSource,
-} from '@deepseek-ai/dsh-compaction'
-import type { CompactionResult, CompactionTrigger } from '@deepseek-ai/dsh-compaction'
-import { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import type { SessionSeq } from '@deepseek-ai/dsh-session'
-import type { CompactionAgentContext } from '@deepseek-ai/dsh-compaction'
-import type { ManualCompactAgentContext } from '@deepseek-ai/dsh-compaction'
+} from '@noharness/compaction'
+import type { CompactionResult, CompactionTrigger } from '@noharness/compaction'
+import { Session, type SessionId } from '@noharness/session'
+import type { SessionSeq } from '@noharness/session'
+import type { CompactionAgentContext } from '@noharness/compaction'
+import type { ManualCompactAgentContext } from '@noharness/compaction'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'other': { kind: 'other' } & ContextFormed
   }

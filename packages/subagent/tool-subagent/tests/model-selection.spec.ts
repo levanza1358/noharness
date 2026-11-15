@@ -1,17 +1,17 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { mountWorkingDirectoryFixture } from '../../subagent/tests/working-directory-fixture.ts'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { ReasoningEffortId, ToolCallId } from '@deepseek-ai/dsh-llm/types'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import SubagentRuntime, { resolveChildAgentOptions } from '@deepseek-ai/dsh-subagent'
-import type { SubagentStartRequest } from '@deepseek-ai/dsh-subagent'
-import { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import { Context } from '@noharness/cordis'
+import { brandString } from '@noharness/brand'
+import type { ReasoningEffortId, ToolCallId } from '@noharness/llm/types'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
+import type { Agent } from '@noharness/agent'
+import SubagentRuntime, { resolveChildAgentOptions } from '@noharness/subagent'
+import type { SubagentStartRequest } from '@noharness/subagent'
+import { Session, type SessionId } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import { MockAdapter } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import * as mock from './scripted-provider.ts'
 import * as tool from '../src/index.ts'
@@ -41,7 +41,7 @@ function parentWithRoute(
   return { id, options, session: Session.create(id) } as unknown as Agent
 }
 
-describe('dsh-tool-subagent model selection', () => {
+describe('nhs-tool-subagent model selection', () => {
   it('rejects empty route ids at the configuration boundary', () => {
     expect(() => { assertAllowedModelRoutes([{ provider: '', model: 'model' }]) })
       .toThrow('requires non-empty provider and model ids')

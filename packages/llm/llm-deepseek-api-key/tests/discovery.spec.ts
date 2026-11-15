@@ -1,6 +1,6 @@
 /** Model discovery requires the API-key route's own credential. */
-import { Context } from '@deepseek-ai/cordis'
-import LlmRuntime from '@deepseek-ai/dsh-llm'
+import { Context } from '@noharness/cordis'
+import LlmRuntime from '@noharness/llm'
 import { expect, it, vi } from 'vitest'
 import * as ApiKey from '../src/index.ts'
 

@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-05-context-form-vocabulary.md
 /agent-note-producer-declared-context-forms:
-  en: a88151ac41197659
-  zh: 4aaffb71b4ae04ea
+  en: dc3f5f912719d2cd
+  zh: eeb59aaedd86a253
 /agent-note-producer-declared-context-forms/problem:
   en: 74c06aa0b3e5337e
   zh: c13364dbaebabba1
 /agent-note-producer-declared-context-forms/decision:
-  en: ed244fc93ee1a5bf
-  zh: f43dfcdd5bae39f2
+  en: 12b1d5103916d7fd
+  zh: cba0e38a4c844026
 /agent-note-producer-declared-context-forms/why-not-a-presenter-registry:
   en: feb1b16eeb312e0c
   zh: 9eb3c5af2d510235

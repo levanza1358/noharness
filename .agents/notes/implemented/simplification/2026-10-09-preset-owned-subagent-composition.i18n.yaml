@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-10-09-preset-owned-subagent-composition.md
 /agent-note-preset-owned-subagent-composition:
-  en: 08d7745426af0373
-  zh: 26f9afb3cc941a9a
+  en: e23382d49cdafe1f
+  zh: 2b48f89a478b8a01
 /agent-note-preset-owned-subagent-composition/problem:
   en: 97cd4f941fe8eaa5
   zh: b3dabbd7020a8991
 /agent-note-preset-owned-subagent-composition/decision:
-  en: 7dfefd4689562847
-  zh: 0bbfd0a8ce41c9ac
+  en: 10775b5a3b76e600
+  zh: 674eec80b4549d63
 /agent-note-preset-owned-subagent-composition/alternatives-considered:
   en: c87c4638a36cc45d
   zh: ee2c8e044108f0eb

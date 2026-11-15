@@ -1,9 +1,9 @@
 /** Root overlay showing one Session export at a time in initiation order. */
-import type { ObservableSnapshot } from '@deepseek-ai/dsh-client-store'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import { Button, Modal } from '@deepseek-ai/dsh-client-ui-primitives'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
-import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
+import type { ObservableSnapshot } from '@noharness/client-store'
+import type { SessionId } from '@noharness/session/types'
+import { Button, Modal } from '@noharness/client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@noharness/client-ui-slots'
+import type {} from '@noharness/client-ui-layout/client'
 import type { SessionLogDownloadState } from './controller.ts'
 import { NS } from './locales.ts'
 

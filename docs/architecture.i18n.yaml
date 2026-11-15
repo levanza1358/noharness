@@ -2,36 +2,36 @@
 # section, a hash of its English and Chinese blocks outside code blocks and generated regions.
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/architecture.md
-/deepseek-harness-architecture:
-  en: 20678ed3f962afba
-  zh: 87a2b81675d93346
-/deepseek-harness-architecture/cordis:
-  en: da5060e577578ea7
-  zh: 2e77d570e32d8938
-/deepseek-harness-architecture/profiles-and-bundles:
-  en: 21423f481b18b0be
-  zh: 5343bd7ea0fae5bc
-/deepseek-harness-architecture/application-launch:
-  en: 334b4f390b6e376b
-  zh: ce094f24c6162be3
-/deepseek-harness-architecture/desktop-application:
-  en: b9eeb18645121a8b
-  zh: 70d87a12c43e042a
-/deepseek-harness-architecture/core-packages:
-  en: 20ef882e44b06a10
-  zh: c10c3934ed5570e9
-/deepseek-harness-architecture/events:
-  en: 0d4481070a0ba352
-  zh: 026be77a9f3db68e
-/deepseek-harness-architecture/turn-flow:
-  en: 1d496f1893bdbb8d
-  zh: f16d162a803fc791
-/deepseek-harness-architecture/session-log:
-  en: b3b63d8fe7cab9fe
-  zh: 3703fcf30b1639d0
-/deepseek-harness-architecture/capability-seams:
-  en: 1d425c445bfcc931
-  zh: 834d486f88e68edf
-/deepseek-harness-architecture/where-new-behavior-goes:
-  en: ee73b1861378b099
-  zh: 9a182be609485f67
+/noharness-architecture:
+  en: f8b93c77a9673d00
+  zh: 4018a800389977e5
+/noharness-architecture/cordis:
+  en: 6fb7f2b07368d6be
+  zh: 3054c591db704598
+/noharness-architecture/profiles-and-bundles:
+  en: d25964ee1a4e1582
+  zh: 3e06850d3c52c2db
+/noharness-architecture/application-launch:
+  en: f6f362a5b5b6791c
+  zh: 7596fbe436913f14
+/noharness-architecture/desktop-application:
+  en: 7028a6444d680e9a
+  zh: ef3ae4fae2df987f
+/noharness-architecture/core-packages:
+  en: 55add803bfa93216
+  zh: 9634bdda161aac4e
+/noharness-architecture/events:
+  en: 53f0c7b75c5c1f98
+  zh: ecb266848b3360fb
+/noharness-architecture/turn-flow:
+  en: 56b763de63142342
+  zh: 13e5c3b9dcbd7395
+/noharness-architecture/session-log:
+  en: 7327212b76b86190
+  zh: e810f5bc9c5fbf1e
+/noharness-architecture/capability-seams:
+  en: e1b0494e87052d5c
+  zh: 347b34817d16e145
+/noharness-architecture/where-new-behavior-goes:
+  en: 257e4dd5b5497398
+  zh: 762c762c50a9e3ea

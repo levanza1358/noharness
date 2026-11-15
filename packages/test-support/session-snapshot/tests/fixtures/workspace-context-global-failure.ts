@@ -3,10 +3,10 @@
 import assert from 'node:assert/strict'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-agent'
-import type {} from '@deepseek-ai/dsh-fs'
-import type {} from '@deepseek-ai/dsh-tools'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/agent'
+import type {} from '@noharness/fs'
+import type {} from '@noharness/tools'
 
 export const name = 'workspace-context-global-failure'
 export const inject = ['fs']
@@ -43,7 +43,7 @@ export function apply(ctx: Context): void {
       || !('file_path' in exec.arguments)) return downstream
     const cwd = exec.agent.session.header.cwd
     if (cwd === undefined) throw new Error('Global instruction snapshot requires a session cwd')
-    const homeFile = join(cwd, '.dsh', 'AGENTS.md')
+    const homeFile = join(cwd, '.nhs', 'AGENTS.md')
     const sharedFile = join(cwd, '.agents', 'AGENTS.md')
     switch (exec.arguments.file_path) {
       case 'first.txt':

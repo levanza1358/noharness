@@ -1,6 +1,6 @@
 /** Typed plan-mode failures. @module */
 
-import { HarnessError } from '@deepseek-ai/dsh-error'
+import { HarnessError } from '@noharness/error'
 
 /**
  * Every machine-routable plan-mode failure:

@@ -10,14 +10,14 @@
 import type { RefCallback } from 'react'
 import type {
   InjectFace, PropsLocale, PropsRenderFactories, PropsRenderSlots, PropsRuntime, SlotHookFactory,
-} from '@deepseek-ai/dsh-client-ui-slots'
-import type { ObservableSnapshot } from '@deepseek-ai/dsh-client-store'
-import type { WorkspaceId } from '@deepseek-ai/dsh-api-workspace-controller/client'
-import type { ShortcutCatalogEntry } from '@deepseek-ai/dsh-client-shortcuts/client'
-import type { MainPanelId } from '@deepseek-ai/dsh-client-ui-layout/client'
-import type { ProductEventMap } from '@deepseek-ai/dsh-client-product-analytics/client'
+} from '@noharness/client-ui-slots'
+import type { ObservableSnapshot } from '@noharness/client-store'
+import type { WorkspaceId } from '@noharness/api-workspace-controller/client'
+import type { ShortcutCatalogEntry } from '@noharness/client-shortcuts/client'
+import type { MainPanelId } from '@noharness/client-ui-layout/client'
+import type { ProductEventMap } from '@noharness/client-product-analytics/client'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@noharness/client-ui-slots' {
   interface SlotFactoryMap {
     /** Reuse a registered panel icon in navigation rows and menus. */
     'sidebar.panel.icon': {

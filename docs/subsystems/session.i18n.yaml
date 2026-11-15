@@ -3,23 +3,23 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/session.md
 /sessions:
-  en: 28fb7eb8f758fdf0
-  zh: a36d6f03e331ad86
+  en: 5d3ff306f95dd6bb
+  zh: cac3e154125e80c3
 /sessions/sessioneventmap-the-event-vocabulary:
-  en: 541354f6468e117d
-  zh: 2d7a665bad828a02
+  en: 7d83c7ae8b5ce460
+  zh: 0bedaf509d06b685
 /sessions/sessioneventmap-the-event-vocabulary/the-request-header-event-request-header:
-  en: 6eb931fcb2f4ab8d
-  zh: d822a83384cc1fee
+  en: 08f40df7811c1ea5
+  zh: b648c882706a99dc
 /sessions/sessioneventmap-the-event-vocabulary/the-route-capacity-event-request-context:
-  en: 7e21ea8bcdb16b7a
-  zh: a377774d3596dbeb
+  en: 3db5c0fc963f27a3
+  zh: eb0061cd9f0e57b1
 /sessions/sessionevent-t-one-log-entry:
   en: 622d333d9d903795
   zh: fdc9ee663330f01e
 /sessions/surface-types:
-  en: 55fa7be0643afc08
-  zh: 0bc544886c68cdb3
+  en: 428347dc27b9b43e
+  zh: efdb882269051275
 /sessions/surface-types/surfaceeventtype-the-message-producing-subset-of-event-types:
   en: 2f1b6a16a4ee7cc1
   zh: 7f16b568c4aa940f
@@ -27,11 +27,11 @@
   en: 8fcc967516a13692
   zh: d3978d3b8d02c566
 /sessions/surface-types/surfaceintent-the-parameter-to-session-append:
-  en: c65cc976acad9005
-  zh: 3efd10779881cba5
+  en: ff2345218099b845
+  zh: e5764fec79564163
 /sessions/surface-types/plugin-owned-message-projections:
-  en: f1f73607d650620f
-  zh: b3ef72f19fb5ee3d
+  en: 08125473bb530f79
+  zh: 4a12641b94f5658e
 /sessions/surface-types/sessionsurface-the-live-readonly-surface-projection:
   en: 350259099d8d60c9
   zh: 7b25db461748c04e
@@ -48,29 +48,29 @@
   en: 45d1a9ee6d610ac5
   zh: 79c061252fde4ceb
 /sessions/live-session-fork-api:
-  en: 06189884c62a80a1
-  zh: 30121aed7a011c72
+  en: ea3e1a5908e28d45
+  zh: 76c879f01d641bcc
 /sessions/why-a-turn-ended-turnendreasonmap:
-  en: 966cc60273fb3911
-  zh: de5123ea9dbb0df2
+  en: 99fdf058e858729a
+  zh: 67ef98986f71a873
 /sessions/execution-enclosure-and-standalone-events:
-  en: 9091c5446e8cb9a2
-  zh: 04c8c4fd5d0eaefc
+  en: 1438c362e1600954
+  zh: 923efdce5fd94123
 /sessions/the-end-seed-boundary-session-end-seed:
   en: 63b4059793255ca3
   zh: 6bc7891c320249f4
 /sessions/plugin-contributed-log-only-events:
-  en: 0a014a755b75449f
-  zh: 9d59d74490a1bcb2
+  en: 30dcc45bea2d0578
+  zh: 32821de72e60d152
 /sessions/plugin-contributed-log-only-events/plugin-records:
-  en: 15102fd0b937fbf3
-  zh: 37ebf1d715db097c
+  en: 10d6facb7dec4ecc
+  zh: 08c40e874ec0287e
 /sessions/durability-contract:
-  en: 62e3e4fbcba292a3
-  zh: cb6dcaf531621e85
+  en: c6cf6d6da24b4038
+  zh: a45621e92a13c9a3
 /sessions/remote-catalog-and-workspace-opening:
   en: dd27307e0d7c893c
   zh: b77d2a749b7b641c
 /sessions/session-log-upload-exclusions:
-  en: cfe3323aade972be
-  zh: 8423b490c47c5013
+  en: 11fbd7c8fbb55b76
+  zh: b05a8749ac7cdb73

@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-experimental-translator",
+  "name": "@noharness/experimental-translator",
   "description": "Machine translation with reusable Session results",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/experimental/translator"
   },
   "type": "module",
@@ -37,38 +37,38 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~"
+    "@noharness/brand": "workspace:*",
+    "@noharness/schemastery": "workspace:~"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-timeout": "workspace:*",
-    "@deepseek-ai/dsh-util-values": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-persistence": "workspace:*",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-credentials": "workspace:*",
-    "@deepseek-ai/dsh-launch-environment": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/timeout": "workspace:*",
+    "@noharness/util-values": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-persistence": "workspace:*",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/llm": "workspace:*",
+    "@noharness/credentials": "workspace:*",
+    "@noharness/launch-environment": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-app-boot": "workspace:*",
-    "@deepseek-ai/dsh-timeout": "workspace:*",
-    "@deepseek-ai/dsh-util-values": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-persistence": "workspace:*",
-    "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-credentials": "workspace:*",
-    "@deepseek-ai/dsh-launch-environment": "workspace:*",
-    "@deepseek-ai/dsh-llm-deepseek": "workspace:*",
-    "@deepseek-ai/dsh-llm-deepseek-api-key": "workspace:*",
-    "@deepseek-ai/dsh-llm-deepseek-account": "workspace:*",
-    "@deepseek-ai/dsh-deepseek-account": "workspace:*",
-    "@deepseek-ai/dsh-deepseek-llm-api-extensions": "workspace:*",
-    "@deepseek-ai/dsh-session-log-deepseek": "workspace:*",
-    "@deepseek-ai/dsh-session-query-sqlite": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/app-boot": "workspace:*",
+    "@noharness/timeout": "workspace:*",
+    "@noharness/util-values": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-persistence": "workspace:*",
+    "@noharness/session-persistence-jsonl": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/credentials": "workspace:*",
+    "@noharness/launch-environment": "workspace:*",
+    "@noharness/llm-deepseek": "workspace:*",
+    "@noharness/llm-deepseek-api-key": "workspace:*",
+    "@noharness/llm-deepseek-account": "workspace:*",
+    "@noharness/deepseek-account": "workspace:*",
+    "@noharness/deepseek-llm-api-extensions": "workspace:*",
+    "@noharness/session-log-deepseek": "workspace:*",
+    "@noharness/session-query-sqlite": "workspace:*"
   }
 }

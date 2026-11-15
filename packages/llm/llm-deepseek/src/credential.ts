@@ -1,9 +1,9 @@
 /** Credential values shared by DeepSeek model and web providers; callers own protocol headers and missing-key errors. */
-import type { Context } from '@deepseek-ai/cordis'
-import type { CredentialRef } from '@deepseek-ai/dsh-credentials'
-import type {} from '@deepseek-ai/dsh-deepseek-account'
-import { launchEnvironmentOf } from '@deepseek-ai/dsh-launch-environment'
-import { assertUsableApiKey } from '@deepseek-ai/dsh-llm'
+import type { Context } from '@noharness/cordis'
+import type { CredentialRef } from '@noharness/credentials'
+import type {} from '@noharness/deepseek-account'
+import { launchEnvironmentOf } from '@noharness/launch-environment'
+import { assertUsableApiKey } from '@noharness/llm'
 
 /**
  * Read and validate one API key. An installed credentials service is authoritative, including absence;

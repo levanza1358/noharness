@@ -1,15 +1,15 @@
 /** Declarative Agent capability sets, activation and session binding. */
-import type { ProjectionHandle } from '@deepseek-ai/dsh-session-projection'
-import { Context, Service } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import { Remote, RemoteError, TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
-import { bindScopeParent, createScope, scopeOf, scopeParentOf, type Scope, type ScopeKey, type ScopeParentBinding } from '@deepseek-ai/dsh-scope'
-import { stringifyEntryYaml } from '@deepseek-ai/cordis-plugin-include'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { Session } from '@deepseek-ai/dsh-session'
+import type { ProjectionHandle } from '@noharness/session-projection'
+import { Context, Service } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import { Remote, RemoteError, TypertRemoteService } from '@noharness/typert-protocol'
+import { bindScopeParent, createScope, scopeOf, scopeParentOf, type Scope, type ScopeKey, type ScopeParentBinding } from '@noharness/scope'
+import { stringifyEntryYaml } from '@noharness/cordis-plugin-include'
+import type { Agent } from '@noharness/agent'
+import type { Session } from '@noharness/session'
 // Type-only: the optional `settings` service this registry keeps off the generated pages.
-import type {} from '@deepseek-ai/dsh-settings'
-import type {} from '@deepseek-ai/dsh-tools'
+import type {} from '@noharness/settings'
+import type {} from '@noharness/tools'
 import type { AgentPresetDocument, AgentPresetRoster } from './types.ts'
 import { entryListProblem, type PresetDefinition } from './definition.ts'
 import type { AgentPreset, Config } from './preset.ts'
@@ -23,7 +23,7 @@ export { auditRows, leakedServices, type PresetMount, type RowAudit } from './mo
 export type { AgentPresetInspection } from './composition-inventory.ts'
 export type { AgentPreset, Config } from './preset.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     agentPresets: AgentPresetRegistry
   }

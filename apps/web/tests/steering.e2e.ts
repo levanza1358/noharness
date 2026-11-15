@@ -8,11 +8,11 @@ import { join } from 'node:path'
 import type { Browser, Page, WebSocketRoute } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed, onTestFinished, type MockInstance } from 'vitest'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { parseSessionLog } from '@deepseek-ai/dsh-llm-replay'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
-import { expandAssistantStream, type UserMessage } from '@deepseek-ai/dsh-llm'
-import { parseRemoteStreamServerMessage } from '@deepseek-ai/dsh-api-gateway/stream-protocol'
+import type { Agent } from '@noharness/agent'
+import { parseSessionLog } from '@noharness/llm-replay'
+import type { SessionEvent } from '@noharness/session'
+import { expandAssistantStream, type UserMessage } from '@noharness/llm'
+import { parseRemoteStreamServerMessage } from '@noharness/api-gateway/stream-protocol'
 import {
   acknowledgeReloadConnectionLoss, assertFixtureInventory, captureExpandedTurnProcessAria, captureStableAria,
   compareOrRefreshGolden, fixtureUserPrompts,

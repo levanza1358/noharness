@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import WebRuntime from '@deepseek-ai/dsh-web'
-import { DeepSeekFetchApiProvider, type DeepSeekFetchApiOptions } from '@deepseek-ai/dsh-web-deepseek-api'
-import * as webApiPlugin from '@deepseek-ai/dsh-web-deepseek-api'
-import { DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot } from '@deepseek-ai/dsh-launch-environment'
+import { Context } from '@noharness/cordis'
+import WebRuntime from '@noharness/web'
+import { DeepSeekFetchApiProvider, type DeepSeekFetchApiOptions } from '@noharness/web-deepseek-api'
+import * as webApiPlugin from '@noharness/web-deepseek-api'
+import { NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot } from '@noharness/launch-environment'
 import { customGuidance } from './guidance.ts'
 const fetchProvider = (options: DeepSeekFetchApiOptions) => new DeepSeekFetchApiProvider(() => options)
 const BASE = 'https://api.deepseek.test/api/v1/tools'
@@ -65,7 +65,7 @@ describe('DeepSeek Fetch API', () => {
     const ctx = new Context()
     try {
       await ctx.plugin(WebRuntime, { searchProvider: 'deepseek-search-api', fetchProvider: 'deepseek-fetch-api' })
-      ctx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'ds-key' } }]))
+      ctx.provide(NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'ds-key' } }]))
       const fiber = await ctx.plugin(webApiPlugin, { fetchBaseURL: BASE })
       await expect(ctx.web.fetch({ url: 'https://example.com' })).resolves.toMatchObject({ body: { content: 'body' } })
       await fiber.dispose()

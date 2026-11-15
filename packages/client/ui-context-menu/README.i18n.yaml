@@ -5,36 +5,36 @@
 /:
   en: c7a386986f8aa0d7
   zh: a4bace64648d0a89
-/deepseek-ai-dsh-client-ui-context-menu:
-  en: f165f99dfbea7ed2
-  zh: 0f2835e7726dd0f5
-/deepseek-ai-dsh-client-ui-context-menu/summary:
+/noharness-client-ui-context-menu:
+  en: 6c2679bfb5f71919
+  zh: d082747c435bef51
+/noharness-client-ui-context-menu/summary:
   en: 7d22e21395a76909
   zh: e9f98068a4c5fde7
-/deepseek-ai-dsh-client-ui-context-menu/table-of-contents:
+/noharness-client-ui-context-menu/table-of-contents:
   en: d152484eb41ac6b4
   zh: 725b47765ee8f30b
-/deepseek-ai-dsh-client-ui-context-menu/use-this-package:
-  en: 892cfb46cfcddcc0
-  zh: c534b44e7ef53522
-/deepseek-ai-dsh-client-ui-context-menu/use-this-package/register-actions:
-  en: 11bea09005de2678
-  zh: d56e25d2d93022aa
-/deepseek-ai-dsh-client-ui-context-menu/understand-the-implementation:
+/noharness-client-ui-context-menu/use-this-package:
+  en: 0fb1be50a11e25cf
+  zh: b6ebdb061f0d1c05
+/noharness-client-ui-context-menu/use-this-package/register-actions:
+  en: 727b6bddd6c57b91
+  zh: d705b32bd7d6372d
+/noharness-client-ui-context-menu/understand-the-implementation:
   en: 5b7717fad8457145
   zh: 19a06fca8060cf62
-/deepseek-ai-dsh-client-ui-context-menu/further-exploration:
-  en: 6d538e70a88f070b
-  zh: f90577fe9c8d1799
-/deepseek-ai-dsh-client-ui-context-menu/model-experience:
+/noharness-client-ui-context-menu/further-exploration:
+  en: 5045ec9013e8f718
+  zh: 62b8b04388056dac
+/noharness-client-ui-context-menu/model-experience:
   en: bb3787b3201a6724
   zh: e51cbb66f42a433d
-/deepseek-ai-dsh-client-ui-context-menu/model-experience/kv-cache-effect:
+/noharness-client-ui-context-menu/model-experience/kv-cache-effect:
   en: e5fe67ca0631f67a
   zh: b26e6107f2638589
-/deepseek-ai-dsh-client-ui-context-menu/known-limitations-and-deferred-work:
+/noharness-client-ui-context-menu/known-limitations-and-deferred-work:
   en: ac1e5554e7f3109f
   zh: c2df38df3b9ea4f2
-/deepseek-ai-dsh-client-ui-context-menu/known-limitations-and-deferred-work/dev-note:
+/noharness-client-ui-context-menu/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 6c5f9788c6536776

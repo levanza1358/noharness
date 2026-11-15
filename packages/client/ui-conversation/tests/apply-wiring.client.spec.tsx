@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
-import { apply as applyMenus, inject as injectMenus } from '@deepseek-ai/dsh-client-ui-context-menu/client'
+import { apply as applyMenus, inject as injectMenus } from '@noharness/client-ui-context-menu/client'
 import { describe, expect, it, vi } from 'vitest'
 import {
   SlotTestRuntime, stubConfigForm, usePinnedBrowserLanguages,
-} from '@deepseek-ai/dsh-client-test-runtime'
-import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
-import { createSnapshotStore, type ObservableSnapshot } from '@deepseek-ai/dsh-client-store'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import { apply, inject, type ViewTab } from '@deepseek-ai/dsh-client-ui-conversation/client'
+} from '@noharness/client-test-runtime'
+import { LocaleRuntime } from '@noharness/client-locale/client'
+import { createSnapshotStore, type ObservableSnapshot } from '@noharness/client-store'
+import type { SessionId } from '@noharness/session/types'
+import { apply, inject, type ViewTab } from '@noharness/client-ui-conversation/client'
 
 usePinnedBrowserLanguages('zh-CN')
 
@@ -48,7 +48,7 @@ function entry(
 
 describe('target-neutral Conversation apply wiring', () => {
   it('hands every Session header the same in-memory View pins without restoring saved choices', async () => {
-    localStorage.setItem('dsh.slot.manual-order.conversation.view.v1', JSON.stringify({ unpinned: ['trajectory'] }))
+    localStorage.setItem('nhs.slot.manual-order.conversation.view.v1', JSON.stringify({ unpinned: ['trajectory'] }))
     try {
       const b = await bench()
       const header = b.runtime.slots.entries('conversation.session.header')[0]!

@@ -1,20 +1,20 @@
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { afterEach, expect, it, vi } from 'vitest'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import LlmRuntime, { createUserMessage } from '@deepseek-ai/dsh-llm'
-import SessionStore, { Session, type SessionId, type SessionEvent } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import * as CheckpointPolicy from '@deepseek-ai/dsh-session-checkpoint-policy'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
+import { Context } from '@noharness/cordis'
+import AgentRegistry, { type Agent } from '@noharness/agent'
+import AgentLoop from '@noharness/agent-loop'
+import LlmRuntime, { createUserMessage } from '@noharness/llm'
+import SessionStore, { Session, type SessionId, type SessionEvent } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import * as CheckpointPolicy from '@noharness/session-checkpoint-policy'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const fixtures: { ctx: Context; agent?: Agent; root: string }[] = []
 afterEach(async () => {
@@ -33,7 +33,7 @@ const input = (text: string) => createUserMessage({ content: [{ type: 'text' as 
 
 async function harness() {
   const ctx = new Context()
-  const root = await mkdtemp(join(tmpdir(), 'dsh-input-atomicity-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-input-atomicity-'))
   const fixture: { ctx: Context; agent?: Agent; root: string } = { ctx, root }
   fixtures.push(fixture)
   await ctx.plugin(LlmRuntime)

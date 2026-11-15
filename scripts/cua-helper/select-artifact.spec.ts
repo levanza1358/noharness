@@ -2,7 +2,7 @@
 import { expect, it, onTestFinished, vi } from 'vitest'
 import { createGitHubJsonReader, selectCuaHelperArtifact } from './select-artifact.ts'
 
-const repository = 'deepseek-harness/deepseek-harness'
+const repository = 'noharness/noharness'
 const base = `repos/${repository}/actions/runs/123`
 const key = 'a'.repeat(64)
 

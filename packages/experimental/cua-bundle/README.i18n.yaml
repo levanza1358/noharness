@@ -5,42 +5,42 @@
 /:
   en: 0df5d6f2b9e2ac15
   zh: d0a9bd1f4e172d25
-/deepseek-ai-dsh-cua-bundle:
-  en: 9084fb48d0f6489c
-  zh: ce692972d91cf663
-/deepseek-ai-dsh-cua-bundle/summary:
-  en: 1ce2746fdcf7af3a
-  zh: 5552393694e233b2
-/deepseek-ai-dsh-cua-bundle/table-of-contents:
+/noharness-cua-bundle:
+  en: 47a01c1578630190
+  zh: 8b7143aae30640bd
+/noharness-cua-bundle/summary:
+  en: 9f84ce1abfd100c5
+  zh: b36d9d5b0f55dd47
+/noharness-cua-bundle/table-of-contents:
   en: b563e4ec4727d0de
   zh: d0228da978238e05
-/deepseek-ai-dsh-cua-bundle/use-this-package:
-  en: 0c75d4a9f0c0766d
-  zh: 9b4bf34716f5538e
-/deepseek-ai-dsh-cua-bundle/understand-the-implementation:
-  en: acb42fb7b181194b
-  zh: 6961f4cb732560e9
-/deepseek-ai-dsh-cua-bundle/further-exploration:
-  en: 9f15d56b5b16e1ca
-  zh: 75eb08e8828c8877
-/deepseek-ai-dsh-cua-bundle/model-experience:
+/noharness-cua-bundle/use-this-package:
+  en: 61ddcb81ebb20883
+  zh: 8078df4386c2117c
+/noharness-cua-bundle/understand-the-implementation:
+  en: 867a709aabdb86be
+  zh: ba97c281bd6ebb32
+/noharness-cua-bundle/further-exploration:
+  en: 4658d9a46b7e1169
+  zh: 2da3e1b18cc70786
+/noharness-cua-bundle/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/deepseek-ai-dsh-cua-bundle/model-experience/computer-use-across-presets:
+/noharness-cua-bundle/model-experience/computer-use-across-presets:
   en: b59f3023a8494477
   zh: 72f91459a6b94e0a
-/deepseek-ai-dsh-cua-bundle/model-experience/computer-use-across-presets/what-the-model-sees:
-  en: 856f7ff0f6df6dbf
-  zh: 97218b6559b9e64d
-/deepseek-ai-dsh-cua-bundle/model-experience/computer-use-across-presets/token-effect:
+/noharness-cua-bundle/model-experience/computer-use-across-presets/what-the-model-sees:
+  en: 6ae6dddf814f133f
+  zh: bd55576b1ba3c4d9
+/noharness-cua-bundle/model-experience/computer-use-across-presets/token-effect:
   en: dd5821cb31405880
   zh: d3b529cee8233dbf
-/deepseek-ai-dsh-cua-bundle/model-experience/computer-use-across-presets/kv-cache-effect:
+/noharness-cua-bundle/model-experience/computer-use-across-presets/kv-cache-effect:
   en: f818723a618d1917
   zh: 362d5d51d05e56b1
-/deepseek-ai-dsh-cua-bundle/known-limitations-and-deferred-work:
-  en: df1da8366cdabf92
-  zh: 62645b3f849357d6
-/deepseek-ai-dsh-cua-bundle/known-limitations-and-deferred-work/dev-note:
+/noharness-cua-bundle/known-limitations-and-deferred-work:
+  en: 4afa43733444c9a3
+  zh: 429219a069530c69
+/noharness-cua-bundle/known-limitations-and-deferred-work/dev-note:
   en: 0a1253c6f7b5e8b9
   zh: ce96645b3e75874e

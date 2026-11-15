@@ -3,11 +3,11 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write benchmarks/session-corpus/README.md
 /session-corpus-benchmarks:
-  en: 28ebbfcfa3ea913a
-  zh: 3ebad56e2c97c7c8
+  en: 83e4cd3008aeffe7
+  zh: 2758b3f79e00518e
 /session-corpus-benchmarks/summary:
-  en: 651a02571a0f6f42
-  zh: dcd33bbc5baa0977
+  en: 3cb253498a306863
+  zh: 75a08e15215c65a8
 /session-corpus-benchmarks/table-of-contents:
   en: 66a769ce60d49ff3
   zh: 7e0bfa7c598157fa
@@ -15,8 +15,8 @@
   en: c770082e58aa8194
   zh: 339d659595a1f97d
 /session-corpus-benchmarks/measurements:
-  en: c357c231c3bfb588
-  zh: 3d901a2caccf2587
+  en: ecfcd533aa83db0c
+  zh: c563e46c0c1f0969
 /session-corpus-benchmarks/dev-note:
   en: b75c8458928b72b9
   zh: 003ba4e17b4b5269

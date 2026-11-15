@@ -3,38 +3,38 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe:
-  en: 00b5d91d3e44a9f8
-  zh: eabd3c4b338249b3
+  en: be93ead1e9907411
+  zh: e497e61ca91a8082
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/problem:
-  en: 112178b76e5209f6
-  zh: 68726254ae530566
+  en: 216633f8fa17fb33
+  zh: 00fcff86f9319740
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/decision:
   en: a15c7c13f167e5ac
   zh: 63bcc2ef60c2f344
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/decision/packaging-route-yao-pkg-pkg-s-sea-mode:
-  en: f1c2b60e9474111d
-  zh: 5de398b5e8554429
-/agent-note-single-file-executable-sdk-runtime-distribution-single-exe/decision/the-serving-interface-is-a-plugin-inside-the-dsh-application:
-  en: 5fdde26e9e8c6108
-  zh: 629559d733c1f0c5
+  en: c143408cb98260e1
+  zh: 6f58493c886a3913
+/agent-note-single-file-executable-sdk-runtime-distribution-single-exe/decision/the-serving-interface-is-a-plugin-inside-the-nhs-application:
+  en: edc78a5062c46b6b
+  zh: bcc0b51d8f383d3c
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/decision/plugin-resolution-the-vfs-holds-a-real-package-tree-the-closure-manifest-is-the-deploy-root:
-  en: 985e0eb63f3d1fd6
-  zh: 337cc44fadc6227e
+  en: cb59baec1d20c3a5
+  zh: 6387d2969c931921
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/decision/build-pipeline-and-artifacts:
-  en: 4a55602284b462e8
-  zh: 762c4f8b719f179c
+  en: 1de2d9addb27b242
+  zh: 86d6b2dfc480acb3
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/decision/python-sdk-distribution-two-carriers-exe-for-production-node-for-development:
-  en: b2a740a1ab7a5002
-  zh: a48be6ca6fc65912
+  en: fa249ce40fd1c601
+  zh: ea19c01bb0023b63
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/decision/naming-lineage:
-  en: 31a5aecb8bf828bb
-  zh: 2dffb6fd2e0f8194
+  en: 998460dc06df8927
+  zh: a1682085decaf718
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/packaged-workflow-and-code-execution:
-  en: 0426f598f3f44e64
-  zh: fc66728e17f3bcfb
+  en: 71d318b5a17dedc8
+  zh: c20382072918daaf
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/testing:
-  en: 8e7f46bbb595afa9
-  zh: 4641894ed285d717
+  en: ddb43316285c971b
+  zh: 6ba25dc54f05def7
 /agent-note-single-file-executable-sdk-runtime-distribution-single-exe/alternatives-considered:
   en: 50d965ca81a401ba
   zh: 0c6296245b97b9ac

@@ -1,11 +1,11 @@
 /** Capability-independent tool history folded from committed headers and developer messages. */
 import { describe, expect, it } from 'vitest'
-import { createDeveloperMessage, projectToolUpdates } from '@deepseek-ai/dsh-llm'
-import type { ContentBlock, ToolSchema } from '@deepseek-ai/dsh-llm'
-import { Session, type SessionId, SessionLogOffset, SessionSeq } from '@deepseek-ai/dsh-session'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
+import { createDeveloperMessage, projectToolUpdates } from '@noharness/llm'
+import type { ContentBlock, ToolSchema } from '@noharness/llm'
+import { Session, type SessionId, SessionLogOffset, SessionSeq } from '@noharness/session'
+import type { SessionEvent } from '@noharness/session'
 import { ToolHistoryProjection } from '../src/tool-history.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const search: ToolSchema = { name: 'search', description: 'Search', parameters: {} }
 const fetch: ToolSchema = { name: 'fetch', description: 'Fetch', parameters: {} }

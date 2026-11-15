@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import SessionStore, { type SessionId } from '@deepseek-ai/dsh-session'
-import TypertRegistry from '@deepseek-ai/dsh-typert-registry'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context } from '@noharness/cordis'
+import SessionStore, { type SessionId } from '@noharness/session'
+import TypertRegistry from '@noharness/typert-registry'
+import { brandString } from '@noharness/brand'
 
 describe('Session Typert provider', () => {
   it('contributes live Session lookup in either service load order', async () => {
@@ -17,8 +17,8 @@ describe('Session Typert provider', () => {
       parameter: 'session',
       wire: 'sessionId',
       resource: 'session',
-      hostTypeSymbol: '@deepseek-ai/dsh-session#Session',
-      wireTypeSymbol: '@deepseek-ai/dsh-session/types#SessionId',
+      hostTypeSymbol: '@noharness/session#Session',
+      wireTypeSymbol: '@noharness/session/types#SessionId',
     })
     expect(lookup?.resolve(session.id)).toBe(session)
 

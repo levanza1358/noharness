@@ -1,6 +1,6 @@
 /** Deployment-owned preset choices for one delegation tool. */
-import { SubagentError } from '@deepseek-ai/dsh-subagent'
-import type { SubagentProvider } from '@deepseek-ai/dsh-subagent'
+import { SubagentError } from '@noharness/subagent'
+import type { SubagentProvider } from '@noharness/subagent'
 
 /** Optional default and model-selectable preset ids for a spawn tool. */
 export interface PresetSelectionConfig {

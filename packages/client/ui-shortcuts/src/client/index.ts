@@ -1,17 +1,17 @@
 /** Shortcut reference plugin; commands and entry points share one declared store. */
-import type { Context } from '@deepseek-ai/cordis'
-import type { ShortcutCommandId } from '@deepseek-ai/dsh-client-shortcuts/client'
-import { closeTopModal } from '@deepseek-ai/dsh-client-ui-primitives'
-import type {} from '@deepseek-ai/dsh-client-locale/client'
-import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
-import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
-import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
+import type { Context } from '@noharness/cordis'
+import type { ShortcutCommandId } from '@noharness/client-shortcuts/client'
+import { closeTopModal } from '@noharness/client-ui-primitives'
+import type {} from '@noharness/client-locale/client'
+import type {} from '@noharness/client-ui-renderer/client'
+import type {} from '@noharness/client-ui-layout/client'
+import type {} from '@noharness/client-ui-settings/client'
 import { createShortcutsStore } from './store.ts'
 import { ShortcutReference, ShortcutsRow } from './Reference.tsx'
 import { en, ja, es, fr, de, ru, pt, zh } from './locales.ts'
 import { fixedCommands } from './fixed.ts'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Shortcut reference and settings entry copy. */
     shortcuts: keyof typeof zh

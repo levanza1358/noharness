@@ -1,6 +1,6 @@
 /** Pure image-card derivation from raw result content and metadata. @module */
-import type { AttachmentId } from '@deepseek-ai/dsh-attachment/types'
-import type { ImageAttachmentRef, ImageMediaType } from '@deepseek-ai/dsh-attachment'
+import type { AttachmentId } from '@noharness/attachment/types'
+import type { ImageAttachmentRef, ImageMediaType } from '@noharness/attachment'
 import type { ToolCallBlock } from './tool-call-model.ts'
 import { parsedToolCall } from './raw-tool-call.ts'
 
@@ -59,7 +59,7 @@ function positiveInteger(value: unknown): value is number {
 const IMAGE_ENVELOPE = /^<path>[^\n]*<\/path>\n<type>image<\/type>\n<content>\n[\s\S]*\n<\/content>$/u
 
 /** The media types a durable image block may claim; anything else declines.
- *  Hand-written mirror of `ImageMediaType` from dsh-attachment — the wire
+ *  Hand-written mirror of `ImageMediaType` from nhs-attachment — the wire
  *  boundary needs a runtime check and feature plugins must not import values
  *  from each other; a new member added there must be added here too, or the
  *  decline point below silently degrades that image to the generic card. */

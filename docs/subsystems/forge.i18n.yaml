@@ -3,29 +3,29 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/forge.md
 /forges:
-  en: 3990a17e12c66a23
-  zh: 4170c33e49248f8f
+  en: 9f00d80dcaf65ced
+  zh: 1ad155838a8f9b2b
 /forges/providers-and-change-requests:
   en: e5d807b29f553751
   zh: e0b25d9e964f988e
 /forges/status-polling:
-  en: 26ccfa2e342e3e67
-  zh: fe6cc2a622757c48
+  en: e0b16aae4961e642
+  zh: 53324f062eb90467
 /forges/change-request-actions:
-  en: ae735fbdbdf2d870
-  zh: 9903fcc571104ad8
+  en: e0a7c762dfca676a
+  zh: 1aaa056bbf8ec841
 /forges/review-threads:
-  en: af729af6e59e915f
-  zh: 1b7d7671ec36a5b2
+  en: af09baf16f298287
+  zh: 5394a1d9427b5d0c
 /forges/overview-and-viewed-marks:
-  en: fd5928603c9375b1
-  zh: 1a3bca55344ff385
+  en: bf448d7b49dfaaa2
+  zh: 85ae8a2775c6e482
 /forges/session-bindings:
-  en: 13dfd36f2166bba0
-  zh: a369434f52f04d57
+  en: 6439cbf354ddbc3f
+  zh: 9120e746214d49d0
 /forges/panel:
-  en: 7dcefe2825490257
-  zh: 38cec4d1ae3b0d6e
+  en: 1edac562df258e62
+  zh: 93cc0dffe7740053
 /forges/extension-api:
-  en: f35345e482e84f4f
-  zh: 2ecb7d9498decb31
+  en: 2d2fa4fd9c21ae83
+  zh: 755965f8a2f29320

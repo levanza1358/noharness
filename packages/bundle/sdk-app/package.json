@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-sdk-app",
-  "description": "The dsh SDK profile bundle: stdio JSON-RPC serving and process lifecycle over dsh-base",
+  "name": "@noharness/sdk-app",
+  "description": "The nhs SDK profile bundle: stdio JSON-RPC serving and process lifecycle over nhs-base",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/bundle/sdk-app"
   },
   "type": "module",
@@ -33,36 +33,36 @@
     "src"
   ],
   "license": "MIT",
-  "dsh": {
+  "nhs": {
     "bundle": {
       "patch": "./cordis.patch.yml"
     }
   },
   "dependencies": {
-    "@deepseek-ai/dsh-cmdline": "workspace:*",
-    "@deepseek-ai/dsh-office-kit": "workspace:*",
-    "@deepseek-ai/dsh-sdk-jsonrpc-server": "workspace:*",
-    "@deepseek-ai/dsh-tool-office": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/cmdline": "workspace:*",
+    "@noharness/office-kit": "workspace:*",
+    "@noharness/sdk-jsonrpc-server": "workspace:*",
+    "@noharness/tool-office": "workspace:*",
+    "@noharness/schemastery": "workspace:~",
     "commander": "^15.0.0",
-    "@deepseek-ai/dsh-skill-office": "workspace:*",
-    "@deepseek-ai/dsh-tool-workspace-dependencies": "workspace:*",
-    "@deepseek-ai/dsh-client-connection": "workspace:*",
-    "@deepseek-ai/dsh-client-file-upload": "workspace:*",
-    "@deepseek-ai/dsh-workspace": "workspace:*",
-    "@deepseek-ai/dsh-schedule": "workspace:*",
-    "@deepseek-ai/dsh-time-context": "workspace:*",
-    "@deepseek-ai/dsh-tool-schedule": "workspace:*",
-    "@deepseek-ai/dsh-tool-ask-user": "workspace:*",
-    "@deepseek-ai/dsh-tool-present": "workspace:*",
-    "@deepseek-ai/dsh-file-reference-local": "workspace:*",
-    "@deepseek-ai/dsh-deliverable-file-references": "workspace:*"
+    "@noharness/skill-office": "workspace:*",
+    "@noharness/tool-workspace-dependencies": "workspace:*",
+    "@noharness/client-connection": "workspace:*",
+    "@noharness/client-file-upload": "workspace:*",
+    "@noharness/workspace": "workspace:*",
+    "@noharness/schedule": "workspace:*",
+    "@noharness/time-context": "workspace:*",
+    "@noharness/tool-schedule": "workspace:*",
+    "@noharness/tool-ask-user": "workspace:*",
+    "@noharness/tool-present": "workspace:*",
+    "@noharness/file-reference-local": "workspace:*",
+    "@noharness/deliverable-file-references": "workspace:*"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis-plugin-include": "workspace:~",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis-plugin-include": "workspace:~",
+    "@noharness/cordis": "workspace:~"
   }
 }

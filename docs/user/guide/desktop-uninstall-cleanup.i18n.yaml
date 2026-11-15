@@ -2,15 +2,15 @@
 # section, a hash of its English and Chinese blocks outside code blocks and generated regions.
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/user/guide/desktop-uninstall-cleanup.md
-/uninstall-dsh-desktop:
-  en: bbd616011b211905
-  zh: 93b6146e97d9bb88
-/uninstall-dsh-desktop/1-uninstall-the-app:
-  en: 6ba6b5bc4153c3cd
-  zh: 36712b216d118155
-/uninstall-dsh-desktop/2-clean-up-local-data:
-  en: 459985c888cb631c
-  zh: 30771182f880e27b
-/uninstall-dsh-desktop/3-verify-cleanup:
+/uninstall-nhs-desktop:
+  en: b462d0b7e3301dd5
+  zh: fd2646cb0d15dc79
+/uninstall-nhs-desktop/1-uninstall-the-app:
+  en: e84a00b0ea26b235
+  zh: 92f6f224a8db3e66
+/uninstall-nhs-desktop/2-clean-up-local-data:
+  en: fa742bda22e10445
+  zh: b0f1ab61bc8c49c4
+/uninstall-nhs-desktop/3-verify-cleanup:
   en: 396bdba7cd24b278
   zh: 2488dc9721081aee

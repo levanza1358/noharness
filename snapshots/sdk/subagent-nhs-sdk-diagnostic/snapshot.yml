@@ -1,0 +1,8 @@
+version: 1
+scenario: subagent-nhs-sdk-diagnostic
+profile: sdk
+composition: sdk-nhs-sdk-diagnostic
+recording: live
+header:
+  class: sdk-nhs-sdk-diagnostic
+  pin: true

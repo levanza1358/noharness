@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-permission-presets",
-  "description": "User-facing permission presets (ctx.permissionPresets) for the DeepSeek Harness: one product-level Permissions select bundling the sandbox-mode and approval-policy knobs, written through to their own session events",
+  "name": "@noharness/permission-presets",
+  "description": "User-facing permission presets (ctx.permissionPresets) for the NoHarness: one product-level Permissions select bundling the sandbox-mode and approval-policy knobs, written through to their own session events",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/interaction/permission-presets"
   },
   "type": "module",
@@ -54,34 +54,34 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-shell": "workspace:*",
-    "@deepseek-ai/dsh-commands": "workspace:*",
-    "@deepseek-ai/dsh-sandbox": "workspace:*",
-    "@deepseek-ai/dsh-sandbox-policy": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*",
-    "@deepseek-ai/dsh-user-approval": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/agent": "workspace:*",
+    "@noharness/shell": "workspace:*",
+    "@noharness/commands": "workspace:*",
+    "@noharness/sandbox": "workspace:*",
+    "@noharness/sandbox-policy": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/typert-protocol": "workspace:*",
+    "@noharness/user-approval": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/brand": "workspace:*",
+    "@noharness/schemastery": "workspace:~",
     "zod": "4.6.6"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-shell": "workspace:*",
-    "@deepseek-ai/dsh-commands": "workspace:*",
-    "@deepseek-ai/dsh-sandbox": "workspace:*",
-    "@deepseek-ai/dsh-sandbox-policy": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*",
-    "@deepseek-ai/dsh-user-approval": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-settings": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*"
+    "@noharness/agent": "workspace:*",
+    "@noharness/shell": "workspace:*",
+    "@noharness/commands": "workspace:*",
+    "@noharness/sandbox": "workspace:*",
+    "@noharness/sandbox-policy": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/typert-protocol": "workspace:*",
+    "@noharness/user-approval": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/settings": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*"
   }
 }

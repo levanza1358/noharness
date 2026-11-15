@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-command-goal",
+  "name": "@noharness/command-goal",
   "description": "Human-facing slash command for persisted same-session goals",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/goal/command-goal"
   },
   "type": "module",
@@ -32,24 +32,24 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-commands": "workspace:*",
-    "@deepseek-ai/dsh-goal": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/commands": "workspace:*",
+    "@noharness/goal": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*"
+    "@noharness/brand": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
-    "@deepseek-ai/dsh-commands": "workspace:*",
-    "@deepseek-ai/dsh-goal": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-session-projection": "workspace:*"
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/agent-loop": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*",
+    "@noharness/commands": "workspace:*",
+    "@noharness/goal": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/session-projection": "workspace:*"
   }
 }

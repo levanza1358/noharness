@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-tool-skill",
-  "description": "Model-facing skill loading tool for the DeepSeek Harness",
+  "name": "@noharness/tool-skill",
+  "description": "Model-facing skill loading tool for the NoHarness",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/skill/tool-skill"
   },
   "type": "module",
@@ -32,29 +32,29 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-skill": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-working-directory": "workspace:*"
+    "@noharness/agent": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/skill": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/working-directory": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:~"
+    "@noharness/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-scope": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-skill": "workspace:*",
-    "@deepseek-ai/dsh-skill-filesystem": "workspace:*",
-    "@deepseek-ai/dsh-tool-executor-native": "workspace:*",
-    "@deepseek-ai/dsh-tool-testkit": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-working-directory": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/agent": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/scope": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/skill": "workspace:*",
+    "@noharness/skill-filesystem": "workspace:*",
+    "@noharness/tool-executor-native": "workspace:*",
+    "@noharness/tool-testkit": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/working-directory": "workspace:*"
   }
 }

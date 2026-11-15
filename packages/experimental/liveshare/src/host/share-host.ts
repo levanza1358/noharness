@@ -2,12 +2,12 @@
 
 import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-api-remote-access'
-import type {} from '@deepseek-ai/dsh-api-session-controller'
-import type {} from '@deepseek-ai/dsh-client-connection'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import type {} from '@deepseek-ai/dsh-workspace'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/api-remote-access'
+import type {} from '@noharness/api-session-controller'
+import type {} from '@noharness/client-connection'
+import type { SessionId } from '@noharness/session/types'
+import type {} from '@noharness/workspace'
 import {
   loadOwnerState,
   writeOwnerState,
@@ -44,11 +44,11 @@ import {
 import { readViewerAsset } from './viewer-assets.ts'
 import type { ForkShareState } from './fork-policy.ts'
 import type { ForkToolExecution } from './fork-tool-guard.ts'
-import type { ShareRpcActor } from '@deepseek-ai/dsh-experimental-liveshare-protocol'
+import type { ShareRpcActor } from '@noharness/experimental-liveshare-protocol'
 import {
   identityKeyOf,
   type IdentityActor,
-} from '@deepseek-ai/dsh-experimental-liveshare-protocol'
+} from '@noharness/experimental-liveshare-protocol'
 
 export const name = 'liveshare-share-host'
 export const inject = ['connection']
@@ -657,7 +657,7 @@ export async function apply(ctx: Context, config: Config): Promise<() => Promise
 /**
  * Take this host's claim on the owner state directory.
  *
- * A second host on the same DSH home reads the shares without publishing them: it must not move the
+ * A second host on the same NHS home reads the shares without publishing them: it must not move the
  * holder's Relay registrations, and a share operation there would otherwise run against a state
  * another process is serving.
  * @param dir - Directory that holds the owner state file.
@@ -668,14 +668,14 @@ function takeOwnerStateClaim(dir: string): OwnerHostClaim | undefined {
     return claimOwnerHost(dir)
   } catch (error: unknown) {
     if (!(error instanceof OwnerHostClaimHeldError)) throw error
-    console.warn(`[liveshare] the owner state is held by dsh pid ${String(error.holderPid)}; this instance reads the shares without registering them`)
+    console.warn(`[liveshare] the owner state is held by nhs pid ${String(error.holderPid)}; this instance reads the shares without registering them`)
     return undefined
   }
 }
 
 function defaultOwnerStateFile(): string {
-  const dshHome = nonEmpty(process.env.DSH_HOME) ?? join(homedir(), '.dsh')
-  return join(dshHome, 'liveshare', 'owner-shares.json')
+  const nhsHome = nonEmpty(process.env.NHS_HOME) ?? join(homedir(), '.nhs')
+  return join(nhsHome, 'liveshare', 'owner-shares.json')
 }
 
 function nonEmpty(value: string | undefined): string | undefined {

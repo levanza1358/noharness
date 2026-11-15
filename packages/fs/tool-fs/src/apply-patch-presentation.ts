@@ -1,7 +1,7 @@
 /** Pure patch call previews and known applied diff metadata for Host and Web replay. */
-import { parsePatch, PatchParseError } from '@deepseek-ai/dsh-fs-patch'
-import type { DiffCallView, DiffResultView, FileDiff, ToolResult } from '@deepseek-ai/dsh-tools'
-import { assertNever } from '@deepseek-ai/dsh-util-values'
+import { parsePatch, PatchParseError } from '@noharness/fs-patch'
+import type { DiffCallView, DiffResultView, FileDiff, ToolResult } from '@noharness/tools'
+import { assertNever } from '@noharness/util-values'
 import { diffsFromMeta, stoppedFromMeta } from './diff.ts'
 
 /**

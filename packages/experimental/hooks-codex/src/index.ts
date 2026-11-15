@@ -4,29 +4,29 @@
  * matchers, snake_case payloads without a trailing newline, no hook environment
  * or command substitution, and no pre-tool approval or rewrite path; only
  * blocking decisions are honored. Shared execution and parsing live in
- * `dsh-hook-protocol`.
- * @module @deepseek-ai/dsh-hooks-codex
+ * `nhs-hook-protocol`.
+ * @module @noharness/hooks-codex
  */
 
 // Each dialect bridge keeps its complete dependency list visible at the entry
 // point; a cross-package facade for imports alone would add indirection.
 /* jscpd:ignore-start */
-import type {} from '@deepseek-ai/dsh-working-directory'
+import type {} from '@noharness/working-directory'
 import { readFileSync } from 'node:fs'
-import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import type { Agent, PreStepDecision } from '@deepseek-ai/dsh-agent'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-declare module '@deepseek-ai/dsh-llm' {
+import type { Context } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import type { Agent, PreStepDecision } from '@noharness/agent'
+import { createUserMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'hooks-codex': { kind: 'hooks-codex' } & ContextFormed
   }
 }
 
-import type { ContentBlock, MessageSource } from '@deepseek-ai/dsh-llm'
-import type { UserMessage } from '@deepseek-ai/dsh-session'
-import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@deepseek-ai/dsh-tools'
+import type { ContentBlock, MessageSource } from '@noharness/llm'
+import type { UserMessage } from '@noharness/session'
+import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@noharness/tools'
 import {
   appendHookInvoked,
   appendHookResult,
@@ -41,7 +41,7 @@ import {
   selectHookGroups,
   type HookOutput,
   type MergedHookOutcome,
-} from '@deepseek-ai/dsh-hook-protocol'
+} from '@noharness/hook-protocol'
 import { parseCodexConfig, type CodexHookConfig } from './config.ts'
 /* jscpd:ignore-end */
 

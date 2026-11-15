@@ -7,11 +7,11 @@ Archived: 2026-10-19
 
 ## 问题
 
-一行插件描述不一定能说明插件产生什么结果。用户决定是否启用官方组合包时，一张展示其结果的图片会有帮助，例如一份以 DSH badge skill 添加的徽章结尾的文档。这类图片需要所有者、本地化规则和发送到 Client 的途径。
+一行插件描述不一定能说明插件产生什么结果。用户决定是否启用官方组合包时，一张展示其结果的图片会有帮助，例如一份以 NHS badge skill 添加的徽章结尾的文档。这类图片需要所有者、本地化规则和发送到 Client 的途径。
 
 ## 决策
 
-在本记录中，内置插件指随 DSH 发布的官方组合包。插件管理拥有这些组合包的所有功能配图。[PluginManagerPage.tsx](../../../../packages/client/ui-plugin-manager/src/client/PluginManagerPage.tsx) 把包名映射到 `{ en, zh }` 图片；该映射与定义其可选组合包列表的代码位于同一文件，并采用相同的硬编码方式。图片放在 `packages/client/ui-plugin-manager/src/client/assets/` 下。共享的 [client tsdown preset](../../../../packages/client/tsdown.client.ts) 把图片以 data URL 嵌入插件管理 client bundle。组合包详情页在描述和状态提示下方显示当前 UI 语言对应的图片，无论组合包是否启用。
+在本记录中，内置插件指随 NHS 发布的官方组合包。插件管理拥有这些组合包的所有功能配图。[PluginManagerPage.tsx](../../../../packages/client/ui-plugin-manager/src/client/PluginManagerPage.tsx) 把包名映射到 `{ en, zh }` 图片；该映射与定义其可选组合包列表的代码位于同一文件，并采用相同的硬编码方式。图片放在 `packages/client/ui-plugin-manager/src/client/assets/` 下。共享的 [client tsdown preset](../../../../packages/client/tsdown.client.ts) 把图片以 data URL 嵌入插件管理 client bundle。组合包详情页在描述和状态提示下方显示当前 UI 语言对应的图片，无论组合包是否启用。
 
 每个内置功能配图都是这个映射中的一项。包不能声明配图，因此该映射不是面向插件作者的接口，修改时不需要兼容路径。
 

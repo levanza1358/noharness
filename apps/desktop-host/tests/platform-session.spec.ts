@@ -1,5 +1,5 @@
-import { Context, Service } from '@deepseek-ai/cordis'
-import type { DeepSeekAccount, AccountView, AccountUpdate, PlatformSession } from '@deepseek-ai/dsh-deepseek-account'
+import { Context, Service } from '@noharness/cordis'
+import type { DeepSeekAccount, AccountView, AccountUpdate, PlatformSession } from '@noharness/deepseek-account'
 import { expect, it } from 'vitest'
 import { installPlatformSessionPublisher } from '../src/platform-session.ts'
 

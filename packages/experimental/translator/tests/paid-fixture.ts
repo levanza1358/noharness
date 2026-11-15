@@ -1,23 +1,23 @@
 /** Real Loader/native adapters with fixture-owned credentials and a bounded loopback wire. */
-import type { ModuleLoaderV2 } from '@deepseek-ai/cordis-plugin-loader'
-import { boot } from '@deepseek-ai/dsh-app-boot'
-import LlmRuntime from '@deepseek-ai/dsh-llm'
-import SessionStore, { SESSION_FORMAT_VERSION, type SessionId, SessionSeq, type Session, type SessionEvent, type SessionHeader } from '@deepseek-ai/dsh-session'
-import * as JsonlPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import SqliteSessionQuery from '@deepseek-ai/dsh-session-query-sqlite'
-import * as Official from '@deepseek-ai/dsh-llm-deepseek-api-key'
-import * as Account from '@deepseek-ai/dsh-llm-deepseek-account'
-import type { DeepSeekAccount } from '@deepseek-ai/dsh-deepseek-account'
-import DeepSeekLlmApiExtensionRegistry from '@deepseek-ai/dsh-deepseek-llm-api-extensions'
-import * as SessionLogDeepSeek from '@deepseek-ai/dsh-session-log-deepseek'
-import { createLaunchEnvironmentSnapshot } from '@deepseek-ai/dsh-launch-environment'
+import type { ModuleLoaderV2 } from '@noharness/cordis-plugin-loader'
+import { boot } from '@noharness/app-boot'
+import LlmRuntime from '@noharness/llm'
+import SessionStore, { SESSION_FORMAT_VERSION, type SessionId, SessionSeq, type Session, type SessionEvent, type SessionHeader } from '@noharness/session'
+import * as JsonlPersistence from '@noharness/session-persistence-jsonl'
+import SqliteSessionQuery from '@noharness/session-query-sqlite'
+import * as Official from '@noharness/llm-deepseek-api-key'
+import * as Account from '@noharness/llm-deepseek-account'
+import type { DeepSeekAccount } from '@noharness/deepseek-account'
+import DeepSeekLlmApiExtensionRegistry from '@noharness/deepseek-llm-api-extensions'
+import * as SessionLogDeepSeek from '@noharness/session-log-deepseek'
+import { createLaunchEnvironmentSnapshot } from '@noharness/launch-environment'
 import { once } from 'node:events'
 import { createServer, type ServerResponse } from 'node:http'
 import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import Translator, { type Config } from '../src/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 /** Provider-visible request, without credential values. */
 export interface NativeRequest {
@@ -72,13 +72,13 @@ export interface RestartOptions {
 
 /** Boot actual native provider rows; cleanup is registered as soon as resources exist. */
 export async function paidFixture(cleanups: Array<() => Promise<void>>, options: FixtureOptions = {}) {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-paid-translator-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-paid-translator-'))
   cleanups.push(async () => { await rm(root, { recursive: true, force: true }) })
-  const previousHome = process.env.DSH_HOME
-  process.env.DSH_HOME = root
+  const previousHome = process.env.NHS_HOME
+  process.env.NHS_HOME = root
   cleanups.push(async () => {
-    if (previousHome === undefined) Reflect.deleteProperty(process.env, 'DSH_HOME')
-    else process.env.DSH_HOME = previousHome
+    if (previousHome === undefined) Reflect.deleteProperty(process.env, 'NHS_HOME')
+    else process.env.NHS_HOME = previousHome
   })
   const requests: NativeRequest[] = [], errors: unknown[] = [], handlers = new Set<Promise<void>>()
   let auditId = brandString<SessionId>('paid-translation')
@@ -98,7 +98,7 @@ export async function paidFixture(cleanups: Array<() => Promise<void>>, options:
       const payload: unknown = JSON.parse(Buffer.concat(chunks).toString('utf8'))
       if (typeof payload !== 'object' || payload === null || Array.isArray(payload)) throw new Error('Expected native Messages request object')
       const input: NativeRequest = { path: request.url ?? '', body: payload as Record<string, unknown>,
-        accountAuth: request.headers['x-dsh-auth-token'] !== undefined, officialAuth: request.headers['x-api-key'] !== undefined,
+        accountAuth: request.headers['x-nhs-auth-token'] !== undefined, officialAuth: request.headers['x-api-key'] !== undefined,
         sessionHeader: request.headers['x-deepseek-harness-session-id'] !== undefined,
         audit: await readEvents(auditId) }
       requests.push(input)
@@ -127,30 +127,30 @@ export async function paidFixture(cleanups: Array<() => Promise<void>>, options:
   const configPath = join(root, 'cordis.yml'), storedRoot = join(root, 'sessions')
   let translator = options.translator ?? {}, withNativeOwners = true
   const rows = () => [
-    { id: 'llm', name: '@deepseek-ai/dsh-llm' },
-    { id: 'session', name: '@deepseek-ai/dsh-session' },
-    { id: 'storage', name: '@deepseek-ai/dsh-session-persistence-jsonl', config: { root: storedRoot, compression: 'none' } },
-    { id: 'official-custom-id', name: options.officialName ?? '@deepseek-ai/dsh-llm-deepseek-api-key', disabled: !withNativeOwners, config: {
+    { id: 'llm', name: '@noharness/llm' },
+    { id: 'session', name: '@noharness/session' },
+    { id: 'storage', name: '@noharness/session-persistence-jsonl', config: { root: storedRoot, compression: 'none' } },
+    { id: 'official-custom-id', name: options.officialName ?? '@noharness/llm-deepseek-api-key', disabled: !withNativeOwners, config: {
       baseURL, apiKeyEnv: 'PAID_TRANSLATION_FIXTURE_KEY', models: options.officialModels ?? [{ id: 'deepseek-flash', name: 'Flash version-independent name' }],
     } },
-    { id: 'account-custom-id', name: '@deepseek-ai/dsh-llm-deepseek-account', disabled: !withNativeOwners, config: { baseURL } },
-    { id: 'translator', name: '@deepseek-ai/dsh-experimental-translator', config: translator },
+    { id: 'account-custom-id', name: '@noharness/llm-deepseek-account', disabled: !withNativeOwners, config: { baseURL } },
+    { id: 'translator', name: '@noharness/experimental-translator', config: translator },
     ...options.withSessionQuery === true ? [
-      { id: 'query', name: '@deepseek-ai/dsh-session-query-sqlite', config: { path: join(root, 'query.sqlite'), openAt: 'never' } },
+      { id: 'query', name: '@noharness/session-query-sqlite', config: { path: join(root, 'query.sqlite'), openAt: 'never' } },
     ] : [],
     ...options.withSessionLog === true ? [
-      { id: 'deepseek-llm-api-extensions', name: '@deepseek-ai/dsh-deepseek-llm-api-extensions' },
-      { id: 'session-log-deepseek', name: '@deepseek-ai/dsh-session-log-deepseek' },
+      { id: 'deepseek-llm-api-extensions', name: '@noharness/deepseek-llm-api-extensions' },
+      { id: 'session-log-deepseek', name: '@noharness/session-log-deepseek' },
     ] : [],
   ]
   await writeFile(configPath, JSON.stringify(rows()))
   const modules = new Map<string, unknown>([
-    ['@deepseek-ai/dsh-llm', LlmRuntime], ['@deepseek-ai/dsh-session', SessionStore],
-    ['@deepseek-ai/dsh-session-persistence-jsonl', JsonlPersistence], ['@deepseek-ai/dsh-session-query-sqlite', SqliteSessionQuery],
-    [options.officialName ?? '@deepseek-ai/dsh-llm-deepseek-api-key', Official],
-    ['@deepseek-ai/dsh-llm-deepseek-account', Account], ['@deepseek-ai/dsh-experimental-translator', Translator],
-    ['@deepseek-ai/dsh-deepseek-llm-api-extensions', DeepSeekLlmApiExtensionRegistry],
-    ['@deepseek-ai/dsh-session-log-deepseek', SessionLogDeepSeek],
+    ['@noharness/llm', LlmRuntime], ['@noharness/session', SessionStore],
+    ['@noharness/session-persistence-jsonl', JsonlPersistence], ['@noharness/session-query-sqlite', SqliteSessionQuery],
+    [options.officialName ?? '@noharness/llm-deepseek-api-key', Official],
+    ['@noharness/llm-deepseek-account', Account], ['@noharness/experimental-translator', Translator],
+    ['@noharness/deepseek-llm-api-extensions', DeepSeekLlmApiExtensionRegistry],
+    ['@noharness/session-log-deepseek', SessionLogDeepSeek],
   ])
   const start = () => boot('paid-translator-composition', configPath, [], (host) => {
     const sourceModules: ModuleLoaderV2 = {

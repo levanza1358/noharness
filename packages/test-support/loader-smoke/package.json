@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-loader-smoke",
+  "name": "@noharness/loader-smoke",
   "description": "Shared subprocess and direct-agent harness for keyless real-Loader example smoke tests",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/test-support/loader-smoke"
   },
   "type": "module",
@@ -34,20 +34,20 @@
     "tsx": "^4.23.13"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-http-proxy": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/http-proxy": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-app-boot": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/dsh-http-proxy": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/app-boot": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/http-proxy": "workspace:*"
   }
 }

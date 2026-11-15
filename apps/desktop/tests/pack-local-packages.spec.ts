@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url)
 const pnpmEntry = join(dirname(require.resolve('pnpm')), 'bin/pnpm.cjs')
 const tsxHook = pathToFileURL(require.resolve('tsx/esm')).href
 const roots: string[] = []
-const metadata = { DSH_CLIENT_COMMIT_HASH: 'abcdef0', DSH_CLIENT_VERSION: '1.2.3' }
+const metadata = { NHS_CLIENT_COMMIT_HASH: 'abcdef0', NHS_CLIENT_VERSION: '1.2.3' }
 const testTimeout = Math.max(120_000, coverageTestTimeoutOptions(process.env[COVERAGE_TEST_TIMEOUT_ENV]).testTimeout ?? 0)
 const activeRuns = new Map<AbortController, ReturnType<typeof runGate>>()
 
@@ -26,16 +26,16 @@ function write(root: string, path: string, text: string): void {
 }
 
 function fixture(profile: 'local' | 'official' = 'local'): string {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-local-desktop-pack-'))
+  const root = mkdtempSync(join(tmpdir(), 'nhs-local-desktop-pack-'))
   roots.push(root)
   write(root, 'package.json', JSON.stringify({ name: 'desktop-pack-fixture', version: '1.2.3', private: true }))
   write(root, 'pnpm-workspace.yaml', 'packages:\n  - packages/*/*\n')
   write(root, 'packages/client/probe/package.json', JSON.stringify({
-    name: '@deepseek-ai/dsh-probe', version: '1.2.3', files: ['lib', 'src'],
+    name: '@noharness/probe', version: '1.2.3', files: ['lib', 'src'],
   }))
   write(root, 'packages/client/probe/lib/index.js', 'export const probe = true\n')
   write(root, 'packages/client/probe/lib/client.js', 'export const client = true\n')
-  write(root, 'apps/web/dist/index.html', '<title>DSH Local Build</title>\n')
+  write(root, 'apps/web/dist/index.html', '<title>NHS Local Build</title>\n')
   writeClientBuildRecord(root, resolveClientBuildEnvironment(metadata, profile))
   return root
 }
@@ -51,8 +51,8 @@ async function pack(root: string, release = false, extra: string[] = []) {
       id: 'desktop-pack-fixture', label: 'Desktop packing', displayCommand: script,
       command: process.execPath,
       args: [pnpmEntry, '--dir', root, 'exec', process.execPath, '--import', tsxHook, script,
-        ...(release ? ['--family', 'dsh'] : []), '--out', 'packed', '--concurrency', '2', ...extra],
-      env: { npm_execpath: pnpmEntry, DSH_CLIENT_COMMIT_HASH: metadata.DSH_CLIENT_COMMIT_HASH },
+        ...(release ? ['--family', 'nhs'] : []), '--out', 'packed', '--concurrency', '2', ...extra],
+      env: { npm_execpath: pnpmEntry, NHS_CLIENT_COMMIT_HASH: metadata.NHS_CLIENT_COMMIT_HASH },
     }, controller.signal)
     activeRuns.set(controller, pending)
     const result = await pending
@@ -76,20 +76,20 @@ it('packs local client artifacts without a release publication record', async ()
   const root = fixture()
   const result = await pack(root)
   expect(result.code, result.output).toBe(0)
-  expect(readdirSync(join(root, 'packed'))).toEqual(['deepseek-ai-dsh-probe-1.2.3.tgz'])
-  expect(packedIdentity(join(root, 'packed/deepseek-ai-dsh-probe-1.2.3.tgz')))
-    .toEqual({ name: '@deepseek-ai/dsh-probe', version: '1.2.3' })
+  expect(readdirSync(join(root, 'packed'))).toEqual(['noharness-nhs-probe-1.2.3.tgz'])
+  expect(packedIdentity(join(root, 'packed/noharness-nhs-probe-1.2.3.tgz')))
+    .toEqual({ name: '@noharness/probe', version: '1.2.3' })
   expect(existsSync(join(root, 'packed', PUBLISH_ORDER_FILE))).toBe(false)
 }, testTimeout)
 
 it.each(['official', 'stale', 'missing'] as const)('rejects %s client artifacts before replacing local packages', async (kind) => {
   const root = fixture(kind === 'official' ? 'official' : 'local')
   if (kind === 'stale') write(root, 'packages/client/probe/lib/client.js', 'export const changed = true\n')
-  if (kind === 'missing') unlinkSync(join(root, '.dsh-build/client-build-environment.json'))
+  if (kind === 'missing') unlinkSync(join(root, '.nhs-build/client-build-environment.json'))
   write(root, 'packed/retained.txt', 'previous output\n')
   const result = await pack(root)
   expect(result.code).not.toBe(0)
-  expect(result.output).toMatch(kind === 'official' ? /DSH_CLIENT_BUILD_PROFILE/ : kind === 'stale' ? /artifacts differ/ : /client build record/)
+  expect(result.output).toMatch(kind === 'official' ? /NHS_CLIENT_BUILD_PROFILE/ : kind === 'stale' ? /artifacts differ/ : /client build record/)
   expect(readFileSync(join(root, 'packed/retained.txt'), 'utf8')).toBe('previous output\n')
 }, testTimeout)
 
@@ -97,23 +97,23 @@ it('rejects local client artifacts in the release packing command', async () => 
   const root = fixture()
   const result = await pack(root, true)
   expect(result.code).not.toBe(0)
-  expect(result.output).toMatch(/DSH_CLIENT_BUILD_PROFILE/)
+  expect(result.output).toMatch(/NHS_CLIENT_BUILD_PROFILE/)
   expect(existsSync(join(root, 'packed'))).toBe(false)
 }, testTimeout)
 
 it('validates local tarball contents before reporting success', async () => {
   const root = fixture()
   write(root, 'pnpm-workspace.yaml', 'packages:\n  - packages/*/*\n  - apps/*\n')
-  write(root, 'apps/cli/package.json', JSON.stringify({ name: '@deepseek-ai/dsh', version: '1.2.3', files: ['lib', 'src'] }))
+  write(root, 'apps/cli/package.json', JSON.stringify({ name: '@noharness/cli', version: '1.2.3', files: ['lib', 'src'] }))
   write(root, 'apps/cli/lib/index.js', 'export const cli = true\n')
   write(root, 'apps/cli/src/bin.ts', 'export const bin = true\n')
   for (const name of ['subagent-claude-code', 'subagent-codex']) {
-    write(root, `packages/subagent/${name}/package.json`, JSON.stringify({ name: `@deepseek-ai/dsh-${name}`, version: '1.2.3', files: ['lib'] }))
+    write(root, `packages/subagent/${name}/package.json`, JSON.stringify({ name: `@noharness/${name}`, version: '1.2.3', files: ['lib'] }))
     write(root, `packages/subagent/${name}/lib/index.js`, 'export const bundle = true\n')
   }
   const result = await pack(root)
   expect(result.code).not.toBe(0)
-  expect(result.output).toContain('@deepseek-ai/dsh packed no documentation')
+  expect(result.output).toContain('@noharness/cli packed no documentation')
 }, testTimeout)
 
 it('rejects an invalid local pack concurrency before replacing packages', async () => {

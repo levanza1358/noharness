@@ -3,25 +3,25 @@ import { mountWorkingDirectoryFixture } from '../../subagent/tests/working-direc
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import AgentPresets from '@deepseek-ai/dsh-agent-preset-registry'
-import SubagentRuntime, { applyChildComposition } from '@deepseek-ai/dsh-subagent'
-import { assembleContextFor } from '@deepseek-ai/dsh-agent'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import * as SubagentSpawn from '@deepseek-ai/dsh-subagent-spawn-in-process'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import Include from '@noharness/cordis-plugin-include'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import AgentPresets from '@noharness/agent-preset-registry'
+import SubagentRuntime, { applyChildComposition } from '@noharness/subagent'
+import { assembleContextFor } from '@noharness/agent'
+import type { SessionId } from '@noharness/session'
+import { createUserMessage } from '@noharness/llm'
+import * as SubagentSpawn from '@noharness/subagent-spawn-in-process'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import * as tool from '../src/index.ts'
 import { SubagentPresetSelection } from '../src/preset-selection.ts'
 import { mountScriptedProvider, type Config as ProviderConfig } from './scripted-provider.ts'
 import { callSubagent, text } from './harness.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const contexts: Context[] = []
 const roots: string[] = []
@@ -34,7 +34,7 @@ afterEach(async () => {
 })
 
 async function mountSpawn(ctx: Context, providerName: string): Promise<void> {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-tool-preset-'))
+  const root = mkdtempSync(join(tmpdir(), 'nhs-tool-preset-'))
   roots.push(root)
   await ctx.plugin(JsonlSessionPersistence, { root })
   await ctx.plugin(SubagentSpawn, { providerName })

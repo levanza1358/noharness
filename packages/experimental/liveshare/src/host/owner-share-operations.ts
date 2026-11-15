@@ -4,15 +4,15 @@
  * Each method owns one operation's business order; the Remote service exposes it without a second
  * implementation. Failures are thrown as `RemoteError` values with a `liveshareShares/` code, which
  * the Gateway carries to the Client unchanged.
- * @module @deepseek-ai/dsh-experimental-liveshare/src/host/share-operations-impl
+ * @module @noharness/experimental-liveshare/src/host/share-operations-impl
  */
 
 import { randomBytes } from 'node:crypto'
 import { base64Url } from './base64-url.ts'
-import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
-import { isJsonValue, type JsonValue } from '@deepseek-ai/dsh-util-values'
-import type { ShareRpcActor } from '@deepseek-ai/dsh-experimental-liveshare-protocol'
-import type { Workspace } from '@deepseek-ai/dsh-workspace/types'
+import { RemoteError } from '@noharness/typert-protocol'
+import { isJsonValue, type JsonValue } from '@noharness/util-values'
+import type { ShareRpcActor } from '@noharness/experimental-liveshare-protocol'
+import type { Workspace } from '@noharness/workspace/types'
 import type {
   AddShareSessionsRequest,
   OwnerRelayState,
@@ -284,7 +284,7 @@ export function createOwnerShareOperations(deps: OwnerShareOperationDeps): Owner
   function assertOwnerStateFree(): void {
     if (!ownerStateHeld()) return
     throw new RemoteError('liveshareShares/owner-state-held',
-      'another running dsh instance owns the LiveShare share state; stop it or manage the shares there', {})
+      'another running nhs instance owns the LiveShare share state; stop it or manage the shares there', {})
   }
 
   /**

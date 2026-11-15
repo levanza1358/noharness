@@ -1,20 +1,20 @@
-import { Context } from '@deepseek-ai/cordis'
-import { SESSION_FORMAT_VERSION, type SessionId } from '@deepseek-ai/dsh-session'
-import { SessionPersistenceCorruptionError } from '@deepseek-ai/dsh-session-persistence'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
+import { Context } from '@noharness/cordis'
+import { SESSION_FORMAT_VERSION, type SessionId } from '@noharness/session'
+import { SessionPersistenceCorruptionError } from '@noharness/session-persistence'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { generationLogPath } from '../src/format.ts'
 import { compressZstdFrame } from '../src/zstd.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const id = brandString<SessionId>('native-source-admission')
 const modes = (['none', 'zstd'] as const).flatMap(compression => (['read', 'write'] as const).map(access => ({ compression, access })))
 let root: string
 const contexts: Context[] = []
-beforeEach(async () => { root = await mkdtemp(join(tmpdir(), 'dsh-native-source-')) })
+beforeEach(async () => { root = await mkdtemp(join(tmpdir(), 'nhs-native-source-')) })
 afterEach(async () => {
   try {
     for (const ctx of contexts.splice(0).reverse()) await ctx.fiber.dispose()

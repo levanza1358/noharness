@@ -5,57 +5,57 @@
 /:
   en: eb52169ad8cf3b38
   zh: 3ad61fa2317079cf
-/deepseek-ai-dsh-web-deepseek-api:
-  en: a56113c9530cb046
-  zh: bb07334e63fd9204
-/deepseek-ai-dsh-web-deepseek-api/summary:
-  en: 68b1b7cc27238805
-  zh: b4b7cf49963f26a0
-/deepseek-ai-dsh-web-deepseek-api/table-of-contents:
+/noharness-web-deepseek-api:
+  en: 578a396ea281c695
+  zh: 4a120e59e48db17c
+/noharness-web-deepseek-api/summary:
+  en: 39f2006f26063b8b
+  zh: 6aebc07ee824ec42
+/noharness-web-deepseek-api/table-of-contents:
   en: 76368b6b1da79c80
   zh: 1e8f931a56b7d34d
-/deepseek-ai-dsh-web-deepseek-api/use-this-package:
-  en: 673ba23a4e608cf2
-  zh: 042afa607aaf4335
-/deepseek-ai-dsh-web-deepseek-api/use-this-package/authentication:
-  en: b25cbe2a7894c03e
-  zh: db47f20dffe77a30
-/deepseek-ai-dsh-web-deepseek-api/use-this-package/results-and-failures:
-  en: 7dbb34d960c1344c
-  zh: 51a1459415857ab5
-/deepseek-ai-dsh-web-deepseek-api/understand-the-implementation:
-  en: 71549e32f0a69c81
-  zh: 9cafbeb60bdf0114
-/deepseek-ai-dsh-web-deepseek-api/model-experience:
+/noharness-web-deepseek-api/use-this-package:
+  en: 1250e449cb8b43d1
+  zh: 53e223c8c7f21cca
+/noharness-web-deepseek-api/use-this-package/authentication:
+  en: 9c8d86918940fcbe
+  zh: db3b28d601f9a3c1
+/noharness-web-deepseek-api/use-this-package/results-and-failures:
+  en: e78ff14307abf7e5
+  zh: 78d32a322cb03023
+/noharness-web-deepseek-api/understand-the-implementation:
+  en: 836081d3514ee6de
+  zh: 6fd1740f700b1a1f
+/noharness-web-deepseek-api/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/deepseek-ai-dsh-web-deepseek-api/model-experience/conversation-tool-results:
+/noharness-web-deepseek-api/model-experience/conversation-tool-results:
   en: dfd3b61aff4a8aa8
   zh: 06e2b6cc71f461e2
-/deepseek-ai-dsh-web-deepseek-api/model-experience/conversation-tool-results/what-the-model-sees:
+/noharness-web-deepseek-api/model-experience/conversation-tool-results/what-the-model-sees:
   en: a9fbb78ffe886f0b
   zh: 813dc7ee283018d2
-/deepseek-ai-dsh-web-deepseek-api/model-experience/conversation-tool-results/token-effect:
+/noharness-web-deepseek-api/model-experience/conversation-tool-results/token-effect:
   en: 1f33560e768d18c5
   zh: edeedeef2662e4bb
-/deepseek-ai-dsh-web-deepseek-api/model-experience/conversation-tool-results/kv-cache-effect:
+/noharness-web-deepseek-api/model-experience/conversation-tool-results/kv-cache-effect:
   en: 54ed534b58469807
   zh: c3f8f178abb86ccb
-/deepseek-ai-dsh-web-deepseek-api/model-experience/conversation-tool-list-indirectly:
+/noharness-web-deepseek-api/model-experience/conversation-tool-list-indirectly:
   en: ddcce72a4a4e0def
   zh: 338aa339f5708d7d
-/deepseek-ai-dsh-web-deepseek-api/model-experience/conversation-tool-list-indirectly/what-the-model-sees:
-  en: 3b1fb6c686d294af
-  zh: 98cc7a8e99d89155
-/deepseek-ai-dsh-web-deepseek-api/model-experience/conversation-tool-list-indirectly/token-effect:
+/noharness-web-deepseek-api/model-experience/conversation-tool-list-indirectly/what-the-model-sees:
+  en: f3d70fe7483b160a
+  zh: e9d6318bfcbb1cbb
+/noharness-web-deepseek-api/model-experience/conversation-tool-list-indirectly/token-effect:
   en: 4e75bf3d1e75e28c
   zh: 608bfad662133716
-/deepseek-ai-dsh-web-deepseek-api/model-experience/conversation-tool-list-indirectly/kv-cache-effect:
-  en: 14f9af39f3be4fac
-  zh: 3c7139fba0f17862
-/deepseek-ai-dsh-web-deepseek-api/known-limitations-and-deferred-work:
-  en: 689b26b5f3af8861
-  zh: 02cc62856a83cf48
-/deepseek-ai-dsh-web-deepseek-api/known-limitations-and-deferred-work/dev-note:
+/noharness-web-deepseek-api/model-experience/conversation-tool-list-indirectly/kv-cache-effect:
+  en: d6aeaf15cf84a523
+  zh: 44b249d74ec4ad6f
+/noharness-web-deepseek-api/known-limitations-and-deferred-work:
+  en: 387224b39c882759
+  zh: be7f9eb214dff7f5
+/noharness-web-deepseek-api/known-limitations-and-deferred-work/dev-note:
   en: 0a1253c6f7b5e8b9
   zh: 9f56528562c7c914

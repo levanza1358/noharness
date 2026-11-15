@@ -2,16 +2,16 @@
  * Durable admission state for the loop-owned system prompt (surface node 0 and
  * in-history updates) and runtime context. The prompt registry supplies named
  * contributions; this module owns runtime reminder framing and supersession.
- * @module @deepseek-ai/dsh-agent-loop/runtime-context
+ * @module @noharness/agent-loop/runtime-context
  */
 
-import { createSystemMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed, ContextSnapshotSection, Message } from '@deepseek-ai/dsh-llm'
-import type { Session, SessionEvent, SessionSeq, SurfaceIntent, SystemMessage, UserMessage } from '@deepseek-ai/dsh-session'
-import { isReplacementSurfaceEvent } from '@deepseek-ai/dsh-session'
-import { deepEqualJson } from '@deepseek-ai/dsh-util-values'
-import type { Context } from '@deepseek-ai/cordis'
-declare module '@deepseek-ai/dsh-llm' {
+import { createSystemMessage, createUserMessage } from '@noharness/llm'
+import type { ContextFormed, ContextSnapshotSection, Message } from '@noharness/llm'
+import type { Session, SessionEvent, SessionSeq, SurfaceIntent, SystemMessage, UserMessage } from '@noharness/session'
+import { isReplacementSurfaceEvent } from '@noharness/session'
+import { deepEqualJson } from '@noharness/util-values'
+import type { Context } from '@noharness/cordis'
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'runtime-context': { kind: 'runtime-context' } & ContextFormed
   }

@@ -2,11 +2,11 @@
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import type { Context } from '@deepseek-ai/cordis'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { MessageId } from '@deepseek-ai/dsh-llm/types'
-import { JsonStorageBackend } from '@deepseek-ai/dsh-storage-json'
+import type { Context } from '@noharness/cordis'
+import type { SessionId } from '@noharness/session'
+import { brandString } from '@noharness/brand'
+import type { MessageId } from '@noharness/llm/types'
+import { JsonStorageBackend } from '@noharness/storage-json'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createDailyScheduleRecord } from '../src/domain.ts'
 import type { ScheduleId } from '../src/types.ts'
@@ -31,7 +31,7 @@ async function setup(root: string, task?: ScheduleTask) {
 }
 
 it.each([true, false])('persists same-ID daily edits of a version-1 task with saved history=%s without Session activation', async (withHistory) => {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-schedule-update-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-schedule-update-'))
   roots.push(root)
   const sessionId = brandString<SessionId>('cold-original')
   const id = brandString<ScheduleId>('daily-stable-id')
@@ -92,7 +92,7 @@ it.each([true, false])('persists same-ID daily edits of a version-1 task with sa
 })
 
 it('keeps stored IANA alias spelling and a pinned millisecond target byte-identical on a daily no-op', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-schedule-update-alias-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-schedule-update-alias-'))
   roots.push(root)
   const id = brandString<ScheduleId>('alias')
   const sessionId = brandString<SessionId>('alias-session')

@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-session-telemetry-otel",
+  "name": "@noharness/session-telemetry-otel",
   "description": "Feedback-authorized Session logs over byte-bounded OpenTelemetry HTTP requests",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/session/session-telemetry-otel"
   },
   "type": "module",
@@ -33,36 +33,36 @@
   "license": "MIT",
   "dependencies": {
     "@opentelemetry/api-logs": "0.222.0",
-    "@deepseek-ai/schemastery": "workspace:~"
+    "@noharness/schemastery": "workspace:~"
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh-command-feedback": "workspace:*",
-    "@deepseek-ai/dsh-message-feedback": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-telemetry": "workspace:*",
-    "@deepseek-ai/dsh-anonymous-user-id": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-otel": "workspace:*"
+    "@noharness/command-feedback": "workspace:*",
+    "@noharness/message-feedback": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-telemetry": "workspace:*",
+    "@noharness/anonymous-user-id": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/otel": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis-plugin-logger-console": "workspace:~",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-app-boot": "workspace:*",
-    "@deepseek-ai/dsh-bash-local": "workspace:*",
-    "@deepseek-ai/dsh-command-feedback": "workspace:*",
-    "@deepseek-ai/dsh-message-feedback": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-loader-smoke": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-checkpoint-policy": "workspace:*",
-    "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:*",
-    "@deepseek-ai/dsh-session-telemetry": "workspace:*",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:*",
-    "@deepseek-ai/dsh-anonymous-user-id": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-http-proxy": "workspace:*",
-    "@deepseek-ai/dsh-otel": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis-plugin-logger-console": "workspace:~",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/app-boot": "workspace:*",
+    "@noharness/bash-local": "workspace:*",
+    "@noharness/command-feedback": "workspace:*",
+    "@noharness/message-feedback": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/loader-smoke": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-checkpoint-policy": "workspace:*",
+    "@noharness/session-persistence-jsonl": "workspace:*",
+    "@noharness/session-telemetry": "workspace:*",
+    "@noharness/subprocess-local": "workspace:*",
+    "@noharness/anonymous-user-id": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/http-proxy": "workspace:*",
+    "@noharness/otel": "workspace:*"
   }
 }

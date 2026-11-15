@@ -2,13 +2,13 @@
 /** The changes view's face for other Client plugins, the merged annotations of a view, and a view's lens run. */
 import { act, cleanup, fireEvent, render, renderHook, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
-import { makeTranslate } from '@deepseek-ai/dsh-client-test-runtime'
-import type { HostObservable } from '@deepseek-ai/dsh-client-ui-slots'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
+import { Context } from '@noharness/cordis'
+import { createSnapshotStore } from '@noharness/client-store'
+import { makeTranslate } from '@noharness/client-test-runtime'
+import type { HostObservable } from '@noharness/client-ui-slots'
+import type { SessionId } from '@noharness/session/types'
+import { brandString } from '@noharness/brand'
+import { RemoteError } from '@noharness/typert-protocol'
 import { AnnotationView } from '../src/client/annotations.ts'
 import { changesAddress, type ChangesTarget } from '../src/client/changes-address.ts'
 import {
@@ -55,7 +55,7 @@ describe('ForgeChangesService', () => {
     const address = forge.address(target)
     expect(address).toBe(changesAddress(target))
     expect(forge.parse(address)).toEqual(target)
-    expect(forge.parse('dsh-resource://other/x')).toBeUndefined()
+    expect(forge.parse('nhs-resource://other/x')).toBeUndefined()
     expect(forge.kinds).toEqual({ changes: 'forge-changes', panel: 'forge-panel' })
     forge.open(target, { lens: 'fixture/exports' })
     forge.open(target)

@@ -7,15 +7,15 @@
  * the reader does not hold, and opens the child once the Host lists it.
  *
  * The Liveshare client face mounts this module only on a viewer page.
- * @module @deepseek-ai/dsh-experimental-liveshare/src/client/viewer-session-row
+ * @module @noharness/experimental-liveshare/src/client/viewer-session-row
  */
 
-import type { Context as ClientContext } from '@deepseek-ai/cordis'
-import { IconBranchOutlineRegular, Tooltip } from '@deepseek-ai/dsh-client-ui-primitives'
-import type { PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
-import type { SessionProjectionValues } from '@deepseek-ai/dsh-api-session-controller/types'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
+import type { Context as ClientContext } from '@noharness/cordis'
+import { IconBranchOutlineRegular, Tooltip } from '@noharness/client-ui-primitives'
+import type { PropsLocale, PropsRuntime } from '@noharness/client-ui-slots'
+import type { SessionProjectionValues } from '@noharness/api-session-controller/types'
+import { brandString } from '@noharness/brand'
+import type { SessionId } from '@noharness/session/types'
 import { NS } from './locales.ts'
 
 export const name = 'liveshare-viewer-session-row'

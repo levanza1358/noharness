@@ -1,0 +1,31 @@
+# Bilingual-pair consistency record for nhs-v0.0.1-rc.1.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/persistence-changes/releases/nhs-v0.0.1-rc.1.md
+/:
+  en: d7e6d6d8ba2e504a
+  zh: c18e3ef43550031f
+/persistence-release-nhs-v0-0-1-rc-1:
+  en: a090731c66cc9895
+  zh: 07993ccc7f1f8f42
+/persistence-release-nhs-v0-0-1-rc-1/summary:
+  en: 8cc875ce27f47c4d
+  zh: 0558c4de819293ac
+/persistence-release-nhs-v0-0-1-rc-1/table-of-contents:
+  en: 0ff4a6f3c6af323f
+  zh: f5c7bd70cc1585c7
+/persistence-release-nhs-v0-0-1-rc-1/release-evidence:
+  en: f1fe1a0e635998ff
+  zh: 0f7be475821570c0
+/persistence-release-nhs-v0-0-1-rc-1/declaration:
+  en: af9cea43334ee692
+  zh: c6c8bd0d6a17718a
+/persistence-release-nhs-v0-0-1-rc-1/structural-changes:
+  en: aed15ef7091b8455
+  zh: c44b2756c730d39b
+/persistence-release-nhs-v0-0-1-rc-1/verification:
+  en: 8ccca317964523b1
+  zh: 2c8b3e70a3320778
+/persistence-release-nhs-v0-0-1-rc-1/dev-note:
+  en: b75c8458928b72b9
+  zh: 003ba4e17b4b5269

@@ -1,14 +1,14 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { unsupportedModel, provideWorkingDirectoryFixture, unsupportedInbox } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { Context } from '@deepseek-ai/cordis'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@deepseek-ai/dsh-session'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import TerminalSessionService from '@deepseek-ai/dsh-terminal'
+import { unsupportedModel, provideWorkingDirectoryFixture, unsupportedInbox } from '@noharness/agent-loop-testkit'
+import { Context } from '@noharness/cordis'
+import type { ToolCallId } from '@noharness/llm'
+import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@noharness/session'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import TerminalSessionService from '@noharness/terminal'
 import type {
   TerminalBackend,
   TerminalBackendSession,
@@ -18,11 +18,11 @@ import type {
   TerminalSessionStatus,
   TerminalSignal,
   TerminalWaitReason,
-} from '@deepseek-ai/dsh-terminal'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import * as ToolBashPersistent from '@deepseek-ai/dsh-tool-bash-persistent'
-import { brandString } from '@deepseek-ai/dsh-brand'
+} from '@noharness/terminal'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
+import * as ToolBashPersistent from '@noharness/tool-bash-persistent'
+import { brandString } from '@noharness/brand'
 
 const contexts: Context[] = []
 let callNumber = 0
@@ -142,8 +142,8 @@ class StubPtySession implements TerminalBackendSession {
     if (this.mode === 'wait-for-abort' || this.mode === 'end-on-abort') {
       const done = new Promise<ReturnType<StubPtySession['result']>>((resolve) => {
         request.signal?.addEventListener('abort', () => {
-          const start = /__DSH_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(request.text)?.[0]
-          const end = /__DSH_PERSISTENT_BASH_END_[^:]+:/.exec(request.text)?.[0]
+          const start = /__NHS_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(request.text)?.[0]
+          const end = /__NHS_PERSISTENT_BASH_END_[^:]+:/.exec(request.text)?.[0]
           const output = this.mode === 'end-on-abort'
             ? `${start ?? ''}\ninterrupted\n${end ?? ''}130\n${this.motd}`
             : 'partial output'
@@ -160,7 +160,7 @@ class StubPtySession implements TerminalBackendSession {
     }
     if (this.mode === 'prompt-after-idle') {
       if (request.text.length > 0) {
-        const start = /__DSH_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(request.text)?.[0]
+        const start = /__NHS_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(request.text)?.[0]
         const output = `${start ?? ''}\npartial syntax output\n`
         this.scrollback += output
         return this.operation(Promise.resolve(this.result(output, 'inferred_idle')))
@@ -177,8 +177,8 @@ class StubPtySession implements TerminalBackendSession {
     }
     const sent = request.text.length > 0 ? request.text : this.pendingText
     this.pendingText = ''
-    const start = /__DSH_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(sent)?.[0]
-    const end = /__DSH_PERSISTENT_BASH_END_[^:]+:/.exec(sent)?.[0]
+    const start = /__NHS_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(sent)?.[0]
+    const end = /__NHS_PERSISTENT_BASH_END_[^:]+:/.exec(sent)?.[0]
     if (this.mode === 'incremental-fallback') {
       const incremental = `${start ?? ''}\nincrement\n${this.motd}`
       return this.operation(Promise.resolve(this.result(this.motd, 'stdin_read')), incremental)
@@ -500,7 +500,7 @@ describe('tool-bash-persistent', () => {
     expect(result).toContain('bash: syntax error')
     // The backend owns the prompt text, so the fallback retains it verbatim.
     expect(result.endsWith('stub> ')).toBe(true)
-    expect(result).not.toContain('DSH_PERSISTENT_BASH_START')
+    expect(result).not.toContain('NHS_PERSISTENT_BASH_START')
   })
 
   it('does not attribute old scrollback truncation to a complete current command', async () => {

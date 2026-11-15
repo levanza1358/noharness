@@ -5,14 +5,14 @@
  * non-owner Peer only to the actions this package's `share-viewer` policy binds, so the Owner's
  * configuration services never run for it.
  */
-import { Context } from '@deepseek-ai/cordis'
-import RemoteAccessService from '@deepseek-ai/dsh-api-remote-access'
-import TypertGateway from '@deepseek-ai/dsh-api-gateway'
-import SettingsController from '@deepseek-ai/dsh-api-settings-controller'
-import { Peer, type ConnectionRpcResult } from '@deepseek-ai/dsh-client-connection'
-import type { SettingsDescriptor } from '@deepseek-ai/dsh-settings'
-import { Remote, TypertRemoteService, type PeerScope, type Principal } from '@deepseek-ai/dsh-typert-protocol'
-import TypertRegistry from '@deepseek-ai/dsh-typert-registry'
+import { Context } from '@noharness/cordis'
+import RemoteAccessService from '@noharness/api-remote-access'
+import TypertGateway from '@noharness/api-gateway'
+import SettingsController from '@noharness/api-settings-controller'
+import { Peer, type ConnectionRpcResult } from '@noharness/client-connection'
+import type { SettingsDescriptor } from '@noharness/settings'
+import { Remote, TypertRemoteService, type PeerScope, type Principal } from '@noharness/typert-protocol'
+import TypertRegistry from '@noharness/typert-registry'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
 import { createViewerAccessPolicy } from '../src/host/viewer-access-policy.ts'
 import type { ForkShareState } from '../src/host/fork-policy.ts'

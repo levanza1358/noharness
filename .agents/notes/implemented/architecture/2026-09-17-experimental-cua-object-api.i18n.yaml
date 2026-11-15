@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-17-experimental-cua-object-api.md
 /agent-note-native-cua-objects-independent-of-evaluator-ownership:
-  en: 1ea218552c24946e
-  zh: 83524cf60abec6c8
+  en: ecdb50738e397db1
+  zh: ec0fb24f7db829bd
 /agent-note-native-cua-objects-independent-of-evaluator-ownership/problem:
   en: a22ddcfb339e503d
   zh: a1f4fadb46fce1e7
 /agent-note-native-cua-objects-independent-of-evaluator-ownership/decision:
-  en: d08345b0b22b0884
-  zh: 18a843df211bcabc
+  en: 2deb9b708b19c013
+  zh: 949cd406f5f35cbc
 /agent-note-native-cua-objects-independent-of-evaluator-ownership/alternatives-considered:
   en: f2bb7165b7c168a0
   zh: e6234e3464d971ee
 /agent-note-native-cua-objects-independent-of-evaluator-ownership/consequences:
-  en: 528c644d5810e60b
-  zh: 9649dfc3b1172a6d
+  en: d3f9c40e569ee6c2
+  zh: 5671ae35ef4d88f5

@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/feature/2026-11-06-chat-history-consumption-details.md
 /agent-note-chat-history-consumption-classes-and-interactions:
-  en: 69ce0866b2608208
-  zh: 55fdeded5d7a4779
+  en: c8a74bb42d035b57
+  zh: 1244bc1a19fcd68d
 /agent-note-chat-history-consumption-classes-and-interactions/problem:
   en: edaa7ca0e55a9c33
   zh: 33d2b5ac07760988
 /agent-note-chat-history-consumption-classes-and-interactions/proposal:
-  en: 5e5553981c48d0e2
-  zh: 1195ac8d64180451
+  en: ceddf03952ceb345
+  zh: 8eb87071c314d9d4
 /agent-note-chat-history-consumption-classes-and-interactions/proposal/owners-and-interfaces:
   en: efbe7ccc25cf1f42
   zh: 3bb8f803677824bd
@@ -30,5 +30,5 @@
   en: 1b22cf3616302960
   zh: 418ead8421a91bee
 /agent-note-chat-history-consumption-classes-and-interactions/risks:
-  en: 9a61970e311751ac
-  zh: b24d0eac7b12af62
+  en: 8e96f5a282da76a5
+  zh: f499723cce693afd

@@ -1,26 +1,26 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import { SESSION_FORMAT_VERSION } from '@deepseek-ai/dsh-session/types'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED } from '@deepseek-ai/dsh-tools'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { unsupportedModel, provideWorkingDirectoryFixture, unsupportedInbox } from '@deepseek-ai/dsh-agent-loop-testkit'
-import LocalJobRegistry from '@deepseek-ai/dsh-jobs-local'
-import * as ToolTasks from '@deepseek-ai/dsh-tool-jobs'
-import { SandboxPreparationError } from '@deepseek-ai/dsh-sandbox'
-import { ShellExecutor } from '@deepseek-ai/dsh-shell'
-import type { ShellExecRequest, ShellExecSpec, ShellExecution, ShellProcess } from '@deepseek-ai/dsh-shell'
+import { Context } from '@noharness/cordis'
+import type { ToolCallId } from '@noharness/llm'
+import { Session, type SessionId } from '@noharness/session'
+import { SESSION_FORMAT_VERSION } from '@noharness/session/types'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime, { TOOL_ABORTED } from '@noharness/tools'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import { unsupportedModel, provideWorkingDirectoryFixture, unsupportedInbox } from '@noharness/agent-loop-testkit'
+import LocalJobRegistry from '@noharness/jobs-local'
+import * as ToolTasks from '@noharness/tool-jobs'
+import { SandboxPreparationError } from '@noharness/sandbox'
+import { ShellExecutor } from '@noharness/shell'
+import type { ShellExecRequest, ShellExecSpec, ShellExecution, ShellProcess } from '@noharness/shell'
 import { renderPwshPromoted } from '../src/render.ts'
-import * as ToolPwsh from '@deepseek-ai/dsh-tool-pwsh'
-import * as BashEnvPlugin from '@deepseek-ai/dsh-shell-env'
+import * as ToolPwsh from '@noharness/tool-pwsh'
+import * as BashEnvPlugin from '@noharness/shell-env'
 import { processSources, ringDelta } from '../src/background.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const testToolSignal = new AbortController().signal
 
@@ -70,7 +70,7 @@ class FakePwsh extends ShellExecutor {
       onExpiry: request.onExpiry ?? 'kill',
       stdoutMaxBytes: request.stdoutMaxBytes ?? 64_000,
       ...request.signal ? { signal: request.signal } : {},
-      ...request.dshEnv !== undefined ? { dshEnv: request.dshEnv } : {},
+      ...request.nhsEnv !== undefined ? { nhsEnv: request.nhsEnv } : {},
       sandboxPolicy: request.sandboxPolicy,
     }
   }
@@ -506,7 +506,7 @@ describe('foreground commands as jobs (pwsh)', () => {
   })
 
   it('runs under the deadline kill when no job controller serves the owner', async () => {
-    // The same composition minus dsh-tool-jobs: the registry exists, so the
+    // The same composition minus nhs-tool-jobs: the registry exists, so the
     // job-backed variant is registered, but admission refuses at the start
     // and the call runs under the executor's deadline instead.
     const ctx = new Context()

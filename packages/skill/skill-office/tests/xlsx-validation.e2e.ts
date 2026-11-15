@@ -5,16 +5,16 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execa } from 'execa'
 import { describe, expect, it, onTestFinished } from 'vitest'
-import { runLoaderSmoke } from '@deepseek-ai/dsh-loader-smoke'
-import { readImageFile } from '@deepseek-ai/dsh-attachment-local'
-import { parseSessionLog } from '@deepseek-ai/dsh-llm-replay'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
+import { runLoaderSmoke } from '@noharness/loader-smoke'
+import { readImageFile } from '@noharness/attachment-local'
+import { parseSessionLog } from '@noharness/llm-replay'
+import type { SessionEvent } from '@noharness/session'
 import { expectNoRenderContext, officeCalls, officeImages, officeModelPatches, officeToolPatches } from './fixtures/real-office.ts'
 
 const repo = fileURLToPath(new URL('../../../../', import.meta.url))
 const assetRoot = fileURLToPath(new URL('../assets/', import.meta.url))
-// DSH_PRIMARY_RUNTIME names the same runtime.json + dependencies/ payload used by shipped deployments.
-const runtime = process.env.DSH_PRIMARY_RUNTIME
+// NHS_PRIMARY_RUNTIME names the same runtime.json + dependencies/ payload used by shipped deployments.
+const runtime = process.env.NHS_PRIMARY_RUNTIME
 const python = runtime && join(runtime, 'dependencies/python', process.platform === 'win32' ? 'python.exe' : 'bin/python3')
 const seed = `
 import sys
@@ -61,13 +61,13 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY || !runtime).each(['native', 'ptc'
     let events: SessionEvent[] = []
     let original: Buffer | undefined
     let previewHasContent = false
-    const controlRoot = await mkdtemp(join(tmpdir(), 'dsh-xlsx-control-test-'))
+    const controlRoot = await mkdtemp(join(tmpdir(), 'nhs-xlsx-control-test-'))
     onTestFinished(() => rm(controlRoot, { recursive: true, force: true }))
     const configPath = join(controlRoot, 'office.patch.json')
     const sessionRoot = join(controlRoot, 'sessions'), imageRoot = join(controlRoot, 'image-store')
     await runLoaderSmoke({
       label: `Excel ${kind} validation`,
-      tempDirPrefix: 'dsh-xlsx-validation-',
+      tempDirPrefix: 'nhs-xlsx-validation-',
       binScript: join(repo, 'apps/cli/src/bin.ts'),
       sourceImport: 'tsx/esm',
       tsconfigPath: join(repo, 'tsconfig.base.json'),
@@ -78,23 +78,23 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY || !runtime).each(['native', 'ptc'
       ],
       processTimeoutMs: 110_000,
       env: {
-        DSH_PRIMARY_RUNTIME: runtime,
-        DSH_PERMISSION_MODE: 'danger-full-access',
-        DSH_HOME: join(controlRoot, 'home'),
-        DSH_AGENTS_HOME: join(controlRoot, 'agents'),
-        DSH_TELEMETRY_DISABLED: '1',
-        HTTP_PROXY: process.env.DSH_OFFICE_TEST_PROXY,
-        HTTPS_PROXY: process.env.DSH_OFFICE_TEST_PROXY,
+        NHS_PRIMARY_RUNTIME: runtime,
+        NHS_PERMISSION_MODE: 'danger-full-access',
+        NHS_HOME: join(controlRoot, 'home'),
+        NHS_AGENTS_HOME: join(controlRoot, 'agents'),
+        NHS_TELEMETRY_DISABLED: '1',
+        HTTP_PROXY: process.env.NHS_OFFICE_TEST_PROXY,
+        HTTPS_PROXY: process.env.NHS_OFFICE_TEST_PROXY,
       },
       async prepare(cwd) {
         await execa(python!, ['-c', seed, kind], { cwd })
         original = await readFile(join(cwd, 'input.xlsx'))
         await writeFile(configPath, JSON.stringify([
-          { insert: [{ id: 'skill-office', name: '@deepseek-ai/dsh-skill-office', config: { assetRoot } }] },
+          { insert: [{ id: 'skill-office', name: '@noharness/skill-office', config: { assetRoot } }] },
           ...officeToolPatches(),
-          { insert: [{ id: 'workspace-dependencies', name: '@deepseek-ai/dsh-tool-workspace-dependencies', config: { source: runtime! } }] },
+          { insert: [{ id: 'workspace-dependencies', name: '@noharness/tool-workspace-dependencies', config: { source: runtime! } }] },
           ...officeModelPatches(),
-          { id: 'attachment-local', config: { dshHome: imageRoot } },
+          { id: 'attachment-local', config: { nhsHome: imageRoot } },
           { id: 'session-persistence-jsonl', config: { root: sessionRoot, compression: 'none' } },
         ]))
       },
@@ -103,7 +103,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY || !runtime).each(['native', 'ptc'
         const logs = paths.filter(path => /session\.v\d+\.jsonl$/u.test(path))
         expect(logs).toHaveLength(1)
         const bytes = await readFile(join(sessionRoot, logs[0]!))
-        const traceDir = process.env.DSH_OFFICE_TRACE_DIR
+        const traceDir = process.env.NHS_OFFICE_TRACE_DIR
         if (traceDir !== undefined) {
           await mkdir(traceDir, { recursive: true })
           await writeFile(join(traceDir, `xlsx-${kind}-${mode}.jsonl`), bytes)

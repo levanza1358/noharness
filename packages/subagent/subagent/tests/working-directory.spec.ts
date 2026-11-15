@@ -3,22 +3,22 @@ import { mountWorkingDirectoryFixture } from './working-directory-fixture.ts'
 import { mkdtemp, mkdir, realpath, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@noharness/cordis'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import * as Spawn from '@deepseek-ai/dsh-subagent-spawn-in-process'
-import * as Fork from '@deepseek-ai/dsh-subagent-fork-in-process'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import { createUserMessage } from '@noharness/llm'
+import type { SessionId } from '@noharness/session'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import * as Spawn from '@noharness/subagent-spawn-in-process'
+import * as Fork from '@noharness/subagent-fork-in-process'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import SubagentRuntime from '../src/index.ts'
 import { TestSessionQuery } from './test-session-query.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-child-directory-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-child-directory-'))
   const origin = join(root, 'origin')
   const first = join(origin, 'first')
   const second = join(origin, 'second')

@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-compaction-image-offload",
+  "name": "@noharness/compaction-image-offload",
   "description": "Durable image offload for image-capable routes: replace over-budget request images with placeholders and retry",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/compaction/compaction-image-offload"
   },
   "type": "module",
@@ -36,28 +36,28 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-compaction": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/compaction": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
-    "@deepseek-ai/dsh-attachment": "workspace:*",
-    "@deepseek-ai/dsh-compaction": "workspace:*",
-    "@deepseek-ai/dsh-compaction-basic": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-llm-deepseek": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-token-meter": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/agent-loop": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*",
+    "@noharness/attachment": "workspace:*",
+    "@noharness/compaction": "workspace:*",
+    "@noharness/compaction-basic": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/llm-deepseek": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/token-meter": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-util-values": "workspace:*"
+    "@noharness/util-values": "workspace:*"
   }
 }

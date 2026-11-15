@@ -1,12 +1,12 @@
 /** Permission admission must finish before Agent creation completes. */
-import { Context } from '@deepseek-ai/cordis'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import PermissionPresetService, { AUTO_PRESET } from '@deepseek-ai/dsh-permission-presets'
-import { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import ApprovalService from '@deepseek-ai/dsh-user-approval'
+import { Context } from '@noharness/cordis'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import PermissionPresetService, { AUTO_PRESET } from '@noharness/permission-presets'
+import { Session, type SessionId } from '@noharness/session'
+import ApprovalService from '@noharness/user-approval'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 async function setup() {
   const ctx = new Context()

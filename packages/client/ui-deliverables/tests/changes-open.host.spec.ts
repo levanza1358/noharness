@@ -2,21 +2,21 @@
 import { mkdtemp, rm, writeFile, mkdir, realpath, unlink } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { LocalFileSystem } from '@deepseek-ai/dsh-fs-local'
-import { WorkspaceFiles } from '@deepseek-ai/dsh-api-workspace-files'
-import { Context } from '@deepseek-ai/cordis'
-import { ConnectionAuthentication, HostConnectionService } from '@deepseek-ai/dsh-client-connection'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import { SessionQueryError } from '@deepseek-ai/dsh-session-query'
-import type { SessionEventReadRequest } from '@deepseek-ai/dsh-session-query'
-import type { WorkspaceChangedFile, WorkspaceChangesSummary, WorkspaceFileDiff } from '@deepseek-ai/dsh-workspace-changes/types'
+import { LocalFileSystem } from '@noharness/fs-local'
+import { WorkspaceFiles } from '@noharness/api-workspace-files'
+import { Context } from '@noharness/cordis'
+import { ConnectionAuthentication, HostConnectionService } from '@noharness/client-connection'
+import type { SessionId } from '@noharness/session'
+import { SessionQueryError } from '@noharness/session-query'
+import type { SessionEventReadRequest } from '@noharness/session-query'
+import type { WorkspaceChangedFile, WorkspaceChangesSummary, WorkspaceFileDiff } from '@noharness/workspace-changes/types'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import * as deliverables from '../src/index.ts'
 import {
   changedFileUrl, changesDiffUrl, changesSummaryUrl, CHANGES_DIFF_PATH, CHANGES_OPEN_PATH, CHANGED_FILES_PATH, isChangedFile, isChangesDiff,
   isChangesEvent, isChangesSummary,
 } from '../src/changes.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const cleanups: Array<() => Promise<unknown>> = []
 afterEach(async () => {
@@ -28,7 +28,7 @@ afterEach(async () => {
 const changed = (path: string, display = path): WorkspaceChangedFile => ({ path, display, added: 1, deleted: 0 })
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-changes-open-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-changes-open-'))
   cleanups.push(() => rm(root, { recursive: true, force: true }))
   const cwd = join(root, 'workspace')
   await mkdir(join(cwd, 'src', 'lib'), { recursive: true })

@@ -4,16 +4,16 @@
  * reader page classifies, and the access snapshot the reader page opens with.
  */
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@noharness/cordis'
 import RemoteAccessService, {
   type RemoteAccessAction,
   type RemoteAccessGrant,
   type RemoteAccessResource,
-} from '@deepseek-ai/dsh-api-remote-access'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import TypertRegistry from '@deepseek-ai/dsh-typert-registry'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { WorkspaceId } from '@deepseek-ai/dsh-workspace/types'
+} from '@noharness/api-remote-access'
+import type { SessionId } from '@noharness/session'
+import TypertRegistry from '@noharness/typert-registry'
+import { brandString } from '@noharness/brand'
+import type { WorkspaceId } from '@noharness/workspace/types'
 import type { ForkPromptDecision, ForkRecord } from '../src/host/fork-registry.ts'
 import type { ForkShareState, ViewerSessionMode } from '../src/host/fork-policy.ts'
 import {
@@ -22,7 +22,7 @@ import {
   readerWriteRefusal,
   type ViewerAccessFacts,
 } from '../src/host/viewer-access-policy.ts'
-import type { RemoteAccessEndpoint } from '@deepseek-ai/dsh-api-remote-access/types'
+import type { RemoteAccessEndpoint } from '@noharness/api-remote-access/types'
 import type { ShareablePluginCatalog, ViewerPluginPolicy } from '../src/host/viewer-capability-types.ts'
 import { shareViewerPrincipal } from '../src/host/viewer-principal.ts'
 

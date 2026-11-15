@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-experimental-client-ui-cot-translation",
+  "name": "@noharness/experimental-client-ui-cot-translation",
   "description": "Optional machine translation of expanded reasoning, preserving original Session text",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/experimental/client-ui-cot-translation"
   },
   "type": "module",
@@ -37,14 +37,14 @@
       "types": "./lib/types/types.d.ts"
     }
   },
-  "dsh": {
+  "nhs": {
     "client": {
       "inject": [
-        "@deepseek-ai/dsh-api-remotes",
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-client-ui-chat",
-        "@deepseek-ai/dsh-client-ui-plugin-manager",
-        "@deepseek-ai/dsh-client-ui-settings"
+        "@noharness/api-remotes",
+        "@noharness/client-locale",
+        "@noharness/client-ui-chat",
+        "@noharness/client-ui-plugin-manager",
+        "@noharness/client-ui-settings"
       ],
       "platform": "web"
     }
@@ -55,39 +55,39 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-experimental-translator": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/experimental-translator": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/schemastery": "workspace:~",
     "zod": "4.6.6",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*"
+    "@noharness/typert-protocol": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-settings": "workspace:*",
-    "@deepseek-ai/dsh-experimental-translator": "workspace:*",
-    "@deepseek-ai/dsh-api-remotes": "workspace:*",
-    "@deepseek-ai/dsh-client-locale": "workspace:*",
-    "@deepseek-ai/dsh-client-store": "workspace:*",
-    "@deepseek-ai/dsh-client-test-runtime": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-chat": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-plugin-manager": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-primitives": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-renderer": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-settings": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-slots": "workspace:*",
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/settings": "workspace:*",
+    "@noharness/experimental-translator": "workspace:*",
+    "@noharness/api-remotes": "workspace:*",
+    "@noharness/client-locale": "workspace:*",
+    "@noharness/client-store": "workspace:*",
+    "@noharness/client-test-runtime": "workspace:*",
+    "@noharness/client-ui-chat": "workspace:*",
+    "@noharness/client-ui-plugin-manager": "workspace:*",
+    "@noharness/client-ui-primitives": "workspace:*",
+    "@noharness/client-ui-renderer": "workspace:*",
+    "@noharness/client-ui-settings": "workspace:*",
+    "@noharness/client-ui-slots": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@testing-library/react": "^16.3.3",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-api-remote-access": "workspace:*",
-    "@deepseek-ai/dsh-api-session-controller": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
-    "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:*",
-    "@deepseek-ai/dsh-session-query": "workspace:*",
-    "@deepseek-ai/dsh-typert-registry": "workspace:*"
+    "@noharness/session": "workspace:*",
+    "@noharness/api-remote-access": "workspace:*",
+    "@noharness/api-session-controller": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*",
+    "@noharness/session-persistence-jsonl": "workspace:*",
+    "@noharness/session-query": "workspace:*",
+    "@noharness/typert-registry": "workspace:*"
   },
   "files": [
     "locale/*.json",

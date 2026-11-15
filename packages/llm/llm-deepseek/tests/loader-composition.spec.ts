@@ -5,27 +5,27 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import LlmRuntime from '@deepseek-ai/dsh-llm'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import SessionStore, { type SessionId } from '@deepseek-ai/dsh-session'
-import { credentialRef } from '@deepseek-ai/dsh-credentials'
-import LocalCredentialProvider from '@deepseek-ai/dsh-credentials-local'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import Include from '@noharness/cordis-plugin-include'
+import LlmRuntime from '@noharness/llm'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import AgentRegistry from '@noharness/agent'
+import SessionStore, { type SessionId } from '@noharness/session'
+import { credentialRef } from '@noharness/credentials'
+import LocalCredentialProvider from '@noharness/credentials-local'
 import { profileComposition } from '../../../settings/settings/tests/profile-composition.ts'
-import { getOrCreateAnonymousUserId } from '@deepseek-ai/dsh-anonymous-user-id'
-import DeepSeekLlmApiExtensionRegistry from '@deepseek-ai/dsh-deepseek-llm-api-extensions'
-import * as SessionLogDeepSeek from '@deepseek-ai/dsh-session-log-deepseek'
-import * as DeepSeekPluginPackageInventory from '@deepseek-ai/dsh-plugin-package-inventory-deepseek'
-import * as LlmDeepSeek from '@deepseek-ai/dsh-llm-deepseek-api-key'
+import { getOrCreateAnonymousUserId } from '@noharness/anonymous-user-id'
+import DeepSeekLlmApiExtensionRegistry from '@noharness/deepseek-llm-api-extensions'
+import * as SessionLogDeepSeek from '@noharness/session-log-deepseek'
+import * as DeepSeekPluginPackageInventory from '@noharness/plugin-package-inventory-deepseek'
+import * as LlmDeepSeek from '@noharness/llm-deepseek-api-key'
 import { assemble } from './assemble.ts'
 import { closeMockServers, mockServer, textEvents } from './mock-server.ts'
 import { sourceModuleLoader } from './helpers.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
-declare module '@deepseek-ai/dsh-llm/types' {
+declare module '@noharness/llm/types' {
   interface LlmRequestPurposeMap {
     'test-upload-exclusion': true
   }
@@ -61,8 +61,8 @@ async function loadComposition(
   // A reused root is the restart case: the same harness home, its documents
   // exactly as the previous process left them.
   const fresh = options.reuseRoot === undefined
-  root = options.reuseRoot ?? await mkdtemp(join(tmpdir(), 'dsh-llm-composition-'))
-  vi.stubEnv('DSH_HOME', root)
+  root = options.reuseRoot ?? await mkdtemp(join(tmpdir(), 'nhs-llm-composition-'))
+  vi.stubEnv('NHS_HOME', root)
   const settingsPath = join(root, 'profile', 'cordis.patch.yml')
   const credentialsPath = join(root, '.credentials.yaml')
   if (options.withDynamic && fresh) {
@@ -72,36 +72,36 @@ async function loadComposition(
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
     '- id: llm',
-    "  name: '@deepseek-ai/dsh-llm'",
+    "  name: '@noharness/llm'",
     '- id: session',
-    "  name: '@deepseek-ai/dsh-session'",
+    "  name: '@noharness/session'",
     '- id: session-projection',
-    "  name: '@deepseek-ai/dsh-session-projection'",
+    "  name: '@noharness/session-projection'",
     '- id: agents',
-    "  name: '@deepseek-ai/dsh-agent'",
-    "- name: '@deepseek-ai/dsh-session-projection'",
+    "  name: '@noharness/agent'",
+    "- name: '@noharness/session-projection'",
     '- id: deepseek-llm-api-extensions',
-    "  name: '@deepseek-ai/dsh-deepseek-llm-api-extensions'",
+    "  name: '@noharness/deepseek-llm-api-extensions'",
     ...options.exclusionFirst === true ? ["- name: '@test/upload-exclusion'"] : [],
     '- id: session-log-deepseek',
-    "  name: '@deepseek-ai/dsh-session-log-deepseek'",
+    "  name: '@noharness/session-log-deepseek'",
     ...options.enableSessionLog !== undefined
       ? ['  config:', `    enabled: ${String(options.enableSessionLog)}`]
       : [],
     ...options.exclusionFirst === false ? ["- name: '@test/upload-exclusion'"] : [],
     '- id: plugin-package-inventory-deepseek',
-    "  name: '@deepseek-ai/dsh-plugin-package-inventory-deepseek'",
+    "  name: '@noharness/plugin-package-inventory-deepseek'",
     ...options.withDynamic
       ? [
         '- id: credentials',
-        "  name: '@deepseek-ai/dsh-credentials-local'",
+        "  name: '@noharness/credentials-local'",
         '  config:',
         `    path: ${JSON.stringify(credentialsPath)}`,
         '    debounceMs: 10',
       ]
       : [],
     '- id: llm-deepseek',
-    "  name: '@deepseek-ai/dsh-llm-deepseek-api-key'",
+    "  name: '@noharness/llm-deepseek-api-key'",
     '  config:',
     `    baseURL: ${JSON.stringify(options.baseURL)}`,
     '',
@@ -114,16 +114,16 @@ async function loadComposition(
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
     ['@test/upload-exclusion', uploadExclusion],
-    ['@deepseek-ai/dsh-llm', LlmRuntime],
-    ['@deepseek-ai/dsh-session', SessionStore],
-    ['@deepseek-ai/dsh-session-projection', SessionProjectionRegistry],
-    ['@deepseek-ai/dsh-agent', AgentRegistry],
-    ['@deepseek-ai/dsh-session-projection', SessionProjectionRegistry],
-    ['@deepseek-ai/dsh-deepseek-llm-api-extensions', DeepSeekLlmApiExtensionRegistry],
-    ['@deepseek-ai/dsh-session-log-deepseek', SessionLogDeepSeek],
-    ['@deepseek-ai/dsh-plugin-package-inventory-deepseek', DeepSeekPluginPackageInventory],
-    ['@deepseek-ai/dsh-credentials-local', LocalCredentialProvider],
-    ['@deepseek-ai/dsh-llm-deepseek-api-key', LlmDeepSeek],
+    ['@noharness/llm', LlmRuntime],
+    ['@noharness/session', SessionStore],
+    ['@noharness/session-projection', SessionProjectionRegistry],
+    ['@noharness/agent', AgentRegistry],
+    ['@noharness/session-projection', SessionProjectionRegistry],
+    ['@noharness/deepseek-llm-api-extensions', DeepSeekLlmApiExtensionRegistry],
+    ['@noharness/session-log-deepseek', SessionLogDeepSeek],
+    ['@noharness/plugin-package-inventory-deepseek', DeepSeekPluginPackageInventory],
+    ['@noharness/credentials-local', LocalCredentialProvider],
+    ['@noharness/llm-deepseek-api-key', LlmDeepSeek],
   ])
   // The custom importer bypasses Node resolution; mirror the package manifests
   // a deployed cordis.yml has beside its declared dependencies.
@@ -184,7 +184,7 @@ describe('llm-deepseek real dynamic composition', () => {
       keys.push(request.headers.get('x-api-key'))
       return Promise.resolve(new Response(JSON.stringify({ data: [
         { id: 'deepseek-flash', ...messages },
-        { id: 'deepseek-v5', ...messages, client_requirements: { 'deepseek-harness': { min_version: '0.0.1' } } },
+        { id: 'deepseek-v5', ...messages, client_requirements: { 'noharness': { min_version: '0.0.1' } } },
       ] })))
     })
     const { ctx } = await loadComposition({ withDynamic: true, baseURL: 'https://api.deepseek.com/anthropic' })
@@ -206,8 +206,8 @@ describe('llm-deepseek real dynamic composition', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const messages = { api_capabilities: { anthropic_messages: {} } }
     vi.spyOn(globalThis, 'fetch').mockImplementation(() => Promise.resolve(new Response(JSON.stringify({ data: [
-      { id: 'deepseek-flash', ...messages, client_metadata: { 'deepseek-harness': { badge: { text: { en: 'New', zh: '新' }, tone: 'info' } } } },
-      { id: 'deepseek-v4-pro', ...messages, client_metadata: { 'deepseek-harness': { badge: { text: 'far too long a badge' } } } },
+      { id: 'deepseek-flash', ...messages, client_metadata: { 'noharness': { badge: { text: { en: 'New', zh: '新' }, tone: 'info' } } } },
+      { id: 'deepseek-v4-pro', ...messages, client_metadata: { 'noharness': { badge: { text: 'far too long a badge' } } } },
     ] }))))
     const { ctx } = await loadComposition({ withDynamic: true, baseURL: 'https://api.deepseek.com/anthropic' })
     const badges = async () => (await ctx.llm.listModels('deepseek-official')).map(model => [model.id, model.badge])
@@ -228,14 +228,14 @@ describe('llm-deepseek real dynamic composition', () => {
     session.append('turn/start', { turn: 1 })
 
     await assemble(ctx, { model: 'deepseek-v4-flash', messages: [], sessionId: session.id })
-    const request = server.requests[0] as { dsh_plugin_packages: { version: number; packages: unknown[] } }
-    expect(request).not.toHaveProperty('dsh_session_log')
-    expect(request.dsh_plugin_packages.packages).toEqual(expect.arrayContaining([
-      { name: '@deepseek-ai/dsh-deepseek-llm-api-extensions', version: '0.1.0-rc.8' },
-      { name: '@deepseek-ai/dsh-llm-deepseek-api-key', version: '0.1.0-rc.8' },
-      { name: '@deepseek-ai/dsh-session-log-deepseek', version: '0.1.0-rc.8' },
+    const request = server.requests[0] as { nhs_plugin_packages: { version: number; packages: unknown[] } }
+    expect(request).not.toHaveProperty('nhs_session_log')
+    expect(request.nhs_plugin_packages.packages).toEqual(expect.arrayContaining([
+      { name: '@noharness/deepseek-llm-api-extensions', version: '0.1.0-rc.8' },
+      { name: '@noharness/llm-deepseek-api-key', version: '0.1.0-rc.8' },
+      { name: '@noharness/session-log-deepseek', version: '0.1.0-rc.8' },
     ]))
-    expect(request.dsh_plugin_packages.version).toBe(1)
+    expect(request.nhs_plugin_packages.version).toBe(1)
     expect(SessionLogDeepSeek.acceptedThrough(session)).toBe(-1)
   })
 
@@ -251,7 +251,7 @@ describe('llm-deepseek real dynamic composition', () => {
 
     await assemble(ctx, { model: 'deepseek-v4-flash', messages: [], sessionId: session.id })
     const request = server.requests[0] as {
-      dsh_session_log?: {
+      nhs_session_log?: {
         version: number
         session: { id: string }
         afterSeq: number
@@ -259,7 +259,7 @@ describe('llm-deepseek real dynamic composition', () => {
         events: Array<{ type: string; seq: number }>
       }
     }
-    expect(request.dsh_session_log).toMatchObject({
+    expect(request.nhs_session_log).toMatchObject({
       version: 1,
       session: { id: 'extension-composition-enabled' },
       afterSeq: -1,
@@ -278,13 +278,13 @@ describe('llm-deepseek real dynamic composition', () => {
 
     await assemble(ctx, { model: 'deepseek-v4-flash', messages: [], sessionId: session.id, purpose: 'test-upload-exclusion' })
     expect(server.headers[0]?.['x-deepseek-harness-session-id']).toBe(session.id)
-    expect(server.requests[0]).not.toHaveProperty('dsh_session_log')
-    expect(server.requests[0]).toHaveProperty('dsh_plugin_packages')
+    expect(server.requests[0]).not.toHaveProperty('nhs_session_log')
+    expect(server.requests[0]).toHaveProperty('nhs_plugin_packages')
     expect(SessionLogDeepSeek.acceptedThrough(session)).toBe(-1)
     expect(session.snapshotEvents()).toHaveLength(1)
 
     await assemble(ctx, { model: 'deepseek-v4-flash', messages: [], sessionId: session.id })
-    expect(server.requests[1]).toHaveProperty('dsh_session_log')
+    expect(server.requests[1]).toHaveProperty('nhs_session_log')
     expect(SessionLogDeepSeek.acceptedThrough(session)).toBe(0)
   })
 

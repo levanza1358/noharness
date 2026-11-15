@@ -3,8 +3,8 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-09-27-observation-waits-on-observed-state.md
 /agent-note-windows-lane-observations-wait-on-the-state-they-read:
-  en: 8949f81c9d585fc0
-  zh: 34e1bdbca1cf2126
+  en: 1aaa04735f9a1817
+  zh: 9eb05521149b2307
 /agent-note-windows-lane-observations-wait-on-the-state-they-read/problem:
   en: 270b015afc8de8ac
   zh: 65aeb1e270d19a27
@@ -18,5 +18,5 @@
   en: ee581d7bbdfb3da8
   zh: ea0fdd1b35543dc2
 /agent-note-windows-lane-observations-wait-on-the-state-they-read/deferred:
-  en: 8e182739fdf90baf
-  zh: 5f93f7b7d9518764
+  en: a75099ef9f329df1
+  zh: 8ab70a57ddd2d591

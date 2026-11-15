@@ -1,18 +1,18 @@
 /** Creates a new Git branch and checkout, then changes the calling Session's working directory; restores a removed checkout. */
 
-import { Context, Service, type Volatile } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type {} from '@deepseek-ai/dsh-fs'
-import type { SandboxExecutionPolicy } from '@deepseek-ai/dsh-sandbox'
-import type {} from '@deepseek-ai/dsh-sandbox-policy'
-import type {} from '@deepseek-ai/dsh-settings'
-import { appendPluginRecord } from '@deepseek-ai/dsh-session'
-import type { Session } from '@deepseek-ai/dsh-session'
-import type { ProjectionHandle } from '@deepseek-ai/dsh-session-projection'
-import type {} from '@deepseek-ai/dsh-working-directory'
-import { HarnessError } from '@deepseek-ai/dsh-error'
-import { MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
+import { Context, Service, type Volatile } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import type { Agent } from '@noharness/agent'
+import type {} from '@noharness/fs'
+import type { SandboxExecutionPolicy } from '@noharness/sandbox'
+import type {} from '@noharness/sandbox-policy'
+import type {} from '@noharness/settings'
+import { appendPluginRecord } from '@noharness/session'
+import type { Session } from '@noharness/session'
+import type { ProjectionHandle } from '@noharness/session-projection'
+import type {} from '@noharness/working-directory'
+import { HarnessError } from '@noharness/error'
+import { MAX_TIMER_DELAY_MS } from '@noharness/timeout'
 import { WorktreeReclamation } from './archive.ts'
 import { WorktreeError } from './error.ts'
 import { PREPARE_DIRECTORY } from './directory.ts'
@@ -69,7 +69,7 @@ interface WorktreeSpec {
 /** Runs one confined Git command; output with an exit code outside `allowedExitCodes` throws. */
 type GitRun = (directory: string, args: string[], allowedExitCodes?: number[], env?: NodeJS.ProcessEnv) => ReturnType<typeof runCommand>
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     worktrees: WorktreeService
   }
@@ -92,7 +92,7 @@ export class WorktreeService extends Service {
   static Config = z.object({
     retainOnArchive: z.boolean().default(false).volatile(),
     directory: z.string().default('.agents/worktrees'),
-    namePrefix: z.string().default('dsh-'),
+    namePrefix: z.string().default('nhs-'),
     gitCommand: z.string().default('git'),
     nodeCommand: z.string().default('node'),
     timeoutMs: z.number().default(300_000),

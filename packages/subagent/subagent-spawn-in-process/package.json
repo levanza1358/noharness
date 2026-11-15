@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-subagent-spawn-in-process",
+  "name": "@noharness/subagent-spawn-in-process",
   "description": "In-process spawn subagent backend: runs a fresh child agent on ctx.agents",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/subagent/subagent-spawn-in-process"
   },
   "type": "module",
@@ -32,29 +32,29 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-subagent": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/subagent": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:~"
+    "@noharness/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
-    "@deepseek-ai/dsh-bash-local": "workspace:*",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-llm-deepseek": "workspace:*",
-    "@deepseek-ai/dsh-llm-deepseek-api-key": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-subagent": "workspace:*",
-    "@deepseek-ai/dsh-tool-bash": "workspace:*",
-    "@deepseek-ai/dsh-tool-subagent": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/agent-loop": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*",
+    "@noharness/bash-local": "workspace:*",
+    "@noharness/subprocess-local": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/llm-deepseek": "workspace:*",
+    "@noharness/llm-deepseek-api-key": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/subagent": "workspace:*",
+    "@noharness/tool-bash": "workspace:*",
+    "@noharness/tool-subagent": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/session-persistence-jsonl": "workspace:*"
   }
 }

@@ -1,16 +1,16 @@
 /** Host-authoritative Session reading records, kept in memory, and their Remote service. */
-import { Context, Service } from '@deepseek-ai/cordis'
-import { Remote, RemoteError, TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
-import type {} from '@deepseek-ai/dsh-api-remote-access'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type {} from '@deepseek-ai/dsh-session-persistence'
+import { Context, Service } from '@noharness/cordis'
+import { Remote, RemoteError, TypertRemoteService } from '@noharness/typert-protocol'
+import type {} from '@noharness/api-remote-access'
+import type { SessionId } from '@noharness/session'
+import type {} from '@noharness/session-persistence'
 import { SessionReadFollower } from './feed.ts'
 import type { SessionReadRecord } from './spec.ts'
 import type { SessionReadAction, SessionReadFrame, SessionReadState } from './types.ts'
 
 export type * from './types.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Host owner of the in-memory Session reading records behind the `sessionStatus` Remote namespace. */
     sessionStatus: SessionStatusService

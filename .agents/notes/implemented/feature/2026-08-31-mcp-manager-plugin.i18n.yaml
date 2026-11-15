@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-31-mcp-manager-plugin.md
 /agent-note-settings-driven-mcp-server-manager:
-  en: 56c40f7db118247c
-  zh: 3b3c596983cd48e1
+  en: cecac60031f6e8e2
+  zh: 51750836179c9a58
 /agent-note-settings-driven-mcp-server-manager/problem:
-  en: 7115cbaefaa11d2d
-  zh: 23aff8797a651a36
+  en: a6b153dd8c2b1f26
+  zh: 5cafc1283eb9488a
 /agent-note-settings-driven-mcp-server-manager/decision:
-  en: 39cf3ae7e8a5799f
-  zh: 7a26503da73e238f
+  en: 9d1ed452c5bfc912
+  zh: 31cb245ed840e9c9
 /agent-note-settings-driven-mcp-server-manager/alternatives-considered:
   en: daad4acd963926cc
   zh: 152f3d35a4fe3309

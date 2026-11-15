@@ -5,45 +5,45 @@
 /:
   en: dca7dd27c5f2c369
   zh: 00d34e3837bed75a
-/deepseek-ai-dsh-creation-recommendations:
-  en: f2cefc8c9ad1d38f
-  zh: 9d3a5dc7ac8e2329
-/deepseek-ai-dsh-creation-recommendations/summary:
+/noharness-creation-recommendations:
+  en: 98840a01cce30754
+  zh: f6fa56db1afc314b
+/noharness-creation-recommendations/summary:
   en: b5b132020dabe3d9
   zh: 02bfe0e8a42d59e2
-/deepseek-ai-dsh-creation-recommendations/table-of-contents:
+/noharness-creation-recommendations/table-of-contents:
   en: d152484eb41ac6b4
   zh: b00dddf4c88f0a45
-/deepseek-ai-dsh-creation-recommendations/use-this-package:
-  en: e5e313410faf1ec0
-  zh: 0683eb113eb52c96
-/deepseek-ai-dsh-creation-recommendations/use-this-package/outcomes-and-recovery:
+/noharness-creation-recommendations/use-this-package:
+  en: f1958fb6dd221262
+  zh: b1953bcc0acb66f4
+/noharness-creation-recommendations/use-this-package/outcomes-and-recovery:
   en: 1d96f4897b1a5a28
   zh: 25ca08bc167d1e4a
-/deepseek-ai-dsh-creation-recommendations/understand-the-implementation:
-  en: cffb08348d69548d
-  zh: 79706e5b0db8a7ea
-/deepseek-ai-dsh-creation-recommendations/further-exploration:
-  en: 056d3e9b67fd628e
-  zh: 71db00e1a971d495
-/deepseek-ai-dsh-creation-recommendations/model-experience:
+/noharness-creation-recommendations/understand-the-implementation:
+  en: 7c83ba45703b7077
+  zh: fea3ce8e2587dd1d
+/noharness-creation-recommendations/further-exploration:
+  en: 58c425372edb6843
+  zh: 581e0066b5b929f6
+/noharness-creation-recommendations/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/deepseek-ai-dsh-creation-recommendations/model-experience/creation-recommendations:
+/noharness-creation-recommendations/model-experience/creation-recommendations:
   en: b950fbe9f29693d4
   zh: 2dd7edb2d1c72941
-/deepseek-ai-dsh-creation-recommendations/model-experience/creation-recommendations/what-the-model-sees:
-  en: 8911f9d135dbfe34
-  zh: c3cb68ecd4dd9308
-/deepseek-ai-dsh-creation-recommendations/model-experience/creation-recommendations/token-effect:
+/noharness-creation-recommendations/model-experience/creation-recommendations/what-the-model-sees:
+  en: 79e74706110b655e
+  zh: 234226bcb6127a24
+/noharness-creation-recommendations/model-experience/creation-recommendations/token-effect:
   en: bd78818f4a9f5422
   zh: 0f54dbd0f41c5622
-/deepseek-ai-dsh-creation-recommendations/model-experience/creation-recommendations/kv-cache-effect:
-  en: c2046060f1ce1f08
-  zh: 08e37f9f758939bc
-/deepseek-ai-dsh-creation-recommendations/known-limitations-and-deferred-work:
-  en: f259b5a6e0326cb5
-  zh: 682760d7d3df42de
-/deepseek-ai-dsh-creation-recommendations/known-limitations-and-deferred-work/dev-note:
+/noharness-creation-recommendations/model-experience/creation-recommendations/kv-cache-effect:
+  en: c3b9aeb09f7fac20
+  zh: ba7a12c06bdd1993
+/noharness-creation-recommendations/known-limitations-and-deferred-work:
+  en: 1f5aa3aac6ba2d26
+  zh: b54918b4286f43db
+/noharness-creation-recommendations/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 8ec3e73528ddb1a6

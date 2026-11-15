@@ -16,7 +16,7 @@ const MACH_O_MAGICS = new Set(['cafebabe', 'cafebabf', 'cefaedfe', 'cffaedfe', '
  * `native/bin/darwin-<arch>/<generation>/<name>.app`. Other bundles, such as LibreOffice's unsigned application,
  * are not matched and keep per-file runtime signing.
  */
-const CUA_HELPER_BUNDLE = /^(node_modules\/@deepseek-ai\/dsh-cua-macos\/native\/bin\/darwin-[^/]+\/[^/]+\/[^/]+\.app)\//u
+const CUA_HELPER_BUNDLE = /^(node_modules\/@noharness\/nhs-cua-macos\/native\/bin\/darwin-[^/]+\/[^/]+\/[^/]+\.app)\//u
 
 function magic(path: string): string {
   const descriptor = openSync(path, 'r')
@@ -65,7 +65,7 @@ export async function signMacOSRuntime(
     else if (MACH_O_MAGICS.has(magic(join(root, path)))) files.push(path)
   }
   for (const bundle of [...bundles].sort()) verifyMacOSNotarizedApplication(join(root, bundle), expected)
-  const policy = cacheDirectory === undefined ? undefined : macOSCachePolicy(process.env.DSH_DESKTOP_MACOS_SIGNING_PROBE ?? '')
+  const policy = cacheDirectory === undefined ? undefined : macOSCachePolicy(process.env.NHS_DESKTOP_MACOS_SIGNING_PROBE ?? '')
   let hits = 0
   let misses = 0
   let next = 0
@@ -76,7 +76,7 @@ export async function signMacOSRuntime(
       const identifier = `${appId}.runtime.${createHash('sha256').update(path).digest('hex')}`
       const isNode = path === 'dependencies/node/bin/node'
       const needsJit = isNode
-        || /^node_modules\/@deepseek-ai\/libreoffice-kit-darwin-(?:arm64|x64)\/bin\/[^/]+$/u.test(path)
+        || /^node_modules\/@noharness\/libreoffice-kit-darwin-(?:arm64|x64)\/bin\/[^/]+$/u.test(path)
       const entitlementsFile = isNode && arch === 'x64'
         ? 'node-x64-entitlements.plist' : 'jit-entitlements.plist'
       const entitlements = needsJit ? join(import.meta.dirname, entitlementsFile) : undefined

@@ -1,4 +1,4 @@
-import OTel from '@deepseek-ai/dsh-otel'
+import OTel from '@noharness/otel'
 /**
  * OTel backend unit tier: wire assertions against a scripted `node:http`
  * mock collector through the SDK's REAL pipeline (BatchLogRecordProcessor →
@@ -13,16 +13,16 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { gunzipSync } from 'node:zlib'
-import { Context } from '@deepseek-ai/cordis'
-import { getOrCreateAnonymousUserId } from '@deepseek-ai/dsh-anonymous-user-id'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import { recordFeedback } from '@deepseek-ai/dsh-command-feedback'
-import { createAssistantMessage } from '@deepseek-ai/dsh-llm'
-import SessionStore, { SESSION_FORMAT_VERSION, Session, type SessionId, SessionLogOffset, SessionSeq } from '@deepseek-ai/dsh-session'
-import MessageFeedbackService from '@deepseek-ai/dsh-message-feedback'
-import * as JsonlPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
+import { Context } from '@noharness/cordis'
+import { getOrCreateAnonymousUserId } from '@noharness/anonymous-user-id'
+import Loader from '@noharness/cordis-plugin-loader'
+import { recordFeedback } from '@noharness/command-feedback'
+import { createAssistantMessage } from '@noharness/llm'
+import SessionStore, { SESSION_FORMAT_VERSION, Session, type SessionId, SessionLogOffset, SessionSeq } from '@noharness/session'
+import MessageFeedbackService from '@noharness/message-feedback'
+import * as JsonlPersistence from '@noharness/session-persistence-jsonl'
 import OpenTelemetrySessionBackend, { Config, DEFAULT_TELEMETRY_MODE, SessionTelemetryMode } from '../src/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 interface Capture {
   headers: import('node:http').IncomingHttpHeaders
@@ -49,17 +49,17 @@ interface OtlpLogsRequest {
 const servers: Server[] = []
 
 // The backend resolves the harness home's anonymous user id at construction;
-// pin DSH_HOME to a temp dir so the suite never touches the ambient ~/.dsh.
+// pin NHS_HOME to a temp dir so the suite never touches the ambient ~/.nhs.
 let tempHome: string
 let previousDshHome: string | undefined
 beforeAll(() => {
-  tempHome = mkdtempSync(join(tmpdir(), 'dsh-otel-home-'))
-  previousDshHome = process.env.DSH_HOME
-  process.env.DSH_HOME = tempHome
+  tempHome = mkdtempSync(join(tmpdir(), 'nhs-otel-home-'))
+  previousDshHome = process.env.NHS_HOME
+  process.env.NHS_HOME = tempHome
 })
 afterAll(() => {
-  if (previousDshHome === undefined) delete process.env.DSH_HOME
-  else process.env.DSH_HOME = previousDshHome
+  if (previousDshHome === undefined) delete process.env.NHS_HOME
+  else process.env.NHS_HOME = previousDshHome
   rmSync(tempHome, { recursive: true, force: true })
 })
 
@@ -168,12 +168,12 @@ describe('OpenTelemetrySessionBackend wire', () => {
     expect(authorization).toBe('Bearer test-token')
 
     const resource = first.body.resourceLogs[0]!.resource.attributes
-    expect(resource).toContainEqual({ key: 'service.name', value: { stringValue: 'deepseek-harness' } })
+    expect(resource).toContainEqual({ key: 'service.name', value: { stringValue: 'noharness' } })
     expect(resource).toContainEqual({ key: 'user.id', value: { stringValue: getOrCreateAnonymousUserId() } })
 
     const records = allRecords(captures)
-    const ledger = records.filter(r => r.scope === '@deepseek-ai/dsh-session-telemetry-otel')
-    const ops = records.filter(r => r.scope === '@deepseek-ai/dsh-session-telemetry-otel/ops')
+    const ledger = records.filter(r => r.scope === '@noharness/session-telemetry-otel')
+    const ops = records.filter(r => r.scope === '@noharness/session-telemetry-otel/ops')
 
     const start = ledger.find(r => r.record.attributes?.some(a => a.key === 'event.type' && a.value.stringValue === 'turn/start'))
     expect(start).toBeDefined()
@@ -533,7 +533,7 @@ describe('OpenTelemetrySessionBackend route and feedback', () => {
 
   it.each(['deepseek-official', 'mock', undefined])('uploads live ratings, notes and withdrawal for %s without further interaction', async (provider) => {
     const { url, captures } = await mockCollector()
-    const root = mkdtempSync(join(tmpdir(), 'dsh-otel-live-'))
+    const root = mkdtempSync(join(tmpdir(), 'nhs-otel-live-'))
     const ctx = new Context()
     ctx.plugin(OTel)
     try {
@@ -610,7 +610,7 @@ describe('OpenTelemetrySessionBackend route and feedback', () => {
 
   it.each([SessionTelemetryMode.FEEDBACK_ONLY])('restores a cold fork with its exact inherited cut in %s', async (mode) => {
     const { url, captures } = await mockCollector()
-    const root = mkdtempSync(join(tmpdir(), 'dsh-otel-cold-fork-'))
+    const root = mkdtempSync(join(tmpdir(), 'nhs-otel-cold-fork-'))
     const ctx = new Context()
     ctx.plugin(OTel)
     try {
@@ -666,7 +666,7 @@ describe('OpenTelemetrySessionBackend route and feedback', () => {
     ['mock', SessionTelemetryMode.DISABLED],
   ] as const)('captures cold put, note edit and withdrawal for %s in %s without opening a live Session', async (provider, mode) => {
     const { url, captures } = await mockCollector()
-    const root = mkdtempSync(join(tmpdir(), 'dsh-otel-cold-'))
+    const root = mkdtempSync(join(tmpdir(), 'nhs-otel-cold-'))
     const ctx = new Context()
     ctx.plugin(OTel)
     const warn = vi.spyOn(ctx.logger, 'warn').mockImplementation(() => {})
@@ -800,7 +800,7 @@ describe('OpenTelemetrySessionBackend config fails loud', () => {
   })
 })
 
-describe('dsh-session-telemetry-otel real-load-path guard', () => {
+describe('nhs-session-telemetry-otel real-load-path guard', () => {
   it('keeps the Service class with inject/Config through unwrapExports', async () => {
     const module = await import('../src/index.ts')
     const loader = Object.create(Loader.prototype) as Loader

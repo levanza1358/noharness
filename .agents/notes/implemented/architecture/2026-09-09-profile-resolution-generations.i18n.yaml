@@ -3,8 +3,8 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-09-profile-resolution-generations.md
 /agent-note-add-immutable-profile-resolution-generations:
-  en: 6a4338564c01ad91
-  zh: 241248cff9bd4cfc
+  en: bd9f1ecc18664b6f
+  zh: 9706db3125bdcbae
 /agent-note-add-immutable-profile-resolution-generations/problem:
   en: 907a40c722a6faff
   zh: a471d7034d8c231f
@@ -12,32 +12,32 @@
   en: a3022a87337058c5
   zh: 1d53a08a25ed6eb3
 /agent-note-add-immutable-profile-resolution-generations/decision/one-selection-algorithm:
-  en: eae0faee66f97e5e
-  zh: 6d400543869aa7b3
+  en: 7a3a5053cc0ae453
+  zh: bb9f6e89fce93db3
 /agent-note-add-immutable-profile-resolution-generations/decision/ordinary-and-linked-package-examples:
   en: f77ef79e2499a0dc
   zh: 4bc28292763a1075
 /agent-note-add-immutable-profile-resolution-generations/decision/source-and-built-module-identity:
-  en: 53a9e92698ce9a5d
-  zh: 6124d446e8d4a532
+  en: 0dbd8ecc9b17c1a7
+  zh: 8e8f1a8e9a88554b
 /agent-note-add-immutable-profile-resolution-generations/decision/immutable-generations:
-  en: e10b224e0e68b701
-  zh: d43fbdf37e6bfc54
+  en: a37fb7ee8cb005aa
+  zh: 367717e759cd9858
 /agent-note-add-immutable-profile-resolution-generations/decision/shared-esm-and-commonjs-rule:
-  en: 0e0575a04a081b52
-  zh: 94c74334939e6d13
+  en: a1b55ab93a41151e
+  zh: 0b2d1afd2da1231a
 /agent-note-add-immutable-profile-resolution-generations/decision/active-plugin-list-and-package-metadata:
-  en: 031404dd5b36d408
-  zh: de21e819edffbcf7
+  en: f20946f79c0105fb
+  zh: ba3425f39bbca73b
 /agent-note-add-immutable-profile-resolution-generations/decision/workers-and-generation-updates:
   en: 99308bd758859e02
   zh: 35f1e7719fe80d2e
 /agent-note-add-immutable-profile-resolution-generations/decision/additive-package-changes:
-  en: 39d27cff0d419259
-  zh: 6cbdc88a450614d0
+  en: 174290a1c28810d3
+  zh: daab4f7e74f7fb16
 /agent-note-add-immutable-profile-resolution-generations/decision/filesystem-and-runtime-carriers:
-  en: b0607713102a093d
-  zh: 2de9c33bfaa0e3e2
+  en: 22c2faedfc60808a
+  zh: 425ba0cd95eff334
 /agent-note-add-immutable-profile-resolution-generations/decision/performance-and-verification:
   en: bf7bd2f8371f54f3
   zh: 426c3b33af8874b8
@@ -45,8 +45,8 @@
   en: 2426173c58a17a48
   zh: 0423b3700273accd
 /agent-note-add-immutable-profile-resolution-generations/verification:
-  en: 74cb43ea2ccdb334
-  zh: b966bbed43a83c82
+  en: 592ec3ec7262a79a
+  zh: a195e68042e3f2c2
 /agent-note-add-immutable-profile-resolution-generations/consequences:
   en: 457a7d1e82b45fe0
   zh: 800036e083a7674c

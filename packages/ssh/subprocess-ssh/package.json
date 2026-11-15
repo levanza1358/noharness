@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-subprocess-ssh",
+  "name": "@noharness/subprocess-ssh",
   "description": "Subprocess and terminal provider over the shared POSIX SSH helper",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/ssh/subprocess-ssh"
   },
   "type": "module",
@@ -32,19 +32,19 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-ssh": "workspace:*",
-    "@deepseek-ai/dsh-subprocess": "workspace:*",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/ssh": "workspace:*",
+    "@noharness/subprocess": "workspace:*",
+    "@noharness/subprocess-local": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/schemastery": "workspace:~",
     "zod": "4.6.6"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-ssh": "workspace:*",
-    "@deepseek-ai/dsh-subprocess": "workspace:*",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/ssh": "workspace:*",
+    "@noharness/subprocess": "workspace:*",
+    "@noharness/subprocess-local": "workspace:*"
   }
 }

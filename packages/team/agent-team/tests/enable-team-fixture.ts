@@ -1,7 +1,7 @@
 /** Enable shared tasks before a keyless fixture's first model request. */
 
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-agent-team'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/agent-team'
 
 /** Services used to select Team mode. */
 export const inject = ['agentTeams']

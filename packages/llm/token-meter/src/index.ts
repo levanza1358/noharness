@@ -1,29 +1,29 @@
 /**
  * Single replay-aware token-meter service for request and surface pressure.
  *
- * @module @deepseek-ai/dsh-token-meter
+ * @module @noharness/token-meter
  */
 
-import { Context, Service } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-compaction-image-offload/projection'
-import z from '@deepseek-ai/schemastery'
-import type { LlmImageRequestPricing, LlmRuntime, Message, TokenUsage } from '@deepseek-ai/dsh-llm'
-import { deepFreeze } from '@deepseek-ai/dsh-util-values'
+import { Context, Service } from '@noharness/cordis'
+import type {} from '@noharness/compaction-image-offload/projection'
+import z from '@noharness/schemastery'
+import type { LlmImageRequestPricing, LlmRuntime, Message, TokenUsage } from '@noharness/llm'
+import { deepFreeze } from '@noharness/util-values'
 import type {
   EpochHeader,
   Session,
   SessionEvent,
   SessionSeq as SessionSeqType,
   SessionLogOffset as SessionLogOffsetType,
-} from '@deepseek-ai/dsh-session'
+} from '@noharness/session'
 import {
   canonicalHeader,
   headerEquals,
   isSurfaceEvent,
   SessionLogOffset,
   SessionSeq,
-} from '@deepseek-ai/dsh-session'
-import type { ProjectionHandle } from '@deepseek-ai/dsh-session-projection'
+} from '@noharness/session'
+import type { ProjectionHandle } from '@noharness/session-projection'
 import type {
   ContextPressureProjection,
   TokenMeasurement,
@@ -77,7 +77,7 @@ function validateConfigKeys(config: TokenMeterConfig): void {
   }
 }
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     tokenMeter: TokenMeter
   }

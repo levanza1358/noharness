@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/architecture/2026-09-06-logical-session-storage-rebuild.md
 /agent-note-logical-session-and-storage-rebuild:
-  en: 035f8aa28d4fb486
-  zh: 4fa5eef40371cf2f
+  en: 26575080f8213e0f
+  zh: e7fd76cbc8909564
 /agent-note-logical-session-and-storage-rebuild/problem:
   en: fe3de6c728124b77
   zh: a28e89b8fee09662
 /agent-note-logical-session-and-storage-rebuild/proposal:
-  en: 68347f4cef24d57d
-  zh: e11eaec209be63c6
+  en: 5d796887ea643234
+  zh: 839b1947047c8b40
 /agent-note-logical-session-and-storage-rebuild/stage-1-one-public-logical-session-interface:
   en: 27e8e604c508ca73
   zh: 70247d9608e139a4
@@ -27,8 +27,8 @@
   en: 81fc51ad0abe4f65
   zh: a9dad4cb9d5905a1
 /agent-note-logical-session-and-storage-rebuild/stage-1-one-public-logical-session-interface/enforcement-and-completion:
-  en: ca6c3e02033b0d01
-  zh: 54a89a7e47c2d282
+  en: 01bcee85a52fd8c7
+  zh: e0705c1dde2be54d
 /agent-note-logical-session-and-storage-rebuild/destination-architecture:
   en: e0b4199ec0d5a669
   zh: abc06df82b3f357e
@@ -39,11 +39,11 @@
   en: d61edd7e232bcb44
   zh: f9065dd60d49bc13
 /agent-note-logical-session-and-storage-rebuild/compatibility-and-non-goals:
-  en: bf81660f7d4638fa
-  zh: 4d59310d2e6476fd
+  en: 00941e0be682e5c4
+  zh: 19026f0f3c87b720
 /agent-note-logical-session-and-storage-rebuild/references:
-  en: 3a8115fc089df4dc
-  zh: 155a6514bb296018
+  en: 453050f6f12bf726
+  zh: a4d34c9d4f28c958
 /agent-note-logical-session-and-storage-rebuild/alternatives-considered:
   en: 4bc014b676d93c13
   zh: 1e0a04856da60bb0

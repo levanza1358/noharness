@@ -2,16 +2,16 @@
 
 import { randomUUID } from 'node:crypto'
 import { mkdir } from 'node:fs/promises'
-import type { Context } from '@deepseek-ai/cordis'
-import type { Agent, AgentOptions, AgentSetup } from '@deepseek-ai/dsh-agent'
-import type {} from '@deepseek-ai/dsh-agent-default-model'
-import { installModelSelection } from '@deepseek-ai/dsh-agent'
-import type {} from '@deepseek-ai/dsh-agent-preset-registry'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { Session, SessionId } from '@deepseek-ai/dsh-session'
-import { SessionQueryError, type SessionObservation } from '@deepseek-ai/dsh-session-query'
-import { RemoteError, remoteErrorOf } from '@deepseek-ai/dsh-typert-protocol'
-import type {} from '@deepseek-ai/dsh-typert-registry'
+import type { Context } from '@noharness/cordis'
+import type { Agent, AgentOptions, AgentSetup } from '@noharness/agent'
+import type {} from '@noharness/agent-default-model'
+import { installModelSelection } from '@noharness/agent'
+import type {} from '@noharness/agent-preset-registry'
+import { brandString } from '@noharness/brand'
+import type { Session, SessionId } from '@noharness/session'
+import { SessionQueryError, type SessionObservation } from '@noharness/session-query'
+import { RemoteError, remoteErrorOf } from '@noharness/typert-protocol'
+import type {} from '@noharness/typert-registry'
 
 /** Cold Session identity absent from persistence. */
 export class ApiSessionNotFound extends Error {}

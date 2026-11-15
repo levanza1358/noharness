@@ -1,8 +1,8 @@
 /** Test double for `ctx.uiSession.sessionStatus` that scripts the status table and reading readiness. */
-import type { Context } from '@deepseek-ai/cordis'
-import type { SessionStatusSnapshot } from '@deepseek-ai/dsh-client-ui-session-status/client'
-import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
+import type { Context } from '@noharness/cordis'
+import type { SessionStatusSnapshot } from '@noharness/client-ui-session-status/client'
+import { createSnapshotStore } from '@noharness/client-store'
+import type { SessionId } from '@noharness/session/types'
 import { vi } from 'vitest'
 
 /**

@@ -9,15 +9,15 @@ import * as React from 'react'
 import * as ReactJsxRuntime from 'react/jsx-runtime'
 import * as ReactDom from 'react-dom'
 import * as ReactDomClient from 'react-dom/client'
-import * as Cordis from '@deepseek-ai/cordis'
+import * as Cordis from '@noharness/cordis'
 import * as Zod from 'zod'
 import * as ReactVirtual from '@tanstack/react-virtual'
-import * as ClientStore from '@deepseek-ai/dsh-client-store'
-import * as UiSlots from '@deepseek-ai/dsh-client-ui-slots'
-import * as UiPrimitives from '@deepseek-ai/dsh-client-ui-primitives'
-import * as UiDockkit from '@deepseek-ai/dsh-client-ui-dockkit'
-import type { ClientModuleCreateOptions } from '@deepseek-ai/dsh-client-modules/client'
-import type { PlatformModule } from '@deepseek-ai/dsh-client-web/src/platform.ts'
+import * as ClientStore from '@noharness/client-store'
+import * as UiSlots from '@noharness/client-ui-slots'
+import * as UiPrimitives from '@noharness/client-ui-primitives'
+import * as UiDockkit from '@noharness/client-ui-dockkit'
+import type { ClientModuleCreateOptions } from '@noharness/client-modules/client'
+import type { PlatformModule } from '@noharness/client-web/src/platform.ts'
 
 /**
  * Adapt source namespaces to the module registration protocol without compiled metadata.
@@ -29,13 +29,13 @@ export function getStaticModules(): ClientModuleCreateOptions['staticModules'] {
     'react/jsx-runtime': ReactJsxRuntime,
     'react-dom': ReactDom,
     'react-dom/client': ReactDomClient,
-    '@deepseek-ai/cordis': Cordis,
+    '@noharness/cordis': Cordis,
     'zod': Zod,
     '@tanstack/react-virtual': ReactVirtual,
-    '@deepseek-ai/dsh-client-store': ClientStore,
-    '@deepseek-ai/dsh-client-ui-slots': UiSlots,
-    '@deepseek-ai/dsh-client-ui-primitives': UiPrimitives,
-    '@deepseek-ai/dsh-client-ui-dockkit': UiDockkit,
+    '@noharness/client-store': ClientStore,
+    '@noharness/client-ui-slots': UiSlots,
+    '@noharness/client-ui-primitives': UiPrimitives,
+    '@noharness/client-ui-dockkit': UiDockkit,
   } satisfies Record<PlatformModule, Record<string, unknown>>
   return Object.entries(sources).map(([id, exports]) => ({ id, factory: () => exports }))
 }

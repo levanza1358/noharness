@@ -1,7 +1,7 @@
 /**
  * Default Agent driver over queued turns and step-boundary input. Every request
  * is derived from the session log.
- * @module dsh-agent-loop/agent
+ * @module nhs-agent-loop/agent
  */
 
 import type {
@@ -17,26 +17,26 @@ import type {
   InboxState,
   PreStepDecision,
   RequestErrorAction,
-} from '@deepseek-ai/dsh-agent'
-import { AgentModel, agentEvents, assembleContextFor } from '@deepseek-ai/dsh-agent'
-import type { GenerateOptions, LlmCallConfig, Message, PreparedLlmCall } from '@deepseek-ai/dsh-llm'
+} from '@noharness/agent'
+import { AgentModel, agentEvents, assembleContextFor } from '@noharness/agent'
+import type { GenerateOptions, LlmCallConfig, Message, PreparedLlmCall } from '@noharness/llm'
 import {
   LlmError,
   createAssistantMessage,
   createDeveloperMessage,
   errorChain,
   markAgentLoopRequest,
-} from '@deepseek-ai/dsh-llm'
-import { assertNever, deepFreeze } from '@deepseek-ai/dsh-util-values'
-import type { Scope } from '@deepseek-ai/dsh-scope'
-import { createScope } from '@deepseek-ai/dsh-scope'
-import type { EpochHeader, RequestContext, Session, SessionId, SessionSeq, TurnEndReason, UserMessage } from '@deepseek-ai/dsh-session'
-import { canonicalHeader, headerEquals, ToolCallRecovery } from '@deepseek-ai/dsh-session'
-import { renderContextSections, renderPrompt } from '@deepseek-ai/dsh-system-prompt'
-import type { PromptAssembly } from '@deepseek-ai/dsh-system-prompt'
-import { ToolActivationError, ToolBatchExecutionError } from '@deepseek-ai/dsh-tools'
-import type { ResolvedToolSet } from '@deepseek-ai/dsh-tools'
-import type { Context } from '@deepseek-ai/cordis'
+} from '@noharness/llm'
+import { assertNever, deepFreeze } from '@noharness/util-values'
+import type { Scope } from '@noharness/scope'
+import { createScope } from '@noharness/scope'
+import type { EpochHeader, RequestContext, Session, SessionId, SessionSeq, TurnEndReason, UserMessage } from '@noharness/session'
+import { canonicalHeader, headerEquals, ToolCallRecovery } from '@noharness/session'
+import { renderContextSections, renderPrompt } from '@noharness/system-prompt'
+import type { PromptAssembly } from '@noharness/system-prompt'
+import { ToolActivationError, ToolBatchExecutionError } from '@noharness/tools'
+import type { ResolvedToolSet } from '@noharness/tools'
+import type { Context } from '@noharness/cordis'
 import { ReactLoopInbox } from './inbox.ts'
 import { RuntimeContextProjection } from './runtime-context.ts'
 import { AssistantStreamAttempt } from './assistant-stream.ts'

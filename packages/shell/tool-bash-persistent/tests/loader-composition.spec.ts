@@ -1,29 +1,29 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
-import { unsupportedModel, provideWorkingDirectoryFixture, unsupportedInbox } from '@deepseek-ai/dsh-agent-loop-testkit'
+import { unsupportedModel, provideWorkingDirectoryFixture, unsupportedInbox } from '@noharness/agent-loop-testkit'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@deepseek-ai/dsh-session'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import TerminalSessionService from '@deepseek-ai/dsh-terminal'
-import * as TerminalLocal from '@deepseek-ai/dsh-terminal-bash'
-import SandboxProvider from '@deepseek-ai/dsh-sandbox'
-import type { ConfinedArgv, SandboxPolicy } from '@deepseek-ai/dsh-sandbox'
-import SandboxPolicyService from '@deepseek-ai/dsh-sandbox-policy'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import LocalSubprocessRuntime from '@deepseek-ai/dsh-subprocess-local'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import * as ToolBashPersistent from '@deepseek-ai/dsh-tool-bash-persistent'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import Include from '@noharness/cordis-plugin-include'
+import type { ToolCallId } from '@noharness/llm'
+import { brandString } from '@noharness/brand'
+import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@noharness/session'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import TerminalSessionService from '@noharness/terminal'
+import * as TerminalLocal from '@noharness/terminal-bash'
+import SandboxProvider from '@noharness/sandbox'
+import type { ConfinedArgv, SandboxPolicy } from '@noharness/sandbox'
+import SandboxPolicyService from '@noharness/sandbox-policy'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import LocalSubprocessRuntime from '@noharness/subprocess-local'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
+import * as ToolBashPersistent from '@noharness/tool-bash-persistent'
 
 let root: string | undefined
 let context: Context | undefined
@@ -75,22 +75,22 @@ const suite = process.platform === 'linux' || process.platform === 'darwin' ? de
 
 suite('persistent Bash through a real cordis.yml Loader composition', () => {
   it('preserves cwd and environment across calls', async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-persistent-bash-loader-'))
+    root = await mkdtemp(join(tmpdir(), 'nhs-persistent-bash-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@deepseek-ai/dsh-agent'",
-      "- name: '@deepseek-ai/dsh-system-prompt'",
-      "- name: '@deepseek-ai/dsh-tools'",
-      "- name: '@deepseek-ai/dsh-tool-executor-native'",
-      "- name: '@deepseek-ai/dsh-terminal'",
-      "- name: '@deepseek-ai/dsh-test-sandbox'",
-      "- name: '@deepseek-ai/dsh-session-projection'",
-      "- name: '@deepseek-ai/dsh-sandbox-policy'",
+      "- name: '@noharness/agent'",
+      "- name: '@noharness/system-prompt'",
+      "- name: '@noharness/tools'",
+      "- name: '@noharness/tool-executor-native'",
+      "- name: '@noharness/terminal'",
+      "- name: '@noharness/test-sandbox'",
+      "- name: '@noharness/session-projection'",
+      "- name: '@noharness/sandbox-policy'",
       '  config:',
       '    mode: danger-full-access',
       `    workspaceRoot: ${JSON.stringify(root)}`,
-      "- name: '@deepseek-ai/dsh-subprocess-local'",
-      "- name: '@deepseek-ai/dsh-terminal-bash'",
+      "- name: '@noharness/subprocess-local'",
+      "- name: '@noharness/terminal-bash'",
       '  config:',
       '    pollIntervalMs: 10',
       '    exactProbeAfterMs: 20',
@@ -102,7 +102,7 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
       '    scrollbackLines: 20000',
       '    timeoutMs: 2000',
       '    disposeGraceMs: 500',
-      "- name: '@deepseek-ai/dsh-tool-bash-persistent'",
+      "- name: '@noharness/tool-bash-persistent'",
       '  config:',
       '    timeoutMs: 5000',
       '',
@@ -115,17 +115,17 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@deepseek-ai/dsh-agent', AgentRegistry],
-      ['@deepseek-ai/dsh-system-prompt', SystemPrompt],
-      ['@deepseek-ai/dsh-tools', ToolRuntime],
-      ['@deepseek-ai/dsh-tool-executor-native', NativeToolExecutor],
-      ['@deepseek-ai/dsh-terminal', TerminalSessionService],
-      ['@deepseek-ai/dsh-test-sandbox', PassthroughSandbox],
-      ['@deepseek-ai/dsh-session-projection', SessionProjectionRegistry],
-      ['@deepseek-ai/dsh-sandbox-policy', SandboxPolicyService],
-      ['@deepseek-ai/dsh-subprocess-local', LocalSubprocessRuntime],
-      ['@deepseek-ai/dsh-terminal-bash', TerminalLocal],
-      ['@deepseek-ai/dsh-tool-bash-persistent', ToolBashPersistent],
+      ['@noharness/agent', AgentRegistry],
+      ['@noharness/system-prompt', SystemPrompt],
+      ['@noharness/tools', ToolRuntime],
+      ['@noharness/tool-executor-native', NativeToolExecutor],
+      ['@noharness/terminal', TerminalSessionService],
+      ['@noharness/test-sandbox', PassthroughSandbox],
+      ['@noharness/session-projection', SessionProjectionRegistry],
+      ['@noharness/sandbox-policy', SandboxPolicyService],
+      ['@noharness/subprocess-local', LocalSubprocessRuntime],
+      ['@noharness/terminal-bash', TerminalLocal],
+      ['@noharness/tool-bash-persistent', ToolBashPersistent],
     ])
     context.loader.internal = {
       version: 'v2',
@@ -151,14 +151,14 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
     await execute('state', 'export KEEP=loader; mkdir -p nested; cd nested')
     const observed = text(await execute('observe', 'printf "cwd=%s keep=%s\\n" "$PWD" "$KEEP"'))
     expect(observed).toContain(`cwd=${join(root, 'nested')} keep=loader`)
-    expect(observed).not.toContain('DSH_PERSISTENT_BASH')
+    expect(observed).not.toContain('NHS_PERSISTENT_BASH')
 
     const multiline = text(await execute(
       'multiline',
       'value="line one"\nprintf "%s:%s\\n" "$value" "it\'s fine"',
     ))
     expect(multiline).toBe("line one:it's fine\n[Command finished with exit code 0]")
-    expect(multiline).not.toContain('DSH_PERSISTENT_BASH')
+    expect(multiline).not.toContain('NHS_PERSISTENT_BASH')
 
     const heredoc = text(await execute(
       'heredoc',
@@ -195,7 +195,7 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
     // stdin_read readiness is what returns the replacement shell's prompt
     // instead of spinning until the tool deadline.
     const execed = text(await execute('exec-replacement', 'exec bash --noprofile --norc -i'))
-    expect(execed).toBe('dsh> ')
+    expect(execed).toBe('nhs> ')
 
     const exited = text(await execute('exit', 'exit'))
     expect(exited).toContain('next bash call starts from the workspace')

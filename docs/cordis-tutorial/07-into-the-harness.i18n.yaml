@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/07-into-the-harness.md
 /7-into-the-harness:
-  en: 470ff1f9eadc2663
-  zh: d92a95cc0058ed3b
+  en: 5375a56f06d5c803
+  zh: 9c0dca84a21c779d
 /7-into-the-harness/a-tool-plugin:
-  en: 00ae7d882a28622d
-  zh: 6386dcfac5df1a70
+  en: 013f9c690ff76c90
+  zh: 48eda11bef00162d
 /7-into-the-harness/an-observer-plugin:
-  en: 144e0445e183588a
-  zh: f02cfb7e91fdbd24
+  en: 409d222023240cff
+  zh: 87fa2da3382d0802
 /7-into-the-harness/compose-and-run:
-  en: 64a9d7a1430b3d0e
-  zh: 034e95c7f08bd70c
+  en: 43d196d06980e831
+  zh: c1230e50f95d757b
 /7-into-the-harness/from-here-to-a-full-agent:
-  en: a758f5739e30667b
-  zh: 3f9e0e2cc38af87b
+  en: bd3f377f5bc8a5a8
+  zh: 4de1c7a7e23eb303

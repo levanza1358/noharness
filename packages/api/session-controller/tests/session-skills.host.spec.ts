@@ -1,14 +1,14 @@
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import { provideWorkingDirectoryFixture } from '@deepseek-ai/dsh-agent-loop-testkit'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import SessionStore, { SESSION_FORMAT_VERSION, type SessionId, SessionLogOffset } from '@deepseek-ai/dsh-session'
-import { SessionQueryError, type SessionObservation } from '@deepseek-ai/dsh-session-query'
-import type {} from '@deepseek-ai/dsh-skill'
+import { Context } from '@noharness/cordis'
+import AgentRegistry from '@noharness/agent'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import { provideWorkingDirectoryFixture } from '@noharness/agent-loop-testkit'
+import type { Agent } from '@noharness/agent'
+import SessionStore, { SESSION_FORMAT_VERSION, type SessionId, SessionLogOffset } from '@noharness/session'
+import { SessionQueryError, type SessionObservation } from '@noharness/session-query'
+import type {} from '@noharness/skill'
 import { describe, expect, it, vi } from 'vitest'
 import { SessionSkillCatalog } from '../src/skill-catalog.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 function observation(
   sessionId: SessionId,

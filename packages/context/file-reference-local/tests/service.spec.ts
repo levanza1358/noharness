@@ -1,22 +1,22 @@
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import LocalFileSystem from '@deepseek-ai/dsh-fs-local'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import WorkingDirectory from '@deepseek-ai/dsh-working-directory'
-import { Context } from '@deepseek-ai/cordis'
+import LocalFileSystem from '@noharness/fs-local'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import WorkingDirectory from '@noharness/working-directory'
+import { Context } from '@noharness/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import SessionStore, { type SessionId } from '@deepseek-ai/dsh-session'
-import SystemPrompt, { renderPrompt } from '@deepseek-ai/dsh-system-prompt'
-import ToolRegistry from '@deepseek-ai/dsh-tools'
-import { defineContentToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import { FILE_REFERENCE_PROMPT } from '@deepseek-ai/dsh-file-reference'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import SessionStore, { type SessionId } from '@noharness/session'
+import SystemPrompt, { renderPrompt } from '@noharness/system-prompt'
+import ToolRegistry from '@noharness/tools'
+import { defineContentToolFixture } from '@noharness/tool-testkit'
+import { FILE_REFERENCE_PROMPT } from '@noharness/file-reference'
 import LocalFileReferenceService from '../src/index.ts'
 import { WorkspaceFileSearch } from '../src/search.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const roots: string[] = []
 
@@ -43,7 +43,7 @@ async function stubAgent(
   id = 'file-reference-agent',
   includeCwd = true,
 ): Promise<{ agent: Agent; dispose: () => Promise<void> }> {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-file-reference-service-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-file-reference-service-'))
   roots.push(root)
   await writeFile(join(root, 'README.md'), 'readme')
   const session = ctx.sessions.create(brandString<SessionId>(id), { meta: includeCwd ? { cwd: root } : {} })
@@ -117,7 +117,7 @@ describe('LocalFileReferenceService', () => {
     const ctx = await harness()
     try {
       const { agent } = await stubAgent(ctx)
-      const nextRoot = await mkdtemp(join(tmpdir(), 'dsh-file-reference-next-'))
+      const nextRoot = await mkdtemp(join(tmpdir(), 'nhs-file-reference-next-'))
       roots.push(nextRoot)
       await writeFile(join(nextRoot, 'NEXT.md'), 'next')
       await ctx.plugin(LocalFileReferenceService)

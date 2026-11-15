@@ -1,20 +1,20 @@
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { createUserMessage, type ToolCallId, LlmAdapter } from '@deepseek-ai/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import { Session, type SessionId, SessionLogOffset, type SessionEvent } from '@deepseek-ai/dsh-session'
-import AgentRegistry, { agentEvents, type Agent } from '@deepseek-ai/dsh-agent'
-import { defineContentToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import { unsupportedModel, unsupportedInbox, mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import * as timeContext from '@deepseek-ai/dsh-time-context'
-import type { Config } from '@deepseek-ai/dsh-time-context'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import { brandString } from '@noharness/brand'
+import { createUserMessage, type ToolCallId, LlmAdapter } from '@noharness/llm'
+import type { GenerateOptions, StreamChunk } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import { Session, type SessionId, SessionLogOffset, type SessionEvent } from '@noharness/session'
+import AgentRegistry, { agentEvents, type Agent } from '@noharness/agent'
+import { defineContentToolFixture } from '@noharness/tool-testkit'
+import AgentLoop from '@noharness/agent-loop'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import { unsupportedModel, unsupportedInbox, mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import * as timeContext from '@noharness/time-context'
+import type { Config } from '@noharness/time-context'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'compaction-basic': { kind: 'compaction-basic' } & ContextFormed
     'time-context-test': { kind: 'time-context-test' } & ContextFormed

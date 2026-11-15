@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
-import { Context } from '@deepseek-ai/cordis'
-import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
+import { Context } from '@noharness/cordis'
+import { LocaleRuntime } from '@noharness/client-locale/client'
 import { describe, expect, it } from 'vitest'
 import { dictionaries, en } from '../src/client/locales.ts'
 

@@ -1,11 +1,11 @@
 /** Discover state: configured index sources, the selected index's query and loaded results, and source editing. */
-import { NPMMIRROR_REGISTRY } from '@deepseek-ai/dsh-plugin-manager/registry'
-import type { Context as ClientContext } from '@deepseek-ai/cordis'
-import type { LocalizedText } from '@deepseek-ai/dsh-package-manifest'
-import { createSnapshotStore, type SnapshotStore } from '@deepseek-ai/dsh-client-store'
-import type { HostObservable } from '@deepseek-ai/dsh-client-ui-slots'
-import type { MarketIndexSummary, MarketSearchResult, PluginDetail, PluginDetailDocumentId, RemoteFailure } from '@deepseek-ai/dsh-api-remotes/client'
-import type { LocaleSnapshot } from '@deepseek-ai/dsh-client-locale/client'
+import { NPMMIRROR_REGISTRY } from '@noharness/plugin-manager/registry'
+import type { Context as ClientContext } from '@noharness/cordis'
+import type { LocalizedText } from '@noharness/package-manifest'
+import { createSnapshotStore, type SnapshotStore } from '@noharness/client-store'
+import type { HostObservable } from '@noharness/client-ui-slots'
+import type { MarketIndexSummary, MarketSearchResult, PluginDetail, PluginDetailDocumentId, RemoteFailure } from '@noharness/api-remotes/client'
+import type { LocaleSnapshot } from '@noharness/client-locale/client'
 import { declaredQuery, INITIAL_QUERY, type DiscoverQuery } from './presentation.ts'
 
 /** Why the last listing read failed: the index could not be fetched, is not a valid index, or changed while its pages loaded. */

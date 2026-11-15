@@ -3,32 +3,32 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/deepseek-llm-api-wire-extensions.md
 /official-deepseek-llm-api-wire-extensions:
-  en: 39729b071744e94b
-  zh: f3a1913295e78b5f
+  en: 1e73f3a66f712d3f
+  zh: 8deb3ab2af9fc68f
 /official-deepseek-llm-api-wire-extensions/wire-namespaces-and-versioning:
-  en: 1da81051addc4b47
-  zh: 3e8d7cd3f8c1cdba
+  en: 313f5d8bfe4f027c
+  zh: 9f96c51c91145396
 /official-deepseek-llm-api-wire-extensions/request-headers:
-  en: a55fbcd176b7a7a7
-  zh: ed8b10f6e840cc44
+  en: ade0e1fc80d7aaef
+  zh: 9468ea371cd30718
 /official-deepseek-llm-api-wire-extensions/body-extension-transaction:
   en: 48001cfd1281a23b
   zh: d410530ae8aa2823
-/official-deepseek-llm-api-wire-extensions/dsh-plugin-packages:
-  en: f89059050613f3e8
-  zh: da5cf2a4eeb81b75
-/official-deepseek-llm-api-wire-extensions/dsh-session-log:
-  en: 0d033f72951e2920
-  zh: 767efca0dc39ac03
-/official-deepseek-llm-api-wire-extensions/dsh-session-log/wire-session-header:
-  en: ccd8fcd773df21c4
-  zh: 7ea020068ad093ae
-/official-deepseek-llm-api-wire-extensions/dsh-session-log/canonical-event-envelopes:
+/official-deepseek-llm-api-wire-extensions/nhs-plugin-packages:
+  en: a7f332997e65f2ea
+  zh: 15ef265af04edbcd
+/official-deepseek-llm-api-wire-extensions/nhs-session-log:
+  en: f873fa157ef50343
+  zh: faadaddbf793eff9
+/official-deepseek-llm-api-wire-extensions/nhs-session-log/wire-session-header:
+  en: 11356b1f2313b989
+  zh: 9da526b5f3ab325c
+/official-deepseek-llm-api-wire-extensions/nhs-session-log/canonical-event-envelopes:
   en: 008a21df5e314154
   zh: 8855710a37542ec5
-/official-deepseek-llm-api-wire-extensions/dsh-session-log/acceptance-watermark-and-at-least-once-delivery:
+/official-deepseek-llm-api-wire-extensions/nhs-session-log/acceptance-watermark-and-at-least-once-delivery:
   en: 4d84cb1e61f9cf58
   zh: 8a63ce3069e2f0b3
 /official-deepseek-llm-api-wire-extensions/exposure-and-receiver-requirements:
-  en: ae93d9a44245b12f
-  zh: 8b95fc66c6e653c2
+  en: 522d01d8a83d7972
+  zh: 5e35eb7d1a6f3026

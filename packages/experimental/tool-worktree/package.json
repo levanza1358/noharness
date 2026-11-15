@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-experimental-tool-worktree",
+  "name": "@noharness/experimental-tool-worktree",
   "description": "Model tool that creates and enters a new Git worktree",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -32,44 +32,44 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/experimental/tool-worktree"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/dsh-experimental-worktree": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/tools": "workspace:*",
+    "@noharness/experimental-worktree": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/cordis-plugin-include": "workspace:~",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
-    "@deepseek-ai/dsh-fs-local": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-sandbox": "workspace:*",
-    "@deepseek-ai/dsh-sandbox-local": "workspace:*",
-    "@deepseek-ai/dsh-sandbox-policy": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:*",
-    "@deepseek-ai/dsh-system-prompt": "workspace:*",
-    "@deepseek-ai/dsh-tool-executor-native": "workspace:*",
-    "@deepseek-ai/dsh-tool-testkit": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/dsh-working-directory": "workspace:*",
-    "@deepseek-ai/dsh-experimental-worktree": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/cordis-plugin-include": "workspace:~",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*",
+    "@noharness/fs-local": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/sandbox": "workspace:*",
+    "@noharness/sandbox-local": "workspace:*",
+    "@noharness/sandbox-policy": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/subprocess-local": "workspace:*",
+    "@noharness/system-prompt": "workspace:*",
+    "@noharness/tool-executor-native": "workspace:*",
+    "@noharness/tool-testkit": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/working-directory": "workspace:*",
+    "@noharness/experimental-worktree": "workspace:*",
+    "@noharness/agent-loop": "workspace:*"
   },
   "icon": "./icon.svg",
-  "dsh": {
+  "nhs": {
     "bundle": {
       "patch": "./cordis.patch.yml"
     }
   },
   "dependencies": {
-    "@deepseek-ai/dsh-experimental-worktree": "workspace:*"
+    "@noharness/experimental-worktree": "workspace:*"
   }
 }

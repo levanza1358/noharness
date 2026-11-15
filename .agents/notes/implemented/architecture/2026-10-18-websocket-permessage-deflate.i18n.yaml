@@ -3,11 +3,11 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-10-18-websocket-permessage-deflate.md
 /agent-note-compress-the-remote-stream-websocket-with-permessage-deflate:
-  en: 0bc2e23413bf72c1
-  zh: 5bb252767d0a9fac
+  en: 50d7a6627ec337b4
+  zh: d325ed44d6e4bddb
 /agent-note-compress-the-remote-stream-websocket-with-permessage-deflate/problem:
-  en: 4b2b62b888cf4735
-  zh: 9d5c1ffce7c253b5
+  en: 4bf42fc1533ab794
+  zh: 3239df055b19717d
 /agent-note-compress-the-remote-stream-websocket-with-permessage-deflate/decision:
   en: f0d660d42cd9cfbf
   zh: a1fff91323e6b213

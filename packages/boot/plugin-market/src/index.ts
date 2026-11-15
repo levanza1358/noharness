@@ -1,20 +1,20 @@
 /** Host reader of configured plugin market indexes for the Discover page and the `plugin_market` tool. */
 
 import { isAbsolute, join, resolve } from 'node:path'
-import type { Context, Volatile } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+import type { Context, Volatile } from '@noharness/cordis'
+import z from '@noharness/schemastery'
 import semver from 'semver'
-import { evaluatePluginCompatibility, getDshRuntimeVersion } from '@deepseek-ai/dsh-app-boot'
-import { marketInstallTarget, type MarketIndex, type MarketPlugin, type MarketVersion } from '@deepseek-ai/dsh-plugin-market-index'
-import type { BundleInfo } from '@deepseek-ai/dsh-plugin-manager/types'
+import { evaluatePluginCompatibility, getDshRuntimeVersion } from '@noharness/app-boot'
+import { marketInstallTarget, type MarketIndex, type MarketPlugin, type MarketVersion } from '@noharness/plugin-market-index'
+import type { BundleInfo } from '@noharness/plugin-manager/types'
 // Also declares the `pluginManager` service this one reads bundles from.
-import { pinnedGitOrigin } from '@deepseek-ai/dsh-plugin-manager'
-import { MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
-import { Remote, RemoteError, TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
+import { pinnedGitOrigin } from '@noharness/plugin-manager'
+import { MAX_TIMER_DELAY_MS } from '@noharness/timeout'
+import { Remote, RemoteError, TypertRemoteService } from '@noharness/typert-protocol'
 import {
   DetailFailure, detailImageResponse, languageChain, NPM_FILE_SOURCES, npmFileSourceOrder, npmFiles,
-} from '@deepseek-ai/dsh-plugin-detail'
-import type { NpmFileSource } from '@deepseek-ai/dsh-plugin-detail/types'
+} from '@noharness/plugin-detail'
+import type { NpmFileSource } from '@noharness/plugin-detail/types'
 import { DetailReader, repositoryOf, type DetailLocation, type RepositoryLocation } from './detail.ts'
 import { repositoryFiles, type RepositoryFileOptions } from './detail-files.ts'
 import { normalizeIndexUrl } from './index-url.ts'
@@ -22,9 +22,9 @@ import { RepositoryCache } from './repository-cache.ts'
 import { parseIndexInWorker } from './parse-thread.ts'
 import { MarketSearch } from './search.ts'
 // Type-only: `settings.update`, the Loader's `loader/volatile-update` event, and the `connection` Fetch routes.
-import type {} from '@deepseek-ai/dsh-settings'
-import type {} from '@deepseek-ai/cordis-plugin-loader'
-import type {} from '@deepseek-ai/dsh-client-connection'
+import type {} from '@noharness/settings'
+import type {} from '@noharness/cordis-plugin-loader'
+import type {} from '@noharness/client-connection'
 import type {
   MarketCompatibility, MarketIndexSummary, MarketInstallation, MarketListingEntry, MarketListingVersion, MarketQuery, MarketSearchResult,
   PluginDetail,
@@ -33,7 +33,7 @@ import type {
 export type * from './types.ts'
 export { PluginMarketError, type PluginMarketErrorCode } from './error.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Configured plugin market index sources and their validated listings. */
     pluginMarket: PluginMarket
@@ -139,7 +139,7 @@ export default class PluginMarket extends TypertRemoteService {
     const cacheDir = profile === undefined
       ? config.detailCacheDir
       : resolve(profile.dir, config.detailCacheDir ?? join('.plugin-market', 'repositories'))
-    if (cacheDir === undefined || !isAbsolute(cacheDir)) throw new Error('plugin-market: detailCacheDir must be an absolute path when the service runs without a dsh profile')
+    if (cacheDir === undefined || !isAbsolute(cacheDir)) throw new Error('plugin-market: detailCacheDir must be an absolute path when the service runs without a nhs profile')
     const lifetime = this.lifetime.signal
     this.repositories = new RepositoryCache({
       dir: cacheDir, maxRepositoryBytes: config.detailRepositoryMaxBytes, maxCacheBytes: config.detailCacheMaxBytes,
@@ -514,7 +514,7 @@ function installationOf(bundle: BundleInfo | undefined, version: string): Market
 function compatibilityOf(
   name: string, version: MarketVersion, exemptions: Readonly<Record<string, readonly string[]>>, runtimeVersion: string,
 ): MarketCompatibility {
-  const manifest = { name, version: version.version, ...version.engines.dsh === undefined ? {} : { engines: { dsh: version.engines.dsh } } }
+  const manifest = { name, version: version.version, ...version.engines.nhs === undefined ? {} : { engines: { nhs: version.engines.nhs } } }
   const issue = evaluatePluginCompatibility(manifest, exemptions, runtimeVersion)
   if (issue === undefined) return { compatible: true }
   return { compatible: false, runtimeVersion: issue.runtimeVersion, requirements: issue.requirements, exempted: issue.exempted }

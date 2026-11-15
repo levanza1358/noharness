@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-24-shared-time-vocabulary.md
 /agent-note-shared-time-vocabulary-for-wall-clock-selectors:
-  en: ae04747237709d0c
-  zh: a3731d98d5e940f9
+  en: db78bf7018493a90
+  zh: de11360289e252d3
 /agent-note-shared-time-vocabulary-for-wall-clock-selectors/problem:
-  en: abd0263d14861926
-  zh: e1736cd08e87f795
+  en: 6670e6bf89fad786
+  zh: 01d775a2cca9205e
 /agent-note-shared-time-vocabulary-for-wall-clock-selectors/decision:
-  en: f1c2b98bf56cdba3
-  zh: 7e9444f8e73a4834
+  en: e8626e464dcc80d7
+  zh: 78b9683e3d3bea18
 /agent-note-shared-time-vocabulary-for-wall-clock-selectors/alternatives-considered:
-  en: 3964f7d653747b55
-  zh: b50636faea4917ef
+  en: aa77c9f1f4b4fd40
+  zh: ddf509ab90825515
 /agent-note-shared-time-vocabulary-for-wall-clock-selectors/consequences:
-  en: 9fdaa9da9c9952eb
-  zh: b941f68c9c1bb994
+  en: a43d42c88ef095e0
+  zh: 0201470d434f94e4

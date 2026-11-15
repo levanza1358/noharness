@@ -1,11 +1,11 @@
 /** The read-only market listing tool over the same service the Discover page uses. */
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import { Context, Service } from '@deepseek-ai/cordis'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { ToolArgsError } from '@deepseek-ai/dsh-tools'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm/types'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import { Context, Service } from '@noharness/cordis'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime, { ToolArgsError } from '@noharness/tools'
+import { brandString } from '@noharness/brand'
+import type { ToolCallId } from '@noharness/llm/types'
 import { afterEach, expect, it, onTestFinished, vi } from 'vitest'
 import PluginMarket from '../src/index.ts'
 import * as tool from '../src/tools.ts'
@@ -50,16 +50,16 @@ const document = {
   metadata: { categories: { tools: { title: 'Tools' } }, labels: { official: { title: 'Official' } }, sortKeys: { downloads: { title: 'Downloads', order: 'desc' } } },
   plugins: [
     {
-      name: 'dsh-a', author: 'Jane', homepage: 'https://example.com/a', repository: { url: 'https://github.com/o/a' },
+      name: 'nhs-a', author: 'Jane', homepage: 'https://example.com/a', repository: { url: 'https://github.com/o/a' },
       title: { en: 'A', zh: '甲' }, description: { en: 'Does A', zh: '做甲' },
       metadata: { category: 'tools', labels: ['official'], sortKeys: { downloads: 5 } },
       versions: [
         { version: '1.0.0', publishTimestamp: 1790476800, source: { type: 'npm', registry: 'https://r.example/' } },
-        { version: '2.0.0', publishTimestamp: 1790476900, source: { type: 'npm' }, engines: { dsh: '0.0.1' } },
+        { version: '2.0.0', publishTimestamp: 1790476900, source: { type: 'npm' }, engines: { nhs: '0.0.1' } },
       ],
     },
-    { name: 'dsh-b', versions: [{ version: '2.0.0', publishTimestamp: 0, source: { type: 'git', url: 'https://github.com/o/r', commit: 'a'.repeat(40) }, engines: { dsh: '0.0.1' } }] },
-    { name: 'dsh-c', description: 'x'.repeat(400), versions: [{ version: '3.0.0', publishTimestamp: 0, source: { type: 'npm' } }] },
+    { name: 'nhs-b', versions: [{ version: '2.0.0', publishTimestamp: 0, source: { type: 'git', url: 'https://github.com/o/r', commit: 'a'.repeat(40) }, engines: { nhs: '0.0.1' } }] },
+    { name: 'nhs-c', description: 'x'.repeat(400), versions: [{ version: '3.0.0', publishTimestamp: 0, source: { type: 'npm' } }] },
   ],
 }
 
@@ -85,40 +85,40 @@ it('pages plugins with the default version\'s install target and registry plugin
     index: 'Market',
     entries: [
       {
-        name: 'dsh-a', title: 'A', description: 'Does A', author: 'Jane', homepage: 'https://example.com/a',
+        name: 'nhs-a', title: 'A', description: 'Does A', author: 'Jane', homepage: 'https://example.com/a',
         repository: { url: 'https://github.com/o/a' }, category: 'tools',
         labels: ['official'], sortKeys: { downloads: 5 }, installation: { status: 'not-installed' },
         defaultVersion: {
           version: '1.0.0', published: '2026-09-27T02:40:00.000Z', compatibility: { compatible: true },
-          install: { target: 'dsh-a@1.0.0', registry: 'https://r.example/' },
+          install: { target: 'nhs-a@1.0.0', registry: 'https://r.example/' },
         },
         versionCount: 2,
       },
-      { name: 'dsh-b', title: 'dsh-b', labels: [], sortKeys: {}, defaultVersion: null, versionCount: 1 },
+      { name: 'nhs-b', title: 'nhs-b', labels: [], sortKeys: {}, defaultVersion: null, versionCount: 1 },
     ],
     total: 3,
     nextOffset: 2,
   })
   const rest = await call({ action: 'list_plugins', target: URL_A, offset: 2 })
-  expect(rest.json).toMatchObject({ entries: [{ name: 'dsh-c', title: 'dsh-c', description: `${'x'.repeat(300)}…` }], total: 3, nextOffset: null })
+  expect(rest.json).toMatchObject({ entries: [{ name: 'nhs-c', title: 'nhs-c', description: `${'x'.repeat(300)}…` }], total: 3, nextOffset: null })
 })
 
 it('lists plugins matching a query by relevance', async () => {
   serve(document)
   const { call } = await fixture()
-  expect((await call({ action: 'list_plugins', target: URL_A, query: '做甲' })).json).toMatchObject({ entries: [{ name: 'dsh-a' }], total: 1, nextOffset: null })
+  expect((await call({ action: 'list_plugins', target: URL_A, query: '做甲' })).json).toMatchObject({ entries: [{ name: 'nhs-a' }], total: 1, nextOffset: null })
   expect((await call({ action: 'list_plugins', target: URL_A, query: '  ' })).json).toMatchObject({ total: 3 })
 })
 
 it('pages one plugin\'s versions with their compatibility and install targets', async () => {
   serve(document)
   const { call } = await fixture()
-  const first = await call({ action: 'list_versions', target: URL_A, name: 'dsh-a', limit: 1 })
+  const first = await call({ action: 'list_versions', target: URL_A, name: 'nhs-a', limit: 1 })
   expect(first.json).toMatchObject({
-    name: 'dsh-a', defaultVersion: '1.0.0', total: 2, nextOffset: 1,
-    versions: [{ version: '2.0.0', compatibility: { compatible: false, requirements: { 'engines.dsh': '0.0.1' } }, install: { target: 'dsh-a@2.0.0' } }],
+    name: 'nhs-a', defaultVersion: '1.0.0', total: 2, nextOffset: 1,
+    versions: [{ version: '2.0.0', compatibility: { compatible: false, requirements: { 'engines.nhs': '0.0.1' } }, install: { target: 'nhs-a@2.0.0' } }],
   })
-  const git = await call({ action: 'list_versions', target: URL_A, name: 'dsh-b' })
+  const git = await call({ action: 'list_versions', target: URL_A, name: 'nhs-b' })
   expect(git.json).toMatchObject({ defaultVersion: null, nextOffset: null, versions: [{ install: { target: `git+https://github.com/o/r.git#${'a'.repeat(40)}` } }] })
 })
 
@@ -128,9 +128,9 @@ it.each([
   { action: 'list_plugins', target: URL_A, limit: 0 },
   { action: 'list_plugins', target: URL_A, limit: 101 },
   { action: 'list_plugins', target: URL_A, offset: 1.5 },
-  { action: 'list_versions', name: 'dsh-a' },
+  { action: 'list_versions', name: 'nhs-a' },
   { action: 'list_versions', target: URL_A },
-  { action: 'list_versions', target: URL_A, name: 'dsh-a', limit: 101 },
+  { action: 'list_versions', target: URL_A, name: 'nhs-a', limit: 101 },
 ])('rejects an incomplete or unbounded request as INVALID_ARGS: %j', async (args) => {
   serve(document)
   const { call } = await fixture()
@@ -141,7 +141,7 @@ it.each([
 
 it.each([
   [{ action: 'list_plugins', target: 'https://unknown.example/index.json' }, 'PLUGIN_MARKET_INDEX_NOT_FOUND', 'Not a configured index source: https://unknown.example/index.json'],
-  [{ action: 'list_versions', target: URL_A, name: 'dsh-missing' }, 'PLUGIN_MARKET_PLUGIN_NOT_FOUND', `dsh-missing is not listed in ${URL_A}`],
+  [{ action: 'list_versions', target: URL_A, name: 'nhs-missing' }, 'PLUGIN_MARKET_PLUGIN_NOT_FOUND', `nhs-missing is not listed in ${URL_A}`],
 ] as const)('rejects an unconfigured index or unlisted bundle with a PluginMarketError: %j', async (args, code, message) => {
   serve(document)
   const { call } = await fixture()

@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { createUserMessage, type ToolCallId , createMessage, createToolResultMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { CompactionId } from '@deepseek-ai/dsh-compaction/types'
-import { compactCheckpointSource, toolPairingBalancedAfter, toolPairingBalancedBefore } from '@deepseek-ai/dsh-compaction'
-import { Session, type SessionId, SessionSeq } from '@deepseek-ai/dsh-session'
-import type { SessionEvent, SessionSeq as SessionSeqType } from '@deepseek-ai/dsh-session'
+import { createUserMessage, type ToolCallId , createMessage, createToolResultMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import { brandString } from '@noharness/brand'
+import type { CompactionId } from '@noharness/compaction/types'
+import { compactCheckpointSource, toolPairingBalancedAfter, toolPairingBalancedBefore } from '@noharness/compaction'
+import { Session, type SessionId, SessionSeq } from '@noharness/session'
+import type { SessionEvent, SessionSeq as SessionSeqType } from '@noharness/session'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }

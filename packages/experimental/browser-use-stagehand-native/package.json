@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-experimental-browser-use-stagehand-native",
+  "name": "@noharness/experimental-browser-use-stagehand-native",
   "description": "Experimental Stagehand browser tools with separately configured native models",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/experimental/browser-use-stagehand-native"
   },
   "type": "module",
@@ -37,42 +37,42 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-browser-use": "workspace:*",
-    "@deepseek-ai/dsh-system-prompt": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/dsh-error": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/browser-use": "workspace:*",
+    "@noharness/system-prompt": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/error": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
+    "@noharness/brand": "workspace:*",
     "@browserbasehq/stagehand": "4.4.0",
-    "@deepseek-ai/dsh-experimental-browser-use-runtime": "workspace:*",
-    "@deepseek-ai/dsh-mcp-client": "workspace:*",
-    "@deepseek-ai/dsh-util-values": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/experimental-browser-use-runtime": "workspace:*",
+    "@noharness/mcp-client": "workspace:*",
+    "@noharness/util-values": "workspace:*",
+    "@noharness/schemastery": "workspace:~",
     "zod": "4.6.6",
-    "@deepseek-ai/dsh-subprocess": "workspace:*",
+    "@noharness/subprocess": "workspace:*",
     "@puppeteer/browsers": "3.2.2"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/cordis-plugin-include": "workspace:~",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop": "workspace:*",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
-    "@deepseek-ai/dsh-attachment": "workspace:*",
-    "@deepseek-ai/dsh-attachment-local": "workspace:*",
-    "@deepseek-ai/dsh-browser-use": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-system-prompt": "workspace:*",
-    "@deepseek-ai/dsh-tool-executor-native": "workspace:*",
-    "@deepseek-ai/dsh-tool-testkit": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/cordis-plugin-include": "workspace:~",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/agent-loop": "workspace:*",
+    "@noharness/agent-loop-testkit": "workspace:*",
+    "@noharness/attachment": "workspace:*",
+    "@noharness/attachment-local": "workspace:*",
+    "@noharness/browser-use": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/system-prompt": "workspace:*",
+    "@noharness/tool-executor-native": "workspace:*",
+    "@noharness/tool-testkit": "workspace:*",
+    "@noharness/tools": "workspace:*",
     "tsx": "^4.23.13",
-    "@deepseek-ai/dsh-error": "workspace:*"
+    "@noharness/error": "workspace:*"
   }
 }

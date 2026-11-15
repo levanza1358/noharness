@@ -1,49 +1,49 @@
-import type { DesktopFileActions } from '@deepseek-ai/dsh-client-ui-file-actions/types'
+import type { DesktopFileActions } from '@noharness/client-ui-file-actions/types'
 /** Typed preload operations exposed only by the Electron shell. */
 
-export type { DesktopChannelState, DesktopChannelChangeResult } from '@deepseek-ai/dsh-client-ui-settings-general/types'
-import type { DesktopChannelBridge, DesktopChannelState } from '@deepseek-ai/dsh-client-ui-settings-general/types'
-import type { DesktopKeyboardApi, DesktopShortcutsApi } from '@deepseek-ai/dsh-client-shortcuts/protocol'
+export type { DesktopChannelState, DesktopChannelChangeResult } from '@noharness/client-ui-settings-general/types'
+import type { DesktopChannelBridge, DesktopChannelState } from '@noharness/client-ui-settings-general/types'
+import type { DesktopKeyboardApi, DesktopShortcutsApi } from '@noharness/client-shortcuts/protocol'
 import type { IpcMainInvokeEvent } from 'electron'
-import type { DesktopBrowserBridge } from '@deepseek-ai/dsh-client-ui-sidebar-browser/types'
-import type { DesktopFileDrag } from '@deepseek-ai/dsh-util-file-drag'
+import type { DesktopBrowserBridge } from '@noharness/client-ui-sidebar-browser/types'
+import type { DesktopFileDrag } from '@noharness/util-file-drag'
 
 /** IPC channel names kept private to the desktop application bundle. */
 export const DESKTOP_IPC = {
-  fileSave: 'dsh-desktop:file-save',
-  clipboardImageRead: 'dsh-desktop:clipboard-image-read',
-  shortcutsInput: 'dsh-desktop:shortcuts-input',
-  shortcutsCloseWindow: 'dsh-desktop:shortcuts-close-window',
-  shortcutsGet: 'dsh-desktop:shortcuts-get',
-  shortcutsEdit: 'dsh-desktop:shortcuts-edit',
-  shortcutsChanged: 'dsh-desktop:shortcuts-changed',
-  shortcutsRecording: 'dsh-desktop:shortcuts-recording',
-  boot: 'dsh-desktop:boot',
-  enterWorkspace: 'dsh-desktop:enter-workspace',
-  onboardingActive: 'dsh-desktop:onboarding-active',
-  onboardingApiKey: 'dsh-desktop:onboarding-api-key',
-  bootFailed: 'dsh-desktop:boot-failed',
-  browserAcquire: 'dsh-desktop:browser-acquire',
-  browserRelease: 'dsh-desktop:browser-release',
-  browserOpenRequested: 'dsh-desktop:browser-open-requested',
-  directoryPick: 'dsh-desktop:directory-pick',
-  fileDragPrepare: 'dsh-desktop:file-drag-prepare',
-  fileDragCancel: 'dsh-desktop:file-drag-cancel',
-  fileDragStart: 'dsh-desktop:file-drag-start',
-  fileDragRelease: 'dsh-desktop:file-drag-release',
-  deviceInfo: 'dsh-desktop:device-info',
-  localeBootstrap: 'dsh-desktop:locale-bootstrap',
-  localeChanged: 'dsh-desktop:locale-changed',
-  updatesChannelGet: 'dsh-desktop:updates-channel-get',
-  updatesChannelSet: 'dsh-desktop:updates-channel-set',
-  updatesChannelChanged: 'dsh-desktop:updates-channel-changed',
-  updatesStatus: 'dsh-desktop:updates-status',
-  updatesOpen: 'dsh-desktop:updates-open',
-  updatesPresentation: 'dsh-desktop:updates-presentation',
-  nativeThemeSet: 'dsh-desktop:native-theme-set',
-  windowFullscreen: 'dsh-desktop:window-fullscreen',
-  windowsAppearance: 'dsh-desktop:windows-appearance',
-  windowsMenu: 'dsh-desktop:windows-menu',
+  fileSave: 'nhs-desktop:file-save',
+  clipboardImageRead: 'nhs-desktop:clipboard-image-read',
+  shortcutsInput: 'nhs-desktop:shortcuts-input',
+  shortcutsCloseWindow: 'nhs-desktop:shortcuts-close-window',
+  shortcutsGet: 'nhs-desktop:shortcuts-get',
+  shortcutsEdit: 'nhs-desktop:shortcuts-edit',
+  shortcutsChanged: 'nhs-desktop:shortcuts-changed',
+  shortcutsRecording: 'nhs-desktop:shortcuts-recording',
+  boot: 'nhs-desktop:boot',
+  enterWorkspace: 'nhs-desktop:enter-workspace',
+  onboardingActive: 'nhs-desktop:onboarding-active',
+  onboardingApiKey: 'nhs-desktop:onboarding-api-key',
+  bootFailed: 'nhs-desktop:boot-failed',
+  browserAcquire: 'nhs-desktop:browser-acquire',
+  browserRelease: 'nhs-desktop:browser-release',
+  browserOpenRequested: 'nhs-desktop:browser-open-requested',
+  directoryPick: 'nhs-desktop:directory-pick',
+  fileDragPrepare: 'nhs-desktop:file-drag-prepare',
+  fileDragCancel: 'nhs-desktop:file-drag-cancel',
+  fileDragStart: 'nhs-desktop:file-drag-start',
+  fileDragRelease: 'nhs-desktop:file-drag-release',
+  deviceInfo: 'nhs-desktop:device-info',
+  localeBootstrap: 'nhs-desktop:locale-bootstrap',
+  localeChanged: 'nhs-desktop:locale-changed',
+  updatesChannelGet: 'nhs-desktop:updates-channel-get',
+  updatesChannelSet: 'nhs-desktop:updates-channel-set',
+  updatesChannelChanged: 'nhs-desktop:updates-channel-changed',
+  updatesStatus: 'nhs-desktop:updates-status',
+  updatesOpen: 'nhs-desktop:updates-open',
+  updatesPresentation: 'nhs-desktop:updates-presentation',
+  nativeThemeSet: 'nhs-desktop:native-theme-set',
+  windowFullscreen: 'nhs-desktop:window-fullscreen',
+  windowsAppearance: 'nhs-desktop:windows-appearance',
+  windowsMenu: 'nhs-desktop:windows-menu',
 } as const
 
 /** Desktop release update state rendered by desktop-owned UI. */
@@ -111,7 +111,7 @@ export interface DshDesktopProductApi {
 }
 
 /** Scheme of Desktop-owned application documents. */
-export const SCHEME = 'dsh-app'
+export const SCHEME = 'nhs-app'
 
 /**
  * Reject IPC outside the allowed Desktop document origins.
@@ -120,9 +120,9 @@ export const SCHEME = 'dsh-app'
  */
 export function assertDesktopSender(event: IpcMainInvokeEvent, hostnames: readonly string[]): void {
   const senderFrame = event.senderFrame
-  if (senderFrame === null) throw new Error('dsh desktop: rejected IPC without a sender frame')
+  if (senderFrame === null) throw new Error('nhs desktop: rejected IPC without a sender frame')
   const url = new URL(senderFrame.url)
   if (url.protocol !== `${SCHEME}:` || !hostnames.includes(url.hostname)) {
-    throw new Error('dsh desktop: rejected IPC from an unowned renderer')
+    throw new Error('nhs desktop: rejected IPC from an unowned renderer')
   }
 }

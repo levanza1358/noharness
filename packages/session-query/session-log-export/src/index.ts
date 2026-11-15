@@ -1,12 +1,12 @@
 /** Session export command and Host-owned ZIP download and Markdown copy routes. */
 
-import type { Context } from '@deepseek-ai/cordis'
-import type { CommandDefinitionId } from '@deepseek-ai/dsh-commands/types'
-import Schema from '@deepseek-ai/schemastery'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type {} from '@deepseek-ai/dsh-attachment'
-import type { CommandResult } from '@deepseek-ai/dsh-commands'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
+import type { Context } from '@noharness/cordis'
+import type { CommandDefinitionId } from '@noharness/commands/types'
+import Schema from '@noharness/schemastery'
+import { brandString } from '@noharness/brand'
+import type {} from '@noharness/attachment'
+import type { CommandResult } from '@noharness/commands'
+import type { SessionId } from '@noharness/session/types'
 import {
   DEFAULT_SESSION_LOG_COMPRESSION_LEVEL,
   flushLiveSessionLog,
@@ -79,7 +79,7 @@ const REQUESTED: CommandResult = {
  */
 export function apply(ctx: Context, config: Config = {}): void {
   ctx.effect(() => ctx.commands.register({
-    definitionId: brandString<CommandDefinitionId>('@deepseek-ai/dsh-session-log-export'),
+    definitionId: brandString<CommandDefinitionId>('@noharness/session-log-export'),
     name: 'export',
     description: 'Download this Session log as a ZIP archive',
     handler: invocation => Promise.resolve(invocation.rawInput.trim() === ''

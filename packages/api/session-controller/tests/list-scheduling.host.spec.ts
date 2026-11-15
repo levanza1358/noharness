@@ -1,10 +1,10 @@
 /** Event-loop fairness and cancellation of synchronous Session-list summaries. */
 
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
-import SessionStore, { type SessionId, type Session } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import type { SessionRecord } from '@deepseek-ai/dsh-session-query'
+import { Context } from '@noharness/cordis'
+import AgentRegistry, { type Agent } from '@noharness/agent'
+import SessionStore, { type SessionId, type Session } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import type { SessionRecord } from '@noharness/session-query'
 import { resolve } from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { scheduler } from 'node:timers/promises'
@@ -12,7 +12,7 @@ import SessionController from '../src/index.ts'
 import { createSessionTestController, TEST_IMAGE_LIMITS } from './test-remote.ts'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ApiSessionList } from '../src/list.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 type Phase = 'live' | 'cold'
 interface Row {

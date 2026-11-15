@@ -4,11 +4,11 @@ import { basename, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium, type Browser, type Locator, type Page } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { type ToolCallId, createAssistantMessage, createToolResultMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
-import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@deepseek-ai/dsh-session'
-import { sessionFileAddress } from '@deepseek-ai/dsh-util-workspace-path'
-import type {} from '@deepseek-ai/dsh-session-title'
+import { brandString } from '@noharness/brand'
+import { type ToolCallId, createAssistantMessage, createToolResultMessage, createUserMessage } from '@noharness/llm'
+import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@noharness/session'
+import { sessionFileAddress } from '@noharness/util-workspace-path'
+import type {} from '@noharness/session-title'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden,
   launchWebScaffold, seedSession, watchConsole, webSnapshotMode, type WebScaffold,
@@ -228,7 +228,7 @@ describe('web e2e: Markdown file links', () => {
     const source = page.getByRole('button', { name: 'Parent file:24–30', exact: true })
     await source.click()
     const column = page.locator('[data-rightbar-col]')
-    const stored = () => page.evaluate(key => localStorage.getItem(key), `dsh.sidebar-right.v1.${id}`)
+    const stored = () => page.evaluate(key => localStorage.getItem(key), `nhs.sidebar-right.v1.${id}`)
     const address = sessionFileAddress(id, path)
     await expect.poll(() => column.locator('[data-textpreview-target="24"]').textContent()).toBe('parent line 24\n')
     await expect.poll(() => column.locator('[data-textpreview-path]').textContent()).toBe(join(scaffold.workspaceCwd, 'parent.txt'))

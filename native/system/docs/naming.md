@@ -2,7 +2,7 @@
 
 ## npm packages
 
-The public package family belongs to the `@deepseek-ai` scope and uses the `node-addon-system` package prefix; platform packages append platform information only:
+The public package family belongs to the `@noharness` scope and uses the `node-addon-system` package prefix; platform packages append platform information only:
 
 ```text
 @deepseek-ai/node-addon-system

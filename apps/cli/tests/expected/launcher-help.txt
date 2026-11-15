@@ -1,16 +1,16 @@
-Usage: dsh [--profile] <name> [options] [app-args...]
-       dsh plugin --profile <name> <pnpm-args...>
+Usage: nhs [--profile] <name> [options] [app-args...]
+       nhs plugin --profile <name> <pnpm-args...>
 
-dsh: boot a DeepSeek Harness profile — an ordered stack of plugin-bundle patch
+nhs: boot a NoHarness profile — an ordered stack of plugin-bundle patch
 layers under your own overrides.
 
 Arguments:
   args                           arguments for the booted profile's app (see:
-                                 dsh --profile <name> --help)
+                                 nhs --profile <name> --help)
 
 Options:
   -V, --version                  output the version number
-  --profile <name>               the profile under $DSH_HOME/profiles to boot
+  --profile <name>               the profile under $NHS_HOME/profiles to boot
   --from-default-profile <name>  replace a custom profile with a fresh copy of a
                                  shipped profile template
   --patch <path>                 extra patch-list overlay applied after the
@@ -22,11 +22,11 @@ Options:
                                  or --patch overlays and exit
 
 Examples:
-  dsh web                                   boot the web profile (same as: dsh --profile web)
-  dsh rescue --from-default-profile web
+  nhs web                                   boot the web profile (same as: nhs --profile web)
+  nhs rescue --from-default-profile web
                                             recreate rescue from the shipped web template, then boot it
-  dsh headless "run the tests"              answer one task, print the result, and exit
-  dsh tui --patch ./extra.yml               boot a custom profile with one extra overlay
-  dsh tui --resume <session>                arguments after the launcher flags reach the app
-  dsh web --help                            the web app's own flags and help
-  dsh plugin --profile tui add <package>    install a plugin into the tui profile
+  nhs headless "run the tests"              answer one task, print the result, and exit
+  nhs tui --patch ./extra.yml               boot a custom profile with one extra overlay
+  nhs tui --resume <session>                arguments after the launcher flags reach the app
+  nhs web --help                            the web app's own flags and help
+  nhs plugin --profile tui add <package>    install a plugin into the tui profile

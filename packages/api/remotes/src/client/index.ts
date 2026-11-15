@@ -1,43 +1,43 @@
 /** Platform-neutral assembly of generated Host Remote contributions. */
 
-import type { Context } from '@deepseek-ai/cordis'
-import productAnalyticsRemote from '@deepseek-ai/dsh-client-product-analytics/remote'
-export type {} from '@deepseek-ai/dsh-client-product-analytics/remote'
-import agentPresetsRemote from '@deepseek-ai/dsh-agent-preset-registry/remote'
-import userQuestionsRemote from '@deepseek-ai/dsh-user-questions/remote'
-import commandsRemote from '@deepseek-ai/dsh-commands/remote'
-import agentTeamsRemote from '@deepseek-ai/dsh-agent-team/remote'
-export type {} from '@deepseek-ai/dsh-agent-team/remote'
-import accountRemote from '@deepseek-ai/dsh-deepseek-account/remote'
-import settingsControllerRemote from '@deepseek-ai/dsh-api-settings-controller/remote'
-import officeKitRemote from '@deepseek-ai/dsh-office-kit/remote'
-import goalsRemote from '@deepseek-ai/dsh-goal/remote'
-import scheduleRemote from '@deepseek-ai/dsh-schedule/remote'
-import llmRemote from '@deepseek-ai/dsh-llm/remote'
-import dynamicRemote from '@deepseek-ai/dsh-cordis-host-runner/remote'
-import pluginManagerRemote from '@deepseek-ai/dsh-plugin-manager/remote'
-import mcpManagerRemote from '@deepseek-ai/dsh-mcp-manager/remote'
-import toolResultsRemote from '@deepseek-ai/dsh-client-ui-trajectory/remote'
-import pluginRegistryProbeRemote from '@deepseek-ai/dsh-client-ui-plugin-manager/remote'
-import pluginMarketRemote from '@deepseek-ai/dsh-plugin-market/remote'
-import pluginInventoryRemote from '@deepseek-ai/dsh-host-plugin-inventory/remote'
-import messageFeedbackRemote from '@deepseek-ai/dsh-message-feedback/remote'
-import permissionPresetsRemote from '@deepseek-ai/dsh-permission-presets/remote'
-import sessionFeedbackRemote from '@deepseek-ai/dsh-command-feedback/remote'
-import fileUploadsRemote from '@deepseek-ai/dsh-client-file-upload/remote'
-import sessionReferencesRemote from '@deepseek-ai/dsh-session-reference/remote'
-import subagentsRemote from '@deepseek-ai/dsh-subagent/remote'
-import sessionStatusRemote from '@deepseek-ai/dsh-client-ui-session-status/remote'
-export type {} from '@deepseek-ai/dsh-client-ui-session-status/remote'
-import sessionRemote from '@deepseek-ai/dsh-api-session-controller/remote'
-import jobRemote from '@deepseek-ai/dsh-api-job-controller/remote'
-import workspaceRemote from '@deepseek-ai/dsh-api-workspace-controller/remote'
-import terminalRemote from '@deepseek-ai/dsh-api-terminal-controller/remote'
-import workspaceFilesRemote from '@deepseek-ai/dsh-api-workspace-files/remote'
-import webRemote from '@deepseek-ai/dsh-web/remote'
-import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
+import type { Context } from '@noharness/cordis'
+import productAnalyticsRemote from '@noharness/client-product-analytics/remote'
+export type {} from '@noharness/client-product-analytics/remote'
+import agentPresetsRemote from '@noharness/agent-preset-registry/remote'
+import userQuestionsRemote from '@noharness/user-questions/remote'
+import commandsRemote from '@noharness/commands/remote'
+import agentTeamsRemote from '@noharness/agent-team/remote'
+export type {} from '@noharness/agent-team/remote'
+import accountRemote from '@noharness/deepseek-account/remote'
+import settingsControllerRemote from '@noharness/api-settings-controller/remote'
+import officeKitRemote from '@noharness/office-kit/remote'
+import goalsRemote from '@noharness/goal/remote'
+import scheduleRemote from '@noharness/schedule/remote'
+import llmRemote from '@noharness/llm/remote'
+import dynamicRemote from '@noharness/cordis-host-runner/remote'
+import pluginManagerRemote from '@noharness/plugin-manager/remote'
+import mcpManagerRemote from '@noharness/mcp-manager/remote'
+import toolResultsRemote from '@noharness/client-ui-trajectory/remote'
+import pluginRegistryProbeRemote from '@noharness/client-ui-plugin-manager/remote'
+import pluginMarketRemote from '@noharness/plugin-market/remote'
+import pluginInventoryRemote from '@noharness/host-plugin-inventory/remote'
+import messageFeedbackRemote from '@noharness/message-feedback/remote'
+import permissionPresetsRemote from '@noharness/permission-presets/remote'
+import sessionFeedbackRemote from '@noharness/command-feedback/remote'
+import fileUploadsRemote from '@noharness/client-file-upload/remote'
+import sessionReferencesRemote from '@noharness/session-reference/remote'
+import subagentsRemote from '@noharness/subagent/remote'
+import sessionStatusRemote from '@noharness/client-ui-session-status/remote'
+export type {} from '@noharness/client-ui-session-status/remote'
+import sessionRemote from '@noharness/api-session-controller/remote'
+import jobRemote from '@noharness/api-job-controller/remote'
+import workspaceRemote from '@noharness/api-workspace-controller/remote'
+import terminalRemote from '@noharness/api-terminal-controller/remote'
+import workspaceFilesRemote from '@noharness/api-workspace-files/remote'
+import webRemote from '@noharness/web/remote'
+import type { ClientRemote } from '@noharness/api-gateway/client'
 
-export type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
+export type { ClientRemote } from '@noharness/api-gateway/client'
 export type {
   BundleDetail, BundleInfo, BundleRowInfo, ChangeResult, IncompatiblePlugin, InspectOptions, InstallBundleOptions, InstallSpecKind,
   ManagementError, PackageResult,
@@ -45,63 +45,63 @@ export type {
   PluginInstallLogChunk, PluginInstallProgress, PluginInstallRequestId, PluginRegistries, PluginSpecInspection,
   PluginUpdateProgress, PluginUpdateResult, PluginUpdateStep, PluginVersion, PluginVersionList, RegistryAttempt,
   ReadOnlyReason, Registry, RestartReason,
-} from '@deepseek-ai/dsh-plugin-manager/types'
-export type { McpManagedServerStatus, McpManagedServerView } from '@deepseek-ai/dsh-mcp-manager/types'
-export type {} from '@deepseek-ai/dsh-plugin-manager/remote'
-export type {} from '@deepseek-ai/dsh-mcp-manager/remote'
-export type {} from '@deepseek-ai/dsh-client-ui-plugin-manager/remote'
-export type {} from '@deepseek-ai/dsh-client-ui-trajectory/remote'
-export type {} from '@deepseek-ai/dsh-plugin-market/remote'
+} from '@noharness/plugin-manager/types'
+export type { McpManagedServerStatus, McpManagedServerView } from '@noharness/mcp-manager/types'
+export type {} from '@noharness/plugin-manager/remote'
+export type {} from '@noharness/mcp-manager/remote'
+export type {} from '@noharness/client-ui-plugin-manager/remote'
+export type {} from '@noharness/client-ui-trajectory/remote'
+export type {} from '@noharness/plugin-market/remote'
 export type {
   MarketCompatibility, MarketIndexSummary, MarketInstallation, MarketInstallationStatus, MarketListingEntry, MarketListingVersion,
   MarketQuery, MarketSearchResult, MarketSort, PluginDetail, PluginDetailDocumentId, PluginDetailOrigin,
-} from '@deepseek-ai/dsh-plugin-market/types'
-export type { PluginInventorySnapshot } from '@deepseek-ai/dsh-host-plugin-inventory/types'
-export type {} from '@deepseek-ai/dsh-agent-preset-registry/remote'
-export type {} from '@deepseek-ai/dsh-user-questions/remote'
-export type {} from '@deepseek-ai/dsh-commands/remote'
-export type {} from '@deepseek-ai/dsh-web/remote'
-export type {} from '@deepseek-ai/dsh-api-settings-controller/remote'
-export type {} from '@deepseek-ai/dsh-deepseek-account/remote'
-export type {} from '@deepseek-ai/dsh-goal/remote'
-export type {} from '@deepseek-ai/dsh-schedule/remote'
-export type {} from '@deepseek-ai/dsh-office-kit/remote'
-export type {} from '@deepseek-ai/dsh-llm/remote'
-export type {} from '@deepseek-ai/dsh-host-plugin-inventory/remote'
-export type {} from '@deepseek-ai/dsh-message-feedback/remote'
-export type {} from '@deepseek-ai/dsh-permission-presets/remote'
-export type {} from '@deepseek-ai/dsh-command-feedback/remote'
-export type {} from '@deepseek-ai/dsh-client-file-upload/remote'
-export type {} from '@deepseek-ai/dsh-session-reference/remote'
-export type {} from '@deepseek-ai/dsh-subagent/remote'
-export type * from '@deepseek-ai/dsh-subagent/client'
-export type {} from '@deepseek-ai/dsh-api-session-controller/remote'
-export type * from '@deepseek-ai/dsh-api-session-controller/types'
-export type {} from '@deepseek-ai/dsh-api-job-controller/remote'
-export type * from '@deepseek-ai/dsh-api-job-controller/types'
-export type {} from '@deepseek-ai/dsh-api-workspace-controller/remote'
-export type * from '@deepseek-ai/dsh-api-workspace-controller/types'
-export type {} from '@deepseek-ai/dsh-api-workspace-files/remote'
-export type * from '@deepseek-ai/dsh-api-workspace-files/types'
-export type {} from '@deepseek-ai/dsh-api-terminal-controller/remote'
-export type * from '@deepseek-ai/dsh-api-terminal-controller/types'
+} from '@noharness/plugin-market/types'
+export type { PluginInventorySnapshot } from '@noharness/host-plugin-inventory/types'
+export type {} from '@noharness/agent-preset-registry/remote'
+export type {} from '@noharness/user-questions/remote'
+export type {} from '@noharness/commands/remote'
+export type {} from '@noharness/web/remote'
+export type {} from '@noharness/api-settings-controller/remote'
+export type {} from '@noharness/deepseek-account/remote'
+export type {} from '@noharness/goal/remote'
+export type {} from '@noharness/schedule/remote'
+export type {} from '@noharness/office-kit/remote'
+export type {} from '@noharness/llm/remote'
+export type {} from '@noharness/host-plugin-inventory/remote'
+export type {} from '@noharness/message-feedback/remote'
+export type {} from '@noharness/permission-presets/remote'
+export type {} from '@noharness/command-feedback/remote'
+export type {} from '@noharness/client-file-upload/remote'
+export type {} from '@noharness/session-reference/remote'
+export type {} from '@noharness/subagent/remote'
+export type * from '@noharness/subagent/client'
+export type {} from '@noharness/api-session-controller/remote'
+export type * from '@noharness/api-session-controller/types'
+export type {} from '@noharness/api-job-controller/remote'
+export type * from '@noharness/api-job-controller/types'
+export type {} from '@noharness/api-workspace-controller/remote'
+export type * from '@noharness/api-workspace-controller/types'
+export type {} from '@noharness/api-workspace-files/remote'
+export type * from '@noharness/api-workspace-files/types'
+export type {} from '@noharness/api-terminal-controller/remote'
+export type * from '@noharness/api-terminal-controller/types'
 // The forwarded-event allowlist's selection seat: without it in the consumer's
 // compilation face `TypertRemoteEvent` is `never` and every `$on` call fails.
 export type { ApiRemoteForwardedEvent } from '../types.ts'
 // The owner packages' client-safe `./types` exports supply the `Events`
 // signatures `$on` hands to a listener, so a consumer reads the very
 // declaration the Host emits rather than a flattened restatement of it.
-export type {} from '@deepseek-ai/dsh-commands/types'
-export type {} from '@deepseek-ai/dsh-web/types'
-export type {} from '@deepseek-ai/dsh-cordis-host-runner/types'
-export type {} from '@deepseek-ai/dsh-credentials/types'
-export type {} from '@deepseek-ai/dsh-llm/types'
-export type {} from '@deepseek-ai/dsh-agent-preset-registry/types'
-export type {} from '@deepseek-ai/dsh-permission-presets/types'
-export type {} from '@deepseek-ai/dsh-settings/types'
-export type {} from '@deepseek-ai/dsh-user-approval/types'
-export type {} from '@deepseek-ai/dsh-user-questions/types'
-export type {} from '@deepseek-ai/dsh-api-session-controller/types'
+export type {} from '@noharness/commands/types'
+export type {} from '@noharness/web/types'
+export type {} from '@noharness/cordis-host-runner/types'
+export type {} from '@noharness/credentials/types'
+export type {} from '@noharness/llm/types'
+export type {} from '@noharness/agent-preset-registry/types'
+export type {} from '@noharness/permission-presets/types'
+export type {} from '@noharness/settings/types'
+export type {} from '@noharness/user-approval/types'
+export type {} from '@noharness/user-questions/types'
+export type {} from '@noharness/api-session-controller/types'
 
 /**
  * The carrier's Client-facing types, re-exported so a business package names one
@@ -113,9 +113,9 @@ export type {
   MessageId,
   RpcId, RpcRequest, RpcResponse, RpcResult, SessionId,
   StreamChunk,
-} from '@deepseek-ai/dsh-client-connection/client'
-export type {} from '@deepseek-ai/dsh-api-gateway/client'
-export type {} from '@deepseek-ai/dsh-cordis-host-runner/remote'
+} from '@noharness/client-connection/client'
+export type {} from '@noharness/api-gateway/client'
+export type {} from '@noharness/cordis-host-runner/remote'
 
 // The payload vocabulary of the selected namespaces, re-exported so a Client
 // contribution can name what it sends and receives without importing a Host
@@ -153,34 +153,34 @@ export type {
   DynamicCordisStopResponse,
   DynamicCordisUndefineReceipt,
   RequestRunOutcome,
-} from '@deepseek-ai/dsh-cordis-host-runner/types'
+} from '@noharness/cordis-host-runner/types'
 // Credential state vocabulary for the credentials namespace (values never ride it).
-export type { CredentialInfo } from '@deepseek-ai/dsh-credentials/types'
+export type { CredentialInfo } from '@noharness/credentials/types'
 // Redacted namespace vocabulary for the settings namespace (secrets never ride
 // it). It travels with its seam, whose `./types` the Client face already reads.
 export type {
   SettingsDescribeValue, SettingsNamespaceView, SettingsPathOpView, SettingsSecretView,
-} from '@deepseek-ai/dsh-settings/types'
+} from '@noharness/settings/types'
 // Provider registry and discovery vocabulary for the llm namespace.
 export type {
   LlmConfigurableProvider, LlmDiscoveredModel,
   LlmModelDiscoveryRequest, LlmNativeAuth, LlmProviderInfo,
-} from '@deepseek-ai/dsh-llm/types'
+} from '@noharness/llm/types'
 // Reference-discovery result vocabulary for the fileReferences and
 // sessionReferenceResolver namespaces.
-export type { FileReferenceCandidate } from '@deepseek-ai/dsh-file-reference/types'
-export type { SessionReferenceMentionCandidate } from '@deepseek-ai/dsh-session-reference/types'
+export type { FileReferenceCandidate } from '@noharness/file-reference/types'
+export type { SessionReferenceMentionCandidate } from '@noharness/session-reference/types'
 
 // The Remote failure vocabulary, re-exported so business packages keep naming
 // this assembly alone. Types only: a value export would make spec imports load
 // this module's owner /remote artifacts; specs take RemoteError from
-// dsh-client-test-runtime instead.
+// nhs-client-test-runtime instead.
 export type {
   RemoteErrorCode, RemoteErrorDetailsMap, RemoteFailure, RemoteResult,
-} from '@deepseek-ai/dsh-typert-protocol'
-export type { RemoteHostFacts } from '@deepseek-ai/dsh-api-gateway/client'
+} from '@noharness/typert-protocol'
+export type { RemoteHostFacts } from '@noharness/api-gateway/client'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Generated Remote namespaces selected by this Client assembly. */
     remote: ClientRemote

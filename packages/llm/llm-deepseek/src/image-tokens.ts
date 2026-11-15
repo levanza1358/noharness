@@ -8,11 +8,11 @@
  * configuration has no alignment pad and no aspect-ratio clamp. Actual usage
  * remains authoritative.
  *
- * @module dsh-llm-deepseek/image-tokens
+ * @module nhs-llm-deepseek/image-tokens
  */
 
-import { longEdgeDimensions } from '@deepseek-ai/dsh-attachment'
-import type { ProjectedDimensions } from '@deepseek-ai/dsh-attachment'
+import { longEdgeDimensions } from '@noharness/attachment'
+import type { ProjectedDimensions } from '@noharness/attachment'
 /** Vision patch edge in pixels. */
 const PATCH_SIZE = 14
 /** Per-axis patch-to-token downsampling ratio. */

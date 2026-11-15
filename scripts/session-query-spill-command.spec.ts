@@ -1,11 +1,11 @@
-import { Context } from '@deepseek-ai/cordis'
-import { LocalSpillStore } from '@deepseek-ai/dsh-spill-local'
-import { LocalFileSystem } from '@deepseek-ai/dsh-fs-local'
-import LocalSubprocessRuntime from '@deepseek-ai/dsh-subprocess-local'
-import { LocalBashExecutor } from '@deepseek-ai/dsh-bash-local'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm/types'
+import { Context } from '@noharness/cordis'
+import { LocalSpillStore } from '@noharness/spill-local'
+import { LocalFileSystem } from '@noharness/fs-local'
+import LocalSubprocessRuntime from '@noharness/subprocess-local'
+import { LocalBashExecutor } from '@noharness/bash-local'
+import type { SessionId } from '@noharness/session'
+import { brandString } from '@noharness/brand'
+import type { ToolCallId } from '@noharness/llm/types'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
@@ -27,7 +27,7 @@ it.skipIf(process.platform === 'win32')('resolves the exact spill verifier, reta
       disposers.push(() => fiber.dispose())
       await fiber
     }
-    const logical = resolve('/tmp/dsh-acp-snap-query-verifier')
+    const logical = resolve('/tmp/nhs-acp-snap-query-verifier')
     const mapping = ctx.plugin(locators, { root, locatorRoot: logical })
     disposers.push(() => mapping.dispose())
     await mapping

@@ -1,6 +1,6 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import { agentPresetProjectionDefinition } from '@deepseek-ai/dsh-agent-preset-registry'
-import { subagentModelSelectionProjectionDefinition } from '@deepseek-ai/dsh-tool-subagent/src/model-selection-state.ts'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import { agentPresetProjectionDefinition } from '@noharness/agent-preset-registry'
+import { subagentModelSelectionProjectionDefinition } from '@noharness/tool-subagent/src/model-selection-state.ts'
 import { createRequire } from 'node:module'
 import { randomUUID } from 'node:crypto'
 import { mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from 'node:fs/promises'
@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os'
 import { readdirSync, readFileSync, realpathSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@noharness/cordis'
 import {
   initProfile,
   createRuntimeResolution,
@@ -16,35 +16,35 @@ import {
   loadProfile,
   PluginPackages,
   type Profile,
-} from '@deepseek-ai/dsh-app-boot'
-import { provideCmdline } from '@deepseek-ai/dsh-cmdline'
-import { type SessionId, SessionLogOffset } from '@deepseek-ai/dsh-session'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { PatchOptions } from '@deepseek-ai/cordis-plugin-include'
+} from '@noharness/app-boot'
+import { provideCmdline } from '@noharness/cmdline'
+import { type SessionId, SessionLogOffset } from '@noharness/session'
+import type { Agent } from '@noharness/agent'
+import type { PatchOptions } from '@noharness/cordis-plugin-include'
 import { afterAll, beforeAll, describe, expect, it, onTestFinished, vi } from 'vitest'
-import { bundlePatchPaths, composeEntries } from '@deepseek-ai/dsh-app-boot'
+import { bundlePatchPaths, composeEntries } from '@noharness/app-boot'
 import { createPluginProfile } from '../../desktop/src/project-manager.ts'
 /** Profile entry ids whose volatile fields these scenarios edit through Settings. */
 const SETTINGS_NAMESPACE = 'agent-preset-registry'
 const SUBAGENT_MODEL_SELECTION_SETTINGS_NAMESPACE = 'subagent-model-selection-settings'
-import { applyChildComposition, childSessionMeta } from '@deepseek-ai/dsh-subagent'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { type ToolCallId, LlmAdapter, createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@deepseek-ai/dsh-llm'
-import type {} from '@deepseek-ai/dsh-compaction-basic'
-import { codePointLength } from '@deepseek-ai/dsh-compaction-tool-result-pruner'
-import type {} from '@deepseek-ai/dsh-skill'
-import type {} from '@deepseek-ai/dsh-tools'
+import { applyChildComposition, childSessionMeta } from '@noharness/subagent'
+import { brandString } from '@noharness/brand'
+import { type ToolCallId, LlmAdapter, createUserMessage } from '@noharness/llm'
+import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@noharness/llm'
+import type {} from '@noharness/compaction-basic'
+import { codePointLength } from '@noharness/compaction-tool-result-pruner'
+import type {} from '@noharness/skill'
+import type {} from '@noharness/tools'
 // Type-only: resolves `ctx.get('sessionProjections')` and `ctx.get('tokenMeter')`.
-import type {} from '@deepseek-ai/dsh-session-projection'
-import type {} from '@deepseek-ai/dsh-token-meter'
+import type {} from '@noharness/session-projection'
+import type {} from '@noharness/token-meter'
 
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
-const { boot } = createRequire(import.meta.url)(join(REPO_ROOT, 'packages/boot/app-boot/lib/index.js')) as typeof import('@deepseek-ai/dsh-app-boot')
-/** The shipped Web surface: the dsh-base and dsh-web-app bundle patches over an empty profile. */
+const { boot } = createRequire(import.meta.url)(join(REPO_ROOT, 'packages/boot/app-boot/lib/index.js')) as typeof import('@noharness/app-boot')
+/** The shipped Web surface: the nhs-base and nhs-web-app bundle patches over an empty profile. */
 const BASE_PATCH = join(REPO_ROOT, 'packages/bundle/base/cordis.patch.yml')
 const WEB_BUNDLE = join(REPO_ROOT, 'packages/bundle/web-app')
-const WEB_PATCHES = bundlePatchPaths(WEB_BUNDLE, (JSON.parse(readFileSync(join(WEB_BUNDLE, 'package.json'), 'utf8')) as { dsh: { bundle: { patch: string[] } } }).dsh.bundle)
+const WEB_PATCHES = bundlePatchPaths(WEB_BUNDLE, (JSON.parse(readFileSync(join(WEB_BUNDLE, 'package.json'), 'utf8')) as { nhs: { bundle: { patch: string[] } } }).nhs.bundle)
 const webPatches = (label: string): PatchOptions[] => WEB_PATCHES.flatMap(file => loadOverlayPatches(label, file))
 const CODEX_PACKAGE_DIR = join(REPO_ROOT, 'packages/subagent/subagent-codex')
 const CLAUDE_CODE_PACKAGE_DIR = join(REPO_ROOT, 'packages/subagent/subagent-claude-code')
@@ -115,14 +115,14 @@ async function bootWeb(
 ): Promise<Context> {
   const storageRoot = join(profileHome, 'storages')
   const overrides: PatchOptions[] = [
-    // storage-json's root is anchored to the real $DSH_HOME. Unpinned, this
-    // file writes the developer's own `~/.dsh/storages/` — and then reads it
+    // storage-json's root is anchored to the real $NHS_HOME. Unpinned, this
+    // file writes the developer's own `~/.nhs/storages/` — and then reads it
     // back on the next run, so a stored document from any other build decides
     // this test's boot.
     { id: 'storage-json', config: { root: storageRoot } },
     // Fixed Session IDs must stay inside this boot's temporary profile root.
     { id: 'session-persistence-jsonl', config: { root: join(profileHome, 'sessions') } },
-    { id: 'attachment-local', config: { dshHome: profileHome } },
+    { id: 'attachment-local', config: { nhsHome: profileHome } },
     // Host rows with side effects outside this process: a bound port, a served
     // asset tree, a telemetry exporter. `api-gateway` and `directory-picker`
     // stay ENABLED on purpose — the api-proxy is the host row that injects
@@ -144,7 +144,7 @@ async function bootWeb(
     // A deployment-level skill on the host registry's GLOBAL layer — the same
     // registration shape a repository plugin's skill root uses. The layered
     // skills test below proves it reaches preset-composed agents.
-    { insert: [{ id: 'skill-badge', name: import.meta.resolve('@deepseek-ai/dsh-skill-badge') }] },
+    { insert: [{ id: 'skill-badge', name: import.meta.resolve('@noharness/skill-badge') }] },
     { id: 'modules', disabled: true },
     // The physical Connection row owns the disabled HTTP server. bootWeb
     // supplies only its in-process registries so Host services still prove
@@ -164,8 +164,8 @@ async function bootWeb(
     // supplies `directoryPicker` without one.
     { id: 'directory-picker', disabled: true },
     { insert: [
-      { id: 'directory-picker-browse', name: '@deepseek-ai/dsh-host-directory-picker-browse' },
-      { id: 'ui-directory-picker-browse', name: '@deepseek-ai/dsh-client-ui-directory-picker-browse' },
+      { id: 'directory-picker-browse', name: '@noharness/host-directory-picker-browse' },
+      { id: 'ui-directory-picker-browse', name: '@noharness/client-ui-directory-picker-browse' },
     ] },
     { id: 'agent-preset-registry', config: { default: 'standard' } },
     ...extra,
@@ -174,8 +174,8 @@ async function bootWeb(
   const profileDir = join(home, 'profiles', surface)
   await mkdir(profileDir, { recursive: true })
   if (surface === 'desktop') createPluginProfile(profileDir)
-  else if (profileBundles === undefined) initProfile(profileDir, ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app'])
-  // Product Bundles are installed into the Profile, not the dsh app. Model
+  else if (profileBundles === undefined) initProfile(profileDir, ['@noharness/base', '@noharness/web-app'])
+  // Product Bundles are installed into the Profile, not the nhs app. Model
   // pnpm's package link for only the selected products; their own production
   // dependencies resolve from the linked workspace packages, while shared
   // peers still resolve through the installation fallback above.
@@ -193,34 +193,34 @@ async function bootWeb(
     patches: [],
   }
   let bundlePatches: PatchOptions[] = [
-    ...loadOverlayPatches('dsh-test', BASE_PATCH),
-    ...webPatches('dsh-test'),
+    ...loadOverlayPatches('nhs-test', BASE_PATCH),
+    ...webPatches('nhs-test'),
   ]
   if (profileBundles !== undefined) {
     await writeFile(join(profileDir, 'package.json'), JSON.stringify({
       private: true,
       dependencies: Object.fromEntries(profileBundles.map(name => [name, 'workspace:*'])),
-      dsh: { profile: { bundles: profileBundles } },
+      nhs: { profile: { bundles: profileBundles } },
     }, null, 2) + '\n')
-    profile = loadProfile('dsh-test', surface, INSTALL_ANCHOR, home, { userLayer: false })
+    profile = loadProfile('nhs-test', surface, INSTALL_ANCHOR, home, { userLayer: false })
     bundlePatches = profile.layers.flatMap(layer => layer.patches)
   }
   // Deployment defaults live in a bundle beneath the profile patch, so Settings writes are not shadowed by overlays.
-  const fixtureName = 'dsh-web-presets-defaults'
+  const fixtureName = 'nhs-web-presets-defaults'
   const fixtureDir = join(profileDir, 'node_modules', fixtureName)
   await mkdir(fixtureDir, { recursive: true })
-  await writeFile(join(fixtureDir, 'package.json'), JSON.stringify({ name: fixtureName, version: '1.0.0', dsh: { bundle: { patch: 'cordis.patch.yml' } } }))
+  await writeFile(join(fixtureDir, 'package.json'), JSON.stringify({ name: fixtureName, version: '1.0.0', nhs: { bundle: { patch: 'cordis.patch.yml' } } }))
   await writeFile(join(fixtureDir, 'cordis.patch.yml'), JSON.stringify(overrides))
-  const manifest = JSON.parse(await readFile(join(profileDir, 'package.json'), 'utf8')) as { dsh: { profile: { bundles: string[] } } }
-  manifest.dsh.profile.bundles.push(fixtureName)
+  const manifest = JSON.parse(await readFile(join(profileDir, 'package.json'), 'utf8')) as { nhs: { profile: { bundles: string[] } } }
+  manifest.nhs.profile.bundles.push(fixtureName)
   await writeFile(join(profileDir, 'package.json'), JSON.stringify(manifest))
   const resolution = await createRuntimeResolution({ installAnchor: INSTALL_ANCHOR, home, profile })
   const rootConfig = join(profileDir, 'cordis.yml')
   await writeFile(rootConfig, '[]\n')
-  return await boot('dsh-test', rootConfig, [...bundlePatches, ...overrides], async (bootCtx) => {
+  return await boot('nhs-test', rootConfig, [...bundlePatches, ...overrides], async (bootCtx) => {
     bootCtx.provide('profileContext', { name: surface, dir: profileDir, patchPath: profile.patchPath,
       installAnchor: INSTALL_ANCHOR, home, cwd: home,
-      startedBundles: profileBundles ?? ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app'],
+      startedBundles: profileBundles ?? ['@noharness/base', '@noharness/web-app'],
       overlays: [], telemetryDisabledEnv: '1' })
     await bootCtx.plugin(PluginPackages, { resolution })
     bootCtx.provide('connection', {
@@ -246,7 +246,7 @@ function toolParameterNames(ctx: Context, agent: Agent, toolName: string): strin
 
 let ctx: Context
 beforeAll(async () => {
-  ctx = await bootWeb(await mkdtemp(join(tmpdir(), 'dsh-web-presets-')))
+  ctx = await bootWeb(await mkdtemp(join(tmpdir(), 'nhs-web-presets-')))
 }, 120_000)
 
 describe('the shipped Web composition', () => {
@@ -308,13 +308,13 @@ describe('the shipped Web composition', () => {
   })
 
   it.each(['standard', 'cordis', 'ptc'] as const)('restores interruption through a complete %s declaration override', async (preset) => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-preset-interrupt-'))
+    const root = await mkdtemp(join(tmpdir(), 'nhs-preset-interrupt-'))
     onTestFinished(() => rm(root, { recursive: true, force: true }))
     const declaration = composeEntries([webPatches('interrupt migration')])
       .find(row => row.id === `preset-${preset}`)!.config as {
       id: string
       order: number
-      plugins: import('@deepseek-ai/cordis-plugin-loader').EntryOptions[]
+      plugins: import('@noharness/cordis-plugin-loader').EntryOptions[]
     }
     const configured = await bootWeb(root, [{
       id: `preset-${preset}`,
@@ -478,7 +478,7 @@ describe('the shipped Web composition', () => {
   })
 
   it('reads an image in minimal mode and carries its durable reference into the next request', async () => {
-    const cwd = await mkdtemp(join(tmpdir(), 'dsh-minimal-image-'))
+    const cwd = await mkdtemp(join(tmpdir(), 'nhs-minimal-image-'))
     onTestFinished(() => rm(cwd, { recursive: true, force: true }))
     await writeFile(join(cwd, 'red.png'), Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC', 'base64'))
     const adapter = new MinimalImageAdapter()
@@ -617,27 +617,27 @@ describe('the shipped Web composition', () => {
       const packageSkills = realpathSync(join(REPO_ROOT, 'packages/preset/agent-preset/skills'))
       const shipped = (await ctx.skills.list({ scope: handle.agent }))
         .filter(skill => skill.path?.startsWith(packageSkills) === true).map(skill => skill.name)
-      expect(shipped).toEqual(['dsh-doc'])
-      expect((await ctx.skills.list()).map(skill => skill.name)).not.toContain('dsh-doc')
+      expect(shipped).toEqual(['nhs-doc'])
+      expect((await ctx.skills.list()).map(skill => skill.name)).not.toContain('nhs-doc')
       const loaded = await executeToolFixture(ctx, {
-        callId: brandString<ToolCallId>('preset-cordis-dsh-doc'),
+        callId: brandString<ToolCallId>('preset-cordis-nhs-doc'),
         name: 'skill',
-        arguments: { name: 'dsh-doc' },
+        arguments: { name: 'nhs-doc' },
         signal: new AbortController().signal,
         agent: handle.agent,
       })
       expect(loaded.isError).toBe(false)
       const output = loaded.content.flatMap(block => block.type === 'text' ? [block.text] : []).join('\n')
-      expect(output).toContain('<skill_content name="dsh-doc">')
-      expect(output).toContain(`Base directory for this skill: ${join(packageSkills, 'dsh-doc')}`)
+      expect(output).toContain('<skill_content name="nhs-doc">')
+      expect(output).toContain(`Base directory for this skill: ${join(packageSkills, 'nhs-doc')}`)
       expect(output).toContain('Loading this skill does not authorize changes.')
       // The composed `read` tool, behind the fs sandbox, returns each whole reference below the
       // pruner threshold, leaving room for an installation path of up to 256 characters.
-      const references = join(packageSkills, 'dsh-doc', 'references')
+      const references = join(packageSkills, 'nhs-doc', 'references')
       for (const file of readdirSync(references).filter(entry => entry !== 'packages.md')) {
         const path = join(references, file)
         const result = await executeToolFixture(ctx, {
-          callId: brandString<ToolCallId>(`preset-cordis-dsh-doc-${file}`),
+          callId: brandString<ToolCallId>(`preset-cordis-nhs-doc-${file}`),
           name: 'read',
           arguments: { file_path: path },
           signal: new AbortController().signal,
@@ -649,7 +649,7 @@ describe('the shipped Web composition', () => {
         expect(codePointLength(text) - codePointLength(path) + 256, file).toBeLessThan(8192)
       }
 
-      // Creator adds its DSH customization intent to the shared coding persona.
+      // Creator adds its NHS customization intent to the shared coding persona.
       const standard = await ctx.agents.create({
         sessionId: brandString<SessionId>('preset-cordis-standard-persona'),
         setup: agentCtx => ctx.agentPresets.mount(agentCtx, 'standard').then(() => undefined),
@@ -663,10 +663,10 @@ describe('the shipped Web composition', () => {
         const standardPrefix = standardPersona.find(section => section.name === 'deployment:persona-prefix')
         expect(standardPrefix?.text).toMatch(/^You are a coding agent powered by the .+ model\.$/u)
         expect(cordisPersona).toEqual(standardPersona.map(section => section.name === 'deployment:persona-prefix'
-          ? { ...section, text: `${section.text} You help the user customize DeepSeek Harness itself.` }
+          ? { ...section, text: `${section.text} You help the user customize NoHarness itself.` }
           : section))
         const definition = composeEntries([webPatches('Creator persona')])
-          .find(row => row.id === 'preset-cordis')!.config as import('@deepseek-ai/dsh-agent-preset-registry').PresetDefinition
+          .find(row => row.id === 'preset-cordis')!.config as import('@noharness/agent-preset-registry').PresetDefinition
         const unregister = await ctx.agentPresets.register({
           ...definition, id: 'cordis-coding-only',
           plugins: definition.plugins.map(row => row.id === 'persona'
@@ -737,16 +737,16 @@ describe('the shipped Web composition', () => {
     }
   })
 
-  it('ships the dsh-doc skill in the declaration package', async () => {
-    const skill = join(REPO_ROOT, 'packages/preset/agent-preset', 'skills', 'dsh-doc', 'SKILL.md')
+  it('ships the nhs-doc skill in the declaration package', async () => {
+    const skill = join(REPO_ROOT, 'packages/preset/agent-preset', 'skills', 'nhs-doc', 'SKILL.md')
 
-    expect((await readFile(skill, 'utf8')).startsWith('---\nname: dsh-doc\n')).toBe(true)
+    expect((await readFile(skill, 'utf8')).startsWith('---\nname: nhs-doc\n')).toBe(true)
   })
 
   it('merges the global skill layer into a preset agent\'s catalog, keeping local discovery preset-side', async () => {
-    const proj = await mkdtemp(join(tmpdir(), 'dsh-preset-skill-proj-'))
-    await mkdir(join(proj, '.dsh', 'skills', 'project-proof'), { recursive: true })
-    await writeFile(join(proj, '.dsh', 'skills', 'project-proof', 'SKILL.md'), [
+    const proj = await mkdtemp(join(tmpdir(), 'nhs-preset-skill-proj-'))
+    await mkdir(join(proj, '.nhs', 'skills', 'project-proof'), { recursive: true })
+    await writeFile(join(proj, '.nhs', 'skills', 'project-proof', 'SKILL.md'), [
       '---',
       'name: project-proof',
       'description: Proves the preset layer discovers project skills beside global ones.',
@@ -757,7 +757,7 @@ describe('the shipped Web composition', () => {
     ].join('\n'))
 
     const handle = await ctx.agents.create({
-      // Unique per run: the composition persists into the ambient DSH home,
+      // Unique per run: the composition persists into the ambient NHS home,
       // and a fixed id would collide with a log an earlier run left there.
       sessionId: brandString<SessionId>(`preset-skills-standard-${randomUUID()}`),
       setup: agentCtx => ctx.agentPresets.mount(agentCtx, 'standard').then(() => undefined),
@@ -766,25 +766,25 @@ describe('the shipped Web composition', () => {
       // The host (global) view carries the deployment-level providers alone:
       // local discovery moved behind the presets with `skill-filesystem`.
       expect((await ctx.skills.list({ cwd: proj })).map(skill => skill.name)).toEqual([
-        'dsh-badge', 'office', 'office-docx', 'office-pptx', 'office-xlsx',
+        'nhs-badge', 'office', 'office-docx', 'office-pptx', 'office-xlsx',
       ])
 
       // The standard agent's view merges the global layer with its preset's
       // own local discovery over the session cwd.
       const scoped = (await ctx.skills.list({ cwd: proj, scope: handle.agent })).map(skill => skill.name)
-      expect(scoped).toContain('dsh-badge')
+      expect(scoped).toContain('nhs-badge')
       expect(scoped).toContain('project-proof')
 
       // The preset's own loader tool resolves the global-layer skill.
       const loaded = await executeToolFixture(ctx, {
         callId: brandString<ToolCallId>('preset-skills-load'),
         name: 'skill',
-        arguments: { name: 'dsh-badge' },
+        arguments: { name: 'nhs-badge' },
         signal: new AbortController().signal,
         agent: handle.agent,
       })
       expect(loaded.isError).toBe(false)
-      expect(JSON.stringify(loaded.content)).toContain('powered by dsh')
+      expect(JSON.stringify(loaded.content)).toContain('powered by nhs')
     } finally {
       await handle.dispose()
     }
@@ -799,7 +799,7 @@ describe('the shipped Web composition', () => {
       // Layer visibility is the registry's; whether an agent can USE skills
       // stays the preset's choice — minimal mounts no `tool-skill`, so its
       // tool table has no loader even though the global layer is readable.
-      expect((await ctx.skills.list({ scope: handle.agent })).map(skill => skill.name)).toContain('dsh-badge')
+      expect((await ctx.skills.list({ scope: handle.agent })).map(skill => skill.name)).toContain('nhs-badge')
       expect(toolNames(ctx, handle.agent)).toEqual(['bash', 'read_image', 'team_task_create', 'team_task_get', 'team_task_list', 'team_task_update', 'working_directory'])
     } finally {
       await handle.dispose()
@@ -831,7 +831,7 @@ describe('the shipped Web composition', () => {
 
 describe('preset-selected delegation through the Web Loader', () => {
   it('exposes configured delegation tools when each preset switch resolves', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-delegation-switch-'))
+    const root = await mkdtemp(join(tmpdir(), 'nhs-delegation-switch-'))
     try {
       const configured = await bootWeb(root, loadOverlayPatches('delegation-switch',
         join(REPO_ROOT, 'apps/cli/tests/profiles/subagent-preset-switch.overlay.yml')))
@@ -871,10 +871,10 @@ describe.each(['web', 'desktop'] as const)('%s native subagent bundles', (surfac
   const toolName = (product: Product): string => `subagent_${product.replaceAll('-', '_')}`
 
   async function bootSelected(installed: readonly Product[], extra: PatchOptions[] = []): Promise<Context> {
-    const root = await mkdtemp(join(tmpdir(), `dsh-${surface}-native-bundles-`))
+    const root = await mkdtemp(join(tmpdir(), `nhs-${surface}-native-bundles-`))
     onTestFinished(async () => { await rm(root, { recursive: true, force: true }) })
     return await bootWeb(root, extra, installed.map(packageDir), [
-      '@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app', ...installed.map(product => `@deepseek-ai/dsh-subagent-${product}`),
+      '@noharness/base', '@noharness/web-app', ...installed.map(product => `@noharness/subagent-${product}`),
     ], surface)
   }
 
@@ -916,7 +916,7 @@ describe.each(['web', 'desktop'] as const)('%s native subagent bundles', (surfac
     }, 120_000)
 
   it('keeps provider identities and applies later Host row overrides', async () => {
-    const providerConfig = { model: 'adoption-model', env: { DSH_NATIVE_ADOPTION: 'preserved' } }
+    const providerConfig = { model: 'adoption-model', env: { NHS_NATIVE_ADOPTION: 'preserved' } }
     const productCtx = await bootSelected(products, [
       ...products.map(product => ({ id: `subagent-${product}`, config: providerConfig })),
       { id: 'tool-subagent-codex', disabled: true },
@@ -938,18 +938,18 @@ describe.each(['web', 'desktop'] as const)('%s native subagent bundles', (surfac
 
 describe('the standard preset documentation skill', () => {
   it.for([false, true])('loads the packaged skill without adding tools (badge skill: %s)', async (withBadge: boolean) => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-standard-doc-'))
-    vi.stubEnv('DSH_HOME', join(root, 'home'))
-    vi.stubEnv('DSH_AGENTS_HOME', join(root, 'agents-home'))
-    vi.stubEnv('DSH_BUNDLED_SKILL_DIR', join(root, 'bundled-skills'))
+    const root = await mkdtemp(join(tmpdir(), 'nhs-standard-doc-'))
+    vi.stubEnv('NHS_HOME', join(root, 'home'))
+    vi.stubEnv('NHS_AGENTS_HOME', join(root, 'agents-home'))
+    vi.stubEnv('NHS_BUNDLED_SKILL_DIR', join(root, 'bundled-skills'))
     let docCtx: Context | undefined
     try {
       const standard = composeEntries([webPatches('standard documentation')])
-        .find(row => row.id === 'preset-standard')!.config as import('@deepseek-ai/dsh-agent-preset-registry').PresetDefinition
+        .find(row => row.id === 'preset-standard')!.config as import('@noharness/agent-preset-registry').PresetDefinition
       docCtx = await bootWeb(root, [
         { id: 'skill-badge', disabled: !withBadge },
         { insert: [{
-          id: 'preset-standard-without-doc', name: '@deepseek-ai/dsh-agent-preset',
+          id: 'preset-standard-without-doc', name: '@noharness/agent-preset',
           config: {
             ...standard, id: 'standard-without-doc',
             plugins: standard.plugins.map(row => row.id === 'skill-filesystem'
@@ -974,15 +974,15 @@ describe('the standard preset documentation skill', () => {
       const baselineSkills = await testCtx.skills.list({ cwd: root, scope: baseline.agent })
       const skills = await testCtx.skills.list({ cwd: root, scope: standardAgent.agent })
       expect(skills.map(skill => skill.name).sort())
-        .toEqual([...baselineSkills.map(skill => skill.name), 'dsh-doc'].sort())
-      const definition = await testCtx.skills.get('dsh-doc', { cwd: root, scope: standardAgent.agent })
-      expect(definition?.path).toBe(await realpath(join(REPO_ROOT, 'packages/preset/agent-preset/skills/dsh-doc/SKILL.md')))
-      if (definition === undefined) throw new Error('standard has no packaged dsh-doc skill')
+        .toEqual([...baselineSkills.map(skill => skill.name), 'nhs-doc'].sort())
+      const definition = await testCtx.skills.get('nhs-doc', { cwd: root, scope: standardAgent.agent })
+      expect(definition?.path).toBe(await realpath(join(REPO_ROOT, 'packages/preset/agent-preset/skills/nhs-doc/SKILL.md')))
+      if (definition === undefined) throw new Error('standard has no packaged nhs-doc skill')
       const creator = await testCtx.agents.create({
         sessionId: brandString<SessionId>('standard-doc-creator'), meta: { cwd: root },
         setup: agentCtx => testCtx.agentPresets.mount(agentCtx, 'cordis').then(() => undefined),
       })
-      expect((await testCtx.skills.get('dsh-doc', { cwd: root, scope: creator.agent }))?.path).toBe(definition.path)
+      expect((await testCtx.skills.get('nhs-doc', { cwd: root, scope: creator.agent }))?.path).toBe(definition.path)
       const schemas = testCtx.tools.schemas(standardAgent.agent)
       expect(schemas).toEqual(testCtx.tools.schemas(baseline.agent))
       expect(schemas.map(tool => tool.name)).not.toContain('cordis_inspect_list')
@@ -1025,7 +1025,7 @@ describe('the standard preset documentation skill', () => {
       const before = await readFile(profileManifest, 'utf8')
       const loaded = await executeToolFixture(testCtx, {
         agent: standardAgent.agent, callId: brandString<ToolCallId>('standard-doc-load'),
-        name: 'skill', arguments: { name: 'dsh-doc' }, signal: new AbortController().signal,
+        name: 'skill', arguments: { name: 'nhs-doc' }, signal: new AbortController().signal,
       })
       expect(loaded.isError).toBe(false)
       expect(loaded.content.some(block => block.type === 'text' && block.text.includes(definition.content))).toBe(true)
@@ -1038,30 +1038,30 @@ describe('the standard preset documentation skill', () => {
       }
     }
   })
-  it('prefers project dsh-doc overrides while packaged guidance wins over user skills', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-standard-doc-priority-'))
+  it('prefers project nhs-doc overrides while packaged guidance wins over user skills', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'nhs-standard-doc-priority-'))
     const home = join(root, 'home')
     const agentsHome = join(root, 'agents-home')
     const workspace = join(root, 'workspace')
     const projectAgents = join(root, 'project-agents')
-    const projectDsh = join(root, 'project-dsh')
-    vi.stubEnv('DSH_HOME', home)
-    vi.stubEnv('DSH_AGENTS_HOME', agentsHome)
-    vi.stubEnv('DSH_BUNDLED_SKILL_DIR', join(root, 'bundled-skills'))
+    const projectDsh = join(root, 'project-nhs')
+    vi.stubEnv('NHS_HOME', home)
+    vi.stubEnv('NHS_AGENTS_HOME', agentsHome)
+    vi.stubEnv('NHS_BUNDLED_SKILL_DIR', join(root, 'bundled-skills'))
     let priorityCtx: Context | undefined
     try {
       await mkdir(workspace)
       for (const project of [projectAgents, projectDsh]) await mkdir(join(project, '.git'), { recursive: true })
       for (const [directory, description] of [
-        [join(home, 'skills'), 'User DSH skill'],
+        [join(home, 'skills'), 'User NHS skill'],
         [join(agentsHome, 'skills'), 'User agents skill'],
         [join(projectAgents, '.agents/skills'), 'Project agents skill'],
         [join(projectDsh, '.agents/skills'), 'Lower priority project skill'],
-        [join(projectDsh, '.dsh/skills'), 'Project DSH skill'],
+        [join(projectDsh, '.nhs/skills'), 'Project NHS skill'],
       ] as const) {
-        const skill = join(directory, 'dsh-doc')
+        const skill = join(directory, 'nhs-doc')
         await mkdir(skill, { recursive: true })
-        await writeFile(join(skill, 'SKILL.md'), `---\nname: dsh-doc\ndescription: ${description}\n---\n\n${description}\n`)
+        await writeFile(join(skill, 'SKILL.md'), `---\nname: nhs-doc\ndescription: ${description}\n---\n\n${description}\n`)
       }
       priorityCtx = await bootWeb(root)
       const testCtx = priorityCtx
@@ -1070,13 +1070,13 @@ describe('the standard preset documentation skill', () => {
         setup: agentCtx => testCtx.agentPresets.mount(agentCtx, 'standard').then(() => undefined),
       })
       for (const [cwd, path] of [
-        [workspace, join(REPO_ROOT, 'packages/preset/agent-preset/skills/dsh-doc/SKILL.md')],
-        [projectAgents, join(projectAgents, '.agents/skills/dsh-doc/SKILL.md')],
-        [projectDsh, join(projectDsh, '.dsh/skills/dsh-doc/SKILL.md')],
+        [workspace, join(REPO_ROOT, 'packages/preset/agent-preset/skills/nhs-doc/SKILL.md')],
+        [projectAgents, join(projectAgents, '.agents/skills/nhs-doc/SKILL.md')],
+        [projectDsh, join(projectDsh, '.nhs/skills/nhs-doc/SKILL.md')],
       ] as const) {
         const skills = await testCtx.skills.list({ cwd, scope: handle.agent })
-        expect(skills.filter(skill => skill.name === 'dsh-doc')).toHaveLength(1)
-        expect((await testCtx.skills.get('dsh-doc', { cwd, scope: handle.agent }))?.path).toBe(await realpath(path))
+        expect(skills.filter(skill => skill.name === 'nhs-doc')).toHaveLength(1)
+        expect((await testCtx.skills.get('nhs-doc', { cwd, scope: handle.agent }))?.path).toBe(await realpath(path))
       }
     } finally {
       try { await priorityCtx?.fiber.dispose() } finally {
@@ -1095,13 +1095,13 @@ describe('a user preset declared from the shipped cordis rows', () => {
 
   it('mounts beside the shipped `cordis` preset and reads the shared Host inspect providers', async () => {
     // The Host inspect providers are one process-global set registered by the
-    // host composition (`@deepseek-ai/dsh-tool-cordis/host`); each preset's
+    // host composition (`@noharness/tool-cordis/host`); each preset's
     // `tool-cordis` row only registers the tools. Before that split the copy
     // failed to mount: its row re-registered provider "Service".
-    const root = await mkdtemp(join(tmpdir(), 'dsh-copied-preset-'))
-    const cordis = composeEntries([webPatches('test')]).find(row => row.id === 'preset-cordis')!.config as import('@deepseek-ai/dsh-agent-preset-registry').PresetDefinition
+    const root = await mkdtemp(join(tmpdir(), 'nhs-copied-preset-'))
+    const cordis = composeEntries([webPatches('test')]).find(row => row.id === 'preset-cordis')!.config as import('@noharness/agent-preset-registry').PresetDefinition
     const copyCtx = await bootWeb(root, [{ insert: [{
-      id: 'preset-cordis-copy', name: '@deepseek-ai/dsh-agent-preset',
+      id: 'preset-cordis-copy', name: '@noharness/agent-preset',
       config: { ...cordis, id: 'cordis-copy', name: 'Cordis copy' },
     }] }])
     try {
@@ -1166,7 +1166,7 @@ describe('a user preset declared from the shipped cordis rows', () => {
           expect(page.isError, resultText(page)).toBe(false)
           return (JSON.parse(resultText(page)) as ConfigPage).data
         }
-        const toolsRows = await listConfigs({ name: '@deepseek-ai/dsh-agent-loop' }, 'copied-preset-inspect-configs')
+        const toolsRows = await listConfigs({ name: '@noharness/agent-loop' }, 'copied-preset-inspect-configs')
         const toolsRow = toolsRows.entries[0]
         expect(toolsRow).toMatchObject({ patchId: 'agent-loop', status: 'schema' })
         expect(toolsRows).toMatchObject({ total: 1, nextOffset: null })
@@ -1360,7 +1360,7 @@ describe('a profile patch stored before Developer tools owned preset selection',
   let legacy: Context
   let legacyHome: string
   beforeAll(async () => {
-    legacyHome = await mkdtemp(join(tmpdir(), 'dsh-web-presets-legacy-'))
+    legacyHome = await mkdtemp(join(tmpdir(), 'nhs-web-presets-legacy-'))
     // A stored configuration from before the switch moved to Developer tools:
     // it carries the retired key beside the default the user had saved. The
     // Loader resolves the declared fields and leaves the extra one alone.

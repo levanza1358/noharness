@@ -1,5 +1,5 @@
 /**
- * The bundle's substance is its patch file: the `dsh.bundle.patch` manifest
+ * The bundle's substance is its patch file: the `nhs.bundle.patch` manifest
  * field must name a real, parseable patch list.
  */
 
@@ -7,20 +7,20 @@ import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { parseEntryYaml } from '@deepseek-ai/cordis-plugin-include'
-import { evaluate } from '@deepseek-ai/cordis-plugin-loader'
+import { parseEntryYaml } from '@noharness/cordis-plugin-include'
+import { evaluate } from '@noharness/cordis-plugin-loader'
 
-describe('dsh-base bundle', () => {
-  it('declares a parseable patch list through the dsh.bundle.patch manifest field', () => {
+describe('nhs-base bundle', () => {
+  it('declares a parseable patch list through the nhs.bundle.patch manifest field', () => {
     const root = fileURLToPath(new URL('..', import.meta.url))
     const manifest = JSON.parse(
       readFileSync(resolve(root, 'package.json'), 'utf8'),
     ) as {
       dependencies?: Record<string, string>
-      dsh?: { bundle?: { patch?: string } }
+      nhs?: { bundle?: { patch?: string } }
     }
-    expect(manifest.dsh?.bundle?.patch).toBe('./cordis.patch.yml')
-    const parsed = parseEntryYaml(readFileSync(resolve(root, manifest.dsh!.bundle!.patch!), 'utf8'))
+    expect(manifest.nhs?.bundle?.patch).toBe('./cordis.patch.yml')
+    const parsed = parseEntryYaml(readFileSync(resolve(root, manifest.nhs!.bundle!.patch!), 'utf8'))
     expect(Array.isArray(parsed)).toBe(true)
     // The base layer is one insert list over the empty profile root.
     const rows = (parsed as { insert?: { id?: string; config?: Record<string, unknown>; disabled?: boolean }[] }[]).flatMap(
@@ -30,7 +30,7 @@ describe('dsh-base bundle', () => {
     expect(rows.some(row => row.id === 'agent-loop')).toBe(true)
     expect(rows.find(row => row.id === 'session-telemetry-otel')?.disabled).toBeUndefined()
     expect(rows.find(row => row.id === 'session-telemetry-otel')?.config?.['mode']).toEqual({
-      __jsExpr: "process.env.DSH_TELEMETRY_MODE || 'FEEDBACK_ONLY'",
+      __jsExpr: "process.env.NHS_TELEMETRY_MODE || 'FEEDBACK_ONLY'",
     })
     expect(rows.find(row => row.id === 'hmr')).toMatchObject({
       config: { root: [] },
@@ -38,17 +38,17 @@ describe('dsh-base bundle', () => {
     expect(rows.filter(row => row.id === 'subagent-codex')).toHaveLength(0)
     expect(rows.filter(row => row.id === 'subagent-claude-code')).toHaveLength(0)
     expect(rows.find(row => row.id === 'web')?.config).toEqual({ searchProvider: 'deepseek-search-api', fetchProvider: 'http' })
-    expect(rows.find(row => row.id === 'web-deepseek-api')).toEqual({ id: 'web-deepseek-api', name: '@deepseek-ai/dsh-web-deepseek-api' })
+    expect(rows.find(row => row.id === 'web-deepseek-api')).toEqual({ id: 'web-deepseek-api', name: '@noharness/web-deepseek-api' })
     expect(rows.find(row => row.id === 'web-fetch-http')).toBeDefined()
     expect(rows.find(row => row.id === 'web-search-deepseek')).toMatchObject({
-      name: '@deepseek-ai/dsh-web-search-deepseek', config: { apiKeyEnv: 'DEEPSEEK_API_KEY' },
+      name: '@noharness/web-search-deepseek', config: { apiKeyEnv: 'DEEPSEEK_API_KEY' },
     })
     expect(rows.find(row => row.id === 'tool-web')?.config).toMatchObject({ fetch: true })
-    expect(manifest.dependencies).not.toHaveProperty('@deepseek-ai/dsh-subagent-codex')
-    expect(manifest.dependencies).not.toHaveProperty('@deepseek-ai/dsh-subagent-claude-code')
-    expect(manifest.dependencies).toHaveProperty('@deepseek-ai/dsh-web-fetch-http')
-    expect(manifest.dependencies).toHaveProperty('@deepseek-ai/dsh-web-deepseek-api')
-    expect(manifest.dependencies).toHaveProperty('@deepseek-ai/dsh-web-search-deepseek')
+    expect(manifest.dependencies).not.toHaveProperty('@noharness/subagent-codex')
+    expect(manifest.dependencies).not.toHaveProperty('@noharness/subagent-claude-code')
+    expect(manifest.dependencies).toHaveProperty('@noharness/web-fetch-http')
+    expect(manifest.dependencies).toHaveProperty('@noharness/web-deepseek-api')
+    expect(manifest.dependencies).toHaveProperty('@noharness/web-search-deepseek')
   })
 
   it('gates each shell stack by platform with a symmetric disabled expression', () => {

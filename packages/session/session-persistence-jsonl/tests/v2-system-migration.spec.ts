@@ -1,11 +1,11 @@
-import { freezeMessage, type MessageId } from '@deepseek-ai/dsh-llm'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { Context } from '@deepseek-ai/cordis'
-import { SESSION_FORMAT_VERSION, Session, type SessionId, SessionLogOffset, SessionSeq } from '@deepseek-ai/dsh-session'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
-import { SessionFormatUnsupportedError } from '@deepseek-ai/dsh-session-persistence'
-import type { SessionHandle } from '@deepseek-ai/dsh-session-persistence'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
+import { freezeMessage, type MessageId } from '@noharness/llm'
+import { brandString } from '@noharness/brand'
+import { Context } from '@noharness/cordis'
+import { SESSION_FORMAT_VERSION, Session, type SessionId, SessionLogOffset, SessionSeq } from '@noharness/session'
+import type { SessionEvent } from '@noharness/session'
+import { SessionFormatUnsupportedError } from '@noharness/session-persistence'
+import type { SessionHandle } from '@noharness/session-persistence'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
 import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -18,7 +18,7 @@ let root: string
 const contexts: Context[] = []
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'dsh-v2-system-migration-'))
+  root = await mkdtemp(join(tmpdir(), 'nhs-v2-system-migration-'))
 })
 
 afterEach(async () => {

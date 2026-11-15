@@ -1,16 +1,16 @@
-import OTel from '@deepseek-ai/dsh-otel'
+import OTel from '@noharness/otel'
 import { createServer, type Server } from 'node:http'
 import { once } from 'node:events'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { installProxyFromEnvironment } from '@deepseek-ai/dsh-http-proxy'
-import { recordFeedback } from '@deepseek-ai/dsh-command-feedback'
-import { Context } from '@deepseek-ai/cordis'
-import SessionStore, { type SessionId } from '@deepseek-ai/dsh-session'
+import { installProxyFromEnvironment } from '@noharness/http-proxy'
+import { recordFeedback } from '@noharness/command-feedback'
+import { Context } from '@noharness/cordis'
+import SessionStore, { type SessionId } from '@noharness/session'
 import OpenTelemetrySessionBackend, { SessionTelemetryMode } from '../src/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const seen: string[] = []
 const captures: string[] = []
@@ -30,9 +30,9 @@ async function listen(server: Server): Promise<string> {
 }
 
 beforeAll(async () => {
-  home = mkdtempSync(join(tmpdir(), 'dsh-otel-egress-'))
-  previousHome = process.env.DSH_HOME
-  process.env.DSH_HOME = home
+  home = mkdtempSync(join(tmpdir(), 'nhs-otel-egress-'))
+  previousHome = process.env.NHS_HOME
+  process.env.NHS_HOME = home
   const proxy = createServer((request, response) => {
     seen.push(request.url ?? '')
     response.writeHead(502).end('fake-proxy')
@@ -63,8 +63,8 @@ afterAll(async () => {
       server.closeAllConnections()
     })))
   } finally {
-    if (previousHome === undefined) delete process.env.DSH_HOME
-    else process.env.DSH_HOME = previousHome
+    if (previousHome === undefined) delete process.env.NHS_HOME
+    else process.env.NHS_HOME = previousHome
     rmSync(home, { recursive: true, force: true })
   }
 })

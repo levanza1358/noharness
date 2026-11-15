@@ -8,12 +8,12 @@
  * the drawings: path keys, where a tab's file sits in the listed tree, and the
  * navigator's geometry.
  */
-import { defineStore, type EngineStoreHandle } from '@deepseek-ai/dsh-client-store'
-import type { RemoteFailure } from '@deepseek-ai/dsh-api-remotes/client'
-import type { PaneId } from '@deepseek-ai/dsh-client-ui-dockkit'
-import type { WorkspaceDirectoryEntry } from '@deepseek-ai/dsh-api-workspace-files/types'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import { isAbsoluteWorkspacePath, parseFileAddress } from '@deepseek-ai/dsh-util-workspace-path'
+import { defineStore, type EngineStoreHandle } from '@noharness/client-store'
+import type { RemoteFailure } from '@noharness/api-remotes/client'
+import type { PaneId } from '@noharness/client-ui-dockkit'
+import type { WorkspaceDirectoryEntry } from '@noharness/api-workspace-files/types'
+import type { SessionId } from '@noharness/session/types'
+import { isAbsoluteWorkspacePath, parseFileAddress } from '@noharness/util-workspace-path'
 
 /** The navigator's width before a pane has a preference, in CSS pixels. */
 export const DEFAULT_NAVIGATOR_WIDTH = 260

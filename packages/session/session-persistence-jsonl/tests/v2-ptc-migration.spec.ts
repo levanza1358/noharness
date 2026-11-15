@@ -1,16 +1,16 @@
 /** Real JSONL publication and provider-neutral message preservation across the V2 PTC rename. */
 
-import { Context } from '@deepseek-ai/cordis'
-import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@deepseek-ai/dsh-session'
-import type { SessionFormatEvent } from '@deepseek-ai/dsh-session-format'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
+import { Context } from '@noharness/cordis'
+import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@noharness/session'
+import type { SessionFormatEvent } from '@noharness/session-format'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
 import { createHash } from 'node:crypto'
 import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { generationLogPath } from '../src/format.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const userMessage = {
   id: 'tools-code-mode:user', role: 'user', source: { kind: 'user' },
@@ -18,7 +18,7 @@ const userMessage = {
 }
 const titleMessage = {
   id: 'tools-code-mode:title-input', role: 'user',
-  source: { kind: 'plugin', plugin: 'dsh-session-title-llm' },
+  source: { kind: 'plugin', plugin: 'nhs-session-title-llm' },
   content: [{ type: 'text', text: 'Generate the session title from this JSON array of human messages:\n[{"seq":2,"text":"Keep tools-code-mode and tool/code-dispatch in this text. 图片"}]' }],
 }
 const toolCall = {
@@ -110,7 +110,7 @@ describe('JSONL V2 PTC publication and restore', () => {
   let ctx: Context | undefined
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-jsonl-v2-ptc-'))
+    root = await mkdtemp(join(tmpdir(), 'nhs-jsonl-v2-ptc-'))
     ctx = new Context()
     await ctx.plugin(JsonlSessionPersistence, { root, compression: 'none' })
   })
@@ -172,7 +172,7 @@ describe('JSONL V2 PTC publication and restore', () => {
     expectedEvents[10] = { ...expectedEvents[10], data: {
       ...(events[10]?.data as Record<string, unknown>), messageSeqs: [3],
       messages: titleRequestData.messages.map(message => ({
-        ...message, source: { kind: 'dsh-session-title-llm' },
+        ...message, source: { kind: 'nhs-session-title-llm' },
       })),
     } } as SessionFormatEvent
     const systemMessage = {

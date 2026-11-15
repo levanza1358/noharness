@@ -1,7 +1,7 @@
 /** Session approval for explicit physical pointer moves, shared by capable CUA providers. */
-import type { Context } from '@deepseek-ai/cordis'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { UserQuestionError } from '@deepseek-ai/dsh-user-questions'
+import type { Context } from '@noharness/cordis'
+import type { Agent } from '@noharness/agent'
+import { UserQuestionError } from '@noharness/user-questions'
 import { NativeError } from './native-client.ts'
 import { applicationAccessDisplay } from './locales.ts'
 import { mouseControlPrompt } from './mouse-control-locales.ts'

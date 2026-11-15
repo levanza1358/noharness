@@ -2,15 +2,15 @@
 /** Markdown metadata, deferred slot registration, localization, and unload through the real renderer. */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, waitFor } from '@testing-library/react'
-import { apply as resourcesApply, inject as resourcesInject } from '@deepseek-ai/dsh-client-resources/src/client/index.ts'
-import { SlotTestRuntime } from '@deepseek-ai/dsh-client-test-runtime'
-import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
-import type { UseSidebarRightTabInfo } from '@deepseek-ai/dsh-client-ui-sidebar-right/client'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
+import { apply as resourcesApply, inject as resourcesInject } from '@noharness/client-resources/src/client/index.ts'
+import { SlotTestRuntime } from '@noharness/client-test-runtime'
+import { LocaleRuntime } from '@noharness/client-locale/client'
+import type { UseSidebarRightTabInfo } from '@noharness/client-ui-sidebar-right/client'
+import type { SessionId } from '@noharness/session/types'
 import { DocumentPreviewRegistry } from '../src/client/document/registry.ts'
 import { documentTabInfoFactory } from '../src/client/document/contract.ts'
 import { apply, MARKDOWN_BODY_ID, markdownDefinition } from '../src/client/markdown/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const runtimes: SlotTestRuntime[] = []
 
@@ -66,7 +66,7 @@ describe('Markdown implementation registration', () => {
     }, ({ renderSlot, SessionProvider }) => (
       <SessionProvider session={reference}>
         {renderSlot('sidebar.right.tab.document', {
-          resourceAddress: 'dsh-resource://file/session/markdown-registration/notes.md',
+          resourceAddress: 'nhs-resource://file/session/markdown-registration/notes.md',
           content: { kind: 'text', text: '# Notes\n\n```ts\nconst value = 1\n```\n\n![diagram](images/a.png)', pages: [], eof: true },
           wrap: false,
           scrollportRef: vi.fn(),

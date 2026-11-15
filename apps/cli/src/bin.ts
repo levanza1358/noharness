@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * Command-line entry for dsh.
- * @module @deepseek-ai/dsh/bin
+ * Command-line entry for nhs.
+ * @module @noharness/cli/bin
  */
 
 /* v8 ignore file -- built-bin acceptance exercises this self-executing dispatch. */
 
-import { getDshRuntimeVersion, loadLayeredEnv, StartupError } from '@deepseek-ai/dsh-app-boot'
-import { resolveDshHome } from '@deepseek-ai/dsh-home-paths'
+import { getDshRuntimeVersion, loadLayeredEnv, StartupError } from '@noharness/app-boot'
+import { resolveDshHome } from '@noharness/home-paths'
 import { parseDshArgs } from './args.ts'
 import { reportStartupFailure } from './startup-diagnostics.ts'
 import type { RunProfileOptions } from './profile-boot.ts'
@@ -19,7 +19,7 @@ export type RunCliOptions = Pick<RunProfileOptions, 'packageManager'> & {
 }
 
 /**
- * Run the public dsh command-line interface.
+ * Run the public nhs command-line interface.
  * @param options - Package runtime and Desktop profile access supplied by the installation.
  * @returns a promise that settles when the selected command mode finishes.
  */
@@ -33,7 +33,7 @@ export async function runCli(options: RunCliOptions = {}): Promise<void> {
       const { runProfile } = await import('./profile-boot.ts')
       try {
         await runProfile({
-          environment: loadLayeredEnv('dsh'),
+          environment: loadLayeredEnv('nhs'),
           profile: invocation.profile,
           fromDefaultProfile: invocation.fromDefaultProfile,
           patchFiles: invocation.patches,
@@ -69,7 +69,7 @@ export async function runCli(options: RunCliOptions = {}): Promise<void> {
     }
     default:
       invocation satisfies never
-      throw new Error(`dsh: unhandled invocation mode ${JSON.stringify(invocation)}`)
+      throw new Error(`nhs: unhandled invocation mode ${JSON.stringify(invocation)}`)
   }
 }
 

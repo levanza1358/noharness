@@ -1,17 +1,17 @@
 /** Host-wide durable reminders and shared human/model management. */
 import { randomUUID } from 'node:crypto'
 import { isDeepStrictEqual } from 'node:util'
-import z from '@deepseek-ai/schemastery'
-import { Context, Service } from '@deepseek-ai/cordis'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import { RemoteError, TypertRemoteService, Remote } from '@deepseek-ai/dsh-typert-protocol'
-import type { Domain } from '@deepseek-ai/dsh-storage-domain'
-import { delegationDepthOf } from '@deepseek-ai/dsh-subagent'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import type { SessionActivity } from '@deepseek-ai/dsh-workspace'
-import type {} from '@deepseek-ai/dsh-api-session-controller'
+import z from '@noharness/schemastery'
+import { Context, Service } from '@noharness/cordis'
+import type { Agent } from '@noharness/agent'
+import { createUserMessage } from '@noharness/llm'
+import { RemoteError, TypertRemoteService, Remote } from '@noharness/typert-protocol'
+import type { Domain } from '@noharness/storage-domain'
+import { delegationDepthOf } from '@noharness/subagent'
+import { brandString } from '@noharness/brand'
+import type { SessionId } from '@noharness/session/types'
+import type { SessionActivity } from '@noharness/workspace'
+import type {} from '@noharness/api-session-controller'
 import { ScheduleRuntime, type ScheduleRuntimeLimits } from './runtime.ts'
 import { scheduleDomain, scheduleTaskSchema, type ScheduleTask } from './storage.ts'
 import { deliveryHistoryPage } from './delivery-history.ts'
@@ -61,7 +61,7 @@ export {
 } from './domain.ts'
 
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Events {
     /**
      * Restore a reminder's Session through its embedding's owning controller.

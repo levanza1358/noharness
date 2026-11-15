@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-23-client-derived-tool-presentation.md
 /agent-note-client-derived-presentation-from-raw-session-tool-events:
-  en: de8d02e979715600
-  zh: 1db4d0364c30a7e3
+  en: 1ab244f914944ce9
+  zh: 3cf1bba9a973b68b
 /agent-note-client-derived-presentation-from-raw-session-tool-events/problem:
   en: 9f34c53e647c69ca
   zh: 551776c7cc9618b5
 /agent-note-client-derived-presentation-from-raw-session-tool-events/decision:
-  en: 5fcc5a3de9f757cd
-  zh: a693cefdb82784ee
+  en: bd7e546ffe28f313
+  zh: 0f8b2b8682480c89
 /agent-note-client-derived-presentation-from-raw-session-tool-events/decision/goals-and-non-goals:
-  en: 40aceb58d71303b5
-  zh: 6954e41ae2fd1efd
+  en: 1238dc4801931e3c
+  zh: 89cf87867bf306d3
 /agent-note-client-derived-presentation-from-raw-session-tool-events/terminology:
   en: 021106dd41176715
   zh: 131caff7bd37251b
@@ -42,8 +42,8 @@
   en: 6d865d0eb0c5e003
   zh: 1eb0fb7acfb30975
 /agent-note-client-derived-presentation-from-raw-session-tool-events/remote-and-durable-data-contracts/sessionevententry:
-  en: 178513914d9c931c
-  zh: 23b39e82c90a247e
+  en: f72fe0362fa2b752
+  zh: d0c2338bf8f19f31
 /agent-note-client-derived-presentation-from-raw-session-tool-events/remote-and-durable-data-contracts/durable-log:
   en: 6a0aa4dac1cf48d7
   zh: 23753410e5056612
@@ -60,8 +60,8 @@
   en: 46a772ac51da43a2
   zh: 8709a7e3e6a872f1
 /agent-note-client-derived-presentation-from-raw-session-tool-events/client-session-and-conversation/root-and-ptc-dispatch-subcalls:
-  en: 2c8ff511a5527a72
-  zh: 3eeddc9686ff1709
+  en: d1ae459bbe814f2a
+  zh: 5a5cab809d8f36cc
 /agent-note-client-derived-presentation-from-raw-session-tool-events/client-session-and-conversation/missing-call-head:
   en: b9efc339173e546e
   zh: c7639861b3b96e83
@@ -75,8 +75,8 @@
   en: d336c77d1b09f349
   zh: 6e613f9c9108058f
 /agent-note-client-derived-presentation-from-raw-session-tool-events/client-card-model-design/terminal-card:
-  en: 492669c2134169b2
-  zh: 0247a38df2dd8a83
+  en: eba595ad11a63cf1
+  zh: 36506df8206a743c
 /agent-note-client-derived-presentation-from-raw-session-tool-events/client-card-model-design/diff-card:
   en: ea384415c94f82da
   zh: 5f146c6cb534e1db
@@ -147,11 +147,11 @@
   en: 5c43e9a729a57a4f
   zh: aef26f6ef83f1fe1
 /agent-note-client-derived-presentation-from-raw-session-tool-events/verification-matrix/static-and-documentation:
-  en: d25ffb1f8f60e04c
-  zh: 3a105c9669a9b978
+  en: f8ade404deca8be6
+  zh: 9834cb10fa93e6d2
 /agent-note-client-derived-presentation-from-raw-session-tool-events/verification-commands:
-  en: f562776ceda2ac53
-  zh: 24c833727dc5c260
+  en: d2af7695e7451944
+  zh: 005ca1f24be5bc1c
 /agent-note-client-derived-presentation-from-raw-session-tool-events/shipped-invariants:
   en: 3377510eb7639807
   zh: 1d7cdf2a67cf9bde
@@ -183,8 +183,8 @@
   en: bc8905288acaa820
   zh: ff551936bd5ea93f
 /agent-note-client-derived-presentation-from-raw-session-tool-events/alternatives-considered/allow-presentation-enhancements:
-  en: 5ed1954f7399ed95
-  zh: 82ea5a8fd5a66967
+  en: 83d779ceb29bfc01
+  zh: 61e1a65b257b628b
 /agent-note-client-derived-presentation-from-raw-session-tool-events/alternatives-considered/accept-temporary-generic-degradation:
   en: 1a8fd108d32bd199
   zh: 5cd1c7adf3fe824d
@@ -222,8 +222,8 @@
   en: d7e581086940fafa
   zh: d452320fee6ef875
 /agent-note-client-derived-presentation-from-raw-session-tool-events/relationship-to-existing-decisions:
-  en: ecd63b5a47a1ec5e
-  zh: c98c8a27a261419a
+  en: c1b44529b9d3f1ff
+  zh: 77045ce87b19bccf
 /agent-note-client-derived-presentation-from-raw-session-tool-events/deferred:
   en: a60c9007c9d26dfd
   zh: 225b1f7544bca324

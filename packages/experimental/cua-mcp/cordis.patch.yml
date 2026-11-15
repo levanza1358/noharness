@@ -5,7 +5,7 @@
 # stdio connection owns one Agent whose cua_run_code programs retain state until
 # the client disconnects or calls cua_reset.
 #
-# Row ids match dsh-base where the plugin is the same, so a profile or home
+# Row ids match nhs-base where the plugin is the same, so a profile or home
 # cordis.patch.yml written for a base-backed profile addresses them unchanged.
 
 - insert:
@@ -13,33 +13,33 @@
     # and screenshots) and the projections that approval, sandbox policy, and the
     # Agent registry derive from it.
     - id: session
-      name: '@deepseek-ai/dsh-session'
+      name: '@noharness/session'
 
     - id: session-persistence-jsonl
-      name: '@deepseek-ai/dsh-session-persistence-jsonl'
+      name: '@noharness/session-persistence-jsonl'
       config:
-        root: !!js dshHomePath('sessions')
+        root: !!js nhsHomePath('sessions')
 
     - id: session-projection
-      name: '@deepseek-ai/dsh-session-projection'
+      name: '@noharness/session-projection'
 
     - id: attachment-local
-      name: '@deepseek-ai/dsh-attachment-local'
+      name: '@noharness/attachment-local'
 
     - id: working-directory
-      name: '@deepseek-ai/dsh-working-directory'
+      name: '@noharness/working-directory'
 
     # Durable KV storage for the provider's application grants.
     - id: storage
-      name: '@deepseek-ai/dsh-storage'
+      name: '@noharness/storage'
 
     - id: storage-json
-      name: '@deepseek-ai/dsh-storage-json'
+      name: '@noharness/storage-json'
       config:
-        root: !!js dshHomePath('storages')
+        root: !!js nhsHomePath('storages')
 
     - id: storage-domain
-      name: '@deepseek-ai/dsh-storage-domain'
+      name: '@noharness/storage-domain'
       config:
         backend: json
 
@@ -48,75 +48,75 @@
     # root is its Agent's working directory, which the cua-mcp row sets to the
     # workspace below; this row's root covers calls without a Session.
     - id: subprocess
-      name: '@deepseek-ai/dsh-subprocess-local'
+      name: '@noharness/subprocess-local'
 
     - id: sandbox
-      name: '@deepseek-ai/dsh-sandbox-local'
+      name: '@noharness/sandbox-local'
 
     - id: sandbox-policy
-      name: '@deepseek-ai/dsh-sandbox-policy'
+      name: '@noharness/sandbox-policy'
       config:
-        mode: !!js process.env.DSH_PERMISSION_MODE ?? 'workspace-write'
-        workspaceRoot: !!js process.env.DSH_CUA_WORKSPACE ?? dshHomePath('cua-mcp', 'workspace')
+        mode: !!js process.env.NHS_PERMISSION_MODE ?? 'workspace-write'
+        workspaceRoot: !!js process.env.NHS_CUA_WORKSPACE ?? nhsHomePath('cua-mcp', 'workspace')
 
     - id: approval
-      name: '@deepseek-ai/dsh-user-approval'
+      name: '@noharness/user-approval'
       config:
-        policy: !!js "(process.env.DSH_PERMISSION_MODE ?? 'workspace-write') === 'danger-full-access' ? 'never' : 'ask'"
+        policy: !!js "(process.env.NHS_PERMISSION_MODE ?? 'workspace-write') === 'danger-full-access' ? 'never' : 'ask'"
 
     - id: fs-sandbox
-      name: '@deepseek-ai/dsh-fs-sandbox'
+      name: '@noharness/fs-sandbox'
 
     # Tool execution and the Agent that owns the connection.
     - id: tools
-      name: '@deepseek-ai/dsh-tools'
+      name: '@noharness/tools'
 
     - id: tool-executor-native
-      name: '@deepseek-ai/dsh-tool-executor-native'
+      name: '@noharness/tool-executor-native'
 
     - id: system-prompt
-      name: '@deepseek-ai/dsh-system-prompt'
+      name: '@noharness/system-prompt'
       config:
         personaPrefix: ''
 
     - id: user-questions
-      name: '@deepseek-ai/dsh-user-questions'
+      name: '@noharness/user-questions'
 
     # The Agent registry creates the connection Agent through the agent-loop
     # factory; no model adapter is mounted on the llm hub, so no turn can run.
     - id: llm
-      name: '@deepseek-ai/dsh-llm'
+      name: '@noharness/llm'
 
     - id: agent
-      name: '@deepseek-ai/dsh-agent'
+      name: '@noharness/agent'
 
     - id: agent-loop
-      name: '@deepseek-ai/dsh-agent-loop'
+      name: '@noharness/agent-loop'
       config:
         agents: []
 
     # A composed preset selects cua_run_code for the connection's Agent; the
     # empty preset keeps every model-facing row out of this profile.
     - id: cua-mcp-presets
-      name: '@deepseek-ai/dsh-agent-preset-registry'
+      name: '@noharness/agent-preset-registry'
       config:
         default: cua-mcp
 
     - id: cua-mcp-preset
-      name: '@deepseek-ai/dsh-agent-preset'
+      name: '@noharness/agent-preset'
       config:
         id: cua-mcp
         plugins: []
 
     - id: cua-mcp-computer-use
-      name: '@deepseek-ai/dsh-computer-use'
+      name: '@noharness/computer-use'
 
     # One native provider per Host: macOS, and native Windows (not WSL). Both
     # are optional dependencies that an installation on another platform can
     # lack, so each row is disabled off its own Host.
     # Screenshots target a fixed request image because no model route exists here.
     - id: cua-mcp-provider
-      name: '@deepseek-ai/dsh-cua-macos'
+      name: '@noharness/cua-macos'
       disabled: !!js process.platform !== 'darwin'
       config:
         agentPreset: ptc
@@ -125,7 +125,7 @@
           maxBytes: 2097152
 
     - id: cua-mcp-provider-windows
-      name: '@deepseek-ai/dsh-cua-windows'
+      name: '@noharness/cua-windows'
       disabled: !!js process.platform !== 'win32'
       config:
         agentPreset: ptc
@@ -133,13 +133,13 @@
           longEdge: 2048
           maxBytes: 2097152
 
-    # DSH_CUA_CONSENT=allow grants application and pointer access without a human;
+    # NHS_CUA_CONSENT=allow grants application and pointer access without a human;
     # the default forwards each request to the MCP client as an elicitation.
-    # DSH_CUA_WORKSPACE is the directory programs start in and may write under
+    # NHS_CUA_WORKSPACE is the directory programs start in and may write under
     # workspace-write; the default stays inside the Harness home whatever
     # directory the client started the server in.
     - id: cua-mcp
-      name: '@deepseek-ai/dsh-cua-mcp'
+      name: '@noharness/cua-mcp'
       config:
-        consent: !!js process.env.DSH_CUA_CONSENT ?? 'elicit'
-        workspace: !!js process.env.DSH_CUA_WORKSPACE ?? dshHomePath('cua-mcp', 'workspace')
+        consent: !!js process.env.NHS_CUA_CONSENT ?? 'elicit'
+        workspace: !!js process.env.NHS_CUA_WORKSPACE ?? nhsHomePath('cua-mcp', 'workspace')

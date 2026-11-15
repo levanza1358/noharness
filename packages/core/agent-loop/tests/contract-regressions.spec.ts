@@ -1,19 +1,19 @@
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import LlmRuntime, { type RequestMessage, createUserMessage, type ToolCallId, LlmError, MessageSource, type ProviderRequestId, StreamChunk  } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import SessionStore, { Session, SessionEvent, type SessionId, TurnEndReason, type UserMessage } from '@deepseek-ai/dsh-session'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { type PostToolDecision } from '@deepseek-ai/dsh-tools'
-import { defineContentToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import { Context } from '@noharness/cordis'
+import { brandString } from '@noharness/brand'
+import LlmRuntime, { type RequestMessage, createUserMessage, type ToolCallId, LlmError, MessageSource, type ProviderRequestId, StreamChunk  } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import SessionStore, { Session, SessionEvent, type SessionId, TurnEndReason, type UserMessage } from '@noharness/session'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime, { type PostToolDecision } from '@noharness/tools'
+import { defineContentToolFixture } from '@noharness/tool-testkit'
+import AgentRegistry, { type Agent } from '@noharness/agent'
+import AgentLoop from '@noharness/agent-loop'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }

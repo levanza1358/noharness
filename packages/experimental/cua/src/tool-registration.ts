@@ -1,15 +1,15 @@
 /** Agent-scoped raw CUA and persistent program tool registrations. */
 import { extname } from 'node:path'
-import type { Context, Fiber } from '@deepseek-ai/cordis'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { createScope, type Scope } from '@deepseek-ai/dsh-scope'
-import NodePtcRuntime from '@deepseek-ai/dsh-ptc-runtime-node'
-import { createRunCodeTool } from '@deepseek-ai/dsh-tool-executor-ptc/run-code'
-import type { ToolDefinition } from '@deepseek-ai/dsh-tools'
-import { longEdgeDimensions, type ImageAttachmentRef, type ImageRequestTarget } from '@deepseek-ai/dsh-attachment'
-import type { PromptSection } from '@deepseek-ai/dsh-system-prompt'
-import type {} from '@deepseek-ai/dsh-agent-preset-registry'
-import type {} from '@deepseek-ai/dsh-working-directory'
+import type { Context, Fiber } from '@noharness/cordis'
+import type { Agent } from '@noharness/agent'
+import { createScope, type Scope } from '@noharness/scope'
+import NodePtcRuntime from '@noharness/ptc-runtime-node'
+import { createRunCodeTool } from '@noharness/tool-executor-ptc/run-code'
+import type { ToolDefinition } from '@noharness/tools'
+import { longEdgeDimensions, type ImageAttachmentRef, type ImageRequestTarget } from '@noharness/attachment'
+import type { PromptSection } from '@noharness/system-prompt'
+import type {} from '@noharness/agent-preset-registry'
+import type {} from '@noharness/working-directory'
 import type { CuaConfig } from './index.ts'
 import type { CuaScreenshotTargetConfig } from './config.ts'
 import { CUA_PROMPT_SECTION_NAME } from './guidance.ts'
@@ -43,7 +43,7 @@ export interface CuaPrograms {
   screenshotRequestTarget(image: ImageAttachmentRef): ImageRequestTarget | undefined
 }
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Present while the CUA provider owns a dedicated program runtime. */
     cuaPrograms: CuaPrograms

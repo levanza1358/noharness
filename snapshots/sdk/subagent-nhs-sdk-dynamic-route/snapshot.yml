@@ -1,0 +1,10 @@
+version: 1
+scenario: subagent-nhs-sdk-dynamic-route
+profile: sdk
+composition: sdk-nhs-sdk-dynamic-route
+recording: authored
+header:
+  class: sdk-nhs-sdk-dynamic-route
+  pin: true
+  childSystemPrompts: [1]
+  childToolSchemas: [1]

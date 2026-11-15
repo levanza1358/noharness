@@ -9,25 +9,25 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import AgentPresets from '@deepseek-ai/dsh-agent-preset-registry'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import Include from '@noharness/cordis-plugin-include'
+import type { Agent } from '@noharness/agent'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import AgentPresets from '@noharness/agent-preset-registry'
+import type { SessionId } from '@noharness/session'
+import type { SessionEvent } from '@noharness/session'
 import * as JsonlSessionPersistence from '../../../session/session-persistence-jsonl/src/index.ts'
-import SubagentRuntime from '@deepseek-ai/dsh-subagent'
-import * as Spawn from '@deepseek-ai/dsh-subagent-spawn-in-process'
+import SubagentRuntime from '@noharness/subagent'
+import * as Spawn from '@noharness/subagent-spawn-in-process'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import Storage from '../../../storage/storage/src/index.ts'
 import { DomainFacility } from '../../../storage/storage-domain/src/index.ts'
 import { MemoryMediaPool, MemoryStorageBackend } from '../../../storage/storage-domain/tests/helpers/memory-backend.ts'
 import ScheduleService from '../../../schedule/schedule/src/index.ts'
 import * as ToolSchedule from '../../../schedule/tool-schedule/src/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), 'fixtures')
 const contexts: Context[] = []
@@ -42,7 +42,7 @@ afterEach(async () => {
 async function setupScheduleHost(): Promise<{ ctx: Context; parent: Agent; dispatched: ReturnType<typeof vi.fn> }> {
   const ctx = new Context()
   contexts.push(ctx)
-  const root = mkdtempSync(join(tmpdir(), 'dsh-schedule-tools-'))
+  const root = mkdtempSync(join(tmpdir(), 'nhs-schedule-tools-'))
   roots.push(root)
   ctx.baseUrl = pathToFileURL(FIXTURES).href + '/'
   await ctx.plugin(Loader)

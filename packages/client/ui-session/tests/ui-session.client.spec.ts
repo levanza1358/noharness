@@ -1,4 +1,4 @@
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@noharness/cordis'
 import type {
   AgentContext,
   ISessions,
@@ -7,12 +7,12 @@ import type {
   SessionReference,
   SessionRetainInfo,
   SessionSnapshot,
-} from '@deepseek-ai/dsh-api-session-controller/client'
-import { MutableSessionEventSource } from '@deepseek-ai/dsh-api-session-controller/client'
-import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
-import { StaticRemoteAccess } from '@deepseek-ai/dsh-client-test-runtime'
-import type { HostObservable, RootStandardSourceContribution } from '@deepseek-ai/dsh-client-ui-slots'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
+} from '@noharness/api-session-controller/client'
+import { MutableSessionEventSource } from '@noharness/api-session-controller/client'
+import { createSnapshotStore } from '@noharness/client-store'
+import { StaticRemoteAccess } from '@noharness/client-test-runtime'
+import type { HostObservable, RootStandardSourceContribution } from '@noharness/client-ui-slots'
+import type { SessionId } from '@noharness/session/types'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   apply,

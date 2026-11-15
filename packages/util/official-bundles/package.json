@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-official-bundles",
-  "description": "Installation-owned lists of official dsh bundles (shipped profile templates, optional, on-demand, and retired bundles) and the plugin manager's protected and presented packages",
+  "name": "@noharness/official-bundles",
+  "description": "Installation-owned lists of official nhs bundles (shipped profile templates, optional, on-demand, and retired bundles) and the plugin manager's protected and presented packages",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/util/official-bundles"
   },
   "type": "module",
@@ -30,12 +30,12 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@deepseek-ai/dsh-package-manifest": "workspace:*"
+    "@noharness/package-manifest": "workspace:*"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   }
 }

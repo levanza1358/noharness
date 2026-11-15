@@ -5,23 +5,23 @@
  * happened to register in. Registration order is a concurrent loading artifact
  * and must not leak downstream.
  */
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import { createUserMessage } from '@noharness/llm'
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import LlmRuntime from '@deepseek-ai/dsh-llm'
-import SessionStore, { type SessionId, foldRequestHeader } from '@deepseek-ai/dsh-session'
-import SystemPrompt, { TOOL_ORDER_REST } from '@deepseek-ai/dsh-system-prompt'
-import type { Config as SystemPromptConfig } from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import { defineContentToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
+import { Context } from '@noharness/cordis'
+import LlmRuntime from '@noharness/llm'
+import SessionStore, { type SessionId, foldRequestHeader } from '@noharness/session'
+import SystemPrompt, { TOOL_ORDER_REST } from '@noharness/system-prompt'
+import type { Config as SystemPromptConfig } from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
+import { defineContentToolFixture } from '@noharness/tool-testkit'
+import AgentRegistry, { type Agent } from '@noharness/agent'
 
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import AgentLoop from '@noharness/agent-loop'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 async function harness(adapter: MockAdapter, toolOrder?: SystemPromptConfig['toolOrder']) {
   const ctx = new Context()

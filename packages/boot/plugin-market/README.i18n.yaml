@@ -5,42 +5,42 @@
 /:
   en: 043de7aa04105a53
   zh: b3d966c6029037e1
-/deepseek-ai-dsh-plugin-market:
-  en: ee5478f5717295df
-  zh: 75a03a6db791fc6b
-/deepseek-ai-dsh-plugin-market/summary:
-  en: 4def97be3ad32ece
-  zh: f855102a82dbb6ec
-/deepseek-ai-dsh-plugin-market/table-of-contents:
+/noharness-plugin-market:
+  en: 8068ef82912c0d4f
+  zh: 6b7d92fd5dd5e33f
+/noharness-plugin-market/summary:
+  en: b5f4b8058e1211a3
+  zh: c21ba3795da018bf
+/noharness-plugin-market/table-of-contents:
   en: 76368b6b1da79c80
   zh: 52384aee991ac542
-/deepseek-ai-dsh-plugin-market/use-this-package:
-  en: fef9850d643e327f
-  zh: c6e8cab773cf93b9
-/deepseek-ai-dsh-plugin-market/use-this-package/plugin-detail-documents:
-  en: 8a49fc923d4ebd95
-  zh: 44b9f020e8471458
-/deepseek-ai-dsh-plugin-market/understand-the-implementation:
-  en: cb56b9191fc680a1
-  zh: eee0a1dfee9ea5bb
-/deepseek-ai-dsh-plugin-market/model-experience:
+/noharness-plugin-market/use-this-package:
+  en: a165f0afe4aeb667
+  zh: d62fbc427bdbac32
+/noharness-plugin-market/use-this-package/plugin-detail-documents:
+  en: b5d33eadbf9076ee
+  zh: 9f1dea48f09b7591
+/noharness-plugin-market/understand-the-implementation:
+  en: a73d280cdd5131ee
+  zh: 55a0b01603734fc6
+/noharness-plugin-market/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/deepseek-ai-dsh-plugin-market/model-experience/market-listing-tool:
+/noharness-plugin-market/model-experience/market-listing-tool:
   en: b8183cb06f3e4ba9
   zh: 9a213e7a124f092d
-/deepseek-ai-dsh-plugin-market/model-experience/market-listing-tool/what-the-model-sees:
-  en: bcbe6e7d5c763159
-  zh: 28cc392bc8e574e4
-/deepseek-ai-dsh-plugin-market/model-experience/market-listing-tool/token-effect:
+/noharness-plugin-market/model-experience/market-listing-tool/what-the-model-sees:
+  en: dc461a80f79d7aba
+  zh: 01717333eb7e64ed
+/noharness-plugin-market/model-experience/market-listing-tool/token-effect:
   en: 2589c52e6deb5e48
   zh: 9a71ca215165a8a5
-/deepseek-ai-dsh-plugin-market/model-experience/market-listing-tool/kv-cache-effect:
+/noharness-plugin-market/model-experience/market-listing-tool/kv-cache-effect:
   en: 02cf6033092eb236
   zh: cb928bfa6d39a7f7
-/deepseek-ai-dsh-plugin-market/known-limitations-and-deferred-work:
+/noharness-plugin-market/known-limitations-and-deferred-work:
   en: a5f8aad8e45b333d
   zh: bb84782c37db2574
-/deepseek-ai-dsh-plugin-market/known-limitations-and-deferred-work/dev-note:
+/noharness-plugin-market/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

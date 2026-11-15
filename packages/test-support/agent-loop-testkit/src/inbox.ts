@@ -1,6 +1,6 @@
-import type { Inbox, InboxTarget } from '@deepseek-ai/dsh-agent'
-import type { MessageId } from '@deepseek-ai/dsh-llm'
-import type { UserMessage } from '@deepseek-ai/dsh-session'
+import type { Inbox, InboxTarget } from '@noharness/agent'
+import type { MessageId } from '@noharness/llm'
+import type { UserMessage } from '@noharness/session'
 
 /**
  * Create a mutable in-memory Inbox stub for tests that exercise only the public

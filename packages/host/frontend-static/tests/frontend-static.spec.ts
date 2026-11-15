@@ -11,14 +11,14 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import * as Connection from '@deepseek-ai/dsh-client-connection'
-import * as Token from '@deepseek-ai/dsh-host-authentication-token'
-import { BrowserAuth } from '@deepseek-ai/dsh-host-authentication-token/src/browser-auth.ts'
-import LocalCredentials from '@deepseek-ai/dsh-credentials-local'
-import HttpServer from '@deepseek-ai/dsh-host-webserver'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import Include from '@noharness/cordis-plugin-include'
+import * as Connection from '@noharness/client-connection'
+import * as Token from '@noharness/host-authentication-token'
+import { BrowserAuth } from '@noharness/host-authentication-token/src/browser-auth.ts'
+import LocalCredentials from '@noharness/credentials-local'
+import HttpServer from '@noharness/host-webserver'
 import * as FrontendStatic from '../src/index.ts'
 
 const heldIndex = vi.hoisted(() => ({
@@ -55,7 +55,7 @@ afterEach(async () => {
 
 /** Write a dist fixture and the authenticated Web rows, then boot them through the real Loader. */
 async function loadComposition(): Promise<Context> {
-  root = await mkdtemp(join(tmpdir(), 'dsh-frontend-static-'))
+  root = await mkdtemp(join(tmpdir(), 'nhs-frontend-static-'))
   const dist = join(root, 'dist')
   await mkdir(dist)
   const distIndex = join(dist, 'index.html')
@@ -68,18 +68,18 @@ async function loadComposition(): Promise<Context> {
   await mkdir(join(dist, 'empty'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
-    "- name: '@deepseek-ai/dsh-credentials-local'",
+    "- name: '@noharness/credentials-local'",
     '  config:',
     `    path: '${join(root, '.credentials.yaml')}'`,
     '    watch: false',
-    "- name: '@deepseek-ai/dsh-host-webserver'",
+    "- name: '@noharness/host-webserver'",
     '  config:',
     "    host: '127.0.0.1'",
     '    port: 0',
-    "- name: '@deepseek-ai/dsh-client-connection'",
-    "- name: '@deepseek-ai/dsh-host-authentication-token'",
+    "- name: '@noharness/client-connection'",
+    "- name: '@noharness/host-authentication-token'",
     '- id: frontend',
-    "  name: '@deepseek-ai/dsh-host-frontend-static'",
+    "  name: '@noharness/host-frontend-static'",
     '  config:',
     `    distIndex: '${distIndex}'`,
     '',
@@ -90,11 +90,11 @@ async function loadComposition(): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@deepseek-ai/dsh-credentials-local', LocalCredentials],
-    ['@deepseek-ai/dsh-host-webserver', HttpServer],
-    ['@deepseek-ai/dsh-client-connection', Connection],
-    ['@deepseek-ai/dsh-host-authentication-token', Token],
-    ['@deepseek-ai/dsh-host-frontend-static', FrontendStatic],
+    ['@noharness/credentials-local', LocalCredentials],
+    ['@noharness/host-webserver', HttpServer],
+    ['@noharness/client-connection', Connection],
+    ['@noharness/host-authentication-token', Token],
+    ['@noharness/host-frontend-static', FrontendStatic],
   ])
   context.loader.internal = {
     version: 'v2',

@@ -1,20 +1,20 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { createUserMessage, type ToolCallId } from '@deepseek-ai/dsh-llm'
-import { provideWorkingDirectoryFixture, mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import { brandString } from '@noharness/brand'
+import { createUserMessage, type ToolCallId } from '@noharness/llm'
+import { provideWorkingDirectoryFixture, mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import type { SessionId, SessionEvent } from '@deepseek-ai/dsh-session'
-import { defineContentToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { LocalBashExecutor } from '@deepseek-ai/dsh-bash-local'
-import LocalSubprocessRuntime from '@deepseek-ai/dsh-subprocess-local'
-import * as HooksCodex from '@deepseek-ai/dsh-hooks-codex'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import type { SessionId, SessionEvent } from '@noharness/session'
+import { defineContentToolFixture } from '@noharness/tool-testkit'
+import type { Agent } from '@noharness/agent'
+import AgentLoop from '@noharness/agent-loop'
+import { LocalBashExecutor } from '@noharness/bash-local'
+import LocalSubprocessRuntime from '@noharness/subprocess-local'
+import * as HooksCodex from '@noharness/hooks-codex'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 /**
@@ -31,7 +31,7 @@ afterEach(async () => {
 })
 
 function configDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-codex-'))
+  const dir = mkdtempSync(join(tmpdir(), 'nhs-hooks-codex-'))
   dirs.push(dir)
   return dir
 }

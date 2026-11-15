@@ -10,20 +10,20 @@ import { mkdtemp, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import Storage from '@deepseek-ai/dsh-storage'
-import type { StorageBackend } from '@deepseek-ai/dsh-storage'
-import { DomainFacility } from '@deepseek-ai/dsh-storage-domain'
-import { JsonStorageBackend } from '@deepseek-ai/dsh-storage-json'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import SessionStore from '@deepseek-ai/dsh-session'
+import { Context } from '@noharness/cordis'
+import AgentRegistry from '@noharness/agent'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import Storage from '@noharness/storage'
+import type { StorageBackend } from '@noharness/storage'
+import { DomainFacility } from '@noharness/storage-domain'
+import { JsonStorageBackend } from '@noharness/storage-json'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
+import SessionStore from '@noharness/session'
 import ScheduleService from '../src/index.ts'
 import { createAfterScheduleRecord, createEveryScheduleRecord } from '../src/domain.ts'
 import type { ScheduleId } from '../src/types.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 interface Args {
   ended: number
@@ -108,7 +108,7 @@ function counted(inner: StorageBackend): {
 }
 
 async function measure(args: Args) {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-schedule-clear-perf-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-schedule-clear-perf-'))
   try {
     const path = join(root, 'schedule.json')
     const seedStart = performance.now()

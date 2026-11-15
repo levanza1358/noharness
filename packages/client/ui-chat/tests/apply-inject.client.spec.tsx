@@ -1,29 +1,29 @@
 import type { AssistantNodeInjected } from '../src/client/chat/AssistantNodeView.tsx'
-import type { MessageId } from '@deepseek-ai/dsh-llm/types'
-import { apply as applyMenus, inject as injectMenus } from '@deepseek-ai/dsh-client-ui-context-menu/client'
+import type { MessageId } from '@noharness/llm/types'
+import { apply as applyMenus, inject as injectMenus } from '@noharness/client-ui-context-menu/client'
 // @vitest-environment jsdom
 /** Chat inject factories exercised over independently mounted Conversation and Chat plugins. */
-import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
+import { createSnapshotStore } from '@noharness/client-store'
 import { describe, expect, it, vi } from 'vitest'
-import type { AttachmentId } from '@deepseek-ai/dsh-attachment/types'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { ISession, SessionReference } from '@deepseek-ai/dsh-api-session-controller/client'
-import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
+import type { AttachmentId } from '@noharness/attachment/types'
+import { brandString } from '@noharness/brand'
+import type { ISession, SessionReference } from '@noharness/api-session-controller/client'
+import { LocaleRuntime } from '@noharness/client-locale/client'
 import {
   SlotTestRuntime, stubConfigForm, usePinnedBrowserLanguages,
-} from '@deepseek-ai/dsh-client-test-runtime'
-import type { SessionBehaviorOverrides } from '@deepseek-ai/dsh-client-test-runtime'
-import type { ClientRemote } from '@deepseek-ai/dsh-api-remotes/client'
-import type { ConnectionHandle } from '@deepseek-ai/dsh-client-connection/client'
+} from '@noharness/client-test-runtime'
+import type { SessionBehaviorOverrides } from '@noharness/client-test-runtime'
+import type { ClientRemote } from '@noharness/api-remotes/client'
+import type { ConnectionHandle } from '@noharness/client-connection/client'
 import {
   apply as applyConversation, inject as injectConversation,
   type GroupKey,
-} from '@deepseek-ai/dsh-client-ui-conversation/client'
+} from '@noharness/client-ui-conversation/client'
 import {
   apply as applyChat, inject as injectChat, type ChatFlowDataInjected, type ChatViewInjected,
-} from '@deepseek-ai/dsh-client-ui-chat/client'
-import { SessionSeq, type SessionId } from '@deepseek-ai/dsh-session/types'
-import type { WorkspaceId } from '@deepseek-ai/dsh-workspace/types'
+} from '@noharness/client-ui-chat/client'
+import { SessionSeq, type SessionId } from '@noharness/session/types'
+import type { WorkspaceId } from '@noharness/workspace/types'
 import { createChatStore } from '../src/client/stores.ts'
 import { CHAT_SETTINGS_NAMESPACE, type ChatSettings } from '../src/chat-settings.ts'
 import type { LinkOpeningRowInjected } from '../src/client/settings/LinkOpeningRow.tsx'
@@ -300,20 +300,20 @@ describe('Chat inject API', () => {
     await injected.openFile('src/a.ts')
     // Files stay in the product: a relative path is handed to the Sidebar as an
     // address under this session's scope, not to a desktop opener.
-    expect(b.sidebarRight.openResource).toHaveBeenCalledWith('dsh-resource://file/session/root-1/src/a.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenCalledWith('nhs-resource://file/session/root-1/src/a.ts')
     expect(b.openWorkspacePath).not.toHaveBeenCalled()
 
     // An absolute path inside the session's workspace is the same session-relative address.
     await injected.openFile('/proj/src/a.ts')
-    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('dsh-resource://file/session/root-1/src/a.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('nhs-resource://file/session/root-1/src/a.ts')
 
     // A name a URL would otherwise mangle survives the round trip.
     await injected.openFile('src/a b#c.ts')
-    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('dsh-resource://file/session/root-1/src/a%20b%23c.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('nhs-resource://file/session/root-1/src/a%20b%23c.ts')
 
     // A line travels as the `file` type's navigation parameter, not in the address.
     await injected.openFile('src/a.ts', { line: 7 })
-    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('dsh-resource://file/session/root-1/src/a.ts', { params: { line: 7 } })
+    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('nhs-resource://file/session/root-1/src/a.ts', { params: { line: 7 } })
     await b.runtime.dispose()
   })
 
@@ -323,7 +323,7 @@ describe('Chat inject API', () => {
     vi.spyOn(b.runtime.ctx.contextMenus, 'open')
     await b.runtime.sessions.setProjection(ROOT, 'workingDirectory', '/proj/.agents/worktrees/w')
     await injected.openFile('src/a.ts')
-    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('dsh-resource://file/session/root-1/.agents/worktrees/w/src/a.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('nhs-resource://file/session/root-1/.agents/worktrees/w/src/a.ts')
     expect(injected.resolveFilePath('src/a.ts')).toBe('/proj/.agents/worktrees/w/src/a.ts')
     await b.runtime.sessions.setProjection(ROOT, 'workingDirectory', null)
     expect(injected.resolveFilePath('file.ts')).toBe('/proj/file.ts')
@@ -331,14 +331,14 @@ describe('Chat inject API', () => {
 
     // A leading `./` names the same file, so the Sidebar reuses its tab.
     await injected.openFile('./src/a.ts')
-    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('dsh-resource://file/session/root-1/.agents/worktrees/w/src/a.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('nhs-resource://file/session/root-1/.agents/worktrees/w/src/a.ts')
     await injected.openFile('/proj/src/a.ts')
-    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('dsh-resource://file/session/root-1/src/a.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('nhs-resource://file/session/root-1/src/a.ts')
 
     // Outside the workspace, the address carries the absolute path after the Session id.
     await b.runtime.sessions.setProjection(ROOT, 'workingDirectory', '/elsewhere')
     await injected.openFile('src/a.ts')
-    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('dsh-resource://file/session/root-1//elsewhere/src/a.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('nhs-resource://file/session/root-1//elsewhere/src/a.ts')
     await b.runtime.dispose()
   })
 
@@ -492,10 +492,10 @@ describe('Chat inject API', () => {
     // The Host resolves the relative path against the root it holds for the
     // Session; the Client need not know it.
     await injected.openFile('src/a.ts')
-    expect(b.sidebarRight.openResource).toHaveBeenCalledWith('dsh-resource://file/session/root-2/src/a.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenCalledWith('nhs-resource://file/session/root-2/src/a.ts')
     // An absolute path outside every known root still names its Session.
     await injected.openFile('/abs/a.ts')
-    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('dsh-resource://file/session/root-2//abs/a.ts')
+    expect(b.sidebarRight.openResource).toHaveBeenLastCalledWith('nhs-resource://file/session/root-2//abs/a.ts')
     await b.runtime.dispose()
   })
 

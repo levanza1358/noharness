@@ -1,15 +1,15 @@
 /** Native JSONL reads enforce developer relationships before exposing stored data. */
-import { Context } from '@deepseek-ai/cordis'
-import { SESSION_FORMAT_VERSION, type SessionId } from '@deepseek-ai/dsh-session'
-import { SessionPersistenceCorruptionError } from '@deepseek-ai/dsh-session-persistence'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
+import { Context } from '@noharness/cordis'
+import { SESSION_FORMAT_VERSION, type SessionId } from '@noharness/session'
+import { SessionPersistenceCorruptionError } from '@noharness/session-persistence'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { describe, expect, it, onTestFinished } from 'vitest'
 import { generationLogPath } from '../src/format.ts'
 import { compressZstdFrame } from '../src/zstd.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const id = brandString<SessionId>('native-developer-admission')
 const modes = (['none', 'zstd'] as const).flatMap(compression => (['read', 'write'] as const).map(access => ({ compression, access })))
@@ -20,7 +20,7 @@ const developer = { type: 'developer/message', surfaceOp: 'append', data: {
 
 describe.each(modes)('native developer admission ($compression, $access)', ({ compression, access }) => {
   async function stored(event: object, corruptPrefix = false) {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-native-developer-'))
+    const root = await mkdtemp(join(tmpdir(), 'nhs-native-developer-'))
     const ctx = new Context()
     onTestFinished(async () => {
       try {

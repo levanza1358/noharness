@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-tool-web",
-  "description": "Model-facing web tools (web_search, web_fetch) over the DeepSeek Harness web capability seam (ctx.web)",
+  "name": "@noharness/tool-web",
+  "description": "Model-facing web tools (web_search, web_fetch) over the NoHarness web capability seam (ctx.web)",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/web/tool-web"
   },
   "type": "module",
@@ -32,38 +32,38 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-system-prompt": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/dsh-web": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/llm": "workspace:*",
+    "@noharness/system-prompt": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/web": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-output-retention": "workspace:*",
-    "@deepseek-ai/dsh-util-values": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/output-retention": "workspace:*",
+    "@noharness/util-values": "workspace:*",
+    "@noharness/schemastery": "workspace:~",
     "@joplin/turndown-plugin-gfm": "^1.0.67",
     "turndown": "^7.2.4"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-spill-local": "workspace:*",
-    "@deepseek-ai/dsh-spill-policy": "workspace:*",
-    "@deepseek-ai/dsh-system-prompt": "workspace:*",
-    "@deepseek-ai/dsh-tool-call-timeout-policy": "workspace:*",
-    "@deepseek-ai/dsh-tool-executor-native": "workspace:*",
-    "@deepseek-ai/dsh-tool-testkit": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/dsh-web": "workspace:*",
-    "@deepseek-ai/dsh-web-deepseek-api": "workspace:*",
-    "@deepseek-ai/dsh-web-fetch-http": "workspace:*",
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/spill-local": "workspace:*",
+    "@noharness/spill-policy": "workspace:*",
+    "@noharness/system-prompt": "workspace:*",
+    "@noharness/tool-call-timeout-policy": "workspace:*",
+    "@noharness/tool-executor-native": "workspace:*",
+    "@noharness/tool-testkit": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/web": "workspace:*",
+    "@noharness/web-deepseek-api": "workspace:*",
+    "@noharness/web-fetch-http": "workspace:*",
     "@types/turndown": "^5.0.6",
-    "@deepseek-ai/dsh-scope": "workspace:*",
-    "@deepseek-ai/dsh-token-meter": "workspace:*",
-    "@deepseek-ai/dsh-launch-environment": "workspace:*"
+    "@noharness/scope": "workspace:*",
+    "@noharness/token-meter": "workspace:*",
+    "@noharness/launch-environment": "workspace:*"
   }
 }

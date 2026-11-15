@@ -2,15 +2,15 @@
 # section, a hash of its English and Chinese blocks outside code blocks and generated regions.
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write python/README.md
-/deepseek-harness-python-sdk:
-  en: aa08432a8887185d
-  zh: 85b40b48790c04db
-/deepseek-harness-python-sdk/packages:
-  en: 485e9978ed4f6dee
-  zh: fccda14b1b84cecf
-/deepseek-harness-python-sdk/behavior:
-  en: ccb264c8850ae568
-  zh: 2580e6d587193bb0
-/deepseek-harness-python-sdk/contributor-workflows:
-  en: 292b8aab762f515a
-  zh: 93da3d5c6af97d70
+/noharness-python-sdk:
+  en: 1cb0879a60b3a906
+  zh: 3ef6d4bbfa46a170
+/noharness-python-sdk/packages:
+  en: 9a19829f380f4b38
+  zh: a16578d020facd73
+/noharness-python-sdk/behavior:
+  en: 2f5bf9cc3eca2cfd
+  zh: f6fb7eba6a624d72
+/noharness-python-sdk/contributor-workflows:
+  en: 1383181ef6af0791
+  zh: 00734177111442ac

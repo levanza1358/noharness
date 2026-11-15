@@ -28,7 +28,7 @@ it('signs Mach-O files in their final locations and verifies each signature', as
   expect(verifyMacOSRuntimeCode).toHaveBeenCalledWith(join(path, 'addon.node'), identity)
 })
 
-const helperBundle = 'node_modules/@deepseek-ai/dsh-cua-macos/native/bin/darwin-arm64/generation/DSH Computer Use.app'
+const helperBundle = 'node_modules/@noharness/cua-macos/native/bin/darwin-arm64/generation/NHS Computer Use.app'
 function machO(path: string): void {
   mkdirSync(join(path, '..'), { recursive: true })
   writeFileSync(path, Buffer.from('cffaedfe00000000', 'hex'))
@@ -36,7 +36,7 @@ function machO(path: string): void {
 
 it('verifies the notarized Computer Use helper as a bundle and signs other bundles per file', async () => {
   const path = root()
-  machO(join(path, helperBundle, 'Contents/MacOS/dsh-cua-native'))
+  machO(join(path, helperBundle, 'Contents/MacOS/nhs-cua-native'))
   writeFileSync(join(path, helperBundle, 'Contents/Info.plist'), '<plist/>')
   // LibreOffice ships an unsigned application bundle whose executables are signed in place.
   const office = join(path, 'node_modules/@deepseek-ai/libreoffice-kit-darwin-arm64/program/LibreOfficeDev.app/Contents/MacOS/soffice')
@@ -49,7 +49,7 @@ it('verifies the notarized Computer Use helper as a bundle and signs other bundl
 
 it('rejects a helper bundle that fails notarized-application verification before signing any file', async () => {
   const path = root()
-  machO(join(path, helperBundle, 'Contents/MacOS/dsh-cua-native'))
+  machO(join(path, helperBundle, 'Contents/MacOS/nhs-cua-native'))
   machO(join(path, 'addon.node'))
   vi.mocked(verifyMacOSNotarizedApplication).mockImplementationOnce(() => { throw new Error('stapler validate exited with 65') })
   await expect(signMacOSRuntime(path, 'com.example.app', identity, 'arm64')).rejects.toThrow('stapler validate')
@@ -117,7 +117,7 @@ it.each(['arm64', 'x64'] as const)('selects %s Node entitlements and keeps helpe
   mkdirSync(join(path, 'dependencies/node/bin'), { recursive: true })
   const node = join(path, 'dependencies/node/bin/node')
   const addon = join(path, 'addon.node')
-  const helpers = ['arm64', 'x64'].map(helperArch => join(path, 'node_modules/@deepseek-ai', `libreoffice-kit-darwin-${helperArch}`, 'bin/dsoffice'))
+  const helpers = ['arm64', 'x64'].map(helperArch => join(path, 'node_modules/@noharness', `libreoffice-kit-darwin-${helperArch}`, 'bin/dsoffice'))
   const library = join(path, 'node_modules/@deepseek-ai/libreoffice-kit-darwin-arm64/lib/libmergedlo.dylib')
   for (const file of [...helpers, library]) mkdirSync(join(file, '..'), { recursive: true })
   for (const file of [node, addon, library, ...helpers]) writeFileSync(file, Buffer.from('cffaedfe00000000', 'hex'))

@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-api-workspace-controller",
+  "name": "@noharness/api-workspace-controller",
   "description": "Workspace Remote commands and reconnect-safe state transport",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/api/workspace-controller"
   },
   "type": "module",
@@ -42,14 +42,14 @@
     "./package.json": "./package.json",
     "./locale/*.json": "./locale/*.json"
   },
-  "dsh": {
+  "nhs": {
     "client": {
       "external": [
-        "@deepseek-ai/dsh-api-gateway/client"
+        "@noharness/api-gateway/client"
       ],
       "inject": [
-        "@deepseek-ai/dsh-api-gateway",
-        "@deepseek-ai/dsh-client-connection"
+        "@noharness/api-gateway",
+        "@noharness/client-connection"
       ],
       "platform": "web"
     }
@@ -75,34 +75,34 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-deque": "workspace:*",
-    "@deepseek-ai/dsh-native-command": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/brand": "workspace:*",
+    "@noharness/deque": "workspace:*",
+    "@noharness/native-command": "workspace:*",
+    "@noharness/schemastery": "workspace:~",
     "zod": "4.6.6"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-api-gateway": "workspace:*",
-    "@deepseek-ai/dsh-client-connection": "workspace:*",
-    "@deepseek-ai/dsh-host-directory-picker": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-storage-domain": "workspace:*",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*",
-    "@deepseek-ai/dsh-workspace": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/api-gateway": "workspace:*",
+    "@noharness/client-connection": "workspace:*",
+    "@noharness/host-directory-picker": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/storage-domain": "workspace:*",
+    "@noharness/typert-protocol": "workspace:*",
+    "@noharness/workspace": "workspace:*"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-api-gateway": "workspace:*",
-    "@deepseek-ai/dsh-api-remote-access": "workspace:*",
-    "@deepseek-ai/dsh-client-connection": "workspace:*",
-    "@deepseek-ai/dsh-client-store": "workspace:*",
-    "@deepseek-ai/dsh-client-test-runtime": "workspace:*",
-    "@deepseek-ai/dsh-host-directory-picker": "workspace:*",
-    "@deepseek-ai/dsh-remote-mock": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-storage-domain": "workspace:*",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*",
-    "@deepseek-ai/dsh-workspace": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/api-gateway": "workspace:*",
+    "@noharness/api-remote-access": "workspace:*",
+    "@noharness/client-connection": "workspace:*",
+    "@noharness/client-store": "workspace:*",
+    "@noharness/client-test-runtime": "workspace:*",
+    "@noharness/host-directory-picker": "workspace:*",
+    "@noharness/remote-mock": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/storage-domain": "workspace:*",
+    "@noharness/typert-protocol": "workspace:*",
+    "@noharness/workspace": "workspace:*"
   }
 }

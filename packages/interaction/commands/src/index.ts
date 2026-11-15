@@ -1,20 +1,20 @@
 /**
  * Plugin-owned human-command registry shared by interactive UI adapters.
- * @module @deepseek-ai/dsh-commands
+ * @module @noharness/commands
  */
 
-import { Context } from '@deepseek-ai/cordis'
-import { randomUUID } from '@deepseek-ai/dsh-util-crypto'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { AttachmentError, admitEncodedImages } from '@deepseek-ai/dsh-attachment'
-import type { EncodedImageAttachment, FileAttachmentRef, ImageAttachmentRef } from '@deepseek-ai/dsh-attachment/types'
-import type { FileBlock, ImageBlock } from '@deepseek-ai/dsh-llm'
-import { NamedEntries, ScopedLayers } from '@deepseek-ai/dsh-scope'
-import type { ScopeKey, ScopeLayer } from '@deepseek-ai/dsh-scope'
-import { SessionSeq } from '@deepseek-ai/dsh-session'
-import type { Session, SessionEvent, SessionEventMap } from '@deepseek-ai/dsh-session'
-import { TypertRemoteService, Remote } from '@deepseek-ai/dsh-typert-protocol'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context } from '@noharness/cordis'
+import { randomUUID } from '@noharness/util-crypto'
+import type { Agent } from '@noharness/agent'
+import { AttachmentError, admitEncodedImages } from '@noharness/attachment'
+import type { EncodedImageAttachment, FileAttachmentRef, ImageAttachmentRef } from '@noharness/attachment/types'
+import type { FileBlock, ImageBlock } from '@noharness/llm'
+import { NamedEntries, ScopedLayers } from '@noharness/scope'
+import type { ScopeKey, ScopeLayer } from '@noharness/scope'
+import { SessionSeq } from '@noharness/session'
+import type { Session, SessionEvent, SessionEventMap } from '@noharness/session'
+import { TypertRemoteService, Remote } from '@noharness/typert-protocol'
+import { brandString } from '@noharness/brand'
 import type { CommandDefinitionId, CommandId } from './brand.ts'
 import type {
   CommandDescriptor,
@@ -110,7 +110,7 @@ class CommandLayer implements ScopeLayer {
   }
 }
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     commands: CommandRuntime
   }

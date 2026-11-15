@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import type { TurnEndReason } from '@deepseek-ai/dsh-session'
-import { foldConsumedWork } from '@deepseek-ai/dsh-agent'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { createUserMessage } from '@noharness/llm'
+import { Session, type SessionId } from '@noharness/session'
+import type { TurnEndReason } from '@noharness/session'
+import { foldConsumedWork } from '@noharness/agent'
+import { brandString } from '@noharness/brand'
 
 /** One pending message, as the inbox records it. */
 function message(text: string) {

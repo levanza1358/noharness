@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-webhook-github",
-  "description": "Signed GitHub HTTP webhook adapter for the DeepSeek Harness webhook runtime",
+  "name": "@noharness/webhook-github",
+  "description": "Signed GitHub HTTP webhook adapter for the NoHarness webhook runtime",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/experimental/webhook-github"
   },
   "type": "module",
@@ -40,25 +40,25 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-credentials": "workspace:*",
-    "@deepseek-ai/dsh-host-webserver": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-webhook": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/credentials": "workspace:*",
+    "@noharness/host-webserver": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/webhook": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-util-values": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/brand": "workspace:*",
+    "@noharness/util-values": "workspace:*",
+    "@noharness/schemastery": "workspace:~",
     "@octokit/webhooks": "^14.2.0"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/cordis-plugin-include": "workspace:~",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-credentials": "workspace:*",
-    "@deepseek-ai/dsh-host-webserver": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-webhook": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/cordis-plugin-include": "workspace:~",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/credentials": "workspace:*",
+    "@noharness/host-webserver": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/webhook": "workspace:*"
   }
 }

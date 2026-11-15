@@ -10,18 +10,18 @@
  */
 
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
-import { mountAgentLoopTestDependencies, mountAgentLoopTestHarness } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { Context } from '@deepseek-ai/cordis'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type { Session } from '@deepseek-ai/dsh-session'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { createScope } from '@deepseek-ai/dsh-scope'
-import CommandRuntime from '@deepseek-ai/dsh-commands'
-import PermissionPresetService from '@deepseek-ai/dsh-permission-presets'
-import { AUTO_PRESET } from '@deepseek-ai/dsh-permission-presets'
-import ApprovalService from '@deepseek-ai/dsh-user-approval'
+import { mountAgentLoopTestDependencies, mountAgentLoopTestHarness } from '@noharness/agent-loop-testkit'
+import { Context } from '@noharness/cordis'
+import type { SessionId } from '@noharness/session'
+import type { Session } from '@noharness/session'
+import type { Agent } from '@noharness/agent'
+import { createScope } from '@noharness/scope'
+import CommandRuntime from '@noharness/commands'
+import PermissionPresetService from '@noharness/permission-presets'
+import { AUTO_PRESET } from '@noharness/permission-presets'
+import ApprovalService from '@noharness/user-approval'
 import { omitsGeneratedPage } from '../../../settings/settings/tests/live-config.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 async function harness(options: {
   withPermission?: boolean

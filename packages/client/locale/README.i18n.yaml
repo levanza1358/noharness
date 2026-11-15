@@ -5,60 +5,60 @@
 /:
   en: 5dea50fae7364d1e
   zh: dc788b9ce6ffd101
-/deepseek-ai-dsh-client-locale:
-  en: 9365090d78467dea
-  zh: 74b6fbb9769d795f
-/deepseek-ai-dsh-client-locale/summary:
-  en: cbbe8f61f5e19f39
-  zh: 2cec7ec41f1a7e84
-/deepseek-ai-dsh-client-locale/table-of-contents:
+/noharness-client-locale:
+  en: 35ce5872ed2b5fc4
+  zh: 9ac2a09a8348e5b5
+/noharness-client-locale/summary:
+  en: 05b73b3e55366e62
+  zh: 76c4c575e26f212b
+/noharness-client-locale/table-of-contents:
   en: d152484eb41ac6b4
   zh: bda879a892f240f0
-/deepseek-ai-dsh-client-locale/use-this-package:
+/noharness-client-locale/use-this-package:
   en: 7fedfbcbc3ad8cea
   zh: e29ba5230e0b9ecb
-/deepseek-ai-dsh-client-locale/use-this-package/choosing-a-language:
-  en: 2b82458e185ba321
-  zh: e55a7e709a3f0158
-/deepseek-ai-dsh-client-locale/use-this-package/registering-a-dictionary:
+/noharness-client-locale/use-this-package/choosing-a-language:
+  en: 38dadad4fe3f0b3f
+  zh: 0285f6eabdd6e459
+/noharness-client-locale/use-this-package/registering-a-dictionary:
   en: f19407c3ce8a94cc
   zh: 3e5300ce7fa02987
-/deepseek-ai-dsh-client-locale/use-this-package/resolving-package-text:
-  en: 3b63e84fe0fdf8f4
-  zh: e97b5d1b92dff7ec
-/deepseek-ai-dsh-client-locale/use-this-package/registering-a-language-pack:
+/noharness-client-locale/use-this-package/resolving-package-text:
+  en: 425fefeba4d8579c
+  zh: 9291699bb1e2ecae
+/noharness-client-locale/use-this-package/registering-a-language-pack:
   en: aa4e9c70523339cc
   zh: 3359eddc4e9ef15e
-/deepseek-ai-dsh-client-locale/use-this-package/what-the-host-half-does:
-  en: 784035ca4b4838b8
-  zh: 4a258795f408528f
-/deepseek-ai-dsh-client-locale/understand-the-implementation:
+/noharness-client-locale/use-this-package/what-the-host-half-does:
+  en: 5bb79df49bedb2c6
+  zh: 7b67a46e067f3d2c
+/noharness-client-locale/understand-the-implementation:
   en: 288d8db39f9acfc5
   zh: d65cf2ffae8ad35c
-/deepseek-ai-dsh-client-locale/understand-the-implementation/design-concept:
-  en: c2e0ab8bb6bcb26a
-  zh: 508dec4db2c0fde6
-/deepseek-ai-dsh-client-locale/understand-the-implementation/preference-resolution:
+/noharness-client-locale/understand-the-implementation/design-concept:
+  en: fa06632d5aa49dd1
+  zh: 31d6848503a1d3eb
+/noharness-client-locale/understand-the-implementation/preference-resolution:
   en: d602d957654641c6
   zh: 2db822b746a6471d
-/deepseek-ai-dsh-client-locale/understand-the-implementation/dictionary-lookup:
+/noharness-client-locale/understand-the-implementation/dictionary-lookup:
   en: 68373e745761494c
   zh: 43a5b8c19d03268a
-/deepseek-ai-dsh-client-locale/understand-the-implementation/source-map:
+/noharness-client-locale/understand-the-implementation/source-map:
   en: 6f329e4872398634
   zh: 9d8364dc4c03d055
-/deepseek-ai-dsh-client-locale/further-exploration:
-  en: f73d411c9e90dead
-  zh: 8dd05f13e081af88
-/deepseek-ai-dsh-client-locale/model-experience:
+/noharness-client-locale/further-exploration:
+  en: 3ff383b44603efad
+  zh: fa21d7aeda8ffa48
+/noharness-client-locale/model-experience:
   en: 209321ba2d2e6710
   zh: 21deb6c973f69b66
-/deepseek-ai-dsh-client-locale/model-experience/kv-cache-effect:
+/noharness-client-locale/model-experience/kv-cache-effect:
   en: ca75c51c89c2c9b0
   zh: de54f3467ef3b9be
-/deepseek-ai-dsh-client-locale/known-limitations-and-deferred-work:
+/noharness-client-locale/known-limitations-and-deferred-work:
   en: 500ede048ef44c6a
   zh: f741fae55b29a627
-/deepseek-ai-dsh-client-locale/known-limitations-and-deferred-work/dev-note:
+/noharness-client-locale/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

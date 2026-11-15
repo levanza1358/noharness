@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-util-file-drag",
+  "name": "@noharness/util-file-drag",
   "description": "Shared file drag names and native transfer requests",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/util/file-drag"
   },
   "type": "module",
@@ -30,11 +30,11 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-brand": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/brand": "workspace:*"
   },
   "dependencies": {
     "mime": "^4.1.1"

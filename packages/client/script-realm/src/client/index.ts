@@ -1,6 +1,6 @@
 /** Cordis-owned script-environment providers, independent from module placement. */
-import { Service } from '@deepseek-ai/cordis'
-import type { Context } from '@deepseek-ai/cordis'
+import { Service } from '@noharness/cordis'
+import type { Context } from '@noharness/cordis'
 import type { ScriptRealm, ScriptRealmCreateOptions, ScriptRealmFactory, ScriptRealmId } from './types.ts'
 
 export type { ScriptRealm, ScriptRealmCreateOptions, ScriptRealmFactory, ScriptRealmId, ScriptRealmScript } from './types.ts'
@@ -29,7 +29,7 @@ export class ScriptRealmError extends Error {
   }
 }
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Registered execution-environment providers; instances belong to their creators. */
     scriptRealms: ScriptRealmRegistry

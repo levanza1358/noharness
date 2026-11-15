@@ -9,21 +9,21 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry, { agentEvents } from '@deepseek-ai/dsh-agent'
-import type { Agent, AgentStatus } from '@deepseek-ai/dsh-agent'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import SessionStore from '@deepseek-ai/dsh-session'
-import type { Session } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { GoalId } from '@deepseek-ai/dsh-goal/types'
-import GoalService, { applyGoalProjection, foldGoal, goalProjectionDefinition } from '@deepseek-ai/dsh-goal'
-import type { GoalProjection, GoalProjectionState, GoalRef } from '@deepseek-ai/dsh-goal'
-import { unsupportedModel, unsupportedInbox } from '@deepseek-ai/dsh-agent-loop-testkit'
+import { Context } from '@noharness/cordis'
+import AgentRegistry, { agentEvents } from '@noharness/agent'
+import type { Agent, AgentStatus } from '@noharness/agent'
+import { createUserMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import SessionStore from '@noharness/session'
+import type { Session } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import { brandString } from '@noharness/brand'
+import type { GoalId } from '@noharness/goal/types'
+import GoalService, { applyGoalProjection, foldGoal, goalProjectionDefinition } from '@noharness/goal'
+import type { GoalProjection, GoalProjectionState, GoalRef } from '@noharness/goal'
+import { unsupportedModel, unsupportedInbox } from '@noharness/agent-loop-testkit'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }

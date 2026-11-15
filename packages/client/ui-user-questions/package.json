@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-client-ui-user-questions",
+  "name": "@noharness/client-ui-user-questions",
   "description": "Web ask_user_question composer takeover and plan-review presentation UI",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/client/ui-user-questions"
   },
   "type": "module",
@@ -26,16 +26,16 @@
     "./package.json": "./package.json",
     "./locale/*.json": "./locale/*.json"
   },
-  "dsh": {
+  "nhs": {
     "client": {
       "inject": [
-        "@deepseek-ai/dsh-api-remotes",
-        "@deepseek-ai/dsh-api-session-controller",
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-client-ui-conversation",
-        "@deepseek-ai/dsh-client-ui-renderer",
-        "@deepseek-ai/dsh-client-ui-session",
-        "@deepseek-ai/dsh-client-ui-chat"
+        "@noharness/api-remotes",
+        "@noharness/api-session-controller",
+        "@noharness/client-locale",
+        "@noharness/client-ui-conversation",
+        "@noharness/client-ui-renderer",
+        "@noharness/client-ui-session",
+        "@noharness/client-ui-chat"
       ],
       "platform": "web"
     }
@@ -46,34 +46,34 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-api-remotes": "workspace:*",
-    "@deepseek-ai/dsh-api-session-controller": "workspace:*",
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-client-locale": "workspace:*",
-    "@deepseek-ai/dsh-client-store": "workspace:*",
-    "@deepseek-ai/dsh-system-prompt": "workspace:*",
-    "@deepseek-ai/dsh-tool-executor-native": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/dsh-user-questions": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-primitives": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-slots": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-renderer": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-session": "workspace:*",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/api-remotes": "workspace:*",
+    "@noharness/api-session-controller": "workspace:*",
+    "@noharness/brand": "workspace:*",
+    "@noharness/client-locale": "workspace:*",
+    "@noharness/client-store": "workspace:*",
+    "@noharness/system-prompt": "workspace:*",
+    "@noharness/tool-executor-native": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/user-questions": "workspace:*",
+    "@noharness/client-ui-primitives": "workspace:*",
+    "@noharness/client-ui-slots": "workspace:*",
+    "@noharness/client-ui-renderer": "workspace:*",
+    "@noharness/client-ui-session": "workspace:*",
+    "@noharness/typert-protocol": "workspace:*",
     "react": "^18.2.0",
-    "@deepseek-ai/dsh-client-ui-conversation": "workspace:*",
-    "@deepseek-ai/dsh-client-connection": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
+    "@noharness/client-ui-conversation": "workspace:*",
+    "@noharness/client-connection": "workspace:*",
+    "@noharness/session": "workspace:*",
     "clsx": "^2.0.0",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-chat": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-tool": "workspace:*",
-    "@deepseek-ai/dsh-tool-executor-ptc": "workspace:*"
+    "@noharness/llm": "workspace:*",
+    "@noharness/client-ui-chat": "workspace:*",
+    "@noharness/client-ui-tool": "workspace:*",
+    "@noharness/tool-executor-ptc": "workspace:*"
   },
   "files": [
     "locale/*.json",

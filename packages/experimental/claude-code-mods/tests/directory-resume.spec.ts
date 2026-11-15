@@ -3,18 +3,18 @@ import { mkdir, mkdtemp, realpath, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import LocalFileSystem from '@deepseek-ai/dsh-fs-local'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import WorkingDirectory from '@deepseek-ai/dsh-working-directory'
+import { Context } from '@noharness/cordis'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import LocalFileSystem from '@noharness/fs-local'
+import type { SessionId } from '@noharness/session'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import WorkingDirectory from '@noharness/working-directory'
 import ClaudeCodeMods, { defineMod } from '../src/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 it('reports the final committed cwd when a persisted Session resumes, retaining its original project', async () => {
-  const root = await realpath(await mkdtemp(join(tmpdir(), 'dsh-mods-resume-directory-')))
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'nhs-mods-resume-directory-')))
   const origin = join(root, 'project')
   const current = join(origin, 'current')
   await mkdir(current, { recursive: true })

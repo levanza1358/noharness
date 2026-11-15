@@ -5,54 +5,54 @@
 /:
   en: 65283627208ef4c9
   zh: aa3f833ec24bb65a
-/deepseek-ai-dsh-plugin-manager:
-  en: e6cbfe169f5fb57b
-  zh: be378036d645a242
-/deepseek-ai-dsh-plugin-manager/summary:
+/noharness-plugin-manager:
+  en: 209f78dc14be2c7b
+  zh: 67a134494cd4e1eb
+/noharness-plugin-manager/summary:
   en: d6afcaa1594efcdb
   zh: 459cb6ac0dcb2d46
-/deepseek-ai-dsh-plugin-manager/table-of-contents:
+/noharness-plugin-manager/table-of-contents:
   en: 87679c51aa3693f5
   zh: 11684a48a5806afb
-/deepseek-ai-dsh-plugin-manager/use-this-package:
-  en: 9dba73eeabe9887f
-  zh: 19291d764da21077
-/deepseek-ai-dsh-plugin-manager/use-this-package/version-compatibility-and-exemptions:
-  en: 483285658e267dd5
-  zh: 846bec2daac59a96
-/deepseek-ai-dsh-plugin-manager/use-this-package/configuration:
-  en: ccec56c785b3ca28
-  zh: b945f933888fc7cb
-/deepseek-ai-dsh-plugin-manager/use-this-package/bundle-detail-documents:
-  en: 99b084ff497011d2
-  zh: 6c047796c1991784
-/deepseek-ai-dsh-plugin-manager/understand-the-implementation:
-  en: c224bfcb3eb3dbd2
-  zh: 8b9c96970a90dccc
-/deepseek-ai-dsh-plugin-manager/further-exploration:
-  en: c6538243d8702a0d
-  zh: 04a82d923353c75f
-/deepseek-ai-dsh-plugin-manager/model-experience:
+/noharness-plugin-manager/use-this-package:
+  en: 47b1c191c66739e2
+  zh: 68badbc34e8b0de5
+/noharness-plugin-manager/use-this-package/version-compatibility-and-exemptions:
+  en: 28f72351ae2eaa1e
+  zh: 707ad59578f6140e
+/noharness-plugin-manager/use-this-package/configuration:
+  en: d970879343f39bd1
+  zh: c8f1b22e7c1d6cec
+/noharness-plugin-manager/use-this-package/bundle-detail-documents:
+  en: 5241e1b9a074b093
+  zh: 4b8674b452f526c6
+/noharness-plugin-manager/understand-the-implementation:
+  en: 8149d5aeb2873ee5
+  zh: 5b3da2e9a493759c
+/noharness-plugin-manager/further-exploration:
+  en: a9dca6d1725f6a13
+  zh: 01b590c982a20cd1
+/noharness-plugin-manager/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/deepseek-ai-dsh-plugin-manager/model-experience/management-tool:
+/noharness-plugin-manager/model-experience/management-tool:
   en: 1815ec6ce56c80d4
   zh: 2d7ac75d3b25eb6b
-/deepseek-ai-dsh-plugin-manager/model-experience/management-tool/what-the-model-sees:
-  en: 9bb316cf4b47ba60
-  zh: 1c719feedf36e2f3
-/deepseek-ai-dsh-plugin-manager/model-experience/management-tool/token-effect:
+/noharness-plugin-manager/model-experience/management-tool/what-the-model-sees:
+  en: fdd6b91ccf17d81a
+  zh: 8931102cad1dd577
+/noharness-plugin-manager/model-experience/management-tool/token-effect:
   en: bc70208bd361dbcd
   zh: bb651d6066066c6c
-/deepseek-ai-dsh-plugin-manager/model-experience/management-tool/kv-cache-effect:
+/noharness-plugin-manager/model-experience/management-tool/kv-cache-effect:
   en: c29f60be7f3edc1a
   zh: d9b9388b96ef95cc
-/deepseek-ai-dsh-plugin-manager/known-limitations-and-deferred-work:
-  en: 89306b478cb75b3b
-  zh: f2f50c88114fec99
-/deepseek-ai-dsh-plugin-manager/known-limitations-and-deferred-work/failure-behavior:
-  en: 3fde425e82bbd0f4
-  zh: 531e2365e7d67480
-/deepseek-ai-dsh-plugin-manager/known-limitations-and-deferred-work/dev-note:
+/noharness-plugin-manager/known-limitations-and-deferred-work:
+  en: d6226310968809c8
+  zh: 1dc28687eaae01be
+/noharness-plugin-manager/known-limitations-and-deferred-work/failure-behavior:
+  en: eae7295ab56721af
+  zh: e23bfa465d4b8ec2
+/noharness-plugin-manager/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

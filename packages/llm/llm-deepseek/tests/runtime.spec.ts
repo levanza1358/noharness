@@ -1,13 +1,13 @@
-import * as Protocol from '@deepseek-ai/dsh-llm-deepseek'
+import * as Protocol from '@noharness/llm-deepseek'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { AttachmentId, ImageVariantId } from '@deepseek-ai/dsh-attachment/types'
-import type { AttachmentStore, ImageAttachmentRef, RequestImageAttachment } from '@deepseek-ai/dsh-attachment'
-import { createLaunchEnvironmentSnapshot } from '@deepseek-ai/dsh-launch-environment'
+import { Context } from '@noharness/cordis'
+import { brandString } from '@noharness/brand'
+import type { AttachmentId, ImageVariantId } from '@noharness/attachment/types'
+import type { AttachmentStore, ImageAttachmentRef, RequestImageAttachment } from '@noharness/attachment'
+import { createLaunchEnvironmentSnapshot } from '@noharness/launch-environment'
 import LlmRuntime, { type ToolCallId, createUserMessage,
   CONTEXT_WINDOW_EXCEEDED_CODE,
   createToolResultMessage,
@@ -17,15 +17,15 @@ import LlmRuntime, { type ToolCallId, createUserMessage,
   QUOTA_EXCEEDED_CODE,
   type ReasoningEffortId,
   userAgent,
-} from '@deepseek-ai/dsh-llm'
-import { MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
-import { getOrCreateAnonymousUserId, type AnonymousUserId } from '@deepseek-ai/dsh-anonymous-user-id'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import DeepSeekLlmApiExtensionRegistry from '@deepseek-ai/dsh-deepseek-llm-api-extensions'
-import type { PreparedDeepSeekLlmApiExtensions } from '@deepseek-ai/dsh-deepseek-llm-api-extensions'
-import * as LlmDeepSeek from '@deepseek-ai/dsh-llm-deepseek-api-key'
-import { DeepSeekAdapter, resolveAdapterOptions } from '@deepseek-ai/dsh-llm-deepseek'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
+} from '@noharness/llm'
+import { MAX_TIMER_DELAY_MS } from '@noharness/timeout'
+import { getOrCreateAnonymousUserId, type AnonymousUserId } from '@noharness/anonymous-user-id'
+import type { SessionId } from '@noharness/session'
+import DeepSeekLlmApiExtensionRegistry from '@noharness/deepseek-llm-api-extensions'
+import type { PreparedDeepSeekLlmApiExtensions } from '@noharness/deepseek-llm-api-extensions'
+import * as LlmDeepSeek from '@noharness/llm-deepseek-api-key'
+import { DeepSeekAdapter, resolveAdapterOptions } from '@noharness/llm-deepseek'
+import type { ContextFormed } from '@noharness/llm'
 import { providerError } from '../src/transport.ts'
 import { resolveRequestImageTarget } from '../src/request-pricing.ts'
 import { assemble } from './assemble.ts'
@@ -33,7 +33,7 @@ import { closeMockServers, mockServer, textEvents } from './mock-server.ts'
 import type { Behavior } from './mock-server.ts'
 import { requestImageStore } from './helpers.ts'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }
@@ -43,8 +43,8 @@ const TEST_USER_ID = '00000000-0000-4000-8000-000000000001' as AnonymousUserId
 let testHome: string
 
 beforeEach(() => {
-  testHome = mkdtempSync(join(tmpdir(), 'dsh-llm-deepseek-'))
-  vi.stubEnv('DSH_HOME', testHome)
+  testHome = mkdtempSync(join(tmpdir(), 'nhs-llm-deepseek-'))
+  vi.stubEnv('NHS_HOME', testHome)
 })
 
 afterEach(async () => {
@@ -211,7 +211,7 @@ describe('DeepSeekAdapter against a mock server', () => {
     const server = await mockServer([{ kind: 'sse', events: textEvents }])
     const accept = vi.fn()
     const prepareExtensions = vi.fn(async () => ({
-      fields: { dsh_test: { version: 1 } },
+      fields: { nhs_test: { version: 1 } },
       accept: async () => { accept() },
     }))
     const adapter = new DeepSeekAdapter({
@@ -222,7 +222,7 @@ describe('DeepSeekAdapter against a mock server', () => {
     })
 
     await drain(adapter.stream({ provider: 'deepseek-official', model: 'm', messages: [], sessionId: brandString<SessionId>('s') }))
-    expect(server.requests[0]).toMatchObject({ dsh_test: { version: 1 } })
+    expect(server.requests[0]).toMatchObject({ nhs_test: { version: 1 } })
     expect(prepareExtensions).toHaveBeenCalledWith(expect.objectContaining({ sessionId: 's' }))
     expect(accept).toHaveBeenCalledOnce()
   })
@@ -327,7 +327,7 @@ describe('DeepSeekAdapter against a mock server', () => {
       options: () => resolveAdapterOptions({ baseURL: server.url }),
       resolveAuth: () => Promise.resolve({ headers: { 'x-api-key': 'k' } }),
       resolveUserId: () => TEST_USER_ID,
-      prepareExtensions: () => Promise.resolve({ fields: { dsh_test: 1 }, accept: async () => { accept() } }) as never,
+      prepareExtensions: () => Promise.resolve({ fields: { nhs_test: 1 }, accept: async () => { accept() } }) as never,
     })
     const request = { provider: 'deepseek-official', model: 'm', messages: [] }
 
@@ -346,7 +346,7 @@ describe('DeepSeekAdapter against a mock server', () => {
       resolveAuth: () => Promise.resolve({ headers: { 'x-api-key': 'k' } }),
       resolveUserId: () => TEST_USER_ID,
       prepareExtensions: () => Promise.resolve({
-        fields: { dsh_test: 1 },
+        fields: { nhs_test: 1 },
         accept: () => Promise.reject(failure),
       }) as never,
     }
@@ -427,7 +427,7 @@ describe('DeepSeekAdapter against a mock server', () => {
     expect(server.fileRequests).toEqual([{
       method: 'POST',
       path: '/v1/files',
-      filename: `dsh-${'a'.repeat(16)}-${'b'.repeat(8)}.png`,
+      filename: `nhs-${'a'.repeat(16)}-${'b'.repeat(8)}.png`,
       bytes: 3,
     }])
     expect(signalSeen[0]).toBeInstanceOf(AbortSignal)
@@ -2292,7 +2292,7 @@ describe('plugin registration and config', () => {
 
   it('takes DEEPSEEK_BASE_URL from any environment layer, with explicit config still on top', () => {
     const trusted = createLaunchEnvironmentSnapshot([
-      { source: 'user-env', path: '/home/.dsh/.env', values: { DEEPSEEK_BASE_URL: 'https://user.example' } },
+      { source: 'user-env', path: '/home/.nhs/.env', values: { DEEPSEEK_BASE_URL: 'https://user.example' } },
     ])
     expect(resolveAdapterOptions({}, trusted).baseURL).toBe('https://user.example')
     // The product trusts the project it is launched in, so a checkout can

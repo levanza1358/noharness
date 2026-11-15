@@ -14,8 +14,8 @@ let downloads
 let cache
 if (existsSync(join(resourceDirectory, 'downloads.json'))) {
   downloads = JSON.parse(await readFile(join(resourceDirectory, 'downloads.json'), 'utf8'))
-  const root = process.env.DSH_RESOURCE_CACHE ?? join(homedir(), '.cache', 'deepseek-harness', 'resources')
-  if (!isAbsolute(root)) throw new Error('DSH_RESOURCE_CACHE must be an absolute directory')
+  const root = process.env.NHS_RESOURCE_CACHE ?? join(homedir(), '.cache', 'noharness', 'resources')
+  if (!isAbsolute(root)) throw new Error('NHS_RESOURCE_CACHE must be an absolute directory')
   if (!/^[a-f0-9]{64}$/u.test(downloads.identity)) throw new Error('runtime download manifest has an invalid cache identity')
   cache = join(root, downloads.identity)
 }
@@ -29,7 +29,7 @@ async function downloadResource(kind) {
     const staging = await mkdtemp(join(cache, `.${kind}-`))
     let disposeProxy
     try {
-      const { installProxyFromEnvironment } = await import('@deepseek-ai/dsh-http-proxy')
+      const { installProxyFromEnvironment } = await import('@noharness/http-proxy')
       disposeProxy = await installProxyFromEnvironment({ get(name) {
         const value = process.env[name]
         return value === undefined ? undefined : { value }
@@ -57,9 +57,9 @@ async function downloadResource(kind) {
   return kind === 'primary' ? join(destination, 'primary-runtime') : destination
 }
 
-const office = process.env.DSH_OFFICE_SIDECAR ?? (cache !== undefined && existsSync(join(cache, 'office', 'complete')) ? join(cache, 'office') : undefined)
+const office = process.env.NHS_OFFICE_SIDECAR ?? (cache !== undefined && existsSync(join(cache, 'office', 'complete')) ? join(cache, 'office') : undefined)
 if (office !== undefined) {
-  if (!isAbsolute(office)) throw new Error('DSH_OFFICE_SIDECAR must be an absolute directory')
+  if (!isAbsolute(office)) throw new Error('NHS_OFFICE_SIDECAR must be an absolute directory')
   const parentURL = pathToFileURL(join(office, 'package.json')).href
   registerHooks({
     resolve(specifier, context, nextResolve) {
@@ -69,44 +69,44 @@ if (office !== undefined) {
   })
 }
 
-const selectorName = 'DSH_SUBPROCESS_RUNNER'
+const selectorName = 'NHS_SUBPROCESS_RUNNER'
 const selection = process.env[selectorName]
 const aclRunner = process.platform === 'win32'
-  ? fileURLToPath(import.meta.resolve('@deepseek-ai/dsh-sandbox-windows-acl/runner'))
+  ? fileURLToPath(import.meta.resolve('@noharness/sandbox-windows-acl/runner'))
   : undefined
 
-const resource = process.env.DSH_RUNTIME_DOWNLOAD
+const resource = process.env.NHS_RUNTIME_DOWNLOAD
 if (resource !== undefined) {
-  Reflect.deleteProperty(process.env, 'DSH_RUNTIME_DOWNLOAD')
-  if (resource !== 'office' && resource !== 'primary') throw new Error('DSH_RUNTIME_DOWNLOAD must select office or primary')
+  Reflect.deleteProperty(process.env, 'NHS_RUNTIME_DOWNLOAD')
+  if (resource !== 'office' && resource !== 'primary') throw new Error('NHS_RUNTIME_DOWNLOAD must select office or primary')
   const path = await downloadResource(resource)
   console.log(JSON.stringify(path))
 } else if (aclRunner !== undefined && process.argv[2] === aclRunner) {
   process.argv.splice(1, 1)
-  await import('@deepseek-ai/dsh-sandbox-windows-acl/runner')
-} else if (process.env.DSH_PTC_RUNTIME_NODE === '1') {
-  Reflect.deleteProperty(process.env, 'DSH_PTC_RUNTIME_NODE')
-  await import('@deepseek-ai/dsh-ptc-runtime-node/process')
+  await import('@noharness/sandbox-windows-acl/runner')
+} else if (process.env.NHS_PTC_RUNTIME_NODE === '1') {
+  Reflect.deleteProperty(process.env, 'NHS_PTC_RUNTIME_NODE')
+  await import('@noharness/ptc-runtime-node/process')
 } else if (selection === undefined) {
-  // A DSH_PRIMARY_RUNTIME set or inherited from the environment, including the empty opt-out, takes precedence over the
+  // A NHS_PRIMARY_RUNTIME set or inherited from the environment, including the empty opt-out, takes precedence over the
   // downloaded cache.
   if (cache !== undefined && existsSync(join(cache, 'primary', 'complete'))) {
-    process.env.DSH_PRIMARY_RUNTIME ??= join(cache, 'primary', 'primary-runtime')
+    process.env.NHS_PRIMARY_RUNTIME ??= join(cache, 'primary', 'primary-runtime')
   }
   let packageManager
-  const primary = process.env.DSH_PRIMARY_RUNTIME
+  const primary = process.env.NHS_PRIMARY_RUNTIME
   if (primary !== undefined && primary !== '') {
-    const { resolvePrimaryRuntime } = await import('@deepseek-ai/dsh-tool-workspace-dependencies')
+    const { resolvePrimaryRuntime } = await import('@noharness/tool-workspace-dependencies')
     const { node, pnpm } = await resolvePrimaryRuntime(primary)
     if (node !== undefined && pnpm !== undefined) {
       packageManager = { command: node, args: [pnpm],
         env: { PATH: `${dirname(node)}${delimiter}${process.env.PATH ?? ''}` } }
     }
   }
-  const { runCli } = await import('@deepseek-ai/dsh/lib/bin.js')
+  const { runCli } = await import('@noharness/cli/lib/bin.js')
   await runCli({ packageManager })
 } else {
   Reflect.deleteProperty(process.env, selectorName)
-  const { runSelectedSubprocessRunner } = await import('@deepseek-ai/dsh-subprocess-local/runner')
+  const { runSelectedSubprocessRunner } = await import('@noharness/subprocess-local/runner')
   await runSelectedSubprocessRunner(selection)
 }

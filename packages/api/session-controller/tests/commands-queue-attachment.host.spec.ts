@@ -1,28 +1,28 @@
-import TypertRegistry from '@deepseek-ai/dsh-typert-registry'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent, Inbox } from '@deepseek-ai/dsh-agent'
-import { AttachmentError } from '@deepseek-ai/dsh-attachment'
-import type { AttachmentId } from '@deepseek-ai/dsh-attachment/types'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { ImageAttachmentRef } from '@deepseek-ai/dsh-attachment'
-import { createUserMessage, type MessageId } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
+import TypertRegistry from '@noharness/typert-registry'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import { RemoteError } from '@noharness/typert-protocol'
+import { Context } from '@noharness/cordis'
+import AgentRegistry from '@noharness/agent'
+import type { Agent, Inbox } from '@noharness/agent'
+import { AttachmentError } from '@noharness/attachment'
+import type { AttachmentId } from '@noharness/attachment/types'
+import { brandString } from '@noharness/brand'
+import type { ImageAttachmentRef } from '@noharness/attachment'
+import { createUserMessage, type MessageId } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
 import SessionStore, {
   Session, type SessionId, SessionLogOffset,
-} from '@deepseek-ai/dsh-session'
-import type { UserMessage } from '@deepseek-ai/dsh-session'
-import { snapshotSubagentDescriptor, SUBAGENT_DESCRIPTOR_VERSION } from '@deepseek-ai/dsh-subagent'
-import { subagentIdentityProjectionDefinition } from '@deepseek-ai/dsh-subagent/src/projection.ts'
+} from '@noharness/session'
+import type { UserMessage } from '@noharness/session'
+import { snapshotSubagentDescriptor, SUBAGENT_DESCRIPTOR_VERSION } from '@noharness/subagent'
+import { subagentIdentityProjectionDefinition } from '@noharness/subagent/src/projection.ts'
 import { describe, expect, it, vi } from 'vitest'
 import { ApiSessionAgentController } from '../src/agent.ts'
 import { SessionCommandController } from '../src/commands.ts'
-import { unsupportedModel, createInboxStub } from '@deepseek-ai/dsh-agent-loop-testkit'
+import { unsupportedModel, createInboxStub } from '@noharness/agent-loop-testkit'
 import { installSessionReadTestServices } from './test-remote.ts'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }

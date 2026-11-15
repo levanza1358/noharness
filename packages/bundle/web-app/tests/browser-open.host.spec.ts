@@ -3,20 +3,20 @@ import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { basename, dirname, isAbsolute, join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@deepseek-ai/cordis'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import LocalCredentials from '@deepseek-ai/dsh-credentials-local'
-import * as Connection from '@deepseek-ai/dsh-client-connection'
-import { auditStartupEntries } from '@deepseek-ai/dsh-app-boot'
-import WebServer, { type WebEntryUrl } from '@deepseek-ai/dsh-host-webserver'
-import * as FrontendStatic from '@deepseek-ai/dsh-host-frontend-static'
+import { Context } from '@noharness/cordis'
+import Include from '@noharness/cordis-plugin-include'
+import Loader from '@noharness/cordis-plugin-loader'
+import LocalCredentials from '@noharness/credentials-local'
+import * as Connection from '@noharness/client-connection'
+import { auditStartupEntries } from '@noharness/app-boot'
+import WebServer, { type WebEntryUrl } from '@noharness/host-webserver'
+import * as FrontendStatic from '@noharness/host-frontend-static'
 import { expect, it, onTestFinished, vi } from 'vitest'
-import * as Token from '@deepseek-ai/dsh-host-authentication-token'
+import * as Token from '@noharness/host-authentication-token'
 import * as WebApp from '../src/index.ts'
 
 it('opens its tokenized URL only after the complete authenticated page is reachable', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-token-browser-open-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-token-browser-open-'))
   const ctx = new Context()
   const originalOpen = WebApp.internals.openBrowser
   const originalResolve = WebApp.internals.resolveDistIndex
@@ -25,7 +25,7 @@ it('opens its tokenized URL only after the complete authenticated page is reacha
     WebApp.internals.openBrowser = originalOpen
     WebApp.internals.resolveDistIndex = originalResolve
     vi.unstubAllEnvs()
-    if (!isAbsolute(root) || dirname(root) !== resolve(tmpdir()) || !basename(root).startsWith('dsh-token-browser-open-')) {
+    if (!isAbsolute(root) || dirname(root) !== resolve(tmpdir()) || !basename(root).startsWith('nhs-token-browser-open-')) {
       throw new Error(`refusing unexpected fixture cleanup path: ${root}`)
     }
     await rm(root, { recursive: true, force: true })

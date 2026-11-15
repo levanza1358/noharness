@@ -1,21 +1,21 @@
 /** Host timer over standalone tasks; target Session activation is a delivery operation. */
 import { randomUUID } from 'node:crypto'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-declare module '@deepseek-ai/dsh-llm' {
+import { createUserMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'schedule': { kind: 'schedule' } & ContextFormed
   }
 }
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { SessionId as SessionIdType } from '@deepseek-ai/dsh-session/types'
-import type { Context } from '@deepseek-ai/cordis'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { SessionPersistenceNotFoundError } from '@deepseek-ai/dsh-session-persistence'
-import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
-import type {} from '@deepseek-ai/dsh-api-session-controller'
-import type {} from '@deepseek-ai/dsh-session-title'
-import type {} from '@deepseek-ai/dsh-workspace'
+import { brandString } from '@noharness/brand'
+import type { SessionId as SessionIdType } from '@noharness/session/types'
+import type { Context } from '@noharness/cordis'
+import type { Agent } from '@noharness/agent'
+import { SessionPersistenceNotFoundError } from '@noharness/session-persistence'
+import { RemoteError } from '@noharness/typert-protocol'
+import type {} from '@noharness/api-session-controller'
+import type {} from '@noharness/session-title'
+import type {} from '@noharness/workspace'
 import {
   isRecurringScheduleRecord, MIN_EVERY_INTERVAL_SECONDS, renderRecurringReminderBatchFraming, renderReminderFraming,
   resolveRecurringOccurrence, type RecurringOccurrence,

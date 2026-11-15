@@ -1,15 +1,15 @@
 // @vitest-environment jsdom
-import type { Context } from '@deepseek-ai/cordis'
-import type { PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
-import { createClientTest, webApp } from '@deepseek-ai/dsh-client-test-runtime/src/assembly/index.ts'
-import { usePinnedBrowserLanguages } from '@deepseek-ai/dsh-client-test-runtime'
+import type { Context } from '@noharness/cordis'
+import type { PropsRuntime } from '@noharness/client-ui-slots'
+import { createClientTest, webApp } from '@noharness/client-test-runtime/src/assembly/index.ts'
+import { usePinnedBrowserLanguages } from '@noharness/client-test-runtime'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { expect, onTestFinished } from 'vitest'
 
 usePinnedBrowserLanguages('en-US')
 
 const it = createClientTest({
-  roster: webApp.without(['@deepseek-ai/dsh-client-ui-settings-models']),
+  roster: webApp.without(['@noharness/client-ui-settings-models']),
 }, { mount: true })
 
 function Section() { return null }

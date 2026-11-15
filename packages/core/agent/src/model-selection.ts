@@ -1,14 +1,14 @@
 /** Agent-owned model selection, its durable projection, and scoped switch notices.
- * @module @deepseek-ai/dsh-agent/model-selection
+ * @module @noharness/agent/model-selection
  */
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@noharness/cordis'
 import type { Model, AgentOptions, PreStepDecision } from './runtime-types.ts'
 import type { ModelSelection } from './types.ts'
-import { boundContextSummary, createUserMessage, type ContextFormed } from '@deepseek-ai/dsh-llm'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { ReasoningEffortId } from '@deepseek-ai/dsh-llm/types'
-import type { Session, EpochHeader } from '@deepseek-ai/dsh-session'
-import type { ProjectionDefinition } from '@deepseek-ai/dsh-session-projection'
+import { boundContextSummary, createUserMessage, type ContextFormed } from '@noharness/llm'
+import { brandString } from '@noharness/brand'
+import type { ReasoningEffortId } from '@noharness/llm/types'
+import type { Session, EpochHeader } from '@noharness/session'
+import type { ProjectionDefinition } from '@noharness/session-projection'
 import { z } from 'zod'
 
 /**
@@ -121,7 +121,7 @@ export class AgentModel implements Model {
   }
 }
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'model-selection': { kind: 'model-selection' } & ContextFormed
   }

@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-host-plugin-inventory",
+  "name": "@noharness/host-plugin-inventory",
   "description": "Read-only Remote projection of current Cordis Loader plugin state",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/host/plugin-inventory"
   },
   "type": "module",
@@ -53,24 +53,24 @@
     "zod": "4.6.6"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-agent-preset-registry": "workspace:*",
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/agent-preset-registry": "workspace:*",
+    "@noharness/brand": "workspace:*",
+    "@noharness/typert-protocol": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   },
   "peerDependenciesMeta": {
-    "@deepseek-ai/dsh-agent-preset-registry": {
+    "@noharness/agent-preset-registry": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-app-boot": "workspace:*",
-    "@deepseek-ai/dsh-package-manifest": "workspace:*",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-agent-preset-registry": "workspace:*",
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/app-boot": "workspace:*",
+    "@noharness/package-manifest": "workspace:*",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/agent-preset-registry": "workspace:*",
+    "@noharness/brand": "workspace:*",
+    "@noharness/typert-protocol": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   }
 }

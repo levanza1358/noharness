@@ -5,12 +5,12 @@
  * never provider selection or network access.
  */
 
-import type { Context } from '@deepseek-ai/cordis'
-import { defineTool, ToolArgsError } from '@deepseek-ai/dsh-tools'
-import type { GenericCallView, ToolResult, WebSearchResultView, WebSource } from '@deepseek-ai/dsh-tools'
-import { truncateWithoutSplittingSurrogatePair } from '@deepseek-ai/dsh-output-retention'
-import type { JsonValue } from '@deepseek-ai/dsh-util-values'
-import type { WebSearchResult, WebSearchSource } from '@deepseek-ai/dsh-web'
+import type { Context } from '@noharness/cordis'
+import { defineTool, ToolArgsError } from '@noharness/tools'
+import type { GenericCallView, ToolResult, WebSearchResultView, WebSource } from '@noharness/tools'
+import { truncateWithoutSplittingSurrogatePair } from '@noharness/output-retention'
+import type { JsonValue } from '@noharness/util-values'
+import type { WebSearchResult, WebSearchSource } from '@noharness/web'
 import { EXTERNAL_WEB_CONTENT_NOTICE } from './trust.ts'
 
 /**
@@ -337,7 +337,7 @@ function mergeSearchResults(
  * @param maxQueries - the deployment's query cap enforced before provider calls.
  * @param summaryMaxChars - the deployment's per-source summary cap in the output value.
  * @param timeoutMs - the cooperative tool-call budget (ms) attached as the tool's
- *   `ToolDefinition.timeoutMs` for `@deepseek-ai/dsh-tool-call-timeout-policy` to enforce.
+ *   `ToolDefinition.timeoutMs` for `@noharness/tool-call-timeout-policy` to enforce.
  * @param fetchEnabled - whether the same composition exposes `web_fetch`, which
  *   permits recommending that follow-up tool when it is also visible at assembly.
  */

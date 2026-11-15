@@ -10,8 +10,8 @@
         terminals: true
       config:
         - id: pty
-          name: '@deepseek-ai/dsh-terminal'
+          name: '@noharness/terminal'
         - id: terminal-panel
-          name: '@deepseek-ai/dsh-terminal-panel'
+          name: '@noharness/terminal-panel'
         - id: tool-terminal
-          name: '@deepseek-ai/dsh-tool-terminal'
+          name: '@noharness/tool-terminal'

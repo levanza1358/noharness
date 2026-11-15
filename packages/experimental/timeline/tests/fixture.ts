@@ -1,20 +1,20 @@
-// Real AgentLoop fixture adapted from kermanx/dsh-progress-check (MIT).
+// Real AgentLoop fixture adapted from kermanx/nhs-progress-check (MIT).
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import { createUserMessage, isAgentLoopRequest, LlmAdapter, ToolCallId } from '@deepseek-ai/dsh-llm'
-import type { LlmModelReasoningInfo } from '@deepseek-ai/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@deepseek-ai/dsh-llm'
-import { pluginRecordOf, SessionId } from '@deepseek-ai/dsh-session'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
-import { defineTool } from '@deepseek-ai/dsh-tools'
+import { Context } from '@noharness/cordis'
+import { createUserMessage, isAgentLoopRequest, LlmAdapter, ToolCallId } from '@noharness/llm'
+import type { LlmModelReasoningInfo } from '@noharness/llm'
+import type { GenerateOptions, StreamChunk } from '@noharness/llm'
+import { pluginRecordOf, SessionId } from '@noharness/session'
+import type { SessionEvent } from '@noharness/session'
+import { defineTool } from '@noharness/tools'
 import {
   mountAgentLoopTestDependencies,
   mountAgentLoopTestHarness,
-} from '@deepseek-ai/dsh-agent-loop-testkit'
-import * as Jsonl from '@deepseek-ai/dsh-session-persistence-jsonl'
-import type {} from '@deepseek-ai/dsh-session-persistence'
+} from '@noharness/agent-loop-testkit'
+import * as Jsonl from '@noharness/session-persistence-jsonl'
+import type {} from '@noharness/session-persistence'
 import * as Timeline from '../src/index.ts'
 
 export const textOutput = {
@@ -126,7 +126,7 @@ export async function setup(
   adapter = new Adapter(),
   restore?: { root: string; sessionId: SessionId },
 ) {
-  const root = restore?.root ?? (await mkdtemp(join(tmpdir(), 'dsh-timeline-test-')))
+  const root = restore?.root ?? (await mkdtemp(join(tmpdir(), 'nhs-timeline-test-')))
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
   await ctx.plugin(Jsonl, { root, compression: 'none' })

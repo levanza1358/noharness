@@ -1,21 +1,21 @@
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import { randomUUID } from 'node:crypto'
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm/types'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { bindScopeParent, createScope, scopeOf } from '@deepseek-ai/dsh-scope'
-import type { ScopeKey } from '@deepseek-ai/dsh-scope'
-import type { JobId } from '@deepseek-ai/dsh-jobs'
+import { Context } from '@noharness/cordis'
+import { Session, type SessionId } from '@noharness/session'
+import type { ToolCallId } from '@noharness/llm/types'
+import { createUserMessage } from '@noharness/llm'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import { bindScopeParent, createScope, scopeOf } from '@noharness/scope'
+import type { ScopeKey } from '@noharness/scope'
+import type { JobId } from '@noharness/jobs'
 import type {
   JobErrorCode, JobEvent, JobEventFilter, JobHandle, JobHooks, JobKind, JobOutcome, JobOutputSource, JobSpec, JobView,
-} from '@deepseek-ai/dsh-jobs'
-import LocalJobRegistry, { type Config as JobsConfig } from '@deepseek-ai/dsh-jobs-local'
-import { unsupportedModel, unsupportedInbox } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { brandString } from '@deepseek-ai/dsh-brand'
+} from '@noharness/jobs'
+import LocalJobRegistry, { type Config as JobsConfig } from '@noharness/jobs-local'
+import { unsupportedModel, unsupportedInbox } from '@noharness/agent-loop-testkit'
+import { brandString } from '@noharness/brand'
 
 vi.mock('node:crypto', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:crypto')>()
@@ -24,7 +24,7 @@ vi.mock('node:crypto', async (importOriginal) => {
 
 const randomUuid = vi.mocked(randomUUID)
 
-declare module '@deepseek-ai/dsh-jobs' {
+declare module '@noharness/jobs' {
   interface JobKindMap {
     'test-task': 'test-task'
     workflow: 'workflow'
@@ -185,7 +185,7 @@ describe('LocalJobRegistry.start', () => {
     const ctx = new Context()
     await ctx.plugin(LocalJobRegistry)
     expect(() => ctx.jobs.start(producer().spec))
-      .toThrow('background jobs unavailable: no job controller serves this agent (load @deepseek-ai/dsh-tool-jobs in its composition)')
+      .toThrow('background jobs unavailable: no job controller serves this agent (load @noharness/tool-jobs in its composition)')
     expect(() => ctx.jobs.start(producer().spec)).toThrow(expect.objectContaining(jobError('JOB_CONTROLLER_UNAVAILABLE')))
   })
 

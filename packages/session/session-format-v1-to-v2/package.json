@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-session-format-v1-to-v2",
+  "name": "@noharness/session-format-v1-to-v2",
   "description": "Frozen released-v1 Session codec and assistant-stream migration to v2",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/session/session-format-v1-to-v2"
   },
   "type": "module",
@@ -29,7 +29,7 @@
     "src"
   ],
   "license": "MIT",
-  "dsh": {
+  "nhs": {
     "sessionFormatMigration": {
       "from": 1,
       "to": 2,
@@ -42,16 +42,16 @@
     }
   },
   "dependencies": {
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session-format": "workspace:*",
-    "@deepseek-ai/dsh-session-format-v0-to-v1": "workspace:*",
-    "@deepseek-ai/dsh-util-values": "workspace:*"
+    "@noharness/llm": "workspace:*",
+    "@noharness/session-format": "workspace:*",
+    "@noharness/session-format-v0-to-v1": "workspace:*",
+    "@noharness/util-values": "workspace:*"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-session": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/session": "workspace:*"
   }
 }

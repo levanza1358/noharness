@@ -3,44 +3,44 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-07-24-web-gui-browser-e2e-lane.md
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui:
-  en: acbf72f6a3c5bea9
-  zh: 4d655027ac2b78db
+  en: 939cec581cba9a6e
+  zh: e9b6f5acb445729c
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/problem:
-  en: 63a2f51853b2c530
-  zh: 2babef0ecce89b21
+  en: dbb45886b4796067
+  zh: 58a58c7ae2bca07a
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/decision:
-  en: c2f86db5f0b6b5a4
-  zh: dd07b529cc65e7d2
+  en: 3e816e78952485e3
+  zh: b871959f14366c02
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/decision/scaffold-apps-web-tests-scaffold-ts:
-  en: 3d09cd693966a674
-  zh: 4cda02850961f8d0
+  en: f1a0b397e7fee9c8
+  zh: 695fa915e21569ae
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/decision/determinism-rules:
-  en: 41790d8d79b7ada3
-  zh: 1fc7e85a1accd806
+  en: 06e7c422271941d1
+  zh: 6a1add57f042bf7c
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/decision/expected-outputs:
   en: ca1ae9ccbeab8c01
   zh: 662cd5d98ee20ccc
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/decision/modes-and-fixtures:
-  en: 54f10befeaaade72
-  zh: 3a7726c1f4be51cc
+  en: 019baca3143f8c87
+  zh: ee1db2b915150132
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/decision/coverage-contract:
   en: c529437d4fbaeeb3
   zh: fe13551e56cba7df
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/decision/ci-stance:
-  en: a4ed258cd19db1c0
-  zh: 913e079a6250d7d7
+  en: c1cd3c99741e419a
+  zh: ecd57e58d6b98ab2
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/prior-art:
-  en: 7472e212043721dd
-  zh: 61dd9f5a8e12730b
+  en: d9dff2f9ae1a2d42
+  zh: f9c437170afe4442
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/alternatives-considered:
-  en: 5bd57b3dbacd8380
-  zh: a154f27d93930f77
+  en: 189b7922b6cb4286
+  zh: 35271817b15298b1
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/testing:
-  en: f4459a24f56c9cfe
-  zh: a15bdc45785ed7e8
+  en: 6164fea5104ecd58
+  zh: ea17bb9bd04602bf
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/deferred:
   en: aef84d3933bb72a1
   zh: 1cc5e2f1c9bcccf9
 /agent-note-keyless-browser-e2e-lane-for-the-web-gui/consequences:
-  en: 30928e1b547ddc34
-  zh: 068bd12b2ac119dc
+  en: 072bd312738f2525
+  zh: dc1bda6465c290ba

@@ -4,11 +4,11 @@ import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { chromium, type Browser, type Page } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
+import type { SessionId } from '@noharness/session'
+import type { SessionEvent } from '@noharness/session'
 import { launchWebScaffold, watchConsole, type WebScaffold } from './scaffold.ts'
 import { newEnglishPage } from './support.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 /** A preset these blank Sessions recorded that the deployment no longer declares. */
 const UNDECLARED = 'liangshen'
@@ -51,7 +51,7 @@ describe('web e2e: blank Session reuse under the requested preset', () => {
     tripwires.push(watchConsole(page))
     if (saved !== undefined) {
       await page.addInitScript((id) => {
-        localStorage.setItem('dsh.sessions.current', JSON.stringify({ sessionId: id }))
+        localStorage.setItem('nhs.sessions.current', JSON.stringify({ sessionId: id }))
       }, saved)
     }
     await page.goto(scaffold.authenticatedUrl, { waitUntil: 'load' })
@@ -61,7 +61,7 @@ describe('web e2e: blank Session reuse under the requested preset', () => {
 
   async function selected(page: Page): Promise<string | undefined> {
     return page.evaluate(() => {
-      const value = localStorage.getItem('dsh.sessions.current')
+      const value = localStorage.getItem('nhs.sessions.current')
       return value === null ? undefined : (JSON.parse(value) as { sessionId?: string }).sessionId
     })
   }

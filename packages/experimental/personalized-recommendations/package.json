@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-personalized-recommendations",
+  "name": "@noharness/personalized-recommendations",
   "description": "Personalized pages and built-in plugin recommendations offered as cards below answers",
   "version": "0.2.2-rc.3",
   "icon": "./icon.svg",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/experimental/personalized-recommendations"
   },
   "type": "module",
@@ -37,34 +37,34 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@deepseek-ai/dsh-action-cards": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-action-cards": "workspace:*",
-    "@deepseek-ai/dsh-creation-recommendations": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-creation-recommendations": "workspace:*",
-    "@deepseek-ai/dsh-plugin-recommendations": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-plugin-recommendations": "workspace:*"
+    "@noharness/action-cards": "workspace:*",
+    "@noharness/client-ui-action-cards": "workspace:*",
+    "@noharness/creation-recommendations": "workspace:*",
+    "@noharness/client-ui-creation-recommendations": "workspace:*",
+    "@noharness/plugin-recommendations": "workspace:*",
+    "@noharness/client-ui-plugin-recommendations": "workspace:*"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/cordis-plugin-include": "workspace:~",
-    "@deepseek-ai/cordis-plugin-timer": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-api-remote-access": "workspace:*",
-    "@deepseek-ai/dsh-app-boot": "workspace:*",
-    "@deepseek-ai/dsh-hmr": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-plugin-manager": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-skill": "workspace:*",
-    "@deepseek-ai/dsh-system-prompt": "workspace:*",
-    "@deepseek-ai/dsh-tool-executor-native": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/cordis-plugin-include": "workspace:~",
+    "@noharness/cordis-plugin-timer": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/api-remote-access": "workspace:*",
+    "@noharness/app-boot": "workspace:*",
+    "@noharness/hmr": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/plugin-manager": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/skill": "workspace:*",
+    "@noharness/system-prompt": "workspace:*",
+    "@noharness/tool-executor-native": "workspace:*",
+    "@noharness/tools": "workspace:*"
   },
-  "dsh": {
+  "nhs": {
     "bundle": {
       "patch": "./cordis.patch.yml"
     }

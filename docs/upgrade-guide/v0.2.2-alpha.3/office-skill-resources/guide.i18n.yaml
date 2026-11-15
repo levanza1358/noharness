@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/upgrade-guide/v0.2.2-alpha.3/office-skill-resources/guide.md
 /:
-  en: be76cf53968415f9
-  zh: e641c2ede9b53fcd
+  en: d8c458358bce2fca
+  zh: a1a523eb73083077
 /office-skills-load-from-the-packaged-assets:
-  en: 9dadceb35e48b91c
-  zh: 5c7103427581a6bd
+  en: e6a3b63c0a54d3ca
+  zh: 8d4595af0f0bca29
 /office-skills-load-from-the-packaged-assets/change:
-  en: da134862e17a7bd2
-  zh: dc31dc816c669add
+  en: 0d9e9b5b4517b6e0
+  zh: 58989cfc8f93d7a6
 /office-skills-load-from-the-packaged-assets/migration:
-  en: e9c9fc8e2ec5a9b0
-  zh: e736d57c47fb111c
+  en: b5231e9461f3cbb2
+  zh: 49a66673123b0bb3

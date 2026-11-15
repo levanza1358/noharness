@@ -1,16 +1,16 @@
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import { Context } from '@deepseek-ai/cordis'
+import AgentRegistry from '@noharness/agent'
+import { Context } from '@noharness/cordis'
 import { describe, expect, it, onTestFinished } from 'vitest'
-import LlmRuntime, { createUserMessage, LlmAdapter, type ReasoningEffortId, type ToolCallId } from '@deepseek-ai/dsh-llm'
-import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@deepseek-ai/dsh-llm'
-import SessionStore, { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { SessionTitleProviderId } from '@deepseek-ai/dsh-session-title/types'
+import LlmRuntime, { createUserMessage, LlmAdapter, type ReasoningEffortId, type ToolCallId } from '@noharness/llm'
+import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@noharness/llm'
+import SessionStore, { Session, type SessionId } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import { brandString } from '@noharness/brand'
+import type { SessionTitleProviderId } from '@noharness/session-title/types'
 import SessionTitleService, {
   type SessionTitleUserMessage,
-} from '@deepseek-ai/dsh-session-title'
-import * as providerPlugin from '@deepseek-ai/dsh-session-title-all-prompts-llm'
+} from '@noharness/session-title'
+import * as providerPlugin from '@noharness/session-title-all-prompts-llm'
 
 class RecordingAdapter extends LlmAdapter {
   readonly requests: GenerateOptions[] = []

@@ -25,11 +25,11 @@ describe('attributesOf', () => {
     '/root.gen.ts linguist-generated',
     'gen/*.ts text linguist-generated',
     'other.txt text',
-    'api/*.yaml dsh-review-layer=interface',
-    'api/legacy.yaml -dsh-review-layer',
-    'api/odd.yaml dsh-review-layer=docs',
-    'api/reset.yaml !dsh-review-layer',
-    '*.snap.ts dsh-review-layer=test linguist-generated',
+    'api/*.yaml nhs-review-layer=interface',
+    'api/legacy.yaml -nhs-review-layer',
+    'api/odd.yaml nhs-review-layer=docs',
+    'api/reset.yaml !nhs-review-layer',
+    '*.snap.ts nhs-review-layer=test linguist-generated',
   ].join('\r\n'))
 
   it('applies lines in order, with unset and unspecified values overriding an earlier set', () => {
@@ -66,10 +66,10 @@ describe('attributesOf', () => {
       'packages/experimental/client-ui-forge/src/types.ts', 'packages/typert/generator/tests/fixtures/remote-model/packages/domain/src/types.ts',
       'packages/client/locale/package.json', 'snapshots/session/headless.snapshot.ts', 'README.i18n.yaml', 'docs/persistence-schema.json',
     ]
-    const { stdout } = await run('git', ['check-attr', 'dsh-review-layer', 'linguist-generated', '--', ...paths])
+    const { stdout } = await run('git', ['check-attr', 'nhs-review-layer', 'linguist-generated', '--', ...paths])
     const expected = paths.map((path) => {
       const value = (name: string): string | undefined => new RegExp(`^${path.replaceAll('.', '\\.')}: ${name}: (.*)$`, 'm').exec(stdout)?.[1]
-      const layer = value('dsh-review-layer')
+      const layer = value('nhs-review-layer')
       return { layer: layer === 'unspecified' ? undefined : layer, generated: value('linguist-generated') === 'true' }
     })
     const read = attributesOf(await readFile(new URL('../../../../.gitattributes', import.meta.url), 'utf8'))
@@ -104,9 +104,9 @@ describe('FileLayers', () => {
       'src/a.spec.ts', 'tests/fixtures/cordis.yml', 'apps/cordis.yml', 'docs/schema.json', 'tests/keep.ts', 'src/api.ts', 'src/gen.ts',
     ], [
       'docs/schema.json linguist-generated',
-      'tests/keep.ts dsh-review-layer=implementation',
-      'src/api.ts dsh-review-layer=interface',
-      'src/gen.ts linguist-generated dsh-review-layer=implementation',
+      'tests/keep.ts nhs-review-layer=implementation',
+      'src/api.ts nhs-review-layer=interface',
+      'src/gen.ts linguist-generated nhs-review-layer=implementation',
     ].join('\n'))).toEqual([
       'src/a.spec.ts interface', 'tests/fixtures/cordis.yml test', 'apps/cordis.yml interface', 'docs/schema.json test',
       'tests/keep.ts implementation', 'src/api.ts interface', 'src/gen.ts implementation',

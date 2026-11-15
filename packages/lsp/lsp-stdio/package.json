@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-lsp-stdio",
-  "description": "Generic stdio language-server provider for the DeepSeek Harness LSP capability seam (ctx.lsp) — spawns configured servers, translates JSON-RPC, and serves transient-open goToDefinition/findReferences/goToImplementation/hover queries in the host filesystem namespace",
+  "name": "@noharness/lsp-stdio",
+  "description": "Generic stdio language-server provider for the NoHarness LSP capability seam (ctx.lsp) — spawns configured servers, translates JSON-RPC, and serves transient-open goToDefinition/findReferences/goToImplementation/hover queries in the host filesystem namespace",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/lsp/lsp-stdio"
   },
   "type": "module",
@@ -32,29 +32,29 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-error": "workspace:*",
-    "@deepseek-ai/dsh-fs": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-lsp": "workspace:*",
-    "@deepseek-ai/dsh-subprocess": "workspace:*",
-    "@deepseek-ai/dsh-timeout": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/error": "workspace:*",
+    "@noharness/fs": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/lsp": "workspace:*",
+    "@noharness/subprocess": "workspace:*",
+    "@noharness/timeout": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-util-values": "workspace:*",
-    "@deepseek-ai/schemastery": "workspace:~"
+    "@noharness/brand": "workspace:*",
+    "@noharness/util-values": "workspace:*",
+    "@noharness/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-error": "workspace:*",
-    "@deepseek-ai/dsh-fs": "workspace:*",
-    "@deepseek-ai/dsh-fs-local": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-lsp": "workspace:*",
-    "@deepseek-ai/dsh-subprocess": "workspace:*",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:*",
-    "@deepseek-ai/dsh-timeout": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/error": "workspace:*",
+    "@noharness/fs": "workspace:*",
+    "@noharness/fs-local": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/lsp": "workspace:*",
+    "@noharness/subprocess": "workspace:*",
+    "@noharness/subprocess-local": "workspace:*",
+    "@noharness/timeout": "workspace:*",
     "typescript": "^6.0.3",
     "typescript-language-server": "^5.0.0"
   }

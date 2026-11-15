@@ -1,9 +1,9 @@
 /**
- * Shared boot glue for `dsh` profiles, including the CLI packaged by the Python runtime wheel: load the gitignored
+ * Shared boot glue for `nhs` profiles, including the CLI packaged by the Python runtime wheel: load the gitignored
  * `.env`, install the fail-loud Loader guards, resolve the config path (snapshot-aware), load the
- * optional user patch layers from the Harness home (`~/.dsh`), expose its path resolver to
+ * optional user patch layers from the Harness home (`~/.nhs`), expose its path resolver to
  * config expressions, and drive the Cordis Loader against a leaf `cordis.yml` until the tree settles.
- * @module @deepseek-ai/dsh-app-boot
+ * @module @noharness/app-boot
  */
 
 import { pathToFileURL } from 'node:url'
@@ -12,12 +12,12 @@ import { inspect, parseEnv } from 'node:util'
 import { captureStartupComposition, type StartupCompositionDiagnostic } from './startup-diagnostics.ts'
 export type { StartupCompositionDiagnostic, StartupPluginState, StartupServiceState } from './startup-diagnostics.ts'
 import { basename, dirname, isAbsolute, resolve } from 'node:path'
-import { Context, type Fiber, type FiberState } from '@deepseek-ai/cordis'
-import Loader, { type Entry, type EntryGroup, type EntryOptions } from '@deepseek-ai/cordis-plugin-loader'
-import Include, { applyEntryPatches, parseEntryYaml, stringifyEntryYaml, type PatchOptions } from '@deepseek-ai/cordis-plugin-include'
-import Group from '@deepseek-ai/cordis-plugin-group'
-import { dshHomePath, dshPath, resolveDshHome } from '@deepseek-ai/dsh-home-paths'
-import { createLaunchEnvironmentSnapshot, type LaunchEnvironmentSnapshot } from '@deepseek-ai/dsh-launch-environment'
+import { Context, type Fiber, type FiberState } from '@noharness/cordis'
+import Loader, { type Entry, type EntryGroup, type EntryOptions } from '@noharness/cordis-plugin-loader'
+import Include, { applyEntryPatches, parseEntryYaml, stringifyEntryYaml, type PatchOptions } from '@noharness/cordis-plugin-include'
+import Group from '@noharness/cordis-plugin-group'
+import { nhsHomePath, nhsPath, resolveDshHome } from '@noharness/home-paths'
+import { createLaunchEnvironmentSnapshot, type LaunchEnvironmentSnapshot } from '@noharness/launch-environment'
 export { readBundlePatches, readProfilePatches, resolveTelemetryPatch, type ProfileContext, type ProfilePnpmInvocation } from './profile-context.ts'
 export { sanitizeProfile } from './profile-sanitize.ts'
 export { getDshRuntimeVersion, evaluatePluginCompatibility, pluginCompatibilityWarning, type PluginCompatibility } from './plugin-compatibility.ts'
@@ -39,12 +39,12 @@ export {
   type ProfilePluginLocation, type ProfilePluginDependency, type ProfilePluginInventory, type ProfilePluginReconciliation,
 } from './profile-plugins.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Harness-home path resolver available to Loader `!!js` config expressions. */
-    dshHomePath?: typeof dshHomePath
+    nhsHomePath?: typeof nhsHomePath
     /** Harness-home category path resolver available to Loader `!!js` config expressions. */
-    dshPath?: typeof dshPath
+    nhsPath?: typeof nhsPath
   }
 
   interface Events {
@@ -95,7 +95,7 @@ export { ResolutionRestartRequired } from './profile-resolution/resolver.ts'
  * Resolve the config to boot. Replay swaps a `cordis.yml` basename for
  * `cordis.snapshot.yml` in the same directory; every other mode keeps the path.
  * @param configPath - the requested config path (absolute, or relative to `cwd`).
- * @param snapshotMode - the bin's `$DSH_SNAPSHOT` value; only `'replay'` swaps the
+ * @param snapshotMode - the bin's `$NHS_SNAPSHOT` value; only `'replay'` swaps the
  *   basename.
  * @param cwd - the base a relative `configPath` resolves against.
  * @returns the absolute path of the config to boot.
@@ -156,7 +156,7 @@ const BOOTSTRAP_NAMES = new Set([
 ])
 
 /** Name prefixes no discovered file may set. */
-const BOOTSTRAP_PREFIXES = ['DSH_', 'XDG_', 'DYLD_', 'BASH_FUNC_']
+const BOOTSTRAP_PREFIXES = ['NHS_', 'XDG_', 'DYLD_', 'BASH_FUNC_']
 
 /** Proxy names the Harness-home `.env` may set in any letter case: proxy clients read both spellings. */
 const HOME_LAYER_PROXY_NAMES = new Set(['HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'NO_PROXY'])
@@ -171,7 +171,7 @@ const HOME_LAYER_ENDPOINT_NAMES = new Set(['DEEPSEEK_BASE_URL', 'DEEPSEEK_SEARCH
  * Whether the Harness-home `.env` alone may set a bootstrap-only name. Each such name chooses where requests go: a
  * proxy for every request, a DeepSeek endpoint for the model or search requests that carry the user's credential.
  * The invoking directory's file arrives with a clone and keeps refusing them. The home file is the user's own, and
- * the profile patches beside it can already set these endpoints as plugin `baseURL` fields; `DSH_HOME` is itself
+ * the profile patches beside it can already set these endpoints as plugin `baseURL` fields; `NHS_HOME` is itself
  * bootstrap-only, so no `.env` can relocate this exemption. The CA and TLS names in the same group stay refused
  * everywhere: they change what is trusted, not where traffic goes.
  * @param name - the variable name as the file spells it.
@@ -518,7 +518,7 @@ async function resume(ctx: Context, invalidated: readonly Entry[]): Promise<void
 
 /**
  * Load an optional patch-list file: a top-level YAML array of loader patch
- * entries (`@deepseek-ai/cordis-plugin-include`'s `PatchOptions`): id-targeted config
+ * entries (`@noharness/cordis-plugin-include`'s `PatchOptions`): id-targeted config
  * overrides and `insert` lists, with `!!js` expressions allowed. A missing
  * file means "no layer"; an unreadable, unparsable, or non-array file throws —
  * a present patch file that cannot apply is a misconfiguration and must fail
@@ -571,7 +571,7 @@ function anchorInsertedPluginNames(patches: PatchOptions[], file: string): Patch
 }
 /**
  * Parse one loader patch list: a top-level YAML array of
- * `@deepseek-ai/cordis-plugin-include` `PatchOptions` (id-targeted config overrides and
+ * `@noharness/cordis-plugin-include` `PatchOptions` (id-targeted config overrides and
  * `insert` lists, `!!js` expressions allowed). Every invalid field or value throws,
  * because a patch file that cannot be applied at all is a misconfiguration; a
  * single patch whose target row is absent stays a per-entry Loader warning, so
@@ -744,7 +744,7 @@ function groupedDump(
  * @param patches - initial app and user patches, applied in order.
  * @param bareModuleBaseUrl - optional installed-host base for bare package
  * names; relative names continue to resolve beside the configuration file.
- * @param binName - diagnostic prefix for a profile plugin denied by compatibility policy; defaults to `dsh`.
+ * @param binName - diagnostic prefix for a profile plugin denied by compatibility policy; defaults to `nhs`.
  * @returns the created root Include entry, or `undefined` when a surface
  * disposed the whole tree (taking the Loader service with it) while the
  * entry creation was in flight.
@@ -754,7 +754,7 @@ export async function mountRootInclude(
   absoluteConfigPath: string,
   patches: readonly PatchOptions[] = [],
   bareModuleBaseUrl?: string,
-  binName = 'dsh',
+  binName = 'nhs',
 ): Promise<Entry | undefined> {
   ctx.loader.builtins.include = bareModuleBaseUrl === undefined
     ? Include
@@ -771,7 +771,7 @@ export async function mountRootInclude(
     }
   // `cordis:group` alongside it: a group row is how a composition gives one
   // `isolate` realm to a provider and its consumers together, and an agent
-  // preset living outside this workspace cannot resolve `@deepseek-ai/cordis-plugin-group`
+  // preset living outside this workspace cannot resolve `@noharness/cordis-plugin-group`
   // by name. Both builtins load through the ambient module pipeline, so neither
   // depends on the included tree's own specifier resolution.
   ctx.loader.builtins.group = Group
@@ -951,7 +951,7 @@ const FIBER_FAILED = 3 as FiberState.FAILED
 const FIBER_DISPOSED = 4 as FiberState.DISPOSED
 
 /**
- * Entry ids whose presence defines a usable DSH application.
+ * Entry ids whose presence defines a usable NHS application.
  *
  * The list is global rather than profile metadata. Missing or disabled ids do
  * not affect startup; an enabled listed entry must activate. The list covers
@@ -1149,7 +1149,7 @@ function startupDiagnostic(binName: string, failures: readonly InactiveEntry[], 
 }
 
 /**
- * Apply DSH startup policy to a settled Loader tree.
+ * Apply NHS startup policy to a settled Loader tree.
  *
  * Inactive entries from the global required list reject startup. Other
  * inactive entries join that failure diagnostic, or produce one warning when
@@ -1234,8 +1234,8 @@ export async function boot(
   let stage = 'host preparation failed'
   try {
     ctx.baseUrl = pathToFileURL(dirname(absoluteConfigPath)).href + '/'
-    ctx.provide('dshHomePath', dshHomePath)
-    ctx.provide('dshPath', dshPath)
+    ctx.provide('nhsHomePath', nhsHomePath)
+    ctx.provide('nhsPath', nhsPath)
     await ctx.plugin(Loader)
     await prepare?.(ctx)
     stage = 'plugin tree failed to load'

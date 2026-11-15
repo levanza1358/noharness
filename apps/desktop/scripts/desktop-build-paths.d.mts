@@ -1,4 +1,4 @@
-import type { DesktopAutoUpdateTarget } from '@deepseek-ai/dsh-desktop-publisher/desktop-auto-update-environment.mjs'
+import type { DesktopAutoUpdateTarget } from '@noharness/desktop-publisher/desktop-auto-update-environment.mjs'
 
 /** Mutable target directories plus shared download and package caches. */
 export interface DesktopTargetBuildPaths {
@@ -8,8 +8,8 @@ export interface DesktopTargetBuildPaths {
   readonly unnotarizedArtifacts: string
   readonly runtime: string
   readonly packageSet: string
-  readonly dsh: string
-  readonly dshPnpm: string
+  readonly nhs: string
+  readonly nhsPnpm: string
   readonly electron: string
   readonly packedDsh: string
   readonly packedVendor: string

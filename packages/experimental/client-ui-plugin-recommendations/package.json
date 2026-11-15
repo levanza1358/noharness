@@ -7,11 +7,11 @@
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
   "license": "MIT",
-  "name": "@deepseek-ai/dsh-client-ui-plugin-recommendations",
+  "name": "@noharness/client-ui-plugin-recommendations",
   "description": "Official plugin card body with catalog text and enabling",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/experimental/client-ui-plugin-recommendations"
   },
   "exports": {
@@ -27,39 +27,39 @@
     },
     "./locale/*.json": "./locale/*.json"
   },
-  "dsh": {
+  "nhs": {
     "client": {
       "platform": "web",
       "inject": [
-        "@deepseek-ai/dsh-api-remotes",
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-client-ui-plugin-manager",
-        "@deepseek-ai/dsh-client-ui-action-cards"
+        "@noharness/api-remotes",
+        "@noharness/client-locale",
+        "@noharness/client-ui-plugin-manager",
+        "@noharness/client-ui-action-cards"
       ]
     }
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-api-remotes": "workspace:*",
-    "@deepseek-ai/dsh-client-locale": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-slots": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-primitives": "workspace:*",
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session": "workspace:*",
+    "@noharness/api-remotes": "workspace:*",
+    "@noharness/client-locale": "workspace:*",
+    "@noharness/client-ui-slots": "workspace:*",
+    "@noharness/client-ui-primitives": "workspace:*",
     "react": "^18.2.0",
-    "@deepseek-ai/dsh-plugin-recommendations": "workspace:*",
-    "@deepseek-ai/dsh-client-store": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-plugin-manager": "workspace:*",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:*",
-    "@deepseek-ai/dsh-package-manifest": "workspace:*",
-    "@deepseek-ai/dsh-client-ui-action-cards": "workspace:*",
-    "@deepseek-ai/dsh-action-cards": "workspace:*",
+    "@noharness/plugin-recommendations": "workspace:*",
+    "@noharness/client-store": "workspace:*",
+    "@noharness/client-ui-plugin-manager": "workspace:*",
+    "@noharness/typert-protocol": "workspace:*",
+    "@noharness/package-manifest": "workspace:*",
+    "@noharness/client-ui-action-cards": "workspace:*",
+    "@noharness/action-cards": "workspace:*",
     "zod": "4.6.6",
-    "@deepseek-ai/dsh-client-test-runtime": "workspace:*"
+    "@noharness/client-test-runtime": "workspace:*"
   },
   "files": [
     "locale/*.json",

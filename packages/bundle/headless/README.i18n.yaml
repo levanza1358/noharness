@@ -3,71 +3,71 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/bundle/headless/README.md
 /:
-  en: 68ff17b596cbc6aa
-  zh: 8c6f3d309403ba81
-/deepseek-ai-dsh-headless:
-  en: 605b67ee9f21d085
-  zh: df2687a69f362493
-/deepseek-ai-dsh-headless/summary:
-  en: 2c31f2cf129ed020
-  zh: 2b34e3640b011475
-/deepseek-ai-dsh-headless/table-of-contents:
+  en: 238c1e381e8d94f3
+  zh: 9867ffbb84131c1d
+/noharness-headless:
+  en: d463e2d6949b5795
+  zh: 938f95fbe4b16066
+/noharness-headless/summary:
+  en: 6ed670593e1e7bc5
+  zh: 46245c093f0afa2c
+/noharness-headless/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
-/deepseek-ai-dsh-headless/use-this-package:
+/noharness-headless/use-this-package:
   en: 4447012f4c84100d
   zh: faf579ae9f04c096
-/deepseek-ai-dsh-headless/use-this-package/running-a-one-shot-task:
-  en: b3d0ddfb56a1ac7f
-  zh: c1762158e49a4851
-/deepseek-ai-dsh-headless/use-this-package/credentials:
-  en: bf02dd1c6888da25
-  zh: 83dca9600cd7e8ff
-/deepseek-ai-dsh-headless/use-this-package/choosing-the-session-identity:
+/noharness-headless/use-this-package/running-a-one-shot-task:
+  en: a8755727fbb44c0d
+  zh: beeebbfb5497f493
+/noharness-headless/use-this-package/credentials:
+  en: 385d79b946818e6c
+  zh: 4da2863fbb254785
+/noharness-headless/use-this-package/choosing-the-session-identity:
   en: 85120c2d6db2cac4
   zh: bac532df6c84e755
-/deepseek-ai-dsh-headless/use-this-package/supervising-implementation-tasks:
-  en: b10dee3026e8d999
-  zh: 63eda004e228a48a
-/deepseek-ai-dsh-headless/use-this-package/experimental-auto-review:
-  en: ac060bf78cf157b6
-  zh: 5e099abb8c10b96b
-/deepseek-ai-dsh-headless/use-this-package/machine-readable-output:
-  en: c8a90b16023eb04a
-  zh: 58eec3550ea70f34
-/deepseek-ai-dsh-headless/use-this-package/when-to-use-it:
-  en: 5262b93dcef0d489
-  zh: 1638965b2aabcd38
-/deepseek-ai-dsh-headless/use-this-package/help-and-task-errors:
-  en: ecd381558cf7b0e7
-  zh: a351efbf4a1a2ac5
-/deepseek-ai-dsh-headless/understand-the-implementation:
+/noharness-headless/use-this-package/supervising-implementation-tasks:
+  en: 4814f81f4e0378e4
+  zh: 3c4016a1ef11aa05
+/noharness-headless/use-this-package/experimental-auto-review:
+  en: d0e86204df153f5c
+  zh: 8cf2457b03aa71d2
+/noharness-headless/use-this-package/machine-readable-output:
+  en: 0e2279c8dffcf778
+  zh: b447b6105d2ec5a4
+/noharness-headless/use-this-package/when-to-use-it:
+  en: 9106951581fc88b5
+  zh: 5fe772884013f237
+/noharness-headless/use-this-package/help-and-task-errors:
+  en: 22d3346426a3e4d0
+  zh: f6c86289bed9308b
+/noharness-headless/understand-the-implementation:
   en: be1b73a6d0ee3902
   zh: bdba099685d68b27
-/deepseek-ai-dsh-headless/understand-the-implementation/run-flow:
-  en: fdef19c52550fdf8
-  zh: c4bab4fb6972cf10
-/deepseek-ai-dsh-headless/understand-the-implementation/patch-surface-over-base:
-  en: e192267973792ad1
-  zh: ef78428a68dff9e4
-/deepseek-ai-dsh-headless/understand-the-implementation/exit-mapping:
-  en: c2466d3d8a26177a
-  zh: b75743bfa2e7723a
-/deepseek-ai-dsh-headless/understand-the-implementation/source-map:
-  en: fbda2df5fd109682
-  zh: 3a92aec4d9dfd9c8
-/deepseek-ai-dsh-headless/further-exploration:
-  en: 65aebf0f8ab3047c
-  zh: 85616d3859073c4b
-/deepseek-ai-dsh-headless/model-experience:
+/noharness-headless/understand-the-implementation/run-flow:
+  en: d7f25c2cf950b947
+  zh: 1e4d06fab617a22b
+/noharness-headless/understand-the-implementation/patch-surface-over-base:
+  en: 395be349d83fa9c5
+  zh: 41124c27c50413ec
+/noharness-headless/understand-the-implementation/exit-mapping:
+  en: cf7b1d5e0e1445f9
+  zh: a185bf5e08bc8311
+/noharness-headless/understand-the-implementation/source-map:
+  en: 9d1857e35cfe892b
+  zh: 5f16a5b1ebdd4cbf
+/noharness-headless/further-exploration:
+  en: 12c2891bc2c4648e
+  zh: 2fad010aa30cddab
+/noharness-headless/model-experience:
   en: c5a0991833f64dd7
   zh: 46f9feb255778f11
-/deepseek-ai-dsh-headless/model-experience/kv-cache-effect:
+/noharness-headless/model-experience/kv-cache-effect:
   en: 0b0f74b412c7c6d8
   zh: 6e8f918d0c4bf342
-/deepseek-ai-dsh-headless/known-limitations-and-deferred-work:
-  en: 94d8c7731c1435c3
-  zh: d0ddc9dd4e030b3f
-/deepseek-ai-dsh-headless/known-limitations-and-deferred-work/dev-note:
+/noharness-headless/known-limitations-and-deferred-work:
+  en: 5d06acb83b6a89ef
+  zh: 5f0e8737c9068c0a
+/noharness-headless/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-24-preparing-tool-arguments.md
 /agent-note-incremental-tool-argument-scanning-and-argument-order-during-preparation:
-  en: 07f6420c67ea2700
-  zh: b9b53250e050cf6e
+  en: 4c254970d03c485e
+  zh: ad87468306dab803
 /agent-note-incremental-tool-argument-scanning-and-argument-order-during-preparation/problem:
-  en: c97b3edd4ef1d063
-  zh: 5c8b6065e662f326
+  en: f5430cd0c87a8d7e
+  zh: ae0d6d578e619e37
 /agent-note-incremental-tool-argument-scanning-and-argument-order-during-preparation/decision:
   en: a15c7c13f167e5ac
   zh: 63bcc2ef60c2f344
-/agent-note-incremental-tool-argument-scanning-and-argument-order-during-preparation/decision/a-lazily-computed-argument-view-lives-in-dsh-util-values:
-  en: eb004194b0c08464
-  zh: d09c6353ed7138de
+/agent-note-incremental-tool-argument-scanning-and-argument-order-during-preparation/decision/a-lazily-computed-argument-view-lives-in-nhs-util-values:
+  en: 36f7905edea26786
+  zh: 2e031bc07c3f7b80
 /agent-note-incremental-tool-argument-scanning-and-argument-order-during-preparation/decision/parsing-happens-in-the-tool-definition-not-in-react:
   en: 518206f94d82993d
   zh: c6cab3b2f71dd18b

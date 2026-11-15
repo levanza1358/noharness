@@ -21,15 +21,15 @@
  */
 
 import { posix, win32 } from 'node:path'
-import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import type {} from '@deepseek-ai/dsh-fs'
-import type { FsDirEntry, FsInfo, FsPathInfo, FsTarget } from '@deepseek-ai/dsh-fs'
-import type {} from '@deepseek-ai/dsh-sandbox-policy'
-import type {} from '@deepseek-ai/dsh-session'
-import type {} from '@deepseek-ai/dsh-session-persistence'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import { Remote, RemoteError, TypertRemoteService, type TypertLookup } from '@deepseek-ai/dsh-typert-protocol'
+import type { Context } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import type {} from '@noharness/fs'
+import type { FsDirEntry, FsInfo, FsPathInfo, FsTarget } from '@noharness/fs'
+import type {} from '@noharness/sandbox-policy'
+import type {} from '@noharness/session'
+import type {} from '@noharness/session-persistence'
+import type { SessionId } from '@noharness/session/types'
+import { Remote, RemoteError, TypertRemoteService, type TypertLookup } from '@noharness/typert-protocol'
 import { WorkspaceChangeFeed } from './changes.ts'
 import { searchWorkspace, type SearchLimits } from './search.ts'
 import type {
@@ -48,7 +48,7 @@ import type {
 
 export type * from './types.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Host owner of the `workspaceFiles` Remote namespace. */
     workspaceFiles: WorkspaceFiles
@@ -63,7 +63,7 @@ export interface WorkspaceFileScope {
   readonly workspaceRoot: string
 }
 
-declare module '@deepseek-ai/dsh-typert-protocol' {
+declare module '@noharness/typert-protocol' {
   interface TypertLookupMap {
     /** Resolve a Session id to its workspace root without loading its event body or activating an Agent. */
     workspaceFileScope: TypertLookup<WorkspaceFileScope, SessionId>
@@ -217,8 +217,8 @@ export class WorkspaceFiles extends TypertRemoteService {
         parameter: 'workspaceFileScope',
         wire: 'workspaceFileScopeId',
         resource: 'session',
-        hostTypeSymbol: '@deepseek-ai/dsh-api-workspace-files#WorkspaceFileScope',
-        wireTypeSymbol: '@deepseek-ai/dsh-session/types#SessionId',
+        hostTypeSymbol: '@noharness/api-workspace-files#WorkspaceFileScope',
+        wireTypeSymbol: '@noharness/session/types#SessionId',
         resolve: async (sessionId) => {
           const live = scope.sessions.get(sessionId)?.header
           const stored = live === undefined
@@ -515,7 +515,7 @@ export class WorkspaceFiles extends TypertRemoteService {
 
 /**
  * The backend's non-text refusal, recognized by its code alone: the error class
- * belongs to whichever `dsh-fs` instance the provider loaded, so no class
+ * belongs to whichever `nhs-fs` instance the provider loaded, so no class
  * identity is shared across the package boundary.
  */
 function isNotTextRefusal(error: unknown): boolean {

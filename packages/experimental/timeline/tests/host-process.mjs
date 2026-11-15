@@ -1,15 +1,15 @@
 import { executeTool } from './execute-tool.ts'
 // Independent Host process: use the shipped entry and published SDK, with no network or provider key.
-import { Context } from '@deepseek-ai/cordis'
-import { LlmAdapter, ToolCallId } from '@deepseek-ai/dsh-llm'
-import { SessionId } from '@deepseek-ai/dsh-session'
-import { SessionAlreadyOwnedError } from '@deepseek-ai/dsh-session-persistence'
-import * as Jsonl from '@deepseek-ai/dsh-session-persistence-jsonl'
+import { Context } from '@noharness/cordis'
+import { LlmAdapter, ToolCallId } from '@noharness/llm'
+import { SessionId } from '@noharness/session'
+import { SessionAlreadyOwnedError } from '@noharness/session-persistence'
+import * as Jsonl from '@noharness/session-persistence-jsonl'
 import {
   mountAgentLoopTestDependencies,
   mountAgentLoopTestHarness,
-} from '@deepseek-ai/dsh-agent-loop-testkit'
-import * as Timeline from '@deepseek-ai/dsh-timeline'
+} from '@noharness/agent-loop-testkit'
+import * as Timeline from '@noharness/timeline'
 
 const [mode, root, id] = process.argv.slice(2)
 const ctx = new Context()

@@ -6,7 +6,7 @@
  *
  * - `read`, `readBytes`, `stat`, and `changes` name a file by its absolute path in the
  *   filesystem's execution world, because their consumer is the Client
- *   resource system, whose `dsh-resource://file/session/<id>/<path>` address carries that
+ *   resource system, whose `nhs-resource://file/session/<id>/<path>` address carries that
  *   same path.
  * - `list` speaks workspace paths — the same syntax its `path` argument accepts —
  *   because its consumer is a tree rooted at the workspace root.
@@ -14,20 +14,20 @@
  *   exclusions use the same relative syntax, because its consumer is the same
  *   workspace tree.
  *
- * @module @deepseek-ai/dsh-api-workspace-files/types
+ * @module @noharness/api-workspace-files/types
  */
 
 // Import the protocol module so the declaration at the end of this file
 // augments its error map rather than defining an unrelated ambient module.
-import type {} from '@deepseek-ai/dsh-typert-protocol'
+import type {} from '@noharness/typert-protocol'
 
 /** Identity and freshness of one workspace file, without its content. */
 export interface WorkspaceFileStat {
   /**
    * Absolute path of the file in the filesystem's execution world, symlinks
    * resolved: `/`-separated on POSIX, drive-rooted with the platform separator
-   * on Windows. What a `dsh-resource://file/absolute/…` address carries, and
-   * what a `dsh-resource://file/session/<sessionId>/…` address's
+   * on Windows. What a `nhs-resource://file/absolute/…` address carries, and
+   * what a `nhs-resource://file/session/<sessionId>/…` address's
    * workspace-relative path resolves to against that Session's root.
    */
   readonly absolutePath: string
@@ -203,7 +203,7 @@ export type WorkspaceFileWatchFrame =
   | { readonly kind: 'ready' }
   | { readonly kind: 'change'; readonly change: WorkspaceFileChange }
 
-declare module '@deepseek-ai/dsh-typert-protocol' {
+declare module '@noharness/typert-protocol' {
   interface RemoteErrorDetailsMap {
     /** Search cannot run: missing subprocess, launch/execution failure, or configured timeout. */
     'workspace-file/search-failed': Record<string, never>

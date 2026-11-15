@@ -1,7 +1,7 @@
 /** Minimal native thinking metadata; durable Harness blocks own all response text. */
 
-import { LlmError } from '@deepseek-ai/dsh-llm'
-import type { BuiltinLlmFailureCode, Message, ReplayEnvelope } from '@deepseek-ai/dsh-llm'
+import { LlmError } from '@noharness/llm'
+import type { BuiltinLlmFailureCode, Message, ReplayEnvelope } from '@noharness/llm'
 
 /** Index-aligned metadata retained alongside each emitted Harness block. */
 export interface ReplayBlock {

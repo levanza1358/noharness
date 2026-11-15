@@ -1,11 +1,11 @@
 /** AgentHandle disposal must release blocking browser work before waiting for idle. */
 
-import { Context } from '@deepseek-ai/cordis'
-import { mountAgentLoopTestDependencies, mountAgentLoopTestHarness } from '@deepseek-ai/dsh-agent-loop-testkit'
-import type { SessionId } from '@deepseek-ai/dsh-session'
+import { Context } from '@noharness/cordis'
+import { mountAgentLoopTestDependencies, mountAgentLoopTestHarness } from '@noharness/agent-loop-testkit'
+import type { SessionId } from '@noharness/session'
 import { expect, it, vi } from 'vitest'
 import { SessionResources } from '../src/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 it('closes an owned resource during disposed cancellation before the real Agent reaches idle', async () => {
   const ctx = new Context()

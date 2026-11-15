@@ -1,32 +1,32 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { type ToolCallId, createUserMessage } from '@deepseek-ai/dsh-llm'
-import { scopeOf } from '@deepseek-ai/dsh-scope'
-import { type SessionId, SessionLogOffset } from '@deepseek-ai/dsh-session'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import SessionQueryEngine from '@deepseek-ai/dsh-session-query'
-import SubagentService, { NO_START_CAPABILITIES, SubagentError, type SubagentActivation } from '@deepseek-ai/dsh-subagent'
-import * as SubagentFork from '@deepseek-ai/dsh-subagent-fork-in-process'
-import * as SubagentSpawn from '@deepseek-ai/dsh-subagent-spawn-in-process'
-import { renderPrompt, renderContextSnapshot } from '@deepseek-ai/dsh-system-prompt'
-import * as ToolSubagentControl from '@deepseek-ai/dsh-tool-subagent-control'
-import { defineContentToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import { resolveAdapterOptions } from '@deepseek-ai/dsh-llm-deepseek'
-import { serialize } from '@deepseek-ai/dsh-llm-deepseek/src/serialize.ts'
-import type { GenerateOptions } from '@deepseek-ai/dsh-llm'
+import { Context } from '@noharness/cordis'
+import type { Agent } from '@noharness/agent'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import { type ToolCallId, createUserMessage } from '@noharness/llm'
+import { scopeOf } from '@noharness/scope'
+import { type SessionId, SessionLogOffset } from '@noharness/session'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import SessionQueryEngine from '@noharness/session-query'
+import SubagentService, { NO_START_CAPABILITIES, SubagentError, type SubagentActivation } from '@noharness/subagent'
+import * as SubagentFork from '@noharness/subagent-fork-in-process'
+import * as SubagentSpawn from '@noharness/subagent-spawn-in-process'
+import { renderPrompt, renderContextSnapshot } from '@noharness/system-prompt'
+import * as ToolSubagentControl from '@noharness/tool-subagent-control'
+import { defineContentToolFixture } from '@noharness/tool-testkit'
+import { resolveAdapterOptions } from '@noharness/llm-deepseek'
+import { serialize } from '@noharness/llm-deepseek/src/serialize.ts'
+import type { GenerateOptions } from '@noharness/llm'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import { mountWorkingDirectoryFixture } from '../../../subagent/subagent/tests/working-directory-fixture.ts'
 import { bindSubagentActivation } from '../../../subagent/subagent/tests/manager-internals.ts'
 import TeamService, { type TeamId } from '../../agent-team/src/index.ts'
 import * as toolTeam from '../src/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 function serializeRequest(request: GenerateOptions) {
   const connection = resolveAdapterOptions({ models: [{ id: request.model, systemPromptUpdate: 'in-history' }] })
@@ -75,7 +75,7 @@ async function setup(script: ConstructorParameters<typeof MockAdapter>[0], enabl
   contexts.add(ctx)
   await mountAgentLoopTestDependencies(ctx)
   await mountWorkingDirectoryFixture(ctx)
-  const storageRoot = mkdtempSync(join(tmpdir(), 'dsh-tool-team-'))
+  const storageRoot = mkdtempSync(join(tmpdir(), 'nhs-tool-team-'))
   roots.push(storageRoot)
   await ctx.plugin(JsonlSessionPersistence, { root: storageRoot })
   await ctx.plugin(TestSessionQuery)
@@ -183,7 +183,7 @@ async function waitNoAgent(ctx: Context, id: SessionId): Promise<void> {
   await vi.waitFor(() => { expect(ctx.agents.get(id)).toBeUndefined() }, { timeout: 5_000 })
 }
 
-describe('dsh-tool-team', () => {
+describe('nhs-tool-team', () => {
   it.each([true, false])('cancels reassignment without appending when discovery observes cancellation: %s', async (observesCancellation) => {
     const { ctx, lead } = await setup(['hang'])
     const childActivation = await spawn(ctx, lead, 'worker', 'stay running')

@@ -1,14 +1,14 @@
 import { access, mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import type { PtcBindingFunction, PtcRunRequest } from '@deepseek-ai/dsh-ptc-runtime'
+import { Context } from '@noharness/cordis'
+import type { PtcBindingFunction, PtcRunRequest } from '@noharness/ptc-runtime'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
 import type { Config } from '../src/index.ts'
 import { mountRuntime } from './setup.ts'
 
 async function setup(config: Config = {}, initialization?: string) {
-  const cwd = await mkdtemp(join(tmpdir(), 'dsh-ptc-initialization-'))
+  const cwd = await mkdtemp(join(tmpdir(), 'nhs-ptc-initialization-'))
   const ctx = new Context()
   onTestFinished(async () => { await ctx.fiber.dispose(); await rm(cwd, { recursive: true, force: true }) })
   const { runtime } = await mountRuntime(ctx, { executionMode: 'persistent-in-memory', replScoped: false, ...config })

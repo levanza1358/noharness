@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
 import { describe, expect, it, vi } from 'vitest'
-import type { ClientModuleMeta, DshClientModuleManifest } from '@deepseek-ai/dsh-package-manifest'
+import type { ClientModuleMeta, DshClientModuleManifest } from '@noharness/package-manifest'
 import { createClientModuleSystem, type ClientModuleLoaderTarget } from '../src/client/index.ts'
 
 const row = (id: string) => ({ id, url: `/plugins/??${id}/client.js&rev=0`, rev: '0' })

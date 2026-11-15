@@ -1,12 +1,12 @@
 /** Shared tool invocation policy, cancellation, and result settlement. @module */
-import type { Context } from '@deepseek-ai/cordis'
-import type { ScopeKey } from '@deepseek-ai/dsh-scope'
-import { scopeTarget } from '@deepseek-ai/dsh-scope'
-import type { ContentBlock } from '@deepseek-ai/dsh-llm'
-import { HarnessError } from '@deepseek-ai/dsh-llm'
-import type { UserMessage } from '@deepseek-ai/dsh-session'
-import type {} from '@deepseek-ai/dsh-user-approval'
-import { assertNever, deepFreeze, snapshotJsonValue, type JsonValue } from '@deepseek-ai/dsh-util-values'
+import type { Context } from '@noharness/cordis'
+import type { ScopeKey } from '@noharness/scope'
+import { scopeTarget } from '@noharness/scope'
+import type { ContentBlock } from '@noharness/llm'
+import { HarnessError } from '@noharness/llm'
+import type { UserMessage } from '@noharness/session'
+import type {} from '@noharness/user-approval'
+import { assertNever, deepFreeze, snapshotJsonValue, type JsonValue } from '@noharness/util-values'
 import { TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH, ToolNotFoundError, ToolOutputError } from './contracts.ts'
 import { APPROVAL_CANCELLED, APPROVAL_ERROR_NAME, APPROVAL_REJECTED, APPROVAL_UNAVAILABLE, type ApprovalErrorCode } from './error-codes.ts'
 import { validateJsonSchemaValue } from './json-schema.ts'
@@ -726,7 +726,7 @@ function isUnclassifiedCancellation(error: unknown, signal: AbortSignal): boolea
 
 /** Mint a same-process correlation token whose identity is its value. */
 function createExecutionToken(): ToolExecutionToken {
-  return Symbol('dsh.tool.execution') as ToolExecutionToken
+  return Symbol('nhs.tool.execution') as ToolExecutionToken
 }
 
 function toolErrorResult(error: unknown, info = errorInfo(error)): ToolExecutionResult {

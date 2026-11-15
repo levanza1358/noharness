@@ -6,13 +6,13 @@
  * token meter through `LlmAdapter.imageRequestPricing`; provider usage
  * remains the authoritative anchor for completed requests.
  *
- * @module dsh-llm-deepseek/request-pricing
+ * @module nhs-llm-deepseek/request-pricing
  */
 
-import { offloadedImageText, requestImageHandleText, textOnlyImageText } from '@deepseek-ai/dsh-llm'
-import type { ImageAttachmentAccessResolver, ImageBlock, LlmImageRequestPrice, LlmImageRequestPricing } from '@deepseek-ai/dsh-llm'
-import { longEdgeDimensions, requestImageDimensions } from '@deepseek-ai/dsh-attachment'
-import type { ImageAttachmentRef, ImageRequestTarget } from '@deepseek-ai/dsh-attachment'
+import { offloadedImageText, requestImageHandleText, textOnlyImageText } from '@noharness/llm'
+import type { ImageAttachmentAccessResolver, ImageBlock, LlmImageRequestPrice, LlmImageRequestPricing } from '@noharness/llm'
+import { longEdgeDimensions, requestImageDimensions } from '@noharness/attachment'
+import type { ImageAttachmentRef, ImageRequestTarget } from '@noharness/attachment'
 import { deepSeekImageTokens, deepSeekRequestImageDimensions } from './image-tokens.ts'
 import type { DeepSeekCatalogModel, DeepSeekConnectionOptions } from './types.ts'
 

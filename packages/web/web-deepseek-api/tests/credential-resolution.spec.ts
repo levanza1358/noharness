@@ -4,23 +4,23 @@
  * operation would send.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context, FiberState } from '@deepseek-ai/cordis'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { DeepSeekAccount } from '@deepseek-ai/dsh-deepseek-account'
-import { DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot } from '@deepseek-ai/dsh-launch-environment'
-import SessionStore, { type SessionId } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import WebRuntime from '@deepseek-ai/dsh-web'
-import * as webApiPlugin from '@deepseek-ai/dsh-web-deepseek-api'
+import { Context, FiberState } from '@noharness/cordis'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import type { DeepSeekAccount } from '@noharness/deepseek-account'
+import { NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot } from '@noharness/launch-environment'
+import SessionStore, { type SessionId } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import WebRuntime from '@noharness/web'
+import * as webApiPlugin from '@noharness/web-deepseek-api'
 import { provideRoutes, type RouteRow } from './routes.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 /** A value the API-key route resolver throws instead of resolving; undefined lets it resolve normally. */
 const resolverThrow = vi.hoisted(() => ({ value: undefined as string | undefined }))
 
-vi.mock('@deepseek-ai/dsh-llm-deepseek-api-key', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@deepseek-ai/dsh-llm-deepseek-api-key')>()
+vi.mock('@noharness/llm-deepseek-api-key', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@noharness/llm-deepseek-api-key')>()
   return {
     ...original,
     resolveAdapterOptions: (...args: Parameters<typeof original.resolveAdapterOptions>) => {
@@ -81,7 +81,7 @@ async function mount(setup: Setup): Promise<{ ctx: Context; sent: () => Sent[] }
   vi.stubGlobal('fetch', fetchMock)
   const ctx = new Context()
   mounted.push(ctx)
-  ctx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: setup.environment ?? {} }]))
+  ctx.provide(NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: setup.environment ?? {} }]))
   if (setup.account !== undefined) ctx.provide('deepseekAccount', setup.account as DeepSeekAccount)
   if (setup.credentials !== undefined) ctx.provide('credentials', setup.credentials as never)
   if (setup.routes !== undefined) provideRoutes(ctx, setup.routes)
@@ -94,7 +94,7 @@ async function mount(setup: Setup): Promise<{ ctx: Context; sent: () => Sent[] }
     ctx,
     sent: () => fetchMock.mock.calls.map(([endpoint, init]) => {
       const headers = new Headers(init?.headers)
-      return { endpoint, authorization: headers.get('authorization'), token: headers.get('x-dsh-auth-token') }
+      return { endpoint, authorization: headers.get('authorization'), token: headers.get('x-nhs-auth-token') }
     }),
   }
 }

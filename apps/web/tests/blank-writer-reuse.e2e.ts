@@ -2,11 +2,11 @@
 
 import { chromium, type Browser, type Page } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type { SessionHandle } from '@deepseek-ai/dsh-session-persistence'
+import type { SessionId } from '@noharness/session'
+import type { SessionHandle } from '@noharness/session-persistence'
 import { launchWebScaffold, watchConsole, type WebScaffold } from './scaffold.ts'
 import { newEnglishPage } from './support.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const HELD = brandString<SessionId>('blank-held')
 const FREE = brandString<SessionId>('blank-free')
@@ -47,7 +47,7 @@ describe.each([false, true])('web e2e: selected blank writer held: %s', (held) =
     const page = await newEnglishPage(browser)
     tripwires.push(watchConsole(page))
     await page.addInitScript((id) => {
-      localStorage.setItem('dsh.sessions.current', JSON.stringify({ sessionId: id }))
+      localStorage.setItem('nhs.sessions.current', JSON.stringify({ sessionId: id }))
     }, sessionId)
     await page.goto(scaffold.authenticatedUrl, { waitUntil: 'load' })
     await page.locator('[data-composer-input]').first().waitFor({ timeout: 30_000 })
@@ -56,7 +56,7 @@ describe.each([false, true])('web e2e: selected blank writer held: %s', (held) =
 
   async function selected(page: Page): Promise<string | undefined> {
     return page.evaluate(() => {
-      const value = localStorage.getItem('dsh.sessions.current')
+      const value = localStorage.getItem('nhs.sessions.current')
       return value === null ? undefined : (JSON.parse(value) as { sessionId?: string }).sessionId
     })
   }

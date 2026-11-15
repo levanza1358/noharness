@@ -8,17 +8,17 @@
  */
 /* oxlint-disable typescript/no-unsafe-assignment -- Vitest asymmetric matchers are typed as any. */
 
-import { Context } from '@deepseek-ai/cordis'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { TimerService } from '@deepseek-ai/cordis-plugin-timer'
+import { Context } from '@noharness/cordis'
+import { brandString } from '@noharness/brand'
+import { TimerService } from '@noharness/cordis-plugin-timer'
 import { describe, expect, it, vi } from 'vitest'
 import type {
   ApprovalRequestId, CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
   DynamicCordisInvokeResult, SessionId,
-} from '@deepseek-ai/dsh-api-remotes/client'
+} from '@noharness/api-remotes/client'
 // Type-only: resolves the `ctx.remote.$on` surface.
-import type {} from '@deepseek-ai/dsh-api-gateway/client'
-import { SlotRegistry } from '@deepseek-ai/dsh-client-ui-renderer/client'
+import type {} from '@noharness/api-gateway/client'
+import { SlotRegistry } from '@noharness/client-ui-renderer/client'
 import * as NodeHalf from '../src/index.ts'
 import * as ClientHalf from '../src/client/index.ts'
 

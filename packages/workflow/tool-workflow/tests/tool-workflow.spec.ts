@@ -1,32 +1,32 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import { createInboxStub, unsupportedModel, provideWorkingDirectoryFixture } from '@deepseek-ai/dsh-agent-loop-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import { createInboxStub, unsupportedModel, provideWorkingDirectoryFixture } from '@noharness/agent-loop-testkit'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH } from '@deepseek-ai/dsh-tools'
-import type { ToolExecutionResult, ToolExecutionToken } from '@deepseek-ai/dsh-tools'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { WorkflowRunId } from '@deepseek-ai/dsh-workflow/types'
-import { WorkflowEngine } from '@deepseek-ai/dsh-workflow'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime, { TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH } from '@noharness/tools'
+import type { ToolExecutionResult, ToolExecutionToken } from '@noharness/tools'
+import type { Agent } from '@noharness/agent'
+import { brandString } from '@noharness/brand'
+import type { WorkflowRunId } from '@noharness/workflow/types'
+import { WorkflowEngine } from '@noharness/workflow'
 import type {
   WorkflowAgentEndInfo, WorkflowAgentInfo, WorkflowResult, WorkflowRun,
   WorkflowStartRequest,
-} from '@deepseek-ai/dsh-workflow'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm/types'
-import type { JobId } from '@deepseek-ai/dsh-jobs'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import LocalJobRegistry from '@deepseek-ai/dsh-jobs-local'
-import * as ToolTasks from '@deepseek-ai/dsh-tool-jobs'
-import SubagentRuntime from '@deepseek-ai/dsh-subagent'
-import PtcWorkflowEngine from '@deepseek-ai/dsh-workflow-ptc'
+} from '@noharness/workflow'
+import type { ToolCallId } from '@noharness/llm/types'
+import type { JobId } from '@noharness/jobs'
+import AgentRegistry from '@noharness/agent'
+import LocalJobRegistry from '@noharness/jobs-local'
+import * as ToolTasks from '@noharness/tool-jobs'
+import SubagentRuntime from '@noharness/subagent'
+import PtcWorkflowEngine from '@noharness/workflow-ptc'
 import { mountWorkflowRuntime } from '../../workflow-ptc/tests/setup.ts'
 import * as toolWorkflow from '../src/index.ts'
 import type {} from '../src/types.ts'
-import { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import { Session, type SessionId } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
 
 const testToolSignal = new AbortController().signal
 
@@ -134,7 +134,7 @@ function execute(ctx: Context, args: unknown, extra?: {
   })
 }
 
-describe('dsh-tool-workflow', () => {
+describe('nhs-tool-workflow', () => {
   it('starts a run with the script/args/parent/signal and renders the completed value', async () => {
     const { ctx, engine, parent } = await setup()
     const controller = new AbortController()
@@ -629,7 +629,7 @@ describe('dsh-tool-workflow', () => {
       const result = await execute(ctx, { script: SCRIPT, meta: META, run_in_background: true }, { agent: parent })
       expect(result.isError).toBe(true)
       expect((result.content[0] as { text: string }).text)
-        .toContain('background jobs unavailable: load @deepseek-ai/dsh-jobs and @deepseek-ai/dsh-tool-jobs')
+        .toContain('background jobs unavailable: load @noharness/jobs and @noharness/tool-jobs')
       expect(result.error?.info).toEqual({ name: 'ToolContextUnavailableError', code: 'TOOL_CONTEXT_UNAVAILABLE' })
     })
 

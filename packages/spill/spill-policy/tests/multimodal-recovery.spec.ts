@@ -1,38 +1,38 @@
 /** Real attachments, filesystem recovery, Node PTC, and DeepSeek image request bytes without a desktop or API key. */
-import { executeModelToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import * as PtcToolExecutor from '@deepseek-ai/dsh-tool-executor-ptc'
+import { executeModelToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import * as PtcToolExecutor from '@noharness/tool-executor-ptc'
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import { provideWorkingDirectoryFixture } from '@deepseek-ai/dsh-agent-loop-testkit'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { ImageAttachmentRef } from '@deepseek-ai/dsh-attachment'
-import LocalAttachments from '@deepseek-ai/dsh-attachment-local'
-import FileSystem from '@deepseek-ai/dsh-fs-local'
-import * as ToolFs from '@deepseek-ai/dsh-tool-fs'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context } from '@noharness/cordis'
+import { provideWorkingDirectoryFixture } from '@noharness/agent-loop-testkit'
+import type { Agent } from '@noharness/agent'
+import type { ImageAttachmentRef } from '@noharness/attachment'
+import LocalAttachments from '@noharness/attachment-local'
+import FileSystem from '@noharness/fs-local'
+import * as ToolFs from '@noharness/tool-fs'
+import { brandString } from '@noharness/brand'
 import {
   createAssistantMessage, createToolResultMessage, createUserMessage, LlmAdapter, LlmRuntime,
   resolveImageAttachmentAccess, type ToolCallId,
-} from '@deepseek-ai/dsh-llm'
-import type { ContentBlock, GenerateOptions, ImageBlock, StreamChunk, UserMessage } from '@deepseek-ai/dsh-llm'
-import { deepSeekImageRequestPricing, resolveAdapterOptions } from '@deepseek-ai/dsh-llm-deepseek'
-import { prepareImages } from '@deepseek-ai/dsh-llm-deepseek/src/images.ts'
-import { serialize } from '@deepseek-ai/dsh-llm-deepseek/src/serialize.ts'
-import { createMcpToolDefinition } from '@deepseek-ai/dsh-mcp-client'
-import NodeRuntime from '@deepseek-ai/dsh-ptc-runtime-node'
-import Sandbox from '@deepseek-ai/dsh-sandbox-local'
-import SandboxPolicy from '@deepseek-ai/dsh-sandbox-policy'
-import SessionStore, { type SessionId } from '@deepseek-ai/dsh-session'
-import SessionProjections from '@deepseek-ai/dsh-session-projection'
-import LocalSpillStore from '@deepseek-ai/dsh-spill-local'
-import Subprocess from '@deepseek-ai/dsh-subprocess-local'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import { estimateContent } from '@deepseek-ai/dsh-token-meter/estimate'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import type { JsonValue } from '@deepseek-ai/dsh-util-values'
+} from '@noharness/llm'
+import type { ContentBlock, GenerateOptions, ImageBlock, StreamChunk, UserMessage } from '@noharness/llm'
+import { deepSeekImageRequestPricing, resolveAdapterOptions } from '@noharness/llm-deepseek'
+import { prepareImages } from '@noharness/llm-deepseek/src/images.ts'
+import { serialize } from '@noharness/llm-deepseek/src/serialize.ts'
+import { createMcpToolDefinition } from '@noharness/mcp-client'
+import NodeRuntime from '@noharness/ptc-runtime-node'
+import Sandbox from '@noharness/sandbox-local'
+import SandboxPolicy from '@noharness/sandbox-policy'
+import SessionStore, { type SessionId } from '@noharness/session'
+import SessionProjections from '@noharness/session-projection'
+import LocalSpillStore from '@noharness/spill-local'
+import Subprocess from '@noharness/subprocess-local'
+import SystemPrompt from '@noharness/system-prompt'
+import { estimateContent } from '@noharness/token-meter/estimate'
+import ToolRuntime from '@noharness/tools'
+import type { JsonValue } from '@noharness/util-values'
 import sharp from 'sharp'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
 import * as SpillPolicy from '../src/index.ts'
@@ -47,7 +47,7 @@ const textOf = (content: readonly ContentBlock[]): string => content.filter(bloc
 const imagesOf = (content: readonly ContentBlock[]): ImageBlock[] => content.filter((block): block is ImageBlock => block.type === 'image')
 
 async function setup(mode: 'native' | 'ptc' = 'native', maxInlineTokens = CAP) {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-image-recovery-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-image-recovery-'))
   const ctx = new Context()
   provideWorkingDirectoryFixture(ctx, root)
   onTestFinished(async () => {
@@ -57,7 +57,7 @@ async function setup(mode: 'native' | 'ptc' = 'native', maxInlineTokens = CAP) {
   await ctx.plugin(ToolRuntime)
   await ctx.plugin(mode === 'ptc' ? PtcToolExecutor : NativeToolExecutor)
   await ctx.plugin(FileSystem, { cwd: root })
-  await ctx.plugin(LocalAttachments, { dshHome: join(root, 'home') })
+  await ctx.plugin(LocalAttachments, { nhsHome: join(root, 'home') })
   await ctx.plugin(ToolFs)
   await ctx.plugin(LocalSpillStore, { root: join(root, 'spill'), cleanupPeriodDays: 0 })
   await ctx.plugin(SessionProjections)

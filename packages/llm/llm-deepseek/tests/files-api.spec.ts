@@ -1,8 +1,8 @@
 import { once } from 'node:events'
 import { createServer } from 'node:http'
 import { describe, expect, it, vi } from 'vitest'
-import { LlmError, userAgent } from '@deepseek-ai/dsh-llm'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { LlmError, userAgent } from '@noharness/llm'
+import { brandString } from '@noharness/brand'
 import type { DeepSeekFileId } from '../src/file-id.ts'
 import {
   DeepSeekFilesClient,
@@ -386,12 +386,12 @@ describe('DeepSeekFilesClient', () => {
   })
 })
 
-it('authenticates Files with the raw DSH token', async () => {
+it('authenticates Files with the raw NHS token', async () => {
   const client = new DeepSeekFilesClient({
-    baseURL: 'https://api.deepseek.com', headers: { 'x-dsh-auth-token': 'account-token' },
+    baseURL: 'https://api.deepseek.com', headers: { 'x-nhs-auth-token': 'account-token' },
     fetch: (_url, init) => {
       const headers = new Headers(init?.headers)
-      expect(headers.get('x-dsh-auth-token')).toBe('account-token')
+      expect(headers.get('x-nhs-auth-token')).toBe('account-token')
       expect(headers.has('authorization')).toBe(false)
       expect(headers.has('x-api-key')).toBe(false)
       return Promise.resolve(new Response(JSON.stringify({ object: 'list', data: [], has_more: false }), { status: 200 }))

@@ -1,6 +1,6 @@
-/** Typed `read_image` failures. @module @deepseek-ai/dsh-tool-fs/src/image-error */
+/** Typed `read_image` failures. @module @noharness/tool-fs/src/image-error */
 
-import { HarnessError } from '@deepseek-ai/dsh-error'
+import { HarnessError } from '@noharness/error'
 
 /**
  * Every `read_image` failure the tool classifies itself, before the attachment store sees the bytes:

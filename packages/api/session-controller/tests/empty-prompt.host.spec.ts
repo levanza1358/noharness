@@ -1,14 +1,14 @@
 /** Empty prompt admission over the real AgentLoop and the Session Remote owner. */
-import { Context } from '@deepseek-ai/cordis'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { createUserMessage, LlmError } from '@deepseek-ai/dsh-llm'
-import type { SessionId } from '@deepseek-ai/dsh-session'
+import { Context } from '@noharness/cordis'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import { createUserMessage, LlmError } from '@noharness/llm'
+import type { SessionId } from '@noharness/session'
 import { expect, it, onTestFinished } from 'vitest'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import type { SessionPromptRequest, SessionRequestId } from '../src/types.ts'
 import { createSessionTestRemote } from './test-remote.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 async function setup() {
   const ctx = new Context()

@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-win32-process",
+  "name": "@noharness/win32-process",
   "description": "Shared low-level Win32 process, stdio, and Job Object primitives",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/subprocess/win32-process"
   },
   "type": "module",
@@ -30,15 +30,15 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-error": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/error": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-lazy-require": "workspace:*",
+    "@noharness/lazy-require": "workspace:*",
     "koffi": "3.1.1"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-error": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/error": "workspace:*"
   }
 }

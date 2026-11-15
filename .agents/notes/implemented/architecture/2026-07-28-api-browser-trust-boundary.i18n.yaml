@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-28-api-browser-trust-boundary.md
 /agent-note-one-carrier-level-browser-trust-boundary-for-all-api-routes:
-  en: 491d0faf230d0278
-  zh: 40c8eef7719fe354
+  en: a5f187e5f3e30005
+  zh: de63cc9ece46e40d
 /agent-note-one-carrier-level-browser-trust-boundary-for-all-api-routes/problem:
   en: c25db2ef111b2276
   zh: 557891ca9e030ae5
 /agent-note-one-carrier-level-browser-trust-boundary-for-all-api-routes/decision:
-  en: ca8044c9e0013be6
-  zh: d60af7af291299c3
+  en: 0d12ae2b9f1ba0fe
+  zh: e481a8876f9efd01
 /agent-note-one-carrier-level-browser-trust-boundary-for-all-api-routes/alternatives-considered:
-  en: 1a4b0ae8072e8e50
-  zh: d469553ad3b5d112
+  en: d7999437aeab7a71
+  zh: 9e9acfee4c23afef
 /agent-note-one-carrier-level-browser-trust-boundary-for-all-api-routes/consequences:
-  en: e31df28a2e82a64d
-  zh: 4ca7097ebbc24cd2
+  en: 158af39a69d6bdbb
+  zh: 828b52fe99a1ccb5

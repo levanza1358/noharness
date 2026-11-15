@@ -16,14 +16,14 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { StreamChunk } from '@deepseek-ai/dsh-llm'
-import { createAssistantMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ReplayEntry } from '@deepseek-ai/dsh-llm-replay'
-import type { SessionId, SessionEvent } from '@deepseek-ai/dsh-session'
+import type { StreamChunk } from '@noharness/llm'
+import { createAssistantMessage, createUserMessage } from '@noharness/llm'
+import type { ReplayEntry } from '@noharness/llm-replay'
+import type { SessionId, SessionEvent } from '@noharness/session'
 import { createChatScrollFixture } from './chat-scroll-fixture.ts'
 import { launchWebScaffold, parseSeedFixture, seedSession, watchConsole, webSnapshotMode, type WebScaffold } from './scaffold.ts'
 import { newEnglishPage, openSettings } from './support.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 declare global {
   interface Window {
@@ -217,7 +217,7 @@ interface World {
  * and its model stream held.
  */
 async function sendFromOpenedGroup(browser: Browser, id: string, answerParagraphs: number): Promise<World> {
-  const replayDir = await mkdtemp(join(tmpdir(), 'dsh-open-fold-'))
+  const replayDir = await mkdtemp(join(tmpdir(), 'nhs-open-fold-'))
   await writeFile(join(replayDir, 'replay.override.json'), JSON.stringify([reply()]))
   const scaffold = await launchWebScaffold({
     replayFixture: join(replayDir, 'override-only.jsonl'),

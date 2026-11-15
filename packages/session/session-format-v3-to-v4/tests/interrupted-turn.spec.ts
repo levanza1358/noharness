@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { SessionFormatEventCollector, type SessionFormatEvent, type SessionFormatJsonObject } from '@deepseek-ai/dsh-session-format'
-import { createSessionFormatCatalogWithChildren, sessionFormatCatalog } from '@deepseek-ai/dsh-session-format-catalog'
-import { Session, type SessionId, SessionLogOffset, type SessionEvent, type SessionHeader } from '@deepseek-ai/dsh-session'
-import { imageOffloadProjection } from '@deepseek-ai/dsh-compaction-image-offload/projection'
+import { SessionFormatEventCollector, type SessionFormatEvent, type SessionFormatJsonObject } from '@noharness/session-format'
+import { createSessionFormatCatalogWithChildren, sessionFormatCatalog } from '@noharness/session-format-catalog'
+import { Session, type SessionId, SessionLogOffset, type SessionEvent, type SessionHeader } from '@noharness/session'
+import { imageOffloadProjection } from '@noharness/compaction-image-offload/projection'
 import { createSessionFormatV3ToV4 } from '../src/index.ts'
 import { remapV3References } from '../src/references.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const header = { type: 'session', version: 3, id: 'restart', createdAt: 1, isSeeded: false, delegationDepth: 0 }
 const nativeHeader: SessionHeader = { version: 4, id: brandString<SessionId>(header.id), createdAt: 1, isSeeded: false, delegationDepth: 0 }
@@ -14,7 +14,7 @@ const row = (type: string, data: SessionFormatJsonObject) => ({ type, data })
 const splice = () => row('agent/inbox/spliced', { target: 'next-turn', inserted: [user('next')] })
 const start = (turn: number) => row('turn/start', { turn })
 const end = (turn: number) => row('turn/end', { turn, reason: { kind: 'completed' } })
-const titleMessage = { ...user('captured seq 4'), source: { kind: 'dsh-session-title-llm' } }
+const titleMessage = { ...user('captured seq 4'), source: { kind: 'nhs-session-title-llm' } }
 const prefix = () => [start(1), row('step/start', { turn: 1, step: 1 }), row('step/end', { turn: 1, step: 1 }), splice()]
 function events(rows: readonly object[]): SessionFormatEvent[] {
   return rows.map((event, seq) => ({ ...event, seq, time: seq + 10 }) as SessionFormatEvent)

@@ -3,56 +3,56 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-theme/README.md
 /:
-  en: e9c14ae3732deb3a
-  zh: fee230def9844d2d
-/deepseek-ai-dsh-client-ui-theme:
-  en: 06c7d7624947a72a
-  zh: ac4ca82984564825
-/deepseek-ai-dsh-client-ui-theme/summary:
-  en: d9832b31c4cb3ca4
-  zh: f2ec42bb5ae66188
-/deepseek-ai-dsh-client-ui-theme/table-of-contents:
+  en: 79ee35c58aa45c3e
+  zh: 5f4c16c172105736
+/noharness-client-ui-theme:
+  en: b875452e8ac41414
+  zh: 81394b7e5cd34a22
+/noharness-client-ui-theme/summary:
+  en: 6ef5af0b3f8bca41
+  zh: 16440f6cb90f2990
+/noharness-client-ui-theme/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
-/deepseek-ai-dsh-client-ui-theme/use-this-package:
+/noharness-client-ui-theme/use-this-package:
   en: 5a279269e31713c1
   zh: dcd5c31fbdfd63e2
-/deepseek-ai-dsh-client-ui-theme/use-this-package/appearance-and-font-size:
+/noharness-client-ui-theme/use-this-package/appearance-and-font-size:
   en: 7dff01929847efd1
   zh: ec04b4c4485aba96
-/deepseek-ai-dsh-client-ui-theme/use-this-package/fonts:
+/noharness-client-ui-theme/use-this-package/fonts:
   en: b45d5b48ca799c3a
   zh: af65514b3759204f
-/deepseek-ai-dsh-client-ui-theme/use-this-package/registering-a-theme:
+/noharness-client-ui-theme/use-this-package/registering-a-theme:
   en: 5244fc168d0a03f8
   zh: c7ab12fdf8c6c55b
-/deepseek-ai-dsh-client-ui-theme/use-this-package/pre-plugin-palette:
-  en: 18f62cd5e6d32570
-  zh: 728ddd17d7610470
-/deepseek-ai-dsh-client-ui-theme/understand-the-implementation:
-  en: 3eb9b0e3365b2db3
-  zh: c73acc55dd897266
-/deepseek-ai-dsh-client-ui-theme/understand-the-implementation/stylesheets:
-  en: 148903d8cd6580f5
-  zh: 7ff2ff90954798b8
-/deepseek-ai-dsh-client-ui-theme/understand-the-implementation/scrollbar-rebinding:
-  en: bf76e7c34a331595
-  zh: 5accd0260ef7c61e
-/deepseek-ai-dsh-client-ui-theme/understand-the-implementation/preference-persistence:
-  en: b1f0b0bce5e53bae
-  zh: 26ded298f85834ae
-/deepseek-ai-dsh-client-ui-theme/further-exploration:
-  en: 7d5b953aaeeaf591
-  zh: ff4bccb0f196f2b9
-/deepseek-ai-dsh-client-ui-theme/model-experience:
+/noharness-client-ui-theme/use-this-package/pre-plugin-palette:
+  en: c4e142fb7830996a
+  zh: a25280f20bcaa4ce
+/noharness-client-ui-theme/understand-the-implementation:
+  en: 99c487cdd70f73db
+  zh: c00dcc26e7055b63
+/noharness-client-ui-theme/understand-the-implementation/stylesheets:
+  en: eb406ef6d4a19a3a
+  zh: 1fe77f4669e44b9c
+/noharness-client-ui-theme/understand-the-implementation/scrollbar-rebinding:
+  en: 131d5ec976279304
+  zh: 0c94e517cad0acbf
+/noharness-client-ui-theme/understand-the-implementation/preference-persistence:
+  en: 795cb97c50229343
+  zh: 32cabc03d54b07e8
+/noharness-client-ui-theme/further-exploration:
+  en: a31665672896c86d
+  zh: a509439ba35b1dc1
+/noharness-client-ui-theme/model-experience:
   en: 3120df665299c634
   zh: 1d9f365d091d0d2a
-/deepseek-ai-dsh-client-ui-theme/model-experience/kv-cache-effect:
+/noharness-client-ui-theme/model-experience/kv-cache-effect:
   en: ca75c51c89c2c9b0
   zh: de54f3467ef3b9be
-/deepseek-ai-dsh-client-ui-theme/known-limitations-and-deferred-work:
+/noharness-client-ui-theme/known-limitations-and-deferred-work:
   en: 2388061abb1dd40f
   zh: 1a4ad9a8e12472df
-/deepseek-ai-dsh-client-ui-theme/known-limitations-and-deferred-work/dev-note:
+/noharness-client-ui-theme/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

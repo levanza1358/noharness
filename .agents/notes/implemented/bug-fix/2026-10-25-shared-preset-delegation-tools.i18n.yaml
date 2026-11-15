@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-10-25-shared-preset-delegation-tools.md
 /agent-note-shared-preset-delegation-tools:
-  en: 2f33b8a19d8291b8
-  zh: 4f49de632ac53d01
+  en: 468fb267cc1efadb
+  zh: 042d0c0fd4ee37dc
 /agent-note-shared-preset-delegation-tools/problem:
   en: 3150532ae6efd14c
   zh: 3c3d662c5bcb323b
 /agent-note-shared-preset-delegation-tools/decision:
-  en: ccaa0792d54fe79d
-  zh: b2993214c35c1db0
+  en: f645002fbe8ae8a8
+  zh: 03e53f6ec40b413c
 /agent-note-shared-preset-delegation-tools/alternatives-considered:
   en: 2f53caf2af750178
   zh: cd4d9b823a9348dc

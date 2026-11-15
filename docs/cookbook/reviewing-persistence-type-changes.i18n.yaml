@@ -6,26 +6,26 @@
   en: 81db5d0ea2dbd0e2
   zh: 2eb04cd5b470fd53
 /cookbook-reviewing-persistence-type-changes:
-  en: 50fa0e1367687c7d
-  zh: cd76f6e9649351c9
+  en: aa149ee7a746b593
+  zh: cce3b99e9c5cbe51
 /cookbook-reviewing-persistence-type-changes/summary:
-  en: 58040d6422d9ef9d
-  zh: 7deda8fc45752e8c
+  en: 2ee035da268adb8e
+  zh: 84bfb2db9cc46044
 /cookbook-reviewing-persistence-type-changes/table-of-contents:
   en: 5fca19ac2bb1ddac
   zh: 00d78fe7e80ba4f7
 /cookbook-reviewing-persistence-type-changes/optional-inspect-the-change:
-  en: 841a75ed33db17bd
-  zh: ed4e80aae708bfb9
+  en: e17dc45946875e90
+  zh: ad2bd5a64993eaa1
 /cookbook-reviewing-persistence-type-changes/1-record-the-change:
-  en: de16b6e1ac883317
-  zh: 21d367bb78e799d1
+  en: be5229e023e5f13f
+  zh: 9026705aa12658bc
 /cookbook-reviewing-persistence-type-changes/2-check-commit-and-push:
-  en: 91d39719ec40b0f7
-  zh: 405116ae4c91b100
+  en: 58e286052566084c
+  zh: b16ebe362909d924
 /cookbook-reviewing-persistence-type-changes/update-an-unaccepted-record:
-  en: e3872db4ec9aad7d
-  zh: 18de4f6ebcb4b31c
+  en: a057a728fd80f072
+  zh: 5ef2fa9e9409f300
 /cookbook-reviewing-persistence-type-changes/dev-note:
   en: 5de1d6304e00c58f
   zh: 8d8225361cfa29e5

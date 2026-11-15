@@ -1,23 +1,23 @@
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import { mountWorkingDirectoryFixture } from './working-directory-fixture.ts'
 // The browser-facing prompt and interrupt controls and their stable failure
 // codes. Session Controller owns catalog observation and transport.
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import AttachmentStore, { AttachmentError } from '@deepseek-ai/dsh-attachment'
-import type { MessageId } from '@deepseek-ai/dsh-llm'
-import type { SessionId } from '@deepseek-ai/dsh-session'
+import { Context } from '@noharness/cordis'
+import AttachmentStore, { AttachmentError } from '@noharness/attachment'
+import type { MessageId } from '@noharness/llm'
+import type { SessionId } from '@noharness/session'
 import SubagentRuntime, {
   SubagentError,
   type SubagentErrorCode,
   type SubagentPromptRequestId,
-} from '@deepseek-ai/dsh-subagent'
+} from '@noharness/subagent'
 import { subagentManager } from './manager-internals.ts'
-import type { PeerId, Principal, RemoteInvocation } from '@deepseek-ai/dsh-typert-protocol'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import type { PeerId, Principal, RemoteInvocation } from '@noharness/typert-protocol'
+import { brandString } from '@noharness/brand'
 
-declare module '@deepseek-ai/dsh-typert-protocol' {
+declare module '@noharness/typert-protocol' {
   interface PrincipalMap {
     /** Test-only non-owner caller shared by the access specs. */
     'test-guest': { readonly kind: 'test-guest'; readonly guest: string }

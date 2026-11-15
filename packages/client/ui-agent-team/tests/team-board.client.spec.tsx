@@ -2,12 +2,12 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import type { TeamProjection, TeamTaskId, TeamTaskView as TeamTask } from '@deepseek-ai/dsh-agent-team/client'
-import type { SessionListState, SessionSummary } from '@deepseek-ai/dsh-api-session-controller/client'
-import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
-import { bindSnapshotSelector, makeTranslate } from '@deepseek-ai/dsh-client-test-runtime'
-import { zh as commonZh } from '@deepseek-ai/dsh-client-locale/src/locales/zh.ts'
+import type { SessionId } from '@noharness/session/types'
+import type { TeamProjection, TeamTaskId, TeamTaskView as TeamTask } from '@noharness/agent-team/client'
+import type { SessionListState, SessionSummary } from '@noharness/api-session-controller/client'
+import { createSnapshotStore } from '@noharness/client-store'
+import { bindSnapshotSelector, makeTranslate } from '@noharness/client-test-runtime'
+import { zh as commonZh } from '@noharness/client-locale/src/locales/zh.ts'
 import { TeamBoard, type TeamBoardProps } from '../src/client/TeamBoard.tsx'
 import { en, zh } from '../src/client/locales.ts'
 

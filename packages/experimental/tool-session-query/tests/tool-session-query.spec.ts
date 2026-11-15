@@ -1,14 +1,14 @@
-import { ToolExecutionPipeline } from '@deepseek-ai/dsh-tools/pipeline'
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import { ToolExecutionPipeline } from '@noharness/tools/pipeline'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@deepseek-ai/cordis'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
-import { createUserMessage, type ToolCallId, HarnessError , createMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import { MAX_TIMER_DELAY_MS, TimeoutReason } from '@deepseek-ai/dsh-timeout'
-import * as TimeoutPolicy from '@deepseek-ai/dsh-tool-call-timeout-policy'
+import { Context, type Fiber } from '@noharness/cordis'
+import { brandString } from '@noharness/brand'
+import AgentRegistry, { type Agent } from '@noharness/agent'
+import { createUserMessage, type ToolCallId, HarnessError , createMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import { MAX_TIMER_DELAY_MS, TimeoutReason } from '@noharness/timeout'
+import * as TimeoutPolicy from '@noharness/tool-call-timeout-policy'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   type SessionId,
@@ -17,8 +17,8 @@ import SessionStore, {
   type SessionEvent,
   type SessionHeader,
   type SessionId as SessionIdValue,
-} from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+} from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import SessionQueryEngine, {
   SessionQueryError,
   type SessionSearchCursor,
@@ -31,13 +31,13 @@ import SessionQueryEngine, {
   type SessionSearchPage,
   type SessionSearchRequest,
   type SessionTitleObservationResult,
-} from '@deepseek-ai/dsh-session-query'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { type ToolExecutionResult } from '@deepseek-ai/dsh-tools'
-import type { Config as ToolSessionQueryConfig } from '@deepseek-ai/dsh-tool-session-query'
-import * as ToolSessionQuery from '@deepseek-ai/dsh-tool-session-query'
+} from '@noharness/session-query'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime, { type ToolExecutionResult } from '@noharness/tools'
+import type { Config as ToolSessionQueryConfig } from '@noharness/tool-session-query'
+import * as ToolSessionQuery from '@noharness/tool-session-query'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }

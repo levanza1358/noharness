@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-web-fetch-http",
-  "description": "Anonymous HTTP(S) fetch provider for the DeepSeek Harness web capability seam (ctx.web)",
+  "name": "@noharness/web-fetch-http",
+  "description": "Anonymous HTTP(S) fetch provider for the NoHarness web capability seam (ctx.web)",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/web/web-fetch-http"
   },
   "type": "module",
@@ -32,18 +32,18 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-timeout": "workspace:*",
-    "@deepseek-ai/dsh-web": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/timeout": "workspace:*",
+    "@noharness/web": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/schemastery": "workspace:~",
     "undici": "8.11.2"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-timeout": "workspace:*",
-    "@deepseek-ai/dsh-web": "workspace:*",
-    "@deepseek-ai/dsh-http-proxy": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/timeout": "workspace:*",
+    "@noharness/web": "workspace:*",
+    "@noharness/http-proxy": "workspace:*"
   }
 }

@@ -1,7 +1,7 @@
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@noharness/cordis'
 import { describe, expect, it } from 'vitest'
-import { HarnessError } from '@deepseek-ai/dsh-error'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { HarnessError } from '@noharness/error'
+import { brandString } from '@noharness/brand'
 import AttachmentStore, {
   AttachmentError, type AttachmentId, type ImageVariantId,
   isAttachmentError,

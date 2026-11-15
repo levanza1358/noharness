@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-llm-deepseek-account",
+  "name": "@noharness/llm-deepseek-account",
   "description": "DeepSeek account provider authentication and discovery",
   "version": "0.2.2-rc.3",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/llm/llm-deepseek-account"
   },
   "type": "module",
@@ -32,33 +32,33 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@deepseek-ai/cosmokit": "workspace:~",
-    "@deepseek-ai/schemastery": "workspace:~"
+    "@noharness/cosmokit": "workspace:~",
+    "@noharness/schemastery": "workspace:~"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-llm-deepseek": "workspace:*",
-    "@deepseek-ai/dsh-launch-environment": "workspace:*",
-    "@deepseek-ai/dsh-deepseek-account": "workspace:*",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/llm": "workspace:*",
+    "@noharness/llm-deepseek": "workspace:*",
+    "@noharness/launch-environment": "workspace:*",
+    "@noharness/deepseek-account": "workspace:*",
+    "@noharness/cordis-plugin-loader": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-llm-deepseek": "workspace:*",
-    "@deepseek-ai/dsh-launch-environment": "workspace:*",
-    "@deepseek-ai/dsh-deepseek-account": "workspace:*",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
-    "@deepseek-ai/dsh-llm-deepseek-api-key": "workspace:*",
-    "@deepseek-ai/dsh-timeout": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/llm": "workspace:*",
+    "@noharness/llm-deepseek": "workspace:*",
+    "@noharness/launch-environment": "workspace:*",
+    "@noharness/deepseek-account": "workspace:*",
+    "@noharness/cordis-plugin-loader": "workspace:~",
+    "@noharness/llm-deepseek-api-key": "workspace:*",
+    "@noharness/timeout": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@deepseek-ai/dsh-deepseek-account": {
+    "@noharness/deepseek-account": {
       "optional": true
     },
-    "@deepseek-ai/cordis-plugin-loader": {
+    "@noharness/cordis-plugin-loader": {
       "optional": true
     }
   }

@@ -1,5 +1,5 @@
-import { changeRequestKey } from '@deepseek-ai/dsh-experimental-forge'
-import type { ChangeRequestSnapshot, ForgeCheckId } from '@deepseek-ai/dsh-experimental-forge'
+import { changeRequestKey } from '@noharness/experimental-forge'
+import type { ChangeRequestSnapshot, ForgeCheckId } from '@noharness/experimental-forge'
 import { describe, expect, it } from 'vitest'
 import {
   actionsRunOf, mapCheckPageResponse, mapHeadResponse, mapPullRequestCommitsResponse, mapSnapshotResponse, mapThreadPageResponse,

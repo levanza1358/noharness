@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-session-persistence-jsonl",
-  "description": "JSONL durable session persistence backend for the DeepSeek Harness",
+  "name": "@noharness/session-persistence-jsonl",
+  "description": "JSONL durable session persistence backend for the NoHarness",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/session/session-persistence-jsonl"
   },
   "type": "module",
@@ -33,25 +33,25 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-persistence": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/session": "workspace:*",
+    "@noharness/session-persistence": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   },
   "dependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-session-format": "workspace:*",
-    "@deepseek-ai/dsh-session-format-catalog": "workspace:*",
-    "@deepseek-ai/dsh-session-format-v3-to-v4": "workspace:*",
+    "@noharness/brand": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/session-format": "workspace:*",
+    "@noharness/session-format-catalog": "workspace:*",
+    "@noharness/session-format-v3-to-v4": "workspace:*",
     "@deepseek-ai/node-addon-system": "workspace:~",
-    "@deepseek-ai/schemastery": "workspace:~",
+    "@noharness/schemastery": "workspace:~",
     "koffi": "3.1.1",
     "p-limit": "7.3.3"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-session": "workspace:*",
-    "@deepseek-ai/dsh-session-format-v0-to-v1": "workspace:*",
-    "@deepseek-ai/dsh-session-persistence": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/session": "workspace:*",
+    "@noharness/session-format-v0-to-v1": "workspace:*",
+    "@noharness/session-persistence": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   }
 }

@@ -3,12 +3,12 @@
  * changes tab's addresses and kinds, opening a view, the titles of Host lenses, and line annotation sources.
  */
 
-import type { HostObservable } from '@deepseek-ai/dsh-client-ui-slots'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
+import type { HostObservable } from '@noharness/client-ui-slots'
+import type { SessionId } from '@noharness/session/types'
 import type { ForgeExtensionState, ForgeLensId } from '../types.ts'
 import { changesAddress, parseChangesAddress, type ChangesParams, type ChangesTarget } from './changes-address.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** The changes view's face for other Client plugins. */
     forgeChanges: ForgeChangesService
@@ -122,7 +122,7 @@ export class ForgeChangesService {
   /**
    * Mint the address of a changes view.
    * @param target - Session and source.
-   * @returns the `dsh-resource://forge-changes/…` address.
+   * @returns the `nhs-resource://forge-changes/…` address.
    */
   address(target: ChangesTarget): string {
     return changesAddress(target)

@@ -1,10 +1,10 @@
 /**
  * Office document families, accepted formats, and input-dependent argument rules.
- * @module @deepseek-ai/dsh-tool-office/formats
+ * @module @noharness/tool-office/formats
  */
 
-import type { OfficeConversionFormat, OfficeRecalculationFormat } from '@deepseek-ai/dsh-office-kit'
-import { ToolArgsError } from '@deepseek-ai/dsh-tools'
+import type { OfficeConversionFormat, OfficeRecalculationFormat } from '@noharness/office-kit'
+import { ToolArgsError } from '@noharness/tools'
 
 /** Operation requested by one Office tool call. */
 export type OfficeOperationName = 'render' | 'convert' | 'recalculate'

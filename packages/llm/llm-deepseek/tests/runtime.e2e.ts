@@ -1,20 +1,20 @@
-import * as Protocol from '@deepseek-ai/dsh-llm-deepseek'
+import * as Protocol from '@noharness/llm-deepseek'
 import { readFileSync } from 'node:fs'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomBytes } from 'node:crypto'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import LlmRuntime, { createToolResultMessage, createUserMessage, type ToolCallId, type ReasoningEffortId, createMessage, createSystemMessage } from '@deepseek-ai/dsh-llm'
-import type { Message, ToolSchema } from '@deepseek-ai/dsh-llm'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import AttachmentStore from '@deepseek-ai/dsh-attachment'
-import type { AttachmentId, ImageVariantId } from '@deepseek-ai/dsh-attachment/types'
-import LocalAttachments from '@deepseek-ai/dsh-attachment-local'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import AgentRegistry from '@noharness/agent'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import LlmRuntime, { createToolResultMessage, createUserMessage, type ToolCallId, type ReasoningEffortId, createMessage, createSystemMessage } from '@noharness/llm'
+import type { Message, ToolSchema } from '@noharness/llm'
+import { brandString } from '@noharness/brand'
+import AttachmentStore from '@noharness/attachment'
+import type { AttachmentId, ImageVariantId } from '@noharness/attachment/types'
+import LocalAttachments from '@noharness/attachment-local'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
@@ -22,14 +22,14 @@ import type {
   RequestImageAttachment,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@deepseek-ai/dsh-attachment'
-import { LocalCredentialProvider } from '@deepseek-ai/dsh-credentials-local'
-import SessionStore, { type SessionId } from '@deepseek-ai/dsh-session'
-import DeepSeekLlmApiExtensionRegistry from '@deepseek-ai/dsh-deepseek-llm-api-extensions'
-import * as PluginPackageInventoryDeepSeek from '@deepseek-ai/dsh-plugin-package-inventory-deepseek'
-import * as SessionLogDeepSeek from '@deepseek-ai/dsh-session-log-deepseek'
-import * as LlmDeepSeek from '@deepseek-ai/dsh-llm-deepseek-api-key'
-import type { Options as Config } from '@deepseek-ai/dsh-llm-deepseek'
+} from '@noharness/attachment'
+import { LocalCredentialProvider } from '@noharness/credentials-local'
+import SessionStore, { type SessionId } from '@noharness/session'
+import DeepSeekLlmApiExtensionRegistry from '@noharness/deepseek-llm-api-extensions'
+import * as PluginPackageInventoryDeepSeek from '@noharness/plugin-package-inventory-deepseek'
+import * as SessionLogDeepSeek from '@noharness/session-log-deepseek'
+import * as LlmDeepSeek from '@noharness/llm-deepseek-api-key'
+import type { Options as Config } from '@noharness/llm-deepseek'
 import type { WireRequest } from '../src/wire-types.ts'
 import { assemble, type AssembledResult } from './assemble.ts'
 
@@ -104,8 +104,8 @@ class E2eAttachmentStore extends AttachmentStore {
 }
 
 beforeEach(async () => {
-  identityHome = await mkdtemp(join(tmpdir(), 'dsh-e2e-user-id-'))
-  vi.stubEnv('DSH_HOME', identityHome)
+  identityHome = await mkdtemp(join(tmpdir(), 'nhs-e2e-user-id-'))
+  vi.stubEnv('NHS_HOME', identityHome)
 })
 
 async function harness(model: string, config: Partial<Config> = {}) {
@@ -256,7 +256,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('llm-deepseek e2e (real API)', ()
   it('serves a real request with the key held only by a credentials-local document', async () => {
     const key = process.env.DEEPSEEK_API_KEY
     if (key === undefined) throw new Error('e2e ran without DEEPSEEK_API_KEY')
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-e2e-credentials-'))
+    const dir = await mkdtemp(join(tmpdir(), 'nhs-e2e-credentials-'))
     try {
       // JSON.stringify quotes the value: YAML is a JSON superset, so a real
       // key survives whatever characters it happens to carry.

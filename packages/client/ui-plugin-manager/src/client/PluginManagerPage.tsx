@@ -10,7 +10,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import type { PluginInstallFailureKind, Registry } from '@deepseek-ai/dsh-api-remotes/client'
+import type { PluginInstallFailureKind, Registry } from '@noharness/api-remotes/client'
 import {
   Button, IconCheckCircleFillRegular, IconChevronDownOutlineRegular, IconChevronLeftOutlineMedium,
   IconChevronRightOutlineRegular, IconCloseOutlineMedium,
@@ -19,10 +19,10 @@ import {
   PluginArtworkDefault, PluginArtworkLoop, PluginArtworkSearch, PluginArtworkSubagent, PluginArtworkTerminal,
   SegmentedTabs, StateDot, Switch, Tag, TerminalBlock, Toast, Tooltip, useDismissOnOutsidePointer,
   type IconProps, type StateDotState, type TerminalBlockLabels,
-} from '@deepseek-ai/dsh-client-ui-primitives'
-import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore } from '@deepseek-ai/dsh-client-ui-slots'
-import { EXTENSION_BUNDLES, HIDDEN_BUNDLES, MORE_BUNDLES } from '@deepseek-ai/dsh-official-bundles'
-import { localizedValues, TextSearchIndex } from '@deepseek-ai/dsh-util-text-search'
+} from '@noharness/client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore } from '@noharness/client-ui-slots'
+import { EXTENSION_BUNDLES, HIDDEN_BUNDLES, MORE_BUNDLES } from '@noharness/official-bundles'
+import { localizedValues, TextSearchIndex } from '@noharness/util-text-search'
 import type { createNavigationStore } from './navigation-store.ts'
 import type { PluginHeaderLayoutFace } from './header-scroll.ts'
 import { rowConfigKey, type OfficialItem } from './config-ledger.ts'
@@ -1071,7 +1071,7 @@ function InstallDialog({
   const registryShown = install.registryOpen && phase === 'idle'
   const specComposition = useInstallComposition(install.open && phase === 'idle')
   const registryComposition = useInstallComposition(install.open && registryShown)
-  const registryAnchorName = `--dsh-registry-${registryId.replaceAll(':', '')}`
+  const registryAnchorName = `--nhs-registry-${registryId.replaceAll(':', '')}`
   useEffect(() => {
     if (registryShown && install.registryError) registryCustomRef.current?.focus()
   }, [registryShown, install.registryError])

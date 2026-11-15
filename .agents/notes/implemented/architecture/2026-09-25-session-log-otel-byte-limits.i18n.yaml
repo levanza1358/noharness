@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-25-session-log-otel-byte-limits.md
 /agent-note-session-log-otlp-strings-and-bounded-requests:
-  en: 041f7e2b55202ea3
-  zh: e01834ae6c9fc7bc
+  en: 4a481e730f2838a7
+  zh: 062a6f7fb4a8a056
 /agent-note-session-log-otlp-strings-and-bounded-requests/problem:
   en: 20f659a15fb55352
   zh: 49d39c95da1b8aa5
 /agent-note-session-log-otlp-strings-and-bounded-requests/decision:
-  en: 6e18311171c724bd
-  zh: 0214676ea3ee769c
+  en: 9046a6f57bb86f78
+  zh: 69b8ea0d0d062552
 /agent-note-session-log-otlp-strings-and-bounded-requests/alternatives-considered:
   en: 0dc933b18a1a3573
   zh: 77655740322c4e45

@@ -1,11 +1,11 @@
 /** Browser controls for the provider's application decisions and native permission work. */
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-config-editor'
-import type {} from '@deepseek-ai/dsh-ptc-runtime'
-import { resolvePersistentExecution } from '@deepseek-ai/dsh-ptc-runtime-node/configuration'
-import { Remote, TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/config-editor'
+import type {} from '@noharness/ptc-runtime'
+import { resolvePersistentExecution } from '@noharness/ptc-runtime-node/configuration'
+import { Remote, TypertRemoteService } from '@noharness/typert-protocol'
 import { ApplicationAccess, type AccessOptions } from './application-access.ts'
-import type { JsonValue } from '@deepseek-ai/dsh-util-values'
+import type { JsonValue } from '@noharness/util-values'
 import { z } from 'zod'
 import { ApplicationIcon } from './protocol.ts'
 import { NativeClient, type NativeClientConfig, type NativeChannelFactory } from './native-client.ts'
@@ -30,7 +30,7 @@ const systemPermissions = z.discriminatedUnion('platform', [z.object({
   elevated: z.boolean(), helper: permissionProcess,
 })])
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Native permission controls and executor-owned application consent. */
     cuaAccess: CuaAccess

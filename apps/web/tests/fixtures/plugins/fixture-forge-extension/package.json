@@ -8,14 +8,14 @@
     ".": "./index.js",
     "./client": "./client.js"
   },
-  "dsh": {
+  "nhs": {
     "bundle": {
       "patch": "./cordis.patch.yml"
     },
     "client": {
       "platform": "web",
       "inject": [
-        "@deepseek-ai/dsh-experimental-client-ui-forge"
+        "@noharness/experimental-client-ui-forge"
       ]
     }
   }

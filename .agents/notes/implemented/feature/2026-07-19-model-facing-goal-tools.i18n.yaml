@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-19-model-facing-goal-tools.md
 /agent-note-model-facing-same-session-goal-tools:
-  en: 4d9b039620654dd6
-  zh: e8703b6a1723f910
+  en: 218f80c225087df7
+  zh: 771b33fcf495c39c
 /agent-note-model-facing-same-session-goal-tools/problem:
   en: f8e860155bfc0b43
   zh: 3279c90b622e8c08
 /agent-note-model-facing-same-session-goal-tools/decision:
-  en: 0ab1e1c40cb2dac9
-  zh: b4180b6681c130b2
+  en: f3d4ca9ebb2a86fe
+  zh: 33520d773a039b7f
 /agent-note-model-facing-same-session-goal-tools/decision/tools-and-model-contract:
-  en: 8589421c225beac0
-  zh: d2a49dec31ba260c
+  en: d5e8945b7898ab53
+  zh: 2ff4ff754bab4249
 /agent-note-model-facing-same-session-goal-tools/decision/execution-authority:
   en: 63a9e7e85303b9f1
   zh: d3f1d0c225103cfe
@@ -24,11 +24,11 @@
   en: 92650dd6648ca455
   zh: 5b57276a6a983fea
 /agent-note-model-facing-same-session-goal-tools/alternatives-considered:
-  en: 84f7829c020f282b
-  zh: 37c4366efc9dd8dc
+  en: 7fbbd685b06b19a3
+  zh: ab1649f61f02d4f8
 /agent-note-model-facing-same-session-goal-tools/consequences:
   en: e254571a176b37e5
   zh: 01f76aff35e3618d
 /agent-note-model-facing-same-session-goal-tools/known-limitations-and-deferred-work:
-  en: 61e119f3d8dc130d
-  zh: 1d543c4143d4cc21
+  en: a2a5c9042a4ed62e
+  zh: 706fe064d0e72edc

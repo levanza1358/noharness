@@ -5,45 +5,45 @@
 /:
   en: b2fce08b0fa865da
   zh: 97e214d87ded4b54
-/deepseek-ai-dsh-sdk-minimal:
-  en: 807c43eedba7d53e
-  zh: 9f1efe5d6ac393f7
-/deepseek-ai-dsh-sdk-minimal/summary:
-  en: 31b83af058b212f9
-  zh: 289678ac3738ee5e
-/deepseek-ai-dsh-sdk-minimal/table-of-contents:
+/noharness-sdk-minimal:
+  en: 268ad110d040845a
+  zh: 1780a2d8dd8053cb
+/noharness-sdk-minimal/summary:
+  en: 744674e351ca939c
+  zh: 94294047f07d794e
+/noharness-sdk-minimal/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
-/deepseek-ai-dsh-sdk-minimal/use-this-package:
-  en: 44072e053b253924
-  zh: fecb1b7986ac05d4
-/deepseek-ai-dsh-sdk-minimal/understand-the-implementation:
-  en: 5db5d8f041867958
-  zh: bff5ef3a2e140712
-/deepseek-ai-dsh-sdk-minimal/understand-the-implementation/source-map:
+/noharness-sdk-minimal/use-this-package:
+  en: 9f3b8244f68ccf75
+  zh: ed841277ad166f5b
+/noharness-sdk-minimal/understand-the-implementation:
+  en: 6755ad7858edf499
+  zh: cdc7ac33dd1b6e28
+/noharness-sdk-minimal/understand-the-implementation/source-map:
   en: 3784c554e96ab004
   zh: 0a05d4fe1e26b3b1
-/deepseek-ai-dsh-sdk-minimal/further-exploration:
-  en: 6909fc128c321153
-  zh: 7d2a0866efdc5a69
-/deepseek-ai-dsh-sdk-minimal/model-experience:
+/noharness-sdk-minimal/further-exploration:
+  en: 8dbdd47b6e90a714
+  zh: 8ad02abc5adf8c16
+/noharness-sdk-minimal/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/deepseek-ai-dsh-sdk-minimal/model-experience/minimal-coding-agent-composition:
+/noharness-sdk-minimal/model-experience/minimal-coding-agent-composition:
   en: bd87e16b0c6e0506
   zh: c8ee5e3b4578754e
-/deepseek-ai-dsh-sdk-minimal/model-experience/minimal-coding-agent-composition/what-the-model-sees:
-  en: df40d9529b566cfa
-  zh: 4678769b4f85120b
-/deepseek-ai-dsh-sdk-minimal/model-experience/minimal-coding-agent-composition/token-effect:
-  en: 9b7a23c7a447eb22
-  zh: e01bfd06d19b7d18
-/deepseek-ai-dsh-sdk-minimal/model-experience/minimal-coding-agent-composition/kv-cache-effect:
+/noharness-sdk-minimal/model-experience/minimal-coding-agent-composition/what-the-model-sees:
+  en: 14fd60fc64ab8dd1
+  zh: 05d223d78e3ebaf6
+/noharness-sdk-minimal/model-experience/minimal-coding-agent-composition/token-effect:
+  en: f2499a28320126f9
+  zh: d515ecd656b357b0
+/noharness-sdk-minimal/model-experience/minimal-coding-agent-composition/kv-cache-effect:
   en: dd887b6519f40ab3
   zh: a98e56411fdc79df
-/deepseek-ai-dsh-sdk-minimal/known-limitations-and-deferred-work:
-  en: 00c4192d6af9f621
-  zh: 460451ab6dc07c3a
-/deepseek-ai-dsh-sdk-minimal/known-limitations-and-deferred-work/dev-note:
+/noharness-sdk-minimal/known-limitations-and-deferred-work:
+  en: df6608441ea87294
+  zh: 472fd97e737a5ae0
+/noharness-sdk-minimal/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: e88aeb617ffb74ea

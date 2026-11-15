@@ -3,41 +3,41 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/feature/2026-10-03-pi-extensions-bridge.md
 /agent-note-pi-extensions-bridge:
-  en: cd9f68956ba34672
-  zh: 1fc649c5eb0d3cf4
+  en: 66ec3df11b545c1a
+  zh: 961091a44c2196d2
 /agent-note-pi-extensions-bridge/problem:
-  en: eb4d3f10c3feedb4
-  zh: a1a1a75a724c9a8b
+  en: 28edb11b7cce85ac
+  zh: c6309900a5ea063f
 /agent-note-pi-extensions-bridge/proposal:
-  en: 56b36193ca6f829d
-  zh: a31e226794c1ca90
+  en: 66742ff17c3c4679
+  zh: 1ca4930b686076f0
 /agent-note-pi-extensions-bridge/proposal/packages-and-composition:
-  en: 2ab10852b93ad41b
-  zh: 3c14d410235fcfac
+  en: fcb5afe4f6f7f61e
+  zh: 617739415b1df381
 /agent-note-pi-extensions-bridge/proposal/loading-and-execution:
   en: d95ece799bc6bab7
   zh: 1e19d3b49473a57e
 /agent-note-pi-extensions-bridge/proposal/serving-the-api:
-  en: b1365f16d76fe27a
-  zh: 105b88f80eb8964d
+  en: ea10c80ef64997e2
+  zh: f51adea85e69048c
 /agent-note-pi-extensions-bridge/proposal/built-in-tool-calls-as-pi-sees-them:
-  en: c74e4662ad0a8ee7
-  zh: 653729b41e983b13
+  en: 7a72678e12a7b060
+  zh: 9ff0e80e2adcddec
 /agent-note-pi-extensions-bridge/proposal/unserved-features:
-  en: 70c74cf93526cfad
-  zh: cab3efc2c109ad5a
+  en: 8b3fc5c3499dce0d
+  zh: 1a11fac298255c77
 /agent-note-pi-extensions-bridge/proposal/extension-state:
-  en: be58f498b8d28548
-  zh: 4cc057f794c288bf
+  en: a9cd1b585469b5c2
+  zh: a4aaf32b47740b86
 /agent-note-pi-extensions-bridge/proposal/core-mechanisms-narrower-than-pi-s:
-  en: 9fa8297436332064
-  zh: 9a000e157940b0f8
+  en: 716f6fcfda95f04e
+  zh: cc3fa545a12545cb
 /agent-note-pi-extensions-bridge/alternatives-considered:
-  en: a3769b960278c17f
-  zh: e7d86ff1aff243b8
+  en: 50068864b26d1e72
+  zh: 491d6927a576a369
 /agent-note-pi-extensions-bridge/acceptance-criteria:
-  en: 60894db423a54ec3
-  zh: 13b435271f6a1371
+  en: 5990ab066661a118
+  zh: 80feb871afe2fb53
 /agent-note-pi-extensions-bridge/risks:
   en: 2b9a626b13c604f6
   zh: f67cb80d2b699989

@@ -1,11 +1,11 @@
 /** Agent publication waits for the policy owner while its projection activates. */
-import { Context } from '@deepseek-ai/cordis'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import type { SessionId } from '@deepseek-ai/dsh-session'
+import { Context } from '@noharness/cordis'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import type { SessionId } from '@noharness/session'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
 import SubagentModelSelectionConfig from '../src/model-selection-settings.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const ALLOWED_MODELS = [{ provider: 'alpha', model: 'fast-model' }]
 

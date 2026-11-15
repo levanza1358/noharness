@@ -3,19 +3,19 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import LocalFileReference from '@deepseek-ai/dsh-file-reference-local'
-import Selection from '@deepseek-ai/dsh-tool-subagent/model-selection-settings'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context } from '@noharness/cordis'
+import AgentLoop from '@noharness/agent-loop'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import type { SessionId } from '@noharness/session'
+import LocalFileReference from '@noharness/file-reference-local'
+import Selection from '@noharness/tool-subagent/model-selection-settings'
+import type { Agent } from '@noharness/agent'
+import { createUserMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import { brandString } from '@noharness/brand'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'due-work': { kind: 'due-work'; plugin: string } & ContextFormed
   }
@@ -110,7 +110,7 @@ describe('serial creation listener integrations', () => {
   })
 
   it('starts due plugin work only after every creation listener finishes', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-serial-due-'))
+    const root = await mkdtemp(join(tmpdir(), 'nhs-serial-due-'))
     roots.push(root)
     const ctx = await core(root)
     const sessionId = brandString<SessionId>('review-due-work')

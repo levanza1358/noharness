@@ -3,35 +3,35 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/experimental/badge-skill-bundle/README.md
 /:
-  en: fc73b6a11f583014
-  zh: 9b2a3ee017befdd8
-/deepseek-ai-dsh-experimental-badge-skill-bundle:
-  en: e9f3f3f4aea1c588
-  zh: 706c6a9f82b3358a
-/deepseek-ai-dsh-experimental-badge-skill-bundle/summary:
-  en: 98328e636b0f758a
-  zh: 0d8cf62176fb5e10
-/deepseek-ai-dsh-experimental-badge-skill-bundle/table-of-contents:
+  en: 2c4322a3bad22efd
+  zh: 5b00d032beb8a488
+/noharness-experimental-badge-skill-bundle:
+  en: 15ccfd2ebf33386c
+  zh: 1331e5f103f8d79a
+/noharness-experimental-badge-skill-bundle/summary:
+  en: 86d31122f08609a8
+  zh: 348174640a2331dc
+/noharness-experimental-badge-skill-bundle/table-of-contents:
   en: d152484eb41ac6b4
   zh: 988e839059414d27
-/deepseek-ai-dsh-experimental-badge-skill-bundle/use-this-package:
-  en: 21fc43b87f896a26
-  zh: 84c71fa133f0d9a0
-/deepseek-ai-dsh-experimental-badge-skill-bundle/understand-the-implementation:
-  en: e1ce6533996f4fe6
-  zh: 5bf2931419881347
-/deepseek-ai-dsh-experimental-badge-skill-bundle/further-exploration:
-  en: 20bf055137af811e
-  zh: c1d8ca9c25928650
-/deepseek-ai-dsh-experimental-badge-skill-bundle/model-experience:
-  en: 456435472409223d
-  zh: c76499dcbad46745
-/deepseek-ai-dsh-experimental-badge-skill-bundle/model-experience/kv-cache-effect:
+/noharness-experimental-badge-skill-bundle/use-this-package:
+  en: 9999d85d28163ca5
+  zh: 7a7da456514ab277
+/noharness-experimental-badge-skill-bundle/understand-the-implementation:
+  en: 61ff58c111aa7912
+  zh: cdfcf136375514bc
+/noharness-experimental-badge-skill-bundle/further-exploration:
+  en: 90ba5c8d972605e8
+  zh: 1548f37f917a886a
+/noharness-experimental-badge-skill-bundle/model-experience:
+  en: 0487042074dce74c
+  zh: 388c5e4236dbd59d
+/noharness-experimental-badge-skill-bundle/model-experience/kv-cache-effect:
   en: 1b2209bbbf869b1a
   zh: 5b9de62271343e4e
-/deepseek-ai-dsh-experimental-badge-skill-bundle/known-limitations-and-deferred-work:
+/noharness-experimental-badge-skill-bundle/known-limitations-and-deferred-work:
   en: b27c0eb9ccdcaa0d
   zh: 7d51470bec70861a
-/deepseek-ai-dsh-experimental-badge-skill-bundle/known-limitations-and-deferred-work/dev-note:
+/noharness-experimental-badge-skill-bundle/known-limitations-and-deferred-work/dev-note:
   en: 279d01435256cd2a
   zh: 83780964e5de2f54

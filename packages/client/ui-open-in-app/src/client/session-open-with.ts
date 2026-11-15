@@ -1,8 +1,8 @@
 /** Application submenus for captured Sessions, shared by header and row menus. */
-import type { Context } from '@deepseek-ai/cordis'
-import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
-import type { ContextMenuTargetMap, MenuAction } from '@deepseek-ai/dsh-client-ui-context-menu/client'
-import { OPEN_IN_APP_ICON_PREFIX_ROUTE } from '@deepseek-ai/dsh-host-open-in-app/shared'
+import type { Context } from '@noharness/cordis'
+import type { PropsLocale } from '@noharness/client-ui-slots'
+import type { ContextMenuTargetMap, MenuAction } from '@noharness/client-ui-context-menu/client'
+import { OPEN_IN_APP_ICON_PREFIX_ROUTE } from '@noharness/host-open-in-app/shared'
 import { APP_LABEL_KEY } from './applications.ts'
 import type { OpenInAppController } from './controller.ts'
 import type { OpenInAppToastSource } from './open-toast.tsx'

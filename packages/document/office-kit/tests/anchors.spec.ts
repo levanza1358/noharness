@@ -8,12 +8,12 @@ import { expect, it, onTestFinished } from 'vitest'
 import { createEnginePackageResolver } from '../src/locate.ts'
 
 it.each(['URL object', 'file URL string'])('resolves engines independently from two Kit installation anchors with %s', (input) => {
-  const root = realpathSync(mkdtempSync(join(tmpdir(), 'dsh-engine-anchors-')))
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'nhs-engine-anchors-')))
   onTestFinished(() => { rmSync(root, { recursive: true, force: true, maxRetries: 3, retryDelay: 10 }) })
   const name = `@deepseek-ai/libreoffice-kit-${basename(root)}`
   const installs = ['first', 'second'].map((installation) => {
     const consumer = join(root, installation, 'consumer.js')
-    const kitDirectory = join(dirname(consumer), 'node_modules', '@deepseek-ai', 'libreoffice-kit')
+    const kitDirectory = join(dirname(consumer), 'node_modules', '@noharness', 'libreoffice-kit')
     const kitEntry = join(kitDirectory, 'lib', 'index.js')
     const manifest = join(kitDirectory, 'node_modules', name, 'package.json')
     mkdirSync(dirname(kitEntry), { recursive: true })

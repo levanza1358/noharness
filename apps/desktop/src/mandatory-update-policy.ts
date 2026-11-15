@@ -1,8 +1,8 @@
 /** Mandatory-update policy, independent of local business traffic and updater artifacts. */
 
 import { valid } from 'semver'
-import type { AccountClientMetadata } from '@deepseek-ai/dsh-deepseek-account'
-import { platformClientHeaders } from '@deepseek-ai/dsh-deepseek-account/client-metadata'
+import type { AccountClientMetadata } from '@noharness/deepseek-account'
+import { platformClientHeaders } from '@noharness/deepseek-account/client-metadata'
 
 /** Installed release identity; no field is supplied by a renderer. */
 export interface DesktopPolicyIdentity {
@@ -162,7 +162,7 @@ export class DesktopMandatoryUpdatePolicy {
     return {
       ...platformClientHeaders(this.identity.platform, this.client()),
       'x-client-arch': this.identity.arch, 'x-client-update-channel': channel,
-      'x-client-bundled-dsh-version': this.identity.bundledDshVersion,
+      'x-client-bundled-nhs-version': this.identity.bundledDshVersion,
     }
   }
 

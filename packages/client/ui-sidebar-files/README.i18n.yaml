@@ -3,41 +3,41 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-sidebar-files/README.md
 /:
-  en: d7dbdeee1744fac0
-  zh: 35dc07a9e797f855
-/deepseek-ai-dsh-client-ui-sidebar-files:
-  en: ae5625c23b3a864f
-  zh: 20cf48a229e806bf
-/deepseek-ai-dsh-client-ui-sidebar-files/summary:
+  en: 7fbaabdd2ef7e2b4
+  zh: 8e49340d57a03fc7
+/noharness-client-ui-sidebar-files:
+  en: 111d1e24b9ad2572
+  zh: f8c48655b9b6356c
+/noharness-client-ui-sidebar-files/summary:
   en: 46067f0415ea2e76
   zh: f0b48804ad460a05
-/deepseek-ai-dsh-client-ui-sidebar-files/table-of-contents:
+/noharness-client-ui-sidebar-files/table-of-contents:
   en: 81cb6e051699a7b4
   zh: 566d0278acae69fa
-/deepseek-ai-dsh-client-ui-sidebar-files/what-it-registers:
-  en: c4b8f3a52f68bd51
-  zh: 30b580320637572c
-/deepseek-ai-dsh-client-ui-sidebar-files/the-navigator:
-  en: 3424600b15bde2d2
-  zh: 2cf1c99ffef2ad50
-/deepseek-ai-dsh-client-ui-sidebar-files/the-tree:
-  en: 3d71e50801761213
-  zh: e4e9ab19dd22288d
-/deepseek-ai-dsh-client-ui-sidebar-files/search:
-  en: 275bc2aa20907881
-  zh: 4dac902558cb29f5
-/deepseek-ai-dsh-client-ui-sidebar-files/reusable-tree-factory:
-  en: 76e4d93d65d3c50e
-  zh: b611bba888f86b85
-/deepseek-ai-dsh-client-ui-sidebar-files/model-experience:
+/noharness-client-ui-sidebar-files/what-it-registers:
+  en: 2d825e5f762c3544
+  zh: 709817188b9d6361
+/noharness-client-ui-sidebar-files/the-navigator:
+  en: 623ea33fe1b30a90
+  zh: 2b6bb8955afc83b3
+/noharness-client-ui-sidebar-files/the-tree:
+  en: cad0eb2036ff98ab
+  zh: 2efbbd83a9c7e9ec
+/noharness-client-ui-sidebar-files/search:
+  en: 310c5622c322fe18
+  zh: aa66cc76ac664fec
+/noharness-client-ui-sidebar-files/reusable-tree-factory:
+  en: 599ea1c832cddd81
+  zh: 530315a1b37da98a
+/noharness-client-ui-sidebar-files/model-experience:
   en: a18a43f6842f1371
   zh: 69f2a2b35f06dfc7
-/deepseek-ai-dsh-client-ui-sidebar-files/model-experience/kv-cache-effect:
+/noharness-client-ui-sidebar-files/model-experience/kv-cache-effect:
   en: 39debadcc6cefd24
   zh: cc212c8377851a91
-/deepseek-ai-dsh-client-ui-sidebar-files/known-limitations-and-deferred-work:
+/noharness-client-ui-sidebar-files/known-limitations-and-deferred-work:
   en: f28a32e47e684f5c
   zh: e5e38014048ebe59
-/deepseek-ai-dsh-client-ui-sidebar-files/known-limitations-and-deferred-work/dev-note:
+/noharness-client-ui-sidebar-files/known-limitations-and-deferred-work/dev-note:
   en: 1ec99e9fb6b4c948
   zh: c4f7883934307c3c

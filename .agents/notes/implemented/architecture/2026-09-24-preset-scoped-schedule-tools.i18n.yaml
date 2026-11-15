@@ -3,20 +3,20 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-24-preset-scoped-schedule-tools.md
 /agent-note-preset-scoped-schedule-tools:
-  en: c7dae89a43489b21
-  zh: f85a88544d7e2726
+  en: 18bec033c768f581
+  zh: eeaa75131e4576da
 /agent-note-preset-scoped-schedule-tools/problem:
-  en: 27b4d1d25cd1c178
-  zh: 3ddc4d9a09b6182d
+  en: 01ecc04479a24711
+  zh: 2127e832bfdbcdf0
 /agent-note-preset-scoped-schedule-tools/decision:
-  en: 652fb37ad4e5a826
-  zh: f5c3cc1e9a79b4ca
+  en: 95550efc3c6cc41d
+  zh: d1b1678daad2bcbd
 /agent-note-preset-scoped-schedule-tools/alternatives-considered:
   en: 5cfe619038339caa
   zh: c2d2651d304d867c
 /agent-note-preset-scoped-schedule-tools/consequences:
-  en: aceed1aa98ed9bec
-  zh: b9d99a25a8b25417
+  en: 8613abf9a4a21807
+  zh: ea8a526521f19ff0
 /agent-note-preset-scoped-schedule-tools/testing:
   en: 05080859ac790524
   zh: 4b220c10da961608

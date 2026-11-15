@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-acp-app",
-  "description": "The dsh ACP profile bundle: automation-only JSON-RPC stdio and process lifecycle over dsh-base",
+  "name": "@noharness/acp-app",
+  "description": "The nhs ACP profile bundle: automation-only JSON-RPC stdio and process lifecycle over nhs-base",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/bundle/acp-app"
   },
   "type": "module",
@@ -33,21 +33,21 @@
     "src"
   ],
   "license": "MIT",
-  "dsh": {
+  "nhs": {
     "bundle": {
       "patch": "./cordis.patch.yml"
     }
   },
   "dependencies": {
-    "@deepseek-ai/dsh-acp": "workspace:*",
-    "@deepseek-ai/dsh-cmdline": "workspace:*",
+    "@noharness/acp": "workspace:*",
+    "@noharness/cmdline": "workspace:*",
     "commander": "^15.0.0"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis-plugin-include": "workspace:~",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/cordis-plugin-include": "workspace:~",
+    "@noharness/cordis": "workspace:~"
   }
 }

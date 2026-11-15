@@ -158,7 +158,7 @@ if (coveragePartitionRaw !== undefined && coveragePartitionRaw !== '' && coverag
 const coveragePartitionMode = coveragePartitionRaw === '1'
 
 // Lanes on shared hosts raise the per-test, hook, and expect.poll defaults
-// together through DSH_COVERAGE_TEST_TIMEOUT_MS; it lands in each inline
+// together through NHS_COVERAGE_TEST_TIMEOUT_MS; it lands in each inline
 // project below because CLI flags do not reach them (coverageTestTimeoutOptions
 // owns the rule and its reach).
 const laneTestBudget = coverageTestTimeoutOptions(process.env[COVERAGE_TEST_TIMEOUT_ENV])
@@ -193,10 +193,10 @@ const liveshareRemoteBuild = fileURLToPath(new URL('./packages/experimental/live
 const chatImportRemoteBuild = fileURLToPath(new URL('./packages/experimental/deepseek-chat-import/lib/typert.remote-client.js', import.meta.url))
 const generatedRemoteAliases = {
   ...existsSync(liveshareRemoteBuild) ? {} : {
-    '@deepseek-ai/dsh-experimental-liveshare/remote': fileURLToPath(new URL('./packages/experimental/liveshare/tests/generated-remote-stub.ts', import.meta.url)),
+    '@noharness/experimental-liveshare/remote': fileURLToPath(new URL('./packages/experimental/liveshare/tests/generated-remote-stub.ts', import.meta.url)),
   },
   ...existsSync(chatImportRemoteBuild) ? {} : {
-    '@deepseek-ai/dsh-deepseek-chat-import/remote': fileURLToPath(new URL('./packages/experimental/deepseek-chat-import/tests/generated-remote-stub.ts', import.meta.url)),
+    '@noharness/deepseek-chat-import/remote': fileURLToPath(new URL('./packages/experimental/deepseek-chat-import/tests/generated-remote-stub.ts', import.meta.url)),
   },
 }
 const testingAliases = { ...claudeCodeTestingAliases, ...generatedRemoteAliases }

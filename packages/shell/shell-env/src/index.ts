@@ -1,27 +1,27 @@
 /**
  * Tool-independent shell environment plugin: owns the `ctx.shellEnv` registry of
- * trusted, per-execution `DSH_*` variables consumed by the model-facing shell
- * tools (`dsh-tool-bash`, `dsh-tool-pwsh`). Built-in shell facts are owned by
+ * trusted, per-execution `NHS_*` variables consumed by the model-facing shell
+ * tools (`nhs-tool-bash`, `nhs-tool-pwsh`). Built-in shell facts are owned by
  * the registry itself while plugins can register additional, enumerable facts
  * with effect-scoped disposal.
  *
- * @module @deepseek-ai/dsh-shell-env
+ * @module @noharness/shell-env
  */
 
 import { dirname } from 'node:path'
-import { Service, type Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import { DSH_ENV_PREFIX } from '@deepseek-ai/dsh-shell'
-import type { DshEnvironment, DshEnvironmentKey } from '@deepseek-ai/dsh-shell'
-import { DSH_HOME_ENV, resolveDshHome } from '@deepseek-ai/dsh-home-paths'
+import { Service, type Context } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import { NHS_ENV_PREFIX } from '@noharness/shell'
+import type { DshEnvironment, DshEnvironmentKey } from '@noharness/shell'
+import { NHS_HOME_ENV, resolveDshHome } from '@noharness/home-paths'
 import { ShellEnvError } from './error.ts'
-import type { ToolExecution } from '@deepseek-ai/dsh-tools'
+import type { ToolExecution } from '@noharness/tools'
 // Declares `Context.profileContext`, the launcher-provided profile the built-ins read.
-import type {} from '@deepseek-ai/dsh-app-boot'
+import type {} from '@noharness/app-boot'
 
 export { ShellEnvError, type ShellEnvErrorCode } from './error.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     shellEnv: ShellEnvRegistry
   }
@@ -32,16 +32,16 @@ export const inject: string[] = []
 
 /** Plugin config (all optional — the built-in facts resolve without defaults). */
 export interface Config {
-  /** DeepSeek Harness home directory exposed as `DSH_HOME`; defaults to `$DSH_HOME` or `~/.dsh`. */
-  dshHome?: string
+  /** NoHarness home directory exposed as `NHS_HOME`; defaults to `$NHS_HOME` or `~/.nhs`. */
+  nhsHome?: string
 }
 
 /** Runtime configuration schema for the shell-env plugin. */
 export const Config: z<Config> = z.object({
-  dshHome: z.string(),
+  nhsHome: z.string(),
 })
 
-/** Model-visible metadata for one managed `DSH_*` environment variable. */
+/** Model-visible metadata for one managed `NHS_*` environment variable. */
 export interface BashEnvVariable {
   /** Concise description of the environment fact represented by the variable. */
   description: string
@@ -55,7 +55,7 @@ export interface BashEnvVariable {
 export interface BashEnvContributor {
   /** Stable contributor name used in diagnostics and duplicate detection. */
   name: string
-  /** Complete set of `DSH_*` keys this contributor may return. */
+  /** Complete set of `NHS_*` keys this contributor may return. */
   variables: Readonly<Record<DshEnvironmentKey, BashEnvVariable>>
   /**
    * Resolve this contributor's available values for one tool execution.
@@ -69,30 +69,30 @@ export interface BashEnvContributor {
 export interface BashEnvVariableInfo extends BashEnvVariable {
   /** Contributor that owns the variable. */
   contributor: string
-  /** Declared `DSH_*` environment variable name. */
+  /** Declared `NHS_*` environment variable name. */
   key: DshEnvironmentKey
 }
 
-const DSH_SHELL_KEY = `${DSH_ENV_PREFIX}SHELL` as const
-const DSH_SESSION_ID_KEY = `${DSH_ENV_PREFIX}SESSION_ID` as const
-const DSH_PROFILE_KEY = `${DSH_ENV_PREFIX}PROFILE` as const
-const DSH_PROFILE_DIR_KEY = `${DSH_ENV_PREFIX}PROFILE_DIR` as const
-const DSH_INSTALL_DIR_KEY = `${DSH_ENV_PREFIX}INSTALL_DIR` as const
-const DSH_NODE_EXECUTABLE_KEY = `${DSH_ENV_PREFIX}NODE_EXECUTABLE` as const
+const NHS_SHELL_KEY = `${NHS_ENV_PREFIX}SHELL` as const
+const NHS_SESSION_ID_KEY = `${NHS_ENV_PREFIX}SESSION_ID` as const
+const NHS_PROFILE_KEY = `${NHS_ENV_PREFIX}PROFILE` as const
+const NHS_PROFILE_DIR_KEY = `${NHS_ENV_PREFIX}PROFILE_DIR` as const
+const NHS_INSTALL_DIR_KEY = `${NHS_ENV_PREFIX}INSTALL_DIR` as const
+const NHS_NODE_EXECUTABLE_KEY = `${NHS_ENV_PREFIX}NODE_EXECUTABLE` as const
 const RESERVED_BASH_ENV_KEYS = new Set<DshEnvironmentKey>([
-  DSH_HOME_ENV,
-  DSH_SHELL_KEY,
-  DSH_SESSION_ID_KEY,
-  DSH_PROFILE_KEY,
-  DSH_PROFILE_DIR_KEY,
-  DSH_INSTALL_DIR_KEY,
-  DSH_NODE_EXECUTABLE_KEY,
+  NHS_HOME_ENV,
+  NHS_SHELL_KEY,
+  NHS_SESSION_ID_KEY,
+  NHS_PROFILE_KEY,
+  NHS_PROFILE_DIR_KEY,
+  NHS_INSTALL_DIR_KEY,
+  NHS_NODE_EXECUTABLE_KEY,
 ])
 const BASH_ENV_KEY_SUFFIX = /^[A-Z][A-Z0-9_]*$/
 
 /**
- * Registry (`ctx.shellEnv`) for trusted, per-execution `DSH_*` variables.
- * The namespace is rebuilt for every model shell call: ambient `DSH_*` values
+ * Registry (`ctx.shellEnv`) for trusted, per-execution `NHS_*` variables.
+ * The namespace is rebuilt for every model shell call: ambient `NHS_*` values
  * are discarded by the executor, then the registry's current snapshot is
  * injected. Built-in shell facts remain owned by the registry itself while
  * plugins can register additional, enumerable facts with effect-scoped
@@ -101,7 +101,7 @@ const BASH_ENV_KEY_SUFFIX = /^[A-Z][A-Z0-9_]*$/
 export class ShellEnvRegistry extends Service {
   private readonly contributors = new Map<string, BashEnvContributor>()
   private readonly keyOwners = new Map<DshEnvironmentKey, string>()
-  private readonly dshHome: string
+  private readonly nhsHome: string
 
   /**
    * Create and install the `ctx.shellEnv` service.
@@ -110,7 +110,7 @@ export class ShellEnvRegistry extends Service {
    */
   constructor(ctx: Context, config: Config = {}) {
     super(ctx, 'shellEnv')
-    this.dshHome = resolveDshHome(config.dshHome)
+    this.nhsHome = resolveDshHome(config.nhsHome)
   }
 
   /**
@@ -130,8 +130,8 @@ export class ShellEnvRegistry extends Service {
 
       const variables = Object.entries(contributor.variables) as [DshEnvironmentKey, BashEnvVariable][]
       for (const [key, variable] of variables) {
-        if (!key.startsWith(DSH_ENV_PREFIX)
-          || !BASH_ENV_KEY_SUFFIX.test(key.slice(DSH_ENV_PREFIX.length))) {
+        if (!key.startsWith(NHS_ENV_PREFIX)
+          || !BASH_ENV_KEY_SUFFIX.test(key.slice(NHS_ENV_PREFIX.length))) {
           throw new Error(`bash env contributor "${contributor.name}" declared invalid key "${key}"`)
         }
         if (RESERVED_BASH_ENV_KEYS.has(key)) {
@@ -157,27 +157,27 @@ export class ShellEnvRegistry extends Service {
   }
 
   /**
-   * Build the trusted `DSH_*` snapshot for one shell tool execution.
+   * Build the trusted `NHS_*` snapshot for one shell tool execution.
    * @param execution - the current tool execution.
    * @returns an immutable environment overlay containing built-ins and current contributions.
    */
   collect(execution: ToolExecution): DshEnvironment {
     const values: Record<DshEnvironmentKey, string> = {
-      [DSH_HOME_ENV]: this.dshHome,
-      [DSH_SHELL_KEY]: '1',
+      [NHS_HOME_ENV]: this.nhsHome,
+      [NHS_SHELL_KEY]: '1',
     }
     // A single-executable application runs its embedded entry instead of a script argument. The
     // browser worker image answers no `node:sea`, so the module is looked up at run time.
     const sea = process.getBuiltinModule('node:sea') as typeof import('node:sea') | undefined
-    if (sea === undefined || !sea.isSea()) values[DSH_NODE_EXECUTABLE_KEY] = process.execPath
+    if (sea === undefined || !sea.isSea()) values[NHS_NODE_EXECUTABLE_KEY] = process.execPath
     if (execution.agent !== undefined) {
-      values[DSH_SESSION_ID_KEY] = execution.agent.session.header.id
+      values[NHS_SESSION_ID_KEY] = execution.agent.session.header.id
     }
     const profile = this.ctx.get('profileContext')
     if (profile !== undefined) {
-      values[DSH_PROFILE_KEY] = profile.name
-      values[DSH_PROFILE_DIR_KEY] = profile.dir
-      values[DSH_INSTALL_DIR_KEY] = dirname(profile.installAnchor)
+      values[NHS_PROFILE_KEY] = profile.name
+      values[NHS_PROFILE_DIR_KEY] = profile.dir
+      values[NHS_INSTALL_DIR_KEY] = dirname(profile.installAnchor)
     }
 
     for (const contributor of [...this.contributors.values()].sort((left, right) => left.name.localeCompare(right.name))) {

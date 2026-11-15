@@ -1,30 +1,30 @@
 /** Real Loader composition preserves retrievable source text outside the bounded preview. */
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
 
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import { agentEvents, type Agent } from '@deepseek-ai/dsh-agent'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { createUserMessage, type ToolCallId } from '@deepseek-ai/dsh-llm'
-import * as systemPromptPlugin from '@deepseek-ai/dsh-system-prompt'
-import * as toolsPlugin from '@deepseek-ai/dsh-tools'
-import * as fsPlugin from '@deepseek-ai/dsh-fs-local'
-import * as toolFsPlugin from '@deepseek-ai/dsh-tool-fs'
-import * as sessionPlugin from '@deepseek-ai/dsh-session'
-import * as sessionProjectionPlugin from '@deepseek-ai/dsh-session-projection'
-import * as workingDirectoryPlugin from '@deepseek-ai/dsh-working-directory'
-import { Session, type SessionId } from '@deepseek-ai/dsh-session'
-import * as queryPlugin from '@deepseek-ai/dsh-session-query-sqlite'
-import * as referencePlugin from '@deepseek-ai/dsh-session-reference'
-import * as spillPlugin from '@deepseek-ai/dsh-spill-local'
-import { sessionDir } from '@deepseek-ai/dsh-spill-local'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import Include from '@noharness/cordis-plugin-include'
+import { agentEvents, type Agent } from '@noharness/agent'
+import { brandString } from '@noharness/brand'
+import { createUserMessage, type ToolCallId } from '@noharness/llm'
+import * as systemPromptPlugin from '@noharness/system-prompt'
+import * as toolsPlugin from '@noharness/tools'
+import * as fsPlugin from '@noharness/fs-local'
+import * as toolFsPlugin from '@noharness/tool-fs'
+import * as sessionPlugin from '@noharness/session'
+import * as sessionProjectionPlugin from '@noharness/session-projection'
+import * as workingDirectoryPlugin from '@noharness/working-directory'
+import { Session, type SessionId } from '@noharness/session'
+import * as queryPlugin from '@noharness/session-query-sqlite'
+import * as referencePlugin from '@noharness/session-reference'
+import * as spillPlugin from '@noharness/spill-local'
+import { sessionDir } from '@noharness/spill-local'
 import * as sourcePlugin from './fixtures/source-session.ts'
 
 let context: Context | undefined
@@ -49,17 +49,17 @@ describe('session-reference real Loader composition', () => {
     await ctx.plugin(Loader)
     ctx.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@deepseek-ai/dsh-session', sessionPlugin],
-      ['@deepseek-ai/dsh-session-projection', sessionProjectionPlugin],
-      ['@deepseek-ai/dsh-working-directory', workingDirectoryPlugin],
-      ['@deepseek-ai/dsh-system-prompt', systemPromptPlugin],
-      ['@deepseek-ai/dsh-tools', toolsPlugin],
-      ['@deepseek-ai/dsh-tool-executor-native', NativeToolExecutor],
-      ['@deepseek-ai/dsh-fs-local', fsPlugin],
-      ['@deepseek-ai/dsh-tool-fs', toolFsPlugin],
-      ['@deepseek-ai/dsh-session-query-sqlite', queryPlugin],
-      ['@deepseek-ai/dsh-session-reference', referencePlugin],
-      ['@deepseek-ai/dsh-spill-local', spillPlugin],
+      ['@noharness/session', sessionPlugin],
+      ['@noharness/session-projection', sessionProjectionPlugin],
+      ['@noharness/working-directory', workingDirectoryPlugin],
+      ['@noharness/system-prompt', systemPromptPlugin],
+      ['@noharness/tools', toolsPlugin],
+      ['@noharness/tool-executor-native', NativeToolExecutor],
+      ['@noharness/fs-local', fsPlugin],
+      ['@noharness/tool-fs', toolFsPlugin],
+      ['@noharness/session-query-sqlite', queryPlugin],
+      ['@noharness/session-reference', referencePlugin],
+      ['@noharness/spill-local', spillPlugin],
       ['./source-session.ts', sourcePlugin],
     ])
     ctx.loader.internal = {

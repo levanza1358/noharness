@@ -1,18 +1,18 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { Session } from '@deepseek-ai/dsh-session'
-import WebRuntime from '@deepseek-ai/dsh-web'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
+import { Context } from '@noharness/cordis'
+import AgentRegistry from '@noharness/agent'
+import type { Agent } from '@noharness/agent'
+import type { Session } from '@noharness/session'
+import WebRuntime from '@noharness/web'
+import SessionProjectionRegistry from '@noharness/session-projection'
 import {
   DeepSeekSearchApiProvider,
   DEEPSEEK_WEB_API_BASE_URL,
   mapSearchResponse,
   type DeepSeekSearchApiOptions,
-} from '@deepseek-ai/dsh-web-deepseek-api'
-import * as webApiPlugin from '@deepseek-ai/dsh-web-deepseek-api'
-import { DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot } from '@deepseek-ai/dsh-launch-environment'
+} from '@noharness/web-deepseek-api'
+import * as webApiPlugin from '@noharness/web-deepseek-api'
+import { NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot } from '@noharness/launch-environment'
 import { customGuidance } from './guidance.ts'
 
 /** Construct the provider over a fixed options value; production passes a live thunk. */
@@ -217,7 +217,7 @@ describe('Search API triggering question', () => {
       await ctx.plugin(SessionProjectionRegistry)
       await ctx.plugin(AgentRegistry)
       await ctx.plugin(WebRuntime, { searchProvider: 'deepseek-search-api' })
-      ctx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'ds-key' } }]))
+      ctx.provide(NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'ds-key' } }]))
       await ctx.plugin(webApiPlugin, config)
       const messages = [
         userMessage('m1', { kind: 'user' }, [{ type: 'text', text: 'Earlier question' }]),
@@ -251,7 +251,7 @@ describe('Search API configuration and failures', () => {
     const ctx = new Context()
     try {
       await ctx.plugin(WebRuntime, { searchProvider: 'deepseek-search-api' })
-      ctx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'ds-key' } }]))
+      ctx.provide(NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'ds-key' } }]))
       await ctx.plugin(webApiPlugin, {})
       await ctx.web.search({ query: 'q' })
       expect(fetchMock.mock.calls[0]?.[0]).toBe(`${DEEPSEEK_WEB_API_BASE_URL}/search`)
@@ -265,7 +265,7 @@ describe('Search API configuration and failures', () => {
     const ctx = new Context()
     try {
       await ctx.plugin(WebRuntime, { searchProvider: 'deepseek-search-api' })
-      ctx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'ds-key' } }]))
+      ctx.provide(NHS_LAUNCH_ENVIRONMENT_KEY, createLaunchEnvironmentSnapshot([{ source: 'process', values: { DEEPSEEK_API_KEY: 'ds-key' } }]))
       await ctx.plugin(webApiPlugin, { searchBaseURL: 'not a url' })
       await expect(ctx.web.search({ query: 'q' })).rejects.toMatchObject({ code: 'WEB_PROVIDER_CONFIGURED_UNAVAILABLE' })
       expect(fetchMock).not.toHaveBeenCalled()

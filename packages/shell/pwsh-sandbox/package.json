@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-pwsh-sandbox",
-  "description": "Sandbox-consuming implementation of the DeepSeek Harness PowerShell executor seam (confines every command via ctx.sandbox, reports denial/enforcement result facts)",
+  "name": "@noharness/pwsh-sandbox",
+  "description": "Sandbox-consuming implementation of the NoHarness PowerShell executor seam (confines every command via ctx.sandbox, reports denial/enforcement result facts)",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/shell/pwsh-sandbox"
   },
   "type": "module",
@@ -32,20 +32,20 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-shell": "workspace:*",
-    "@deepseek-ai/dsh-pwsh-local": "workspace:*",
-    "@deepseek-ai/dsh-sandbox": "workspace:*",
-    "@deepseek-ai/dsh-sandbox-policy": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/shell": "workspace:*",
+    "@noharness/pwsh-local": "workspace:*",
+    "@noharness/sandbox": "workspace:*",
+    "@noharness/sandbox-policy": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-shell": "workspace:*",
-    "@deepseek-ai/dsh-pwsh-local": "workspace:*",
-    "@deepseek-ai/dsh-sandbox": "workspace:*",
-    "@deepseek-ai/dsh-sandbox-local": "workspace:*",
-    "@deepseek-ai/dsh-sandbox-policy": "workspace:*",
-    "@deepseek-ai/dsh-session-projection": "workspace:*",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~"
+    "@noharness/shell": "workspace:*",
+    "@noharness/pwsh-local": "workspace:*",
+    "@noharness/sandbox": "workspace:*",
+    "@noharness/sandbox-local": "workspace:*",
+    "@noharness/sandbox-policy": "workspace:*",
+    "@noharness/session-projection": "workspace:*",
+    "@noharness/subprocess-local": "workspace:*",
+    "@noharness/cordis": "workspace:~"
   }
 }

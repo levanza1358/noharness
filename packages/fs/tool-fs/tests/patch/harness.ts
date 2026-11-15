@@ -2,23 +2,23 @@
 import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import { provideWorkingDirectoryFixture } from '@deepseek-ai/dsh-agent-loop-testkit'
-import type { FsVersion } from '@deepseek-ai/dsh-fs'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { FsObservation } from '@deepseek-ai/dsh-fs'
-import { LocalFileSystem } from '@deepseek-ai/dsh-fs-local'
-import { SandboxedFileSystem } from '@deepseek-ai/dsh-fs-sandbox'
-import * as FsPolicy from '@deepseek-ai/dsh-fs-observation-policy'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import * as PtcToolExecutor from '@deepseek-ai/dsh-tool-executor-ptc'
-import type { ToolExecution, ToolExecutionToken } from '@deepseek-ai/dsh-tools'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import SandboxPolicyService from '@deepseek-ai/dsh-sandbox-policy'
-import type { SandboxMode } from '@deepseek-ai/dsh-sandbox'
+import { Context } from '@noharness/cordis'
+import { provideWorkingDirectoryFixture } from '@noharness/agent-loop-testkit'
+import type { FsVersion } from '@noharness/fs'
+import { brandString } from '@noharness/brand'
+import type { FsObservation } from '@noharness/fs'
+import { LocalFileSystem } from '@noharness/fs-local'
+import { SandboxedFileSystem } from '@noharness/fs-sandbox'
+import * as FsPolicy from '@noharness/fs-observation-policy'
+import type { ToolCallId } from '@noharness/llm'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import * as PtcToolExecutor from '@noharness/tool-executor-ptc'
+import type { ToolExecution, ToolExecutionToken } from '@noharness/tools'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import SandboxPolicyService from '@noharness/sandbox-policy'
+import type { SandboxMode } from '@noharness/sandbox'
 import { onTestFinished, vi } from 'vitest'
 import * as ToolFs from '../../src/index.ts'
 import { executePatch } from '../../src/patch/index.ts'
@@ -33,7 +33,7 @@ export const move = (source: string, destination: string, before = 'old', after 
   `*** Update File: ${source}\n*** Move to: ${destination}\n@@\n-${before}\n+${after}`
 
 export async function setup(options: { policy?: boolean; mode?: SandboxMode; provider?: typeof LocalFileSystem; applyPatch?: boolean; toolMode?: 'native' | 'ptc' } = {}) {
-  const root = await realpath(await mkdtemp(join(tmpdir(), 'dsh-patch-executor-')))
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'nhs-patch-executor-')))
   onTestFinished(() => rm(root, { recursive: true, force: true }))
   const workspace = join(root, 'workspace')
   const providerRoot = join(root, 'provider')

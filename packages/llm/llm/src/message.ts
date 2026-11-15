@@ -1,8 +1,8 @@
 /** Message value types, identity, and immutable construction helpers. */
 
-import { randomUUID } from '@deepseek-ai/dsh-util-crypto'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { deepFreeze } from '@deepseek-ai/dsh-util-values'
+import { randomUUID } from '@noharness/util-crypto'
+import { brandString } from '@noharness/brand'
+import { deepFreeze } from '@noharness/util-values'
 import type { ContentBlock, MessageId, ToolCallId } from './types.ts'
 
 /** Provider/model identity and adapter-private replay data for an assistant message. */

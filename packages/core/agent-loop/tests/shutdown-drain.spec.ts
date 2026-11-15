@@ -1,22 +1,22 @@
 /** Root-fiber shutdown drains buffered session events durably (both mount orders). */
 
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
 import { describe, expect, it, afterEach } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@noharness/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import LlmRuntime from '@deepseek-ai/dsh-llm'
-import SessionStore, { type SessionId } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
+import { createUserMessage } from '@noharness/llm'
+import LlmRuntime from '@noharness/llm'
+import SessionStore, { type SessionId } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime from '@noharness/tools'
+import AgentRegistry, { type Agent } from '@noharness/agent'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import AgentLoop from '@noharness/agent-loop'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const dirs: string[] = []
 afterEach(async () => { for (const d of dirs.splice(0)) await rm(d, { recursive: true, force: true }) })
@@ -30,7 +30,7 @@ function waitForIdle(ctx: Context, agent: Agent): Promise<void> {
 }
 
 async function mount(order: 'backend-first' | 'loop-first'): Promise<{ ctx: Context; root: string }> {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-shutdown-drain-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-shutdown-drain-'))
   dirs.push(root)
   const ctx = new Context()
   await ctx.plugin(LlmRuntime)

@@ -26,9 +26,9 @@ function write(path: string, content: string): void {
 }
 
 function fixture(): string {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-release-pack-'))
+  const root = mkdtempSync(join(tmpdir(), 'nhs-release-pack-'))
   roots.push(root)
-  write(join(root, 'package.json'), JSON.stringify({ name: '@deepseek-ai/pack-root', private: true, version: '1.2.3' }))
+  write(join(root, 'package.json'), JSON.stringify({ name: '@noharness/pack-root', private: true, version: '1.2.3' }))
   write(join(root, 'pnpm-workspace.yaml'), 'packages:\n  - vendor/*\n  - native/*\n  - packages/*/*\n  - apps/*\n')
   return root
 }
@@ -48,7 +48,7 @@ function packageFixture(root: string, directory: string, name: string, additions
     "const fs = require('node:fs');",
     "const path = require('node:path');",
     "const manifest = require('./package.json');",
-    "fs.appendFileSync(path.join(process.env.DSH_PACK_FIXTURE, 'hooks.log'), `${manifest.name}:${process.argv[2]}\\n`);",
+    "fs.appendFileSync(path.join(process.env.NHS_PACK_FIXTURE, 'hooks.log'), `${manifest.name}:${process.argv[2]}\\n`);",
     '',
   ].join('\n'))
 }
@@ -60,7 +60,7 @@ function packGate(root: string, args: string[] = []): Gate {
     displayCommand: 'pnpm exec node release pack fixture',
     command: process.execPath,
     args: [pnpmEntry, '--dir', root, 'exec', process.execPath, '--import', tsxHook, packScript, '--family', 'vendor', '--out', 'packed', ...args],
-    env: { npm_execpath: pnpmEntry, DSH_PACK_FIXTURE: root, DSH_CLIENT_COMMIT_HASH: commit },
+    env: { npm_execpath: pnpmEntry, NHS_PACK_FIXTURE: root, NHS_CLIENT_COMMIT_HASH: commit },
   }
 }
 
@@ -117,11 +117,11 @@ describe('release pack CLI', () => {
   it.each([undefined, '1', '2'])('packs only public family members and records their publish order (concurrency=%s)', async (concurrency) => {
     const root = fixture()
     // Publication places zebra before alpha; pnpm's workspace dev edge points in the opposite direction.
-    packageFixture(root, 'vendor/alpha', '@deepseek-ai/alpha', { peerDependencies: { '@deepseek-ai/zebra': '*' } })
-    packageFixture(root, 'vendor/zebra', '@deepseek-ai/zebra', { devDependencies: { '@deepseek-ai/alpha': 'workspace:*' } })
-    write(join(root, 'vendor/zebra/node_modules/@deepseek-ai/alpha/package.json'), JSON.stringify({ name: '@deepseek-ai/alpha', version: '1.2.3' }))
-    packageFixture(root, 'vendor/private', '@deepseek-ai/private', { private: true })
-    packageFixture(root, 'native/unselected', '@deepseek-ai/unselected')
+    packageFixture(root, 'vendor/alpha', '@noharness/alpha', { peerDependencies: { '@noharness/zebra': '*' } })
+    packageFixture(root, 'vendor/zebra', '@noharness/zebra', { devDependencies: { '@noharness/alpha': 'workspace:*' } })
+    write(join(root, 'vendor/zebra/node_modules/@noharness/alpha/package.json'), JSON.stringify({ name: '@noharness/alpha', version: '1.2.3' }))
+    packageFixture(root, 'vendor/private', '@noharness/private', { private: true })
+    packageFixture(root, 'native/unselected', '@noharness/unselected')
     const family = releaseFamily('vendor')
     const members = family.publishOrder(family.members(root)).order
     const expectedOrder = members.map(tarballName)
@@ -143,16 +143,16 @@ describe('release pack CLI', () => {
 
   it('overlaps two independent packs and keeps later packages within the concurrency limit', async () => {
     const root = fixture()
-    const names = ['alpha', 'bravo', 'charlie'].map(name => `@deepseek-ai/${name}`)
+    const names = ['alpha', 'bravo', 'charlie'].map(name => `@noharness/${name}`)
     for (const name of names) {
-      const directory = `vendor/${name.slice('@deepseek-ai/'.length)}`
+      const directory = `vendor/${name.slice('@noharness/'.length)}`
       packageFixture(root, directory, name, {
         scripts: { prepack: 'node hook.cjs start', postpack: 'node hook.cjs finish' },
       })
       write(join(root, directory, 'hook.cjs'), [
         "const { get } = require('node:http');",
         "const { name } = require('./package.json');",
-        'const url = `${process.env.DSH_PACK_COORDINATOR}/${process.argv[2]}?name=${encodeURIComponent(name)}&pid=${process.pid}`;',
+        'const url = `${process.env.NHS_PACK_COORDINATOR}/${process.argv[2]}?name=${encodeURIComponent(name)}&pid=${process.pid}`;',
         'const request = get(url, { agent: false }, response => {',
         '  response.resume();',
         "  response.on('end', () => { if (response.statusCode !== 200) process.exitCode = 1; });",
@@ -212,7 +212,7 @@ describe('release pack CLI', () => {
       const address = server.address()
       if (address === null || typeof address === 'string') throw new Error('pack coordinator has no TCP address')
       const gate = packGate(root, ['--concurrency', '2'])
-      gate.env = { ...gate.env, DSH_PACK_COORDINATOR: `http://127.0.0.1:${address.port}` }
+      gate.env = { ...gate.env, NHS_PACK_COORDINATOR: `http://127.0.0.1:${address.port}` }
       pending = runGate(gate, controller.signal)
 
       await vi.waitFor(() => { expect(started).toHaveLength(2) }, { timeout: 30_000, interval: 25 })
@@ -262,8 +262,8 @@ describe('release pack CLI', () => {
 
   it('does not broaden an empty parallel family to the whole workspace', async () => {
     const root = fixture()
-    packageFixture(root, 'vendor/private', '@deepseek-ai/private', { private: true })
-    packageFixture(root, 'native/unselected', '@deepseek-ai/unselected')
+    packageFixture(root, 'vendor/private', '@noharness/private', { private: true })
+    packageFixture(root, 'native/unselected', '@noharness/unselected')
 
     const result = await runPack(root, ['--concurrency', '8'])
 
@@ -275,7 +275,7 @@ describe('release pack CLI', () => {
 
   it('leaves no publish order after a pack hook fails', async () => {
     const root = fixture()
-    packageFixture(root, 'vendor/failing', '@deepseek-ai/failing', { scripts: { prepack: 'node failing.cjs' } })
+    packageFixture(root, 'vendor/failing', '@noharness/failing', { scripts: { prepack: 'node failing.cjs' } })
     write(join(root, 'vendor/failing/failing.cjs'), "throw new Error('pack fixture failure')\n")
 
     const result = await runPack(root, ['--concurrency', '8'])
@@ -287,11 +287,11 @@ describe('release pack CLI', () => {
 
   it('rejects a successful command that did not produce the expected member tarball', async () => {
     const root = fixture()
-    packageFixture(root, 'vendor/expected', '@deepseek-ai/expected', { scripts: { prepack: 'node rename.cjs' } })
+    packageFixture(root, 'vendor/expected', '@noharness/expected', { scripts: { prepack: 'node rename.cjs' } })
     write(join(root, 'vendor/expected/rename.cjs'), [
       "const fs = require('node:fs');",
       "const manifest = require('./package.json');",
-      "manifest.name = '@deepseek-ai/renamed';",
+      "manifest.name = '@noharness/renamed';",
       "fs.writeFileSync('package.json', JSON.stringify(manifest));",
       '',
     ].join('\n'))
@@ -299,45 +299,45 @@ describe('release pack CLI', () => {
     const result = await runPack(root, ['--concurrency', '8'])
 
     expect(result.status).not.toBe(0)
-    expect(result.stderr).toContain('@deepseek-ai/expected produced no tarball')
-    expect(existsSync(join(root, 'packed', 'deepseek-ai-renamed-1.2.3.tgz'))).toBe(true)
+    expect(result.stderr).toContain('@noharness/expected produced no tarball')
+    expect(existsSync(join(root, 'packed', 'noharness-renamed-1.2.3.tgz'))).toBe(true)
     expect(existsSync(join(root, 'packed', PUBLISH_ORDER_FILE))).toBe(false)
   })
 
   it('validates every parallel tarball before recording the publish order', async () => {
     const root = fixture()
-    packageFixture(root, 'packages/util/alpha', '@deepseek-ai/alpha')
-    packageFixture(root, 'apps/cli', '@deepseek-ai/dsh', { files: ['lib/index.js', 'src/bin.ts'] })
-    packageFixture(root, 'packages/subagent/subagent-claude-code', '@deepseek-ai/dsh-subagent-claude-code')
-    packageFixture(root, 'packages/subagent/subagent-codex', '@deepseek-ai/dsh-subagent-codex')
+    packageFixture(root, 'packages/util/alpha', '@noharness/alpha')
+    packageFixture(root, 'apps/cli', '@noharness/cli', { files: ['lib/index.js', 'src/bin.ts'] })
+    packageFixture(root, 'packages/subagent/subagent-claude-code', '@noharness/subagent-claude-code')
+    packageFixture(root, 'packages/subagent/subagent-codex', '@noharness/subagent-codex')
     write(join(root, 'apps/cli/src/bin.ts'), 'export const bin = 1\n')
     write(join(root, 'apps/web/dist/index.html'), '<main></main>')
-    writeClientBuildRecord(root, officialClientBuildEnvironment(root, { DSH_CLIENT_COMMIT_HASH: commit }))
+    writeClientBuildRecord(root, officialClientBuildEnvironment(root, { NHS_CLIENT_COMMIT_HASH: commit }))
 
-    const result = await runPack(root, ['--family', 'dsh', '--concurrency', '8'])
+    const result = await runPack(root, ['--family', 'nhs', '--concurrency', '8'])
 
     expect(result.status).not.toBe(0)
-    expect(result.stderr).toContain('@deepseek-ai/dsh packed no documentation')
+    expect(result.stderr).toContain('@noharness/cli packed no documentation')
     expect(readdirSync(join(root, 'packed')).filter(name => name.endsWith('.tgz'))).toHaveLength(4)
     expect(existsSync(join(root, 'packed', PUBLISH_ORDER_FILE))).toBe(false)
   })
 
   it.each(['dependencies', 'optionalDependencies', 'peerDependencies'])(
-    'rejects nonexact DSH %s in the produced tarball before recording publication', async (section) => {
+    'rejects nonexact NHS %s in the produced tarball before recording publication', async (section) => {
       const root = fixture()
-      packageFixture(root, 'packages/util/probe', '@deepseek-ai/dsh-probe', { [section]: { '@deepseek-ai/dsh-library': '^1.2.3' } })
+      packageFixture(root, 'packages/util/probe', '@noharness/probe', { [section]: { '@noharness/library': '^1.2.3' } })
       write(join(root, 'apps/web/dist/index.html'), '<main></main>')
-      writeClientBuildRecord(root, officialClientBuildEnvironment(root, { DSH_CLIENT_COMMIT_HASH: commit }))
-      const result = await runPack(root, ['--family', 'dsh'])
+      writeClientBuildRecord(root, officialClientBuildEnvironment(root, { NHS_CLIENT_COMMIT_HASH: commit }))
+      const result = await runPack(root, ['--family', 'nhs'])
       expect(result.status).not.toBe(0)
-      expect(result.stderr).toContain(`packed ${section}.@deepseek-ai/dsh-library must equal 1.2.3`)
+      expect(result.stderr).toContain(`packed ${section}.@noharness/library must equal 1.2.3`)
       expect(existsSync(join(root, 'packed', PUBLISH_ORDER_FILE))).toBe(false)
     },
   )
 
   it('stops the ready pack hook and its stalled descendant before fixture cleanup', async () => {
     const root = fixture()
-    packageFixture(root, 'vendor/stalled', '@deepseek-ai/stalled', { scripts: { prepack: 'node stalled.cjs' } })
+    packageFixture(root, 'vendor/stalled', '@noharness/stalled', { scripts: { prepack: 'node stalled.cjs' } })
     write(join(root, 'vendor/stalled/stalled.cjs'), [
       "const { spawn } = require('node:child_process');",
       "spawn(process.execPath, ['descendant.cjs'], { stdio: 'inherit' });",
@@ -348,7 +348,7 @@ describe('release pack CLI', () => {
       "const path = require('node:path');",
       "process.on('SIGTERM', () => {});",
       'setInterval(() => {}, 1000);',
-      "fs.writeFileSync(path.join(process.env.DSH_PACK_FIXTURE, 'hook-ready.json'), JSON.stringify({ hook: process.ppid, child: process.pid }));",
+      "fs.writeFileSync(path.join(process.env.NHS_PACK_FIXTURE, 'hook-ready.json'), JSON.stringify({ hook: process.ppid, child: process.pid }));",
       '',
     ].join('\n'))
     const controller = new AbortController()

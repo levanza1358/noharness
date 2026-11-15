@@ -40,7 +40,7 @@ const discussion = z
   .strict()
 const schema = z
   .object({
-    format: z.literal('dsh-timeline-tree'),
+    format: z.literal('nhs-timeline-tree'),
     version: z.literal(1),
     title: z.string().trim().min(1).max(120),
     description: z.string().max(320).optional(),
@@ -122,13 +122,13 @@ export class Checkpoint {
     const end = done ? Math.max(tree.createdAt, ...tree.tasks.map(task => task.updatedAt)) : now
     return new Checkpoint(
       {
-        format: 'dsh-timeline-tree',
+        format: 'nhs-timeline-tree',
         version: 1,
         title: tree.title,
         ...(tree.description ? { description: tree.description } : {}),
         elapsedMs: Math.max(0, end - tree.createdAt),
         metadata: {
-          plugin: '@deepseek-ai/dsh-timeline',
+          plugin: '@noharness/timeline',
           ...(pluginVersion === undefined ? {} : { pluginVersion }),
           exportedAt: new Date(now).toISOString(),
           sourceSessionId: sessionId,
@@ -161,7 +161,7 @@ export class Checkpoint {
   toJson(): CheckpointData {
     const parents = new Set(this.tasks.filter(task => task.status !== 'retired').map(task => task.parent))
     return {
-      format: 'dsh-timeline-tree',
+      format: 'nhs-timeline-tree',
       version: 1,
       title: this.data.title,
       ...(this.data.description ? { description: this.data.description } : {}),

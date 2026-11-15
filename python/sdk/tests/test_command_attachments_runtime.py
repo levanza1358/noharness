@@ -9,9 +9,9 @@ from pathlib import Path
 
 import pytest
 
-from deepseek_harness.models import CommandExecution
-from deepseek_harness import RunResult
-from deepseek_harness.errors import JsonRpcError
+from noharness.models import CommandExecution
+from noharness import RunResult
+from noharness.errors import JsonRpcError
 from test_commands_runtime import (
     _Completion, _SESSION_ID, _WAIT_SECONDS, _command_pair, _native_result, _of_type,
     _read_events, _request_texts, _runtime, _wait_activity,

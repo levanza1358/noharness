@@ -3,18 +3,18 @@ import { createPortal } from 'react-dom'
 import {
   type SessionProjectionMap, type SessionSummary,
   type SessionProjectionSnapshot,
-} from '@deepseek-ai/dsh-api-session-controller/client'
-import type { SubagentAddress } from '@deepseek-ai/dsh-subagent/client'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
+} from '@noharness/api-session-controller/client'
+import type { SubagentAddress } from '@noharness/subagent/client'
+import type { SessionId } from '@noharness/session/types'
 import {
   IconChevronRightOutlineRegular, IconRefreshOutlineRegular, IconUsersOutlineRegular,
   IconCheckOutlineRegular, MenuSurface, StateDot, Tooltip,
-} from '@deepseek-ai/dsh-client-ui-primitives'
-import type { HostObservable, InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime, TranslateNS } from '@deepseek-ai/dsh-client-ui-slots'
+} from '@noharness/client-ui-primitives'
+import type { HostObservable, InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime, TranslateNS } from '@noharness/client-ui-slots'
 import { NS } from './locales.ts'
-import type {} from '@deepseek-ai/dsh-client-ui-conversation/client'
-import type {} from '@deepseek-ai/dsh-token-meter/client'
-import type {} from '@deepseek-ai/dsh-agent-team/client'
+import type {} from '@noharness/client-ui-conversation/client'
+import type {} from '@noharness/token-meter/client'
+import type {} from '@noharness/agent-team/client'
 import type {} from './slots.ts'
 import css from './SubagentHeaderLineage.module.css'
 
@@ -537,7 +537,7 @@ function CatalogDropdown(props: CatalogDropdownProps) {
   const countRef = useRef<HTMLSpanElement>(null)
   const activityId = useId()
   const menuRef = useRef<HTMLDivElement>(null)
-  const anchorName = `--dsh-subagents-${activityId.replaceAll(':', '')}`
+  const anchorName = `--nhs-subagents-${activityId.replaceAll(':', '')}`
   const hoverOpenTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const hoverCloseTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   // A click-opened (pinned) menu ignores hover-out; only explicit dismissal closes it.

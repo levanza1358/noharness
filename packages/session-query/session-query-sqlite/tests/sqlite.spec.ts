@@ -1,20 +1,20 @@
-import { createAssistantMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
+import { createAssistantMessage, createUserMessage } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@deepseek-ai/cordis'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context, type Fiber } from '@noharness/cordis'
+import { brandString } from '@noharness/brand'
 import { DatabaseSync } from 'node:sqlite'
 import { chmod, mkdtemp, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import SessionStore, { SessionLogOffset, SessionSeq, SESSION_FORMAT_VERSION, type SessionId } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@deepseek-ai/dsh-session'
+import SessionStore, { SessionLogOffset, SessionSeq, SESSION_FORMAT_VERSION, type SessionId } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@noharness/session'
 import SessionPersistence, {
   SessionPersistenceNotFoundError,
   type SessionPersistenceRevision,
   SessionReadOnlyError,
-} from '@deepseek-ai/dsh-session-persistence'
+} from '@noharness/session-persistence'
 import type {
   SessionAccess,
   SessionHandle,
@@ -22,11 +22,11 @@ import type {
   SessionHandleReadResult,
   SessionPersistenceListOptions,
   SessionPersistenceSnapshot,
-} from '@deepseek-ai/dsh-session-persistence'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
+} from '@noharness/session-persistence'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
 import SqliteSessionQueryEngine, {
   SESSION_QUERY_SQLITE_SCHEMA_VERSION,
-} from '@deepseek-ai/dsh-session-query-sqlite'
+} from '@noharness/session-query-sqlite'
 import {
   SESSION_QUERY_DEFAULT_PERSISTED_INSPECT_CONCURRENCY,
   SessionQueryError,
@@ -34,9 +34,9 @@ import {
   type SessionAvailability,
   type SessionQueryErrorCode,
   type SessionSearchRequest,
-} from '@deepseek-ai/dsh-session-query'
+} from '@noharness/session-query'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'test': { kind: 'test' } & ContextFormed
   }
@@ -51,7 +51,7 @@ afterEach(async () => {
 })
 
 async function temporaryPath(name = 'search.db'): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), 'dsh-session-search-'))
+  const directory = await mkdtemp(join(tmpdir(), 'nhs-session-search-'))
   temporaryDirectories.push(directory)
   return join(directory, name)
 }

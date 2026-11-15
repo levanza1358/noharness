@@ -3,22 +3,22 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import CommandRuntime from '@deepseek-ai/dsh-commands'
-import { LlmAdapter } from '@deepseek-ai/dsh-llm'
-import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@deepseek-ai/dsh-llm'
-import PermissionPresetService from '@deepseek-ai/dsh-permission-presets'
-import SandboxPolicyService from '@deepseek-ai/dsh-sandbox-policy'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
-import ShellExecutor from '@deepseek-ai/dsh-shell'
-import { defineTool } from '@deepseek-ai/dsh-tools'
-import { ApprovalService } from '@deepseek-ai/dsh-user-approval'
+import { Context } from '@noharness/cordis'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import CommandRuntime from '@noharness/commands'
+import { LlmAdapter } from '@noharness/llm'
+import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@noharness/llm'
+import PermissionPresetService from '@noharness/permission-presets'
+import SandboxPolicyService from '@noharness/sandbox-policy'
+import type { SessionId } from '@noharness/session'
+import type { SessionEvent } from '@noharness/session'
+import ShellExecutor from '@noharness/shell'
+import { defineTool } from '@noharness/tools'
+import { ApprovalService } from '@noharness/user-approval'
 import { expect, it } from 'vitest'
 import { HarnessSdkJsonRpcServer } from '../src/server.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 /** The model never executes tools; only the shell's declared confinement is needed. */
 class UnusedShell extends ShellExecutor {
@@ -165,7 +165,7 @@ async function switchAndContinue(path: 'sdk' | 'native', cwd: string) {
 }
 
 it('preserves native permission events, unchanged defaults, and the next model request through query', async () => {
-  const cwd = await mkdtemp(join(tmpdir(), 'dsh-sdk-permission-parity-'))
+  const cwd = await mkdtemp(join(tmpdir(), 'nhs-sdk-permission-parity-'))
   try {
     const native = await switchAndContinue('native', cwd)
     const sdk = await switchAndContinue('sdk', cwd)
@@ -181,7 +181,7 @@ it('preserves native permission events, unchanged defaults, and the next model r
     expect(texts).toContain('PERMISSION_READY')
     expect(sdk.approvalInputs).toHaveLength(1)
     expect(content).toEqual(expect.arrayContaining(sdk.approvalInputs.flat()))
-    expect(texts.some(text => text.includes('Current DSH file policy: read-only.'))).toBe(true)
+    expect(texts.some(text => text.includes('Current NHS file policy: read-only.'))).toBe(true)
     expect(texts).not.toContain('/permission read-only')
     expect(texts).not.toContain('preset read-only')
   } finally {

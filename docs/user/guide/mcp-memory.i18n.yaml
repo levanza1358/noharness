@@ -3,35 +3,35 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/user/guide/mcp-memory.md
 /connect-a-third-party-memory-mcp-server:
-  en: afc73e9b4fb4108f
-  zh: c8a5a903adf8bcc5
-/connect-a-third-party-memory-mcp-server/what-dsh-does:
-  en: ea9b47af91d7c6d2
-  zh: 7a592ba5461625e3
+  en: cf81037181809e43
+  zh: 8c5e474d021f1308
+/connect-a-third-party-memory-mcp-server/what-nhs-does:
+  en: 8c0a4ac8dbdd0552
+  zh: 6aa4ba9f2977c846
 /connect-a-third-party-memory-mcp-server/choose-one:
   en: 257a536ce62bc959
   zh: 600ed7ccf29085e4
 /connect-a-third-party-memory-mcp-server/enable-one:
-  en: 4655ee4df53b3682
-  zh: 344948464e64dc83
+  en: 7fddb0621009924d
+  zh: 30e757d38baa7f4b
 /connect-a-third-party-memory-mcp-server/provider-setup:
   en: ea88b3912a142edc
   zh: aaccbb2fb9a851a4
 /connect-a-third-party-memory-mcp-server/provider-setup/memorix:
-  en: 59991df2616ac49c
-  zh: f1f99103e19b21a3
+  en: a3b2e95009a40b4c
+  zh: f9e8dfb469d0ede7
 /connect-a-third-party-memory-mcp-server/provider-setup/mcp-reference-memory:
-  en: 74653857786286ea
-  zh: 00df52de24d231a8
+  en: 2d36786fc4c4af30
+  zh: f36d11325aefaf59
 /connect-a-third-party-memory-mcp-server/provider-setup/engram:
-  en: f45eb35678140a98
-  zh: 192c7887fb6462e4
+  en: b924c5b28ea26570
+  zh: 5286b99b10acbfb5
 /connect-a-third-party-memory-mcp-server/optional-shared-model-instruction:
-  en: 9ab6aa5481f8dc72
-  zh: e1e196bf2704c259
+  en: 8782df9e60eec47e
+  zh: 129d6acdfcf9246e
 /connect-a-third-party-memory-mcp-server/verify-write-fresh-session-recall-and-use:
-  en: e869c2a95eff307a
-  zh: bfb26f6719c61c62
+  en: 15302a917756d2bc
+  zh: 9ffb2f006c43ef50
 /connect-a-third-party-memory-mcp-server/bring-another-mcp-server:
   en: a64eb09726e63a83
   zh: 83838d5f27f51d22

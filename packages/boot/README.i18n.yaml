@@ -3,11 +3,11 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/boot/README.md
 /:
-  en: f463eb944808754a
-  zh: f0cf7b9bb1fbff54
+  en: de29c971c7dbdccd
+  zh: 17390973ab920388
 /boot-shared-app-bin-boot-glue:
-  en: 2caa275142cc783b
-  zh: 0bd2855793c7c647
+  en: b8ca157bf8521f55
+  zh: ff53b8bf53b041b6
 /boot-shared-app-bin-boot-glue/summary:
   en: 444512f85b296a2c
   zh: a30cddc443061060
@@ -15,11 +15,11 @@
   en: 09848f4d056e4fc1
   zh: 8df6139cff0288f6
 /boot-shared-app-bin-boot-glue/packages:
-  en: 358a944a024ffeb1
-  zh: f430e25832085068
+  en: bee519fcdcf93411
+  zh: 8751c6f859ccc2a4
 /boot-shared-app-bin-boot-glue/related-documentation:
-  en: 77af4b40ee7b98a3
-  zh: e9b4e817823b973d
+  en: 18bb31d4b3f81293
+  zh: 0263de4b85ab7683
 /boot-shared-app-bin-boot-glue/dev-note:
   en: b75c8458928b72b9
   zh: 003ba4e17b4b5269

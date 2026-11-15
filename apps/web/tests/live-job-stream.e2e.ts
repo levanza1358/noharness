@@ -1,4 +1,4 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
 // Session-header job list driven by a real background bash run: the job row
 // arrives over the job roster stream, expanding it opens the output
 // observation stream, and the panel shows the process's real output while it
@@ -9,11 +9,11 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type { JobId } from '@deepseek-ai/dsh-jobs'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import type { Agent } from '@noharness/agent'
+import type { ToolCallId } from '@noharness/llm'
+import type { SessionId } from '@noharness/session'
+import type { JobId } from '@noharness/jobs'
+import { brandString } from '@noharness/brand'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden,
   launchWebScaffold, seedSession, watchConsole, webSnapshotMode, type WebScaffold,

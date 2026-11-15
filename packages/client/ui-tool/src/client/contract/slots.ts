@@ -1,18 +1,18 @@
 /** Tool UI slot declarations and their composed component props. */
 import type {
   HostObservable, InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime, SessionIdOf,
-} from '@deepseek-ai/dsh-client-ui-slots'
-import type { RemoteHostFacts } from '@deepseek-ai/dsh-api-remotes/client'
+} from '@noharness/client-ui-slots'
+import type { RemoteHostFacts } from '@noharness/api-remotes/client'
 import type {
   OpenFileOptions, PreparingToolCall, StartedToolCall,
   ToolResultNode, UseDisclosure,
-} from '@deepseek-ai/dsh-client-ui-chat/client'
-import type { MessageImageLoader, MessageImageSource } from '@deepseek-ai/dsh-client-ui-conversation/client'
-import type { AskUserQuestionAnswerItem, AskUserQuestionItem } from '@deepseek-ai/dsh-user-questions/types'
-import type {} from '@deepseek-ai/dsh-client-locale/client'
+} from '@noharness/client-ui-chat/client'
+import type { MessageImageLoader, MessageImageSource } from '@noharness/client-ui-conversation/client'
+import type { AskUserQuestionAnswerItem, AskUserQuestionItem } from '@noharness/user-questions/types'
+import type {} from '@noharness/client-locale/client'
 import type { ToolFileInjected } from '../tool/file-menu.ts'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@noharness/client-ui-slots' {
   interface SlotMap {
     /**
      * Key by wire name, including custom tools. Use `key: '<tool name>'`; a typo never renders.
@@ -126,7 +126,7 @@ export interface UserQuestionPanels {
   review(sessionId: SessionIdOf, callId: string, record: UserQuestionRecord): boolean
 }
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     /** Optional user-question answer-panel provider. */
     userQuestionPanels: UserQuestionPanels

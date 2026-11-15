@@ -1,16 +1,16 @@
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
-import { Service } from '@deepseek-ai/cordis'
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-client-connection'
-import type {} from '@deepseek-ai/dsh-session-persistence'
-import { appendPluginRecord } from '@deepseek-ai/dsh-session'
-import type { PluginRecordMap, Session } from '@deepseek-ai/dsh-session'
+import { Service } from '@noharness/cordis'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/client-connection'
+import type {} from '@noharness/session-persistence'
+import { appendPluginRecord } from '@noharness/session'
+import type { PluginRecordMap, Session } from '@noharness/session'
 import type { Config } from './config.ts'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type {} from '@deepseek-ai/dsh-api-session-controller'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { UserMessage } from '@deepseek-ai/dsh-llm'
+import type { Agent } from '@noharness/agent'
+import type {} from '@noharness/api-session-controller'
+import { createUserMessage } from '@noharness/llm'
+import type { UserMessage } from '@noharness/llm'
 import { Checkpoint, CHECKPOINT_BYTES } from './checkpoint.ts'
 import { foldRecord } from './projection.ts'
 import type { TimelineReader, TimelineState } from './projection.ts'
@@ -43,7 +43,7 @@ function changesUrgentPriority(
   return (prioritiesOf(before.tasks).get(change.taskId) === 'P0') !== (prioritiesOf(after.tasks).get(change.taskId) === 'P0')
 }
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     timeline: TimelineStorage
   }

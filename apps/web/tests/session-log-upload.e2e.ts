@@ -4,18 +4,18 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { chromium } from 'playwright'
 import { expect, it, onTestFinished } from 'vitest'
-import { parseEntryYaml } from '@deepseek-ai/cordis-plugin-include'
-import { credentialRef } from '@deepseek-ai/dsh-credentials'
-import { startMockLlmServer } from '@deepseek-ai/dsh-llm-mock-server'
+import { parseEntryYaml } from '@noharness/cordis-plugin-include'
+import { credentialRef } from '@noharness/credentials'
+import { startMockLlmServer } from '@noharness/llm-mock-server'
 import { launchWebScaffold, webSnapshotMode } from './scaffold.ts'
 import { connectFreshWorkspace, newEnglishPage, openSettings } from './support.ts'
 
 it.skipIf(webSnapshotMode() === 'record')('persists the upload switch and omits or resumes session logs on subsequent API requests', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-upload-browser-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-upload-browser-'))
   onTestFinished(() => rm(root, { recursive: true, force: true }))
   const server = await startMockLlmServer({ sequence: ['success', 'success', 'success'], successText: 'UPLOAD_SETTING_DONE' })
   onTestFinished(() => server.close())
-  const key = credentialRef('DSH_UPLOAD_BROWSER_KEY')
+  const key = credentialRef('NHS_UPLOAD_BROWSER_KEY')
   const overlay = join(root, 'upload.yml')
   await writeFile(overlay, JSON.stringify([
     { id: 'llm-deepseek', config: { baseURL: server.baseURL, apiKeyEnv: key } },
@@ -52,8 +52,8 @@ it.skipIf(webSnapshotMode() === 'record')('persists the upload switch and omits 
 
   const sessionId = await send('upload-enabled-marker')
   expect(server.requests).toHaveLength(1)
-  expect(server.requests[0]!.body).toHaveProperty('dsh_session_log')
-  const first = server.requests[0]!.body as { dsh_session_log: { throughSeq: number } }
+  expect(server.requests[0]!.body).toHaveProperty('nhs_session_log')
+  const first = server.requests[0]!.body as { nhs_session_log: { throughSeq: number } }
   await setUpload(false)
   await page.reload()
   await openSettings(page, 'en')
@@ -61,12 +61,12 @@ it.skipIf(webSnapshotMode() === 'record')('persists the upload switch and omits 
   await page.keyboard.press('Escape')
   expect(await send('upload-disabled-marker')).toBe(sessionId)
   expect(server.requests).toHaveLength(2)
-  expect(server.requests[1]!.body).not.toHaveProperty('dsh_session_log')
+  expect(server.requests[1]!.body).not.toHaveProperty('nhs_session_log')
   await setUpload(true)
   expect(await send('upload-resumed-marker')).toBe(sessionId)
   expect(server.requests).toHaveLength(3)
-  const resumed = server.requests[2]!.body as { dsh_session_log: { events: unknown[] } }
-  expect(resumed).toHaveProperty('dsh_session_log.afterSeq', first.dsh_session_log.throughSeq)
-  expect(JSON.stringify(resumed.dsh_session_log.events)).toContain('"upload-disabled-marker"')
+  const resumed = server.requests[2]!.body as { nhs_session_log: { events: unknown[] } }
+  expect(resumed).toHaveProperty('nhs_session_log.afterSeq', first.nhs_session_log.throughSeq)
+  expect(JSON.stringify(resumed.nhs_session_log.events)).toContain('"upload-disabled-marker"')
   expect(server.requests.map(request => request.outcome)).toEqual(['completed', 'completed', 'completed'])
 })

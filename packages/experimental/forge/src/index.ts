@@ -1,8 +1,8 @@
 /** Registry of code-host providers with provider-neutral change requests and shared status polling. */
 
-import { Context, Service } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import { deadline, MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
+import { Context, Service } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import { deadline, MAX_TIMER_DELAY_MS } from '@noharness/timeout'
 import { changeRequestKey } from './keys.ts'
 import { nextPollDelay } from './schedule.ts'
 import type {
@@ -16,7 +16,7 @@ import type {
 export { changeRequestKey } from './keys.ts'
 export type * from './types.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     forge: ForgeService
   }

@@ -1,10 +1,10 @@
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-agent'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { CompactionId } from '@deepseek-ai/dsh-compaction/types'
-import { compactCheckpointSource } from '@deepseek-ai/dsh-compaction'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type {} from '@deepseek-ai/dsh-tools'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/agent'
+import { brandString } from '@noharness/brand'
+import type { CompactionId } from '@noharness/compaction/types'
+import { compactCheckpointSource } from '@noharness/compaction'
+import { createUserMessage } from '@noharness/llm'
+import type {} from '@noharness/tools'
 
 export const name = 'workspace-context-compaction'
 

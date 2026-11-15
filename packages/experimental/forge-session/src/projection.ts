@@ -1,12 +1,12 @@
 /** Projection that folds shell results, program shell dispatches, and binding records into one Session's change request bindings. */
 
 import { z } from 'zod'
-import type { ContentBlock } from '@deepseek-ai/dsh-llm'
-import { pluginRecordOf, SessionSeq } from '@deepseek-ai/dsh-session'
-import type { SessionEvent, SessionEventMap } from '@deepseek-ai/dsh-session'
-import type { ProjectionDefinition } from '@deepseek-ai/dsh-session-projection'
-import type {} from '@deepseek-ai/dsh-tool-executor-ptc/types'
-import { assertNever } from '@deepseek-ai/dsh-util-values'
+import type { ContentBlock } from '@noharness/llm'
+import { pluginRecordOf, SessionSeq } from '@noharness/session'
+import type { SessionEvent, SessionEventMap } from '@noharness/session'
+import type { ProjectionDefinition } from '@noharness/session-projection'
+import type {} from '@noharness/tool-executor-ptc/types'
+import { assertNever } from '@noharness/util-values'
 import { changeRequestUrls, commandEvidence, commandIn, commandOf, ownChangeRequestUrls, pushedBranches, sameChangeRequestUrl } from './commands.ts'
 import type { PushedRef } from './commands.ts'
 import type { BindingOrigin, BindingRecord, BindingState, CommandEvidence, ForgeChangeRequestsState, PushedBranch } from './types.ts'

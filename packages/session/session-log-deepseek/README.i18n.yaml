@@ -5,45 +5,45 @@
 /:
   en: 29b2294131f1a592
   zh: 6d7f4fa9e1f46943
-/deepseek-ai-dsh-session-log-deepseek:
-  en: 6d991785cbfd70ae
-  zh: 0918e2462821cde4
-/deepseek-ai-dsh-session-log-deepseek/summary:
-  en: 19c182dbd7d8e064
-  zh: 51c043d6ea52db0d
-/deepseek-ai-dsh-session-log-deepseek/table-of-contents:
+/noharness-session-log-deepseek:
+  en: 4fc7e775b2bcbf64
+  zh: 5d4ab417749540a6
+/noharness-session-log-deepseek/summary:
+  en: 2bcf87c58ef23be2
+  zh: 2068e7514b1cfa7f
+/noharness-session-log-deepseek/table-of-contents:
   en: eb945093933ee19b
   zh: 7a40fe2e98a491c5
-/deepseek-ai-dsh-session-log-deepseek/configuration:
-  en: 1b899e63d8039643
-  zh: d489461bbb618b5d
-/deepseek-ai-dsh-session-log-deepseek/request-field:
-  en: f11095717a9aec6f
-  zh: fb872499eea955be
-/deepseek-ai-dsh-session-log-deepseek/upload-exclusions:
+/noharness-session-log-deepseek/configuration:
+  en: 211a003c3081cdea
+  zh: 61d7b06531b87eb5
+/noharness-session-log-deepseek/request-field:
+  en: 10d7a7d1a9282497
+  zh: 4987f66958e09f7d
+/noharness-session-log-deepseek/upload-exclusions:
   en: 9d303e05a05a8737
   zh: 8b12d1e7a2d04060
-/deepseek-ai-dsh-session-log-deepseek/acceptance-and-retry:
-  en: 6997969916bb1b42
-  zh: 929fd0485278ff8b
-/deepseek-ai-dsh-session-log-deepseek/model-experience:
+/noharness-session-log-deepseek/acceptance-and-retry:
+  en: 6fbc4115f1a83062
+  zh: 275103691a4f4a08
+/noharness-session-log-deepseek/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/deepseek-ai-dsh-session-log-deepseek/model-experience/session-log-metadata:
+/noharness-session-log-deepseek/model-experience/session-log-metadata:
   en: 468b9eaee350f6e2
   zh: c192ad6228e7044d
-/deepseek-ai-dsh-session-log-deepseek/model-experience/session-log-metadata/what-the-model-sees:
-  en: 89fef23a54a0f9d6
-  zh: fd17806f1df6083e
-/deepseek-ai-dsh-session-log-deepseek/model-experience/session-log-metadata/token-effect:
+/noharness-session-log-deepseek/model-experience/session-log-metadata/what-the-model-sees:
+  en: 492a70c634b85bd8
+  zh: 4b234beb9748b423
+/noharness-session-log-deepseek/model-experience/session-log-metadata/token-effect:
   en: 6a1bb7bbc7db7f06
   zh: 94ddaa773b7538f7
-/deepseek-ai-dsh-session-log-deepseek/model-experience/session-log-metadata/kv-cache-effect:
+/noharness-session-log-deepseek/model-experience/session-log-metadata/kv-cache-effect:
   en: dcf00aa1af688f09
   zh: df5851d66c3a6b4f
-/deepseek-ai-dsh-session-log-deepseek/known-limitations-and-deferred-work:
+/noharness-session-log-deepseek/known-limitations-and-deferred-work:
   en: 249ef8dbc237a0c2
   zh: c169d64ce9ab984c
-/deepseek-ai-dsh-session-log-deepseek/known-limitations-and-deferred-work/dev-note:
+/noharness-session-log-deepseek/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: e88aeb617ffb74ea

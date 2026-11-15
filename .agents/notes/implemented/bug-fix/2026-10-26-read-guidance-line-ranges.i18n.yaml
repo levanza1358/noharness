@@ -3,17 +3,17 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-10-26-read-guidance-line-ranges.md
 /agent-note-read-guidance-names-shell-readers-and-line-ranges:
-  en: 1926710614598539
-  zh: b0106d4a6a2d648d
+  en: b8cc4ab4b7c915c3
+  zh: c072d2095e39ee2d
 /agent-note-read-guidance-names-shell-readers-and-line-ranges/problem:
   en: 4189d516419d8d12
   zh: 30d8496064dd44e3
 /agent-note-read-guidance-names-shell-readers-and-line-ranges/decision:
-  en: 34f18307f7ad87af
-  zh: 21c466c6ce6c598d
+  en: 5f7db0af8cb5a697
+  zh: 4541e9c0e7832bd5
 /agent-note-read-guidance-names-shell-readers-and-line-ranges/alternatives-considered:
-  en: aea7ffb1159ab81a
-  zh: 4842ca79dc30654d
+  en: db24be1e1fbdb383
+  zh: 5fd3f141c650c43b
 /agent-note-read-guidance-names-shell-readers-and-line-ranges/verification:
   en: cbc16bfba4abe862
   zh: 9a71e6c020c01f69

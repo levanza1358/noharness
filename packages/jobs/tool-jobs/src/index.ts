@@ -7,24 +7,24 @@
  * unless `maxConsecutiveWakes` caps it per owner. A notice carries the job's
  * output and result when it fits `inlineOutputBytes`, and `job_output`
  * withdraws a notice still pending.
- * @module @deepseek-ai/dsh-tool-jobs
+ * @module @noharness/tool-jobs
  */
 
-import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import { boundContextSummary, createUserMessage, type ContentBlock } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed, MessageId } from '@deepseek-ai/dsh-llm'
-import { TextRetainer } from '@deepseek-ai/dsh-output-retention'
-import { defineTool, ToolArgsError } from '@deepseek-ai/dsh-tools'
-import type { GenericCallView, ToolDefinition, ToolExecution } from '@deepseek-ai/dsh-tools'
-import type { JobId } from '@deepseek-ai/dsh-jobs'
-import type { JobEvent, JobView, JobRead } from '@deepseek-ai/dsh-jobs'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type {} from '@deepseek-ai/dsh-agent'
+import type { Context } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import { boundContextSummary, createUserMessage, type ContentBlock } from '@noharness/llm'
+import type { ContextFormed, MessageId } from '@noharness/llm'
+import { TextRetainer } from '@noharness/output-retention'
+import { defineTool, ToolArgsError } from '@noharness/tools'
+import type { GenericCallView, ToolDefinition, ToolExecution } from '@noharness/tools'
+import type { JobId } from '@noharness/jobs'
+import type { JobEvent, JobView, JobRead } from '@noharness/jobs'
+import type { Agent } from '@noharness/agent'
+import type {} from '@noharness/agent'
 import { publicJob, renderModelDelta, statusLine } from './render.ts'
 import type { PublicJobSnapshot } from './render.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
-declare module '@deepseek-ai/dsh-llm' {
+import { brandString } from '@noharness/brand'
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'tool-jobs': { kind: 'tool-jobs' } & ContextFormed
   }

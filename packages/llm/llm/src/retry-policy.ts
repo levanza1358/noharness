@@ -2,13 +2,13 @@
  * Provider-owned request-retry policy configuration and resolution.
  *
  * Adapters expose one resolved policy per registered provider route; the
- * optional dsh-llm-retry plugin executes it on the agent's failed-step extension point.
+ * optional nhs-llm-retry plugin executes it on the agent's failed-step extension point.
  *
- * @module @deepseek-ai/dsh-llm/retry-policy
+ * @module @noharness/llm/retry-policy
  */
 
-import z from '@deepseek-ai/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
+import z from '@noharness/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@noharness/timeout'
 import { EMPTY_RESPONSE_CODE, RETRY_CODE_CHOICES } from './error.ts'
 import type { BuiltinLlmFailureCode } from './error.ts'
 

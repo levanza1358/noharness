@@ -1,15 +1,15 @@
 /**
- * TypeScript client SDK for the DeepSeek Harness runtime: spawn the
- * same-version `dsh --profile sdk` runtime as a subprocess and drive agent
- * turns over stdio JSON-RPC. `DeepSeekHarness` is the high-level run API;
+ * TypeScript client SDK for the NoHarness runtime: spawn the
+ * same-version `nhs --profile sdk` runtime as a subprocess and drive agent
+ * turns over stdio JSON-RPC. `NoHarness` is the high-level run API;
  * `HarnessClient` is the lower-level protocol client. A pure library — it
  * registers nothing on a Cordis context; named profiles and ordered patch
  * files customize the runtime process it spawns.
  *
- * @module @deepseek-ai/dsh-sdk-client
+ * @module @noharness/sdk-client
  */
 
-export { DeepSeekHarness, HarnessSession, validatedSessionEvent } from './api.ts'
+export { NoHarness, HarnessSession, validatedSessionEvent } from './api.ts'
 export type { RunOptions } from './api.ts'
 export {
   HarnessClient,
@@ -18,7 +18,7 @@ export {
   TransportClosedError,
 } from './client.ts'
 export type { NotificationSubscription } from './client.ts'
-export { JsonRpcResponseError } from '@deepseek-ai/dsh-sdk-protocol'
+export { JsonRpcResponseError } from '@noharness/sdk-protocol'
 export type {
   ContentBlock,
   SdkEncodedImageBlock,
@@ -26,7 +26,7 @@ export type {
   SdkUserQuestionAnswer,
   SdkUserQuestionResult,
   SdkUserQuestionRequest,
-  DeepSeekHarnessOptions,
+  NoHarnessOptions,
   HarnessClientOptions,
   HarnessNotification,
   NotificationFilter,

@@ -5,9 +5,9 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { deepFreeze } from '@deepseek-ai/dsh-util-values'
+import { deepFreeze } from '@noharness/util-values'
 import { callConfigEquals, isAgentLoopRequest, markAgentLoopRequest } from '../src/call-config.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 import type { ReasoningEffortId } from '../src/types.ts'
 import type { GenerateOptions } from '../src/types.ts'
 

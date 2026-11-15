@@ -3,11 +3,11 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-11-09-retained-ptc-scoped-repl.md
 /agent-note-scoped-repl-evaluator-for-retained-ptc:
-  en: ea465612c52ff8a6
-  zh: 1c4021aecb7550c6
+  en: 7a90db3171ca8fc5
+  zh: 44228052ffcfeb33
 /agent-note-scoped-repl-evaluator-for-retained-ptc/problem:
-  en: 9e115eb5c8b8d168
-  zh: d47b2a783e154664
+  en: 00ad3a9df360559d
+  zh: a0bfbeb2471b8d27
 /agent-note-scoped-repl-evaluator-for-retained-ptc/decision:
   en: 02e060e10da7bb75
   zh: d4b01038283943bd
@@ -27,8 +27,8 @@
   en: 5b4209a69447bfac
   zh: 3b1cb6297962b6c1
 /agent-note-scoped-repl-evaluator-for-retained-ptc/decision/exact-behavior/asynchronous-failures-and-lifecycle:
-  en: 70c47aba7a23fc4f
-  zh: 1d7d5f0809e748aa
+  en: d1825b2c006af299
+  zh: d6bdb8bad20f4565
 /agent-note-scoped-repl-evaluator-for-retained-ptc/decision/comparison-with-node-repl-and-vm-script:
   en: 013bfbf3d3944637
   zh: eba400efadf6229b

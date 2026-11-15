@@ -1,5 +1,5 @@
 /**
- * @deepseek-ai/dsh-host-webserver — node:http route registration — node:https
+ * @noharness/host-webserver — node:http route registration — node:https
  * when `tls` names a certificate and key — with optional gzip, index injection
  * for the Peer a page speaks for, and one fallback seat. It serves no files;
  * the composing application owns dist serving. Electron uses file:// plus IPC
@@ -18,9 +18,9 @@ import { createServer as createSecureServer } from 'node:https'
 import { isIP, type AddressInfo } from 'node:net'
 import { resolve } from 'node:path'
 import type { Duplex } from 'node:stream'
-import { Context, Service } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import type { PeerScope } from '@deepseek-ai/dsh-typert-protocol'
+import { Context, Service } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import type { PeerScope } from '@noharness/typert-protocol'
 import compressionMiddleware from 'compression'
 import ipaddr from 'ipaddr.js'
 import Negotiator from 'negotiator'
@@ -31,7 +31,7 @@ export type { IndexInjection, IndexInjectionPlacement } from './injections.ts'
 
 /** One application entry URL contributed for startup printing or browser handoff. */
 export interface WebEntryUrl {
-  /** Output prefix, such as `dsh web`. */
+  /** Output prefix, such as `nhs web`. */
   readonly label: string
   /** Complete entry URL, including any credentials required by its provider. */
   readonly url: string
@@ -39,7 +39,7 @@ export interface WebEntryUrl {
   readonly open: boolean
 }
 
-declare module '@deepseek-ai/cordis' {
+declare module '@noharness/cordis' {
   interface Context {
     webServer: WebServer
   }

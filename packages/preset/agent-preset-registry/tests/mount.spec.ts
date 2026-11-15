@@ -2,11 +2,11 @@ import { existsSync, mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@deepseek-ai/cordis'
-import Group from '@deepseek-ai/cordis-plugin-group'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import { getDshRuntimeVersion, type ProfileContext } from '@deepseek-ai/dsh-app-boot'
-import { createScope } from '@deepseek-ai/dsh-scope'
+import { Context } from '@noharness/cordis'
+import Group from '@noharness/cordis-plugin-group'
+import Loader from '@noharness/cordis-plugin-loader'
+import { getDshRuntimeVersion, type ProfileContext } from '@noharness/app-boot'
+import { createScope } from '@noharness/scope'
 import { expect, it, onTestFinished } from 'vitest'
 import { harness, declare } from './harness.ts'
 import { auditRows, mountPreset, type PresetMount } from '../src/mount.ts'
@@ -104,14 +104,14 @@ it('reports grouped and conditional plugin rows from the activated tree', async 
 it('mounts a profile-denied row disabled and the same row active once exempted', async () => {
   const ctx = await harness()
   onTestFinished(() => ctx.fiber.dispose())
-  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'dsh-preset-compat-')))
+  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'nhs-preset-compat-')))
   onTestFinished(() => { rmSync(dir, { recursive: true, force: true }) })
   const pluginDir = join(dir, 'plugin')
   mkdirSync(pluginDir, { recursive: true })
   const loaded = join(pluginDir, 'loaded.txt')
   writeFileSync(join(pluginDir, 'package.json'), JSON.stringify({
     name: 'incompatible-preset-plugin', version: '1.0.0', type: 'module', main: 'index.mjs',
-    peerDependencies: { '@deepseek-ai/dsh': '<0.0.0' },
+    peerDependencies: { '@noharness/cli': '<0.0.0' },
   }))
   writeFileSync(join(pluginDir, 'index.mjs'), [
     "import { writeFileSync } from 'node:fs'",

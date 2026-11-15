@@ -9,16 +9,16 @@
  * config-row's would be and one resolved choice still swaps both faces;
  * pinning an interaction remains composing that pair directly instead of this
  * row.
- * @module @deepseek-ai/dsh-host-directory-picker-auto
+ * @module @noharness/host-directory-picker-auto
  */
 
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@noharness/cordis'
 // Empty type imports carry the `connection`, `loader`, and `webServer` Context
 // merges for the reads below.
-import type {} from '@deepseek-ai/cordis-plugin-loader'
-import type {} from '@deepseek-ai/dsh-client-connection'
-import type {} from '@deepseek-ai/dsh-host-webserver'
-import { launchedThroughSsh, launchEnvironmentOf } from '@deepseek-ai/dsh-launch-environment'
+import type {} from '@noharness/cordis-plugin-loader'
+import type {} from '@noharness/client-connection'
+import type {} from '@noharness/host-webserver'
+import { launchedThroughSsh, launchEnvironmentOf } from '@noharness/launch-environment'
 import { canExecute, hasLinuxChooserBinary } from './probe.ts'
 import type { DirectoryPickerBackendKind } from './resolve.ts'
 import { resolveDirectoryPickerBackend } from './resolve.ts'
@@ -43,8 +43,8 @@ export const inject = ['webServer', 'connection', 'loader']
  * app composing this chooser to declare both values as dependencies.
  */
 export const BACKEND_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
-  native: '@deepseek-ai/dsh-host-directory-picker-native',
-  browse: '@deepseek-ai/dsh-host-directory-picker-browse',
+  native: '@noharness/host-directory-picker-native',
+  browse: '@noharness/host-directory-picker-browse',
 }
 
 /**
@@ -55,8 +55,8 @@ export const BACKEND_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
  * program, so no import of them exists on this side.
  */
 export const SURFACE_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
-  native: '@deepseek-ai/dsh-client-ui-directory-picker-native',
-  browse: '@deepseek-ai/dsh-client-ui-directory-picker-browse',
+  native: '@noharness/client-ui-directory-picker-native',
+  browse: '@noharness/client-ui-directory-picker-browse',
 }
 
 /**

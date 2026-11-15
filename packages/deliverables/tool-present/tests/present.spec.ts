@@ -1,23 +1,23 @@
 /** Explicit deliveries commit only after a successful final tool result. */
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import { unsupportedModel, provideWorkingDirectoryFixture, unsupportedInbox } from '@deepseek-ai/dsh-agent-loop-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import { unsupportedModel, provideWorkingDirectoryFixture, unsupportedInbox } from '@noharness/agent-loop-testkit'
 import { mkdtemp, rm, writeFile, symlink, realpath } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, relative } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
-import LocalFileSystem from '@deepseek-ai/dsh-fs-local'
-import { createScope, type Scope } from '@deepseek-ai/dsh-scope'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { defineTool } from '@deepseek-ai/dsh-tools'
+import { Context } from '@noharness/cordis'
+import AgentRegistry, { type Agent } from '@noharness/agent'
+import LocalFileSystem from '@noharness/fs-local'
+import { createScope, type Scope } from '@noharness/scope'
+import type { ToolCallId } from '@noharness/llm'
+import { SESSION_FORMAT_VERSION, Session, type SessionId } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import SystemPrompt from '@noharness/system-prompt'
+import ToolRuntime, { defineTool } from '@noharness/tools'
 import type { PresentedFile } from '../src/types.ts'
 import * as Present from '../src/index.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const cleanups: Array<() => Promise<unknown>> = []
 let callNumber = 0
@@ -55,7 +55,7 @@ async function agent(ctx: Context, cwd: string | undefined): Promise<Agent> {
 
 
 async function setup() {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-present-minimal-'))
+  const root = await mkdtemp(join(tmpdir(), 'nhs-present-minimal-'))
   cleanups.push(() => rm(root, { recursive: true, force: true }))
   const ctx = new Context()
   provideWorkingDirectoryFixture(ctx)
@@ -190,7 +190,7 @@ it('requires an agent, an open turn, and a workspace', async () => {
 
 it('declares readable files outside the Session directory using absolute and relative paths', async () => {
   const { root, execute, owner } = await setup()
-  const outside = await mkdtemp(join(tmpdir(), 'dsh-present-external-'))
+  const outside = await mkdtemp(join(tmpdir(), 'nhs-present-external-'))
   cleanups.push(() => rm(outside, { recursive: true, force: true }))
   const file = join(outside, 'report.txt')
   await writeFile(file, 'external report')

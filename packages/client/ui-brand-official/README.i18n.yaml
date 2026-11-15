@@ -5,42 +5,42 @@
 /:
   en: a46a90b8cedd5c45
   zh: 9b4f0d5fd9ffa945
-/deepseek-ai-dsh-client-ui-brand-official:
-  en: 7cee1be833cea807
-  zh: 9953e1b38cb23d34
-/deepseek-ai-dsh-client-ui-brand-official/summary:
-  en: 784b8216e88b0578
-  zh: 70165dea21d9a2ab
-/deepseek-ai-dsh-client-ui-brand-official/table-of-contents:
+/noharness-client-ui-brand-official:
+  en: 11c73e9614e2be5c
+  zh: 6bc621a2dcd5ee53
+/noharness-client-ui-brand-official/summary:
+  en: 23389a2cd03c6111
+  zh: 651038e8b9d2a628
+/noharness-client-ui-brand-official/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
-/deepseek-ai-dsh-client-ui-brand-official/use-this-package:
+/noharness-client-ui-brand-official/use-this-package:
   en: 8144a213ca978516
   zh: 43dfefbd708d87bf
-/deepseek-ai-dsh-client-ui-brand-official/use-this-package/choosing-the-profile:
-  en: 876e7a0e21eaa396
-  zh: 596fcdec565e3eae
-/deepseek-ai-dsh-client-ui-brand-official/use-this-package/home-feedback:
+/noharness-client-ui-brand-official/use-this-package/choosing-the-profile:
+  en: 6b9c950785d77405
+  zh: bc4594b2780acf48
+/noharness-client-ui-brand-official/use-this-package/home-feedback:
   en: f79f52c71a3d1491
   zh: bda67c8b4050316a
-/deepseek-ai-dsh-client-ui-brand-official/use-this-package/replacing-the-brand:
+/noharness-client-ui-brand-official/use-this-package/replacing-the-brand:
   en: 3fd4b315b27cfa23
   zh: 8f76a10d642a5811
-/deepseek-ai-dsh-client-ui-brand-official/understand-the-implementation:
-  en: 4b59ceb74b5c9d1e
-  zh: c22bcc7d7344fe12
-/deepseek-ai-dsh-client-ui-brand-official/further-exploration:
-  en: 268cb9edf0c7d2f0
-  zh: 9b75285a61b44008
-/deepseek-ai-dsh-client-ui-brand-official/model-experience:
+/noharness-client-ui-brand-official/understand-the-implementation:
+  en: e8ff9cbd615c888f
+  zh: 492a30d8220a7bec
+/noharness-client-ui-brand-official/further-exploration:
+  en: e3a746a0bd28f93c
+  zh: 67e9179bf54e0a05
+/noharness-client-ui-brand-official/model-experience:
   en: 618008c7641070e7
   zh: 7233febb4d92ccfb
-/deepseek-ai-dsh-client-ui-brand-official/model-experience/kv-cache-effect:
+/noharness-client-ui-brand-official/model-experience/kv-cache-effect:
   en: ca75c51c89c2c9b0
   zh: f57cc48a1b5cbfa9
-/deepseek-ai-dsh-client-ui-brand-official/known-limitations-and-deferred-work:
-  en: b8f0ff2ff02bc0be
-  zh: 8f52f9dee0225fad
-/deepseek-ai-dsh-client-ui-brand-official/known-limitations-and-deferred-work/dev-note:
+/noharness-client-ui-brand-official/known-limitations-and-deferred-work:
+  en: 37cb71be9ed6bcc2
+  zh: 419d40c4722e32ee
+/noharness-client-ui-brand-official/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

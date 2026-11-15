@@ -1,8 +1,8 @@
 /** Session-owned write-grant changes observed through the real request context. */
 import { join } from 'node:path'
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-agent'
-import type {} from '@deepseek-ai/dsh-sandbox-policy'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/agent'
+import type {} from '@noharness/sandbox-policy'
 
 /** Snapshot fixture plugin name. */
 export const name = 'session-write-grant'

@@ -3,29 +3,29 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-16-persistent-pty-sessions.md
 /agent-note-persistent-pty-sessions:
-  en: c7796dc579fe7fb3
-  zh: 2126be0b08124ca5
+  en: 416adae3f6f1db87
+  zh: 4ad96c63af99348f
 /agent-note-persistent-pty-sessions/problem:
-  en: cd408e9b6e9705e8
-  zh: 7811f9216b6961fa
+  en: b5a30db2b243bbe7
+  zh: f38bb429f5856f3a
 /agent-note-persistent-pty-sessions/decision:
-  en: 5656c117648160c8
-  zh: 7f7c3de8e2ea6d9a
+  en: 0cc7f77d752d73b4
+  zh: 03b9c396b281f034
 /agent-note-persistent-pty-sessions/decision/package-topology:
-  en: 0187ac573d06a360
-  zh: 13e08f4f22bacfff
+  en: 96e7fb01748deff3
+  zh: 7b88893a1f026a02
 /agent-note-persistent-pty-sessions/decision/agent-ownership-and-identity:
-  en: c2a38b8c0403e1e4
-  zh: 6063cf5e41a6582e
+  en: 845cd1e99b071a9a
+  zh: 47e23a809614de28
 /agent-note-persistent-pty-sessions/decision/security-and-process-boundary:
-  en: cf7666742795b0fe
-  zh: 4fccb74f8271dca6
+  en: 1a6551f4d5eaf15b
+  zh: 46edd7aecc86647d
 /agent-note-persistent-pty-sessions/decision/six-model-facing-tools:
-  en: b92715f36550c728
-  zh: e18d7e0e2363347a
+  en: d28e7000f1d2d721
+  zh: 248a8c198ecff095
 /agent-note-persistent-pty-sessions/decision/local-readiness-detection:
-  en: 8f36f06869bd5367
-  zh: f3560477a8965cbe
+  en: dd34e622c35c66cd
+  zh: 10c636b4ca24e1de
 /agent-note-persistent-pty-sessions/decision/model-visible-output-and-durability:
   en: 1b504ab41b47216d
   zh: 8fb3d360b3a4e6a1
@@ -33,17 +33,17 @@
   en: e96a972845bc3513
   zh: d76d7dfb80985e9d
 /agent-note-persistent-pty-sessions/decision/composition-and-rollout:
-  en: db49b6dff73d8772
-  zh: 1f2182fd2c7dc3af
+  en: df122753cca342eb
+  zh: 9ba80546b64de91c
 /agent-note-persistent-pty-sessions/decision/deferred-work:
   en: c0ae6d86dd5c0635
   zh: 737bd3fda903d5e3
 /agent-note-persistent-pty-sessions/alternatives-considered:
-  en: cda0998b2bb05b7d
-  zh: 7cc5683a6dfd64be
+  en: 2313bcf58674e66e
+  zh: b05af7b2159fbe65
 /agent-note-persistent-pty-sessions/verification:
   en: 08cd5f0369ee69e9
   zh: 3e9b13ba1f8b6bff
 /agent-note-persistent-pty-sessions/consequences:
-  en: f8784b2ca03fc80a
-  zh: e20e38014292f86a
+  en: c704876701e0c9b4
+  zh: 1469cb3dc9828080

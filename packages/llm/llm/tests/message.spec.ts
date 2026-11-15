@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 import {
   type ToolCallId,
   boundContextSummary,
@@ -11,7 +11,7 @@ import {
   createUserMessage,
   freezeMessage,
   type MessageId,
-} from '@deepseek-ai/dsh-llm'
+} from '@noharness/llm'
 
 describe('message construction', () => {
   it('detaches and freezes developer tool names without copying their definitions', () => {

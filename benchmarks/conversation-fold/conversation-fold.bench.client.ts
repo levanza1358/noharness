@@ -71,7 +71,7 @@ const EXPECTED_STREAMING_RETAINED_MB = 16
 const WORKER = join(
   import.meta.dirname,
   '..',
-  '.dsh-build',
+  '.nhs-build',
   'conversation-fold',
   'conversation-fold.worker.js',
 )

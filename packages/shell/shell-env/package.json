@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-shell-env",
-  "description": "Tool-independent managed DSH_* shell environment registry",
+  "name": "@noharness/shell-env",
+  "description": "Tool-independent managed NHS_* shell environment registry",
   "version": "0.2.2-rc.3",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/levanza1358/noharness.git",
     "directory": "packages/shell/shell-env"
   },
   "type": "module",
@@ -32,25 +32,25 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-app-boot": "workspace:*",
-    "@deepseek-ai/dsh-home-paths": "workspace:*",
-    "@deepseek-ai/dsh-shell": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*",
-    "@deepseek-ai/dsh-error": "workspace:*"
+    "@noharness/cordis": "workspace:~",
+    "@noharness/app-boot": "workspace:*",
+    "@noharness/home-paths": "workspace:*",
+    "@noharness/shell": "workspace:*",
+    "@noharness/tools": "workspace:*",
+    "@noharness/error": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:~"
+    "@noharness/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-brand": "workspace:*",
-    "@deepseek-ai/cordis": "workspace:~",
-    "@deepseek-ai/dsh-agent": "workspace:*",
-    "@deepseek-ai/dsh-app-boot": "workspace:*",
-    "@deepseek-ai/dsh-home-paths": "workspace:*",
-    "@deepseek-ai/dsh-error": "workspace:*",
-    "@deepseek-ai/dsh-llm": "workspace:*",
-    "@deepseek-ai/dsh-shell": "workspace:*",
-    "@deepseek-ai/dsh-tools": "workspace:*"
+    "@noharness/brand": "workspace:*",
+    "@noharness/cordis": "workspace:~",
+    "@noharness/agent": "workspace:*",
+    "@noharness/app-boot": "workspace:*",
+    "@noharness/home-paths": "workspace:*",
+    "@noharness/error": "workspace:*",
+    "@noharness/llm": "workspace:*",
+    "@noharness/shell": "workspace:*",
+    "@noharness/tools": "workspace:*"
   }
 }

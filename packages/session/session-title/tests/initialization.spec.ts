@@ -1,13 +1,13 @@
 /** Live title input remains owned while projection registration is pending. */
-import { Context, FiberState } from '@deepseek-ai/cordis'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import LlmRuntime, { createUserMessage, markAgentLoopRequest } from '@deepseek-ai/dsh-llm'
-import SessionStore, { type Session } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { SessionTitleProviderId } from '@deepseek-ai/dsh-session-title/types'
-import SessionTitleService, { type SessionTitleProviderRequest } from '@deepseek-ai/dsh-session-title'
-import { deepFreeze } from '@deepseek-ai/dsh-util-values'
+import { Context, FiberState } from '@noharness/cordis'
+import AgentRegistry from '@noharness/agent'
+import LlmRuntime, { createUserMessage, markAgentLoopRequest } from '@noharness/llm'
+import SessionStore, { type Session } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import { brandString } from '@noharness/brand'
+import type { SessionTitleProviderId } from '@noharness/session-title/types'
+import SessionTitleService, { type SessionTitleProviderRequest } from '@noharness/session-title'
+import { deepFreeze } from '@noharness/util-values'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
 
 const CONFIG = { fallbackMaxWords: 8, fallbackMaxBytes: 64, maxTitleBytes: 256 }

@@ -1,26 +1,26 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import { createUserMessage, type ToolCallId } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-import { provideWorkingDirectoryFixture, mountAgentLoopTestDependencies, unsupportedInbox, unsupportedModel } from '@deepseek-ai/dsh-agent-loop-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
+import { createUserMessage, type ToolCallId } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+import { provideWorkingDirectoryFixture, mountAgentLoopTestDependencies, unsupportedInbox, unsupportedModel } from '@noharness/agent-loop-testkit'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync, writeFileSync, chmodSync, existsSync, mkdirSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import type { SessionId, SessionEvent } from '@deepseek-ai/dsh-session'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import { defineContentToolFixture } from '@deepseek-ai/dsh-tool-testkit'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { LocalBashExecutor } from '@deepseek-ai/dsh-bash-local'
-import LocalSubprocessRuntime from '@deepseek-ai/dsh-subprocess-local'
-import { scopeTarget } from '@deepseek-ai/dsh-scope'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import SubagentRuntime, { type SubagentRunId } from '@deepseek-ai/dsh-subagent'
-import * as HooksClaude from '@deepseek-ai/dsh-hooks-claude-code'
+import { Context } from '@noharness/cordis'
+import type { SessionId, SessionEvent } from '@noharness/session'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import { defineContentToolFixture } from '@noharness/tool-testkit'
+import type { Agent } from '@noharness/agent'
+import AgentLoop from '@noharness/agent-loop'
+import { LocalBashExecutor } from '@noharness/bash-local'
+import LocalSubprocessRuntime from '@noharness/subprocess-local'
+import { scopeTarget } from '@noharness/scope'
+import { brandString } from '@noharness/brand'
+import SubagentRuntime, { type SubagentRunId } from '@noharness/subagent'
+import * as HooksClaude from '@noharness/hooks-claude-code'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
-declare module '@deepseek-ai/dsh-llm' {
+declare module '@noharness/llm' {
   interface MessageSourceMap {
     'policy': { kind: 'policy' } & ContextFormed
   }
@@ -42,7 +42,7 @@ function subagentCarrier(ctx: Context) {
   return scopeTarget(ctx as unknown as SubagentRuntime, undefined)
 }
 
-function dir(): string { const d = mkdtempSync(join(tmpdir(), 'dsh-hc-cov-')); dirs.push(d); return d }
+function dir(): string { const d = mkdtempSync(join(tmpdir(), 'nhs-hc-cov-')); dirs.push(d); return d }
 function sh(d: string, name: string, body: string): string {
   const p = join(d, name); writeFileSync(p, body); chmodSync(p, 0o755); return p
 }

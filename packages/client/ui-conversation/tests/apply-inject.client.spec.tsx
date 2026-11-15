@@ -1,36 +1,36 @@
 // @vitest-environment jsdom
-import { apply as applyMenus, inject as injectMenus } from '@deepseek-ai/dsh-client-ui-context-menu/client'
+import { apply as applyMenus, inject as injectMenus } from '@noharness/client-ui-context-menu/client'
 import { render, cleanup } from '@testing-library/react'
 import { $getRoot, $isTextNode, PASTE_COMMAND } from 'lexical'
 import { createUserTextFixture } from './user-text-component-fixture.client.tsx'
 import { registerComposerKeymap } from '../src/client/input/editor/keymap.ts'
-import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
+import { createSnapshotStore } from '@noharness/client-store'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
-import type { CommandContribution, CommandUiContract } from '@deepseek-ai/dsh-client-ui-commands/client'
-import type { SessionRequestId } from '@deepseek-ai/dsh-api-session-controller/types'
-import type { ISession, SessionReference } from '@deepseek-ai/dsh-api-session-controller/client'
-import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
-import * as messageQuotes from '@deepseek-ai/dsh-message-quotes/client'
-import type { ObservableSnapshot } from '@deepseek-ai/dsh-client-store'
+import type { CommandContribution, CommandUiContract } from '@noharness/client-ui-commands/client'
+import type { SessionRequestId } from '@noharness/api-session-controller/types'
+import type { ISession, SessionReference } from '@noharness/api-session-controller/client'
+import { LocaleRuntime } from '@noharness/client-locale/client'
+import * as messageQuotes from '@noharness/message-quotes/client'
+import type { ObservableSnapshot } from '@noharness/client-store'
 import {
   SlotTestRuntime, stubConfigForm, usePinnedBrowserLanguages,
-} from '@deepseek-ai/dsh-client-test-runtime'
-import type { SessionBehaviorOverrides } from '@deepseek-ai/dsh-client-test-runtime'
+} from '@noharness/client-test-runtime'
+import type { SessionBehaviorOverrides } from '@noharness/client-test-runtime'
 import {
   apply, inject, type ComposerBarInjected, type ConversationInjected,
   type ConversationSessionHeaderInjected, type ConversationSessionInjected, type ViewTab,
-} from '@deepseek-ai/dsh-client-ui-conversation/client'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import type { WorkspaceId } from '@deepseek-ai/dsh-workspace/types'
+} from '@noharness/client-ui-conversation/client'
+import type { SessionId } from '@noharness/session/types'
+import type { WorkspaceId } from '@noharness/workspace/types'
 import { createConversationStore } from '../src/client/stores.ts'
 import type { SessionInputShell } from '../src/client/input/facade.ts'
-import { RemoteError } from '@deepseek-ai/dsh-client-test-runtime'
-import { SessionSeq } from '@deepseek-ai/dsh-session/types'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { InboxWireState } from '@deepseek-ai/dsh-agent/types'
+import { RemoteError } from '@noharness/client-test-runtime'
+import { SessionSeq } from '@noharness/session/types'
+import { createUserMessage } from '@noharness/llm'
+import type { InboxWireState } from '@noharness/agent/types'
 import { continuationTurn } from './continuation-fixture.ts'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@noharness/client-ui-slots' {
   interface SlotMap {
     'quote-probe': { kind: 'single'; scope: 'session' }
   }
@@ -459,7 +459,7 @@ describe('Conversation inject API', () => {
     let removeCustom: (() => void) | undefined
     try {
       await b.runtime.flush()
-      localStorage.setItem(`dsh.conversation.${ROOT}`, JSON.stringify({
+      localStorage.setItem(`nhs.conversation.${ROOT}`, JSON.stringify({
         draft: '', view: 'custom', viewRequest: null,
       }))
 
@@ -565,7 +565,7 @@ describe('Conversation inject API', () => {
     await browser.runtime.dispose()
 
     const paths = new Map([['project', '/Users/me/my project'], ['notes.md', '/Users/me/notes.md'], ['shot.png', '/Users/me/shot.png']])
-    vi.stubGlobal('__DSH_HOST_PATHS__', { pathFor: (file: File) => paths.get(file.name) ?? '' })
+    vi.stubGlobal('__NHS_HOST_PATHS__', { pathFor: (file: File) => paths.get(file.name) ?? '' })
     try {
       const desktop = await bench()
       const composer = desktop.composerApi(ROOT)
@@ -590,7 +590,7 @@ describe('Conversation inject API', () => {
   })
 
   it('preserves selected text and file order and restores pasted directory chips from the draft', async () => {
-    vi.stubGlobal('__DSH_HOST_PATHS__', { pathFor: (file: File) => `/proj/${file.name}` })
+    vi.stubGlobal('__NHS_HOST_PATHS__', { pathFor: (file: File) => `/proj/${file.name}` })
     onTestFinished(() => { vi.unstubAllGlobals(); cleanup() })
     const b = await bench()
     onTestFinished(() => b.runtime.dispose())
@@ -626,7 +626,7 @@ describe('Conversation inject API', () => {
   })
 
   it('rejects the whole file batch before changing the draft when a later path is unrepresentable', async () => {
-    vi.stubGlobal('__DSH_HOST_PATHS__', { pathFor: (file: File) => `/proj/${file.name}` })
+    vi.stubGlobal('__NHS_HOST_PATHS__', { pathFor: (file: File) => `/proj/${file.name}` })
     onTestFinished(() => { vi.unstubAllGlobals() })
     const b = await bench()
     onTestFinished(() => b.runtime.dispose())

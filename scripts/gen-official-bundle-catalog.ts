@@ -30,27 +30,27 @@ export function generateOfficialBundleCatalog(root: string, names: readonly stri
       dependencies?: Record<string, string>
       optionalDependencies?: Record<string, string>
       peerDependencies?: Record<string, string>
-      dsh?: { bundle?: { patch?: unknown; platforms?: DshBundleManifest['platforms'] } }
+      nhs?: { bundle?: { patch?: unknown; platforms?: DshBundleManifest['platforms'] } }
     }
     if (manifests.has(manifest.name)) throw new Error(`duplicate workspace package ${manifest.name}`)
     const runtime = ['dependencies', 'optionalDependencies', 'peerDependencies'] as const
-    manifests.set(manifest.name, { path, private: manifest.private === true, bundle: manifest.dsh?.bundle?.patch !== undefined,
-      ...manifest.dsh?.bundle?.platforms === undefined ? {} : { platforms: manifest.dsh.bundle.platforms },
+    manifests.set(manifest.name, { path, private: manifest.private === true, bundle: manifest.nhs?.bundle?.patch !== undefined,
+      ...manifest.nhs?.bundle?.platforms === undefined ? {} : { platforms: manifest.nhs.bundle.platforms },
       runtime: runtime.flatMap(section => Object.keys(manifest[section] ?? {})) })
   }
   const visited = new Set<string>()
   const checkInstallation = (name: string): void => {
     if (visited.has(name)) return
     visited.add(name)
-    if (names.includes(name)) throw new Error(`${name}: on-demand providers must not be installed by the DSH distribution`)
+    if (names.includes(name)) throw new Error(`${name}: on-demand providers must not be installed by the NHS distribution`)
     for (const dependency of manifests.get(name)?.runtime ?? []) checkInstallation(dependency)
   }
-  if (!manifests.has('@deepseek-ai/dsh')) throw new Error('Official catalog requires the DSH installation manifest')
-  checkInstallation('@deepseek-ai/dsh')
+  if (!manifests.has('@noharness/cli')) throw new Error('Official catalog requires the NHS installation manifest')
+  checkInstallation('@noharness/cli')
   return names.map((packageName) => {
     const entry = manifests.get(packageName)
-    if (entry === undefined || !entry.path.startsWith('packages/') || !packageName.startsWith('@deepseek-ai/dsh-') || entry.private || !entry.bundle) {
-      throw new Error(`${packageName}: Official catalog entries must be public DSH bundle packages`)
+    if (entry === undefined || !entry.path.startsWith('packages/') || !packageName.startsWith('@noharness/') || entry.private || !entry.bundle) {
+      throw new Error(`${packageName}: Official catalog entries must be public NHS bundle packages`)
     }
     try { assertBundlePlatform(entry.platforms, process.platform) } catch (error) {
       // Catalog generation validates every declaration, including bundles for another Host.

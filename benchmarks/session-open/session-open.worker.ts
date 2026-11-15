@@ -1,22 +1,22 @@
 /** Isolated worker for cold Session phase, first-history, and Agent-resume benchmarks. */
 
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 import { performance } from 'node:perf_hooks'
 import { scheduler } from 'node:timers/promises'
-import { Context } from '@deepseek-ai/cordis'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { agentPresetProjectionDefinition } from '@deepseek-ai/dsh-agent-preset-registry'
+import { Context } from '@noharness/cordis'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import { agentPresetProjectionDefinition } from '@noharness/agent-preset-registry'
 import SessionStore, {
   interruptedTurnClosers,
   type SessionId,
   SessionLogOffset,
   SessionPreparation,
-} from '@deepseek-ai/dsh-session'
-import AgentRegistry, { type AgentHandle } from '@deepseek-ai/dsh-agent'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import SessionQueryEngine from '@deepseek-ai/dsh-session-query'
+} from '@noharness/session'
+import AgentRegistry, { type AgentHandle } from '@noharness/agent'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import SessionQueryEngine from '@noharness/session-query'
 import type {
   SessionEventSearchPage,
   SessionEventSearchRequest,
@@ -24,11 +24,11 @@ import type {
   SessionSearchHit,
   SessionSearchPage,
   SessionSearchRequest,
-} from '@deepseek-ai/dsh-session-query'
-import * as SessionStatsPlugin from '@deepseek-ai/dsh-session-stats'
-import SessionTitleService from '@deepseek-ai/dsh-session-title'
-import * as SessionTurnOutlinePlugin from '@deepseek-ai/dsh-session-turn-outline'
-import TokenMeter from '@deepseek-ai/dsh-token-meter'
+} from '@noharness/session-query'
+import * as SessionStatsPlugin from '@noharness/session-stats'
+import SessionTitleService from '@noharness/session-title'
+import * as SessionTurnOutlinePlugin from '@noharness/session-turn-outline'
+import TokenMeter from '@noharness/token-meter'
 // These Host-only adapters have no public Node export and are compiled into the benchmark worker.
 import { HistoryController } from '../../packages/api/session-controller/src/history/controller.ts'
 import { WebController } from '../../packages/api/session-controller/src/web/controller.ts'
@@ -291,7 +291,7 @@ class SessionBenchmarkHost {
 }
 
 assertBuiltBenchmarkRuntime(import.meta.url, {
-  '@deepseek-ai/dsh-session-persistence-jsonl': import.meta.resolve('@deepseek-ai/dsh-session-persistence-jsonl'),
+  '@noharness/session-persistence-jsonl': import.meta.resolve('@noharness/session-persistence-jsonl'),
 })
 
 const [root, scenarioValue] = process.argv.slice(2)

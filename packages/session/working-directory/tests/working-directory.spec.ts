@@ -1,21 +1,21 @@
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
 import { mkdtemp, mkdir, realpath, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { setImmediate } from 'node:timers/promises'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@noharness/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import LocalFileSystem from '@deepseek-ai/dsh-fs-local'
-import WorkingDirectory, { type Config as WorkingDirectoryConfig } from '@deepseek-ai/dsh-working-directory'
-import { mountAgentLoopTestDependencies, mountAgentLoopTestHarness } from '@deepseek-ai/dsh-agent-loop-testkit'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type { ToolCallId } from '@deepseek-ai/dsh-llm'
-import { renderContextSnapshot, renderPrompt } from '@deepseek-ai/dsh-system-prompt'
-import * as WorkingDirectoryTool from '@deepseek-ai/dsh-tool-working-directory'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import LocalFileSystem from '@noharness/fs-local'
+import WorkingDirectory, { type Config as WorkingDirectoryConfig } from '@noharness/working-directory'
+import { mountAgentLoopTestDependencies, mountAgentLoopTestHarness } from '@noharness/agent-loop-testkit'
+import type { SessionId } from '@noharness/session'
+import type { ToolCallId } from '@noharness/llm'
+import { renderContextSnapshot, renderPrompt } from '@noharness/system-prompt'
+import * as WorkingDirectoryTool from '@noharness/tool-working-directory'
+import { brandString } from '@noharness/brand'
 
 async function fixture(config?: (root: string) => WorkingDirectoryConfig) {
-  const root = await realpath(await mkdtemp(join(tmpdir(), 'dsh-working-directory-')))
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'nhs-working-directory-')))
   const ctx = new Context()
   try {
     await mountAgentLoopTestDependencies(ctx, { systemPrompt: { includeRuntimeContext: false } })

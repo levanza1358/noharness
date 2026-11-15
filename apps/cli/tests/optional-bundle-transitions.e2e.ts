@@ -1,5 +1,5 @@
 /** Optional bundles through the shipped Web Loader, live package manager, and real Agent loop. */
-import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
+import { executeToolFixture } from '@noharness/tool-testkit'
 import { randomUUID } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
@@ -7,31 +7,31 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { Context } from '@deepseek-ai/cordis'
-import type { Agent, AgentHandle } from '@deepseek-ai/dsh-agent'
-import type { ProfileContext } from '@deepseek-ai/dsh-app-boot'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import { LlmAdapter, type ToolCallId, createUserMessage } from '@deepseek-ai/dsh-llm'
-import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@deepseek-ai/dsh-llm'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type {} from '@deepseek-ai/dsh-agent-preset-registry'
-import type {} from '@deepseek-ai/dsh-hmr'
-import type {} from '@deepseek-ai/dsh-plugin-manager'
-import type {} from '@deepseek-ai/dsh-permission-presets'
-import type {} from '@deepseek-ai/dsh-session-title-llm'
-import type {} from '@deepseek-ai/dsh-skill'
-import type {} from '@deepseek-ai/dsh-tools'
+import type { Context } from '@noharness/cordis'
+import type { Agent, AgentHandle } from '@noharness/agent'
+import type { ProfileContext } from '@noharness/app-boot'
+import { brandString } from '@noharness/brand'
+import { LlmAdapter, type ToolCallId, createUserMessage } from '@noharness/llm'
+import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@noharness/llm'
+import type { SessionId } from '@noharness/session'
+import type {} from '@noharness/agent-preset-registry'
+import type {} from '@noharness/hmr'
+import type {} from '@noharness/plugin-manager'
+import type {} from '@noharness/permission-presets'
+import type {} from '@noharness/session-title-llm'
+import type {} from '@noharness/skill'
+import type {} from '@noharness/tools'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { textResponse, toolCallResponse } from '../../../packages/core/agent-loop/tests/mock-adapter.ts'
 
 const root = fileURLToPath(new URL('../../..', import.meta.url))
 const installAnchor = join(root, 'apps/cli/package.json')
 const bundles = {
-  search: '@deepseek-ai/dsh-experimental-session-search',
-  ralph: '@deepseek-ai/dsh-experimental-ralph-bundle',
-  terminal: '@deepseek-ai/dsh-experimental-terminal-bundle',
-  badge: '@deepseek-ai/dsh-experimental-badge-skill-bundle',
-  titles: '@deepseek-ai/dsh-experimental-session-titles-bundle',
+  search: '@noharness/experimental-session-search',
+  ralph: '@noharness/experimental-ralph-bundle',
+  terminal: '@noharness/experimental-terminal-bundle',
+  badge: '@noharness/experimental-badge-skill-bundle',
+  titles: '@noharness/experimental-session-titles-bundle',
 } as const
 type Response = StreamChunk[] | ((request: GenerateOptions) => StreamChunk[])
 
@@ -73,21 +73,21 @@ describe.skipIf(!existsSync(join(root, 'apps/cli/lib/bin.js')))('Official option
   let originalEnvironment: Record<string, string | undefined> = {}
 
   beforeAll(async () => {
-    temporary = await mkdtemp(join(tmpdir(), 'dsh-optional-bundles-'))
+    temporary = await mkdtemp(join(tmpdir(), 'nhs-optional-bundles-'))
     workspace = join(temporary, 'workspace')
     await mkdir(workspace)
     const home = join(temporary, 'home')
     const values = {
-      DSH_HOME: home, DSH_AGENTS_HOME: join(temporary, 'agents'), DSH_BUNDLED_SKILL_DIR: join(temporary, 'skills'),
-      DSH_TELEMETRY_DISABLED: '1', TMUX: '', TMUX_PANE: '',
+      NHS_HOME: home, NHS_AGENTS_HOME: join(temporary, 'agents'), NHS_BUNDLED_SKILL_DIR: join(temporary, 'skills'),
+      NHS_TELEMETRY_DISABLED: '1', TMUX: '', TMUX_PANE: '',
     }
     originalEnvironment = Object.fromEntries(Object.keys(values).map(key => [key, process.env[key]]))
     Object.assign(process.env, values)
     const require = createRequire(import.meta.url)
-    const app = require(join(root, 'packages/boot/app-boot/lib/index.js')) as typeof import('@deepseek-ai/dsh-app-boot')
-    const cmdline = require(join(root, 'packages/boot/cmdline/lib/index.js')) as typeof import('@deepseek-ai/dsh-cmdline')
+    const app = require(join(root, 'packages/boot/app-boot/lib/index.js')) as typeof import('@noharness/app-boot')
+    const cmdline = require(join(root, 'packages/boot/cmdline/lib/index.js')) as typeof import('@noharness/cmdline')
     const directory = join(home, 'profiles', 'web')
-    app.initProfile(directory, ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app'])
+    app.initProfile(directory, ['@noharness/base', '@noharness/web-app'])
     await writeFile(join(directory, 'cordis.yml'), '[]\n')
     await writeFile(join(directory, 'cordis.patch.yml'), JSON.stringify([
       { id: 'agent-default-model', config: { provider: 'bundle-test', model: 'scripted' } },
@@ -175,7 +175,7 @@ describe.skipIf(!existsSync(join(root, 'apps/cli/lib/bin.js')))('Official option
     expect(names()).toEqual(['team_task_create', 'team_task_get', 'team_task_list', 'team_task_update', 'working_directory'])
     expect(names(minimal.agent)).toEqual([process.platform === 'win32' ? 'pwsh' : 'bash', 'read_image', 'team_task_create', 'team_task_get', 'team_task_list', 'team_task_update', 'working_directory'])
     for (const name of ['str_replace_editor', 'session_search', 'terminal_open', 'user_terminal_list', 'ralph']) expect(names(standard.agent)).not.toContain(name)
-    expect((await ctx.skills.list({ cwd: workspace, scope: standard.agent })).some(skill => skill.name === 'dsh-badge')).toBe(false)
+    expect((await ctx.skills.list({ cwd: workspace, scope: standard.agent })).some(skill => skill.name === 'nhs-badge')).toBe(false)
   })
 
   it('generates and executes the PTC SDK for the selected search bundle', async () => {
@@ -235,18 +235,18 @@ describe.skipIf(!existsSync(join(root, 'apps/cli/lib/bin.js')))('Official option
   it('loads the actual badge asset only while its bundle is selected', async () => {
     const owner = await agent()
     const load = (callId: string) => executeToolFixture(ctx, {
-      callId: brandString<ToolCallId>(callId), name: 'skill', arguments: { name: 'dsh-badge' },
+      callId: brandString<ToolCallId>(callId), name: 'skill', arguments: { name: 'nhs-badge' },
       agent: owner.agent, signal: new AbortController().signal,
     })
     expect((await load('badge-before')).isError).toBe(true)
     await select(bundles.badge, true)
-    await turn(owner.agent, 'Load the dsh badge skill.', [
-      toolCallResponse('badge-on', 'skill', { name: 'dsh-badge' }), textResponse('BADGE_DONE'),
+    await turn(owner.agent, 'Load the nhs badge skill.', [
+      toolCallResponse('badge-on', 'skill', { name: 'nhs-badge' }), textResponse('BADGE_DONE'),
     ])
-    expect(toolResult(owner.agent, 'badge-on')).toContain('powered by dsh')
-    expect(toolResult(owner.agent, 'badge-on')).toContain('dsh-badge.png')
+    expect(toolResult(owner.agent, 'badge-on')).toContain('powered by nhs')
+    expect(toolResult(owner.agent, 'badge-on')).toContain('nhs-badge.png')
     const minimal = await agent('minimal')
-    expect((await ctx.skills.list({ cwd: workspace, scope: minimal.agent })).map(skill => skill.name)).toContain('dsh-badge')
+    expect((await ctx.skills.list({ cwd: workspace, scope: minimal.agent })).map(skill => skill.name)).toContain('nhs-badge')
     expect(names(minimal.agent)).toEqual([process.platform === 'win32' ? 'pwsh' : 'bash', 'read_image', 'team_task_create', 'team_task_get', 'team_task_list', 'team_task_update', 'working_directory'])
     await select(bundles.badge, false)
     expect((await load('badge-after')).isError).toBe(true)
@@ -267,13 +267,13 @@ describe.skipIf(!existsSync(join(root, 'apps/cli/lib/bin.js')))('Official option
       (request) => {
         terminalId = /started terminal session (pty-\d+)/.exec(JSON.stringify(request.messages))?.[1]
         return toolCallResponse('terminal-set', 'terminal_send', {
-          sessionId: id(), text: process.platform === 'win32' ? "$env:DSH_OPTIONAL = 'TERMINAL_BUNDLE_OK'" : 'export DSH_OPTIONAL=TERMINAL_BUNDLE_OK',
+          sessionId: id(), text: process.platform === 'win32' ? "$env:NHS_OPTIONAL = 'TERMINAL_BUNDLE_OK'" : 'export NHS_OPTIONAL=TERMINAL_BUNDLE_OK',
         })
       },
       () => toolCallResponse('terminal-write', 'terminal_send', {
         sessionId: id(), text: process.platform === 'win32'
-          ? `Set-Content -NoNewline -Path '${target.replaceAll("'", "''")}' -Value $env:DSH_OPTIONAL`
-          : `printf '%s' "$DSH_OPTIONAL" > ${JSON.stringify(target)}`,
+          ? `Set-Content -NoNewline -Path '${target.replaceAll("'", "''")}' -Value $env:NHS_OPTIONAL`
+          : `printf '%s' "$NHS_OPTIONAL" > ${JSON.stringify(target)}`,
       }),
       () => toolCallResponse('terminal-close', 'terminal_close', { sessionId: id() }),
       textResponse('TERMINAL_DONE'),
@@ -341,12 +341,12 @@ describe.skipIf(!existsSync(join(root, 'apps/cli/lib/bin.js')))('Official option
     if (coded === undefined) throw new Error('the PTC Agent was not created')
     await turn(coded, 'Read this session lineage and load the badge through one program.', [
       toolCallResponse('combined-program', 'run_code', {
-        code: 'inspect(await tools.session_trace({})); inspect(await tools.skill({ name: "dsh-badge" }));',
+        code: 'inspect(await tools.session_trace({})); inspect(await tools.skill({ name: "nhs-badge" }));',
         description: 'Use optional session search and badge together',
       }), textResponse('COMBINED_DONE'),
     ])
     expect(toolResult(coded, 'combined-program')).toContain(coded.session.id)
-    expect(toolResult(coded, 'combined-program')).toContain('dsh-badge')
+    expect(toolResult(coded, 'combined-program')).toContain('nhs-badge')
     expect(names()).toEqual(expect.arrayContaining(['session_search', 'terminal_open', 'ralph', 'working_directory']))
     for (const name of [...Object.values(bundles)].reverse()) await select(name, false)
     expect(names((await agent()).agent)).not.toContain('session_search')

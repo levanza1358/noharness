@@ -1,5 +1,5 @@
 /** Direct-reference script execution contracts, independent from module loading. */
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@noharness/brand'
 
 /** Identity assigned by the owner of one execution environment. */
 export type ScriptRealmId = Branded<'ScriptRealmId'>

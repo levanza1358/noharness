@@ -1,17 +1,17 @@
 /** Workspace command implementation and stable Remote failure mapping. */
 
-import type { Context } from '@deepseek-ai/cordis'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { WorkspaceId } from '@deepseek-ai/dsh-workspace/types'
-import type { Workspace } from '@deepseek-ai/dsh-workspace'
+import type { Context } from '@noharness/cordis'
+import { brandString } from '@noharness/brand'
+import type { WorkspaceId } from '@noharness/workspace/types'
+import type { Workspace } from '@noharness/workspace'
 import {
   WorkspaceActiveSessionError,
   WorkspaceArchivedSessionPinError,
   WorkspaceMoveInvalidError,
   WorkspaceOrderInvalidError,
   WorkspaceUnknownSessionError,
-} from '@deepseek-ai/dsh-workspace'
-import { RemoteError, remoteErrorOf } from '@deepseek-ai/dsh-typert-protocol'
+} from '@noharness/workspace'
+import { RemoteError, remoteErrorOf } from '@noharness/typert-protocol'
 import { workspaceView } from './feed.ts'
 import type {
   WorkspaceArchiveSessionRequest,

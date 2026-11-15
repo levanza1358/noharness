@@ -13,11 +13,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { type SessionId, SessionSeq } from '@deepseek-ai/dsh-session'
-import { SessionAlreadyOwnedError } from '@deepseek-ai/dsh-session-persistence'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { Context } from '@noharness/cordis'
+import { type SessionId, SessionSeq } from '@noharness/session'
+import { SessionAlreadyOwnedError } from '@noharness/session-persistence'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import { brandString } from '@noharness/brand'
 
 const SESSION = 'two-process-lease'
 
@@ -33,7 +33,7 @@ const HOLDER = fileURLToPath(new URL('./fixtures/lease-holder.mjs', import.meta.
 
 describe('two-process write lock (built lib)', () => {
   it('excludes a live holder process and takes over immediately after its crash', { timeout: 30_000 }, async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-lease-2proc-'))
+    const root = await mkdtemp(join(tmpdir(), 'nhs-lease-2proc-'))
     dirs.push(root)
 
     const holder = spawn(process.execPath, [HOLDER, root, SESSION], {

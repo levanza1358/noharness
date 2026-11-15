@@ -1,9 +1,9 @@
 /**
- * @deepseek-ai/dsh-base — the shared dsh core as a profile bundle. The
- * package's substance is `cordis.patch.yml`, declared by the `dsh.bundle.patch`
+ * @noharness/base — the shared nhs core as a profile bundle. The
+ * package's substance is `cordis.patch.yml`, declared by the `nhs.bundle.patch`
  * manifest field and resolved by the profile composer through that field;
  * this module carries no runtime API.
- * @module @deepseek-ai/dsh-base
+ * @module @noharness/base
  */
 
 export {}

@@ -1,16 +1,16 @@
 /** Account settings registration and reconnecting Remote subscription. */
-import type {} from '@deepseek-ai/dsh-client-product-analytics/client'
-import type { TranscriptViewMode } from '@deepseek-ai/dsh-client-ui-chat/client'
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-client-locale/client'
-import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
-import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
-import type {} from '@deepseek-ai/dsh-client-ui-theme/client'
-import type {} from '@deepseek-ai/dsh-client-ui-chat/client'
-import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
-import type {} from '@deepseek-ai/dsh-api-remote-access/client'
-import type {} from '@deepseek-ai/dsh-api-remotes/client'
-import type { AccountUpdate, AccountDetails } from '@deepseek-ai/dsh-deepseek-account/types'
+import type {} from '@noharness/client-product-analytics/client'
+import type { TranscriptViewMode } from '@noharness/client-ui-chat/client'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/client-locale/client'
+import type {} from '@noharness/client-ui-settings/client'
+import type {} from '@noharness/client-ui-renderer/client'
+import type {} from '@noharness/client-ui-theme/client'
+import type {} from '@noharness/client-ui-chat/client'
+import type {} from '@noharness/client-ui-layout/client'
+import type {} from '@noharness/api-remote-access/client'
+import type {} from '@noharness/api-remotes/client'
+import type { AccountUpdate, AccountDetails } from '@noharness/deepseek-account/types'
 import type { OnboardingChange } from './onboarding-contract.ts'
 import type { PlatformBridge } from './PlatformOverlay.tsx'
 import { ContactConfig, CONTACT_CONFIG_GLOBAL } from '../contact-config.ts'
@@ -37,7 +37,7 @@ export type { AccountSnapshot } from './AccountSection.tsx'
 export type { AccountKey } from './locales.ts'
 export type { AccountUi, AccountUiState, AccountNotificationsOwnerProps } from './account-ui.ts'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@noharness/client-ui-slots' {
   interface LocaleNamespaceMap { 'settings.account': AccountKey }
 }
 
@@ -45,7 +45,7 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
 export const inject = ['slots', 'locale', 'remote', 'remote.account', 'remote.session', 'theme', 'configForms', 'remoteAccess']
 /** Register account UI in Desktop and plain Web clients. @param ctx - client plugin context. */
 export function apply(ctx: Context): void {
-  const desktop = 'dshDesktop' in globalThis
+  const desktop = 'nhsDesktop' in globalThis
   ctx.effect(() => ctx.locale.register('settings.account', { en, zh, ja, es, fr, de, ru, pt }), 'account: dictionaries')
   const t = ctx.locale.bind('settings.account')
   const page = globalThis as Partial<Record<typeof CONTACT_CONFIG_GLOBAL, unknown>>
@@ -61,7 +61,7 @@ export function apply(ctx: Context): void {
   const avatar = new AccountAvatarLoader((value) => { publish({ ...snapshot, avatar: value }) })
   ctx.effect(() => () => { avatar.dispose() }, 'account: profile picture lifetime')
   /** @param locale - requested language. @returns client metadata with the current timezone. */
-  const client = (locale: string) => accountClientMetadata(locale, process.env.DSH_CLIENT_VERSION)
+  const client = (locale: string) => accountClientMetadata(locale, process.env.NHS_CLIENT_VERSION)
   ctx.provide('accountUi', { getSnapshot: () => snapshot, clientMetadata: client })
   let revision = 0
   let refreshing: Promise<void> | undefined
@@ -154,7 +154,7 @@ export function apply(ctx: Context): void {
       }
     })
   })
-  const nativePlatform = (globalThis as typeof globalThis & { dshPlatform?: PlatformBridge }).dshPlatform
+  const nativePlatform = (globalThis as typeof globalThis & { nhsPlatform?: PlatformBridge }).nhsPlatform
   // One request channel for the single native Platform view. It always exists
   // so every entry can observe whether a page is showing; only a native bridge
   // lets an entry request one.
@@ -189,15 +189,15 @@ export function apply(ctx: Context): void {
       const profile = snapshot.details?.profile
       const context = {
         uid: profile?.status === 'ready' ? profile.value.id : null,
-        version: process.env.DSH_CLIENT_VERSION,
+        version: process.env.NHS_CLIENT_VERSION,
         width: window.screen.width, height: window.screen.height, pixelRatio: window.devicePixelRatio,
       }
       const openForm = (deviceInfo: string): void => {
         window.open(contactUrl(config, { ...context, deviceInfo }), '_blank', 'noopener,noreferrer')
       }
       const readDeviceInfo = (globalThis as typeof globalThis & {
-        dshDesktop?: { deviceInfo?: () => Promise<string> }
-      }).dshDesktop?.deviceInfo
+        nhsDesktop?: { deviceInfo?: () => Promise<string> }
+      }).nhsDesktop?.deviceInfo
       if (readDeviceInfo === undefined) {
         // A plain browser, or a Desktop bridge without the optional reader, reports the renderer user agent.
         openForm(navigator.userAgent)
@@ -227,8 +227,8 @@ export function apply(ctx: Context): void {
     async start() {
       publish({ ...snapshot, loginVisible: true, loginFailed: false })
       const transport = (globalThis as typeof globalThis & {
-        __DSH_TRANSPORT__?: { streamBaseUrl?: string }
-      }).__DSH_TRANSPORT__
+        __NHS_TRANSPORT__?: { streamBaseUrl?: string }
+      }).__NHS_TRANSPORT__
       const request = async () => {
         const result = await ctx.remote.account.startSignIn(client(ctx.locale.getSnapshot().active),
           desktop && transport?.streamBaseUrl !== undefined ? new URL(transport.streamBaseUrl).origin : window.location.origin,

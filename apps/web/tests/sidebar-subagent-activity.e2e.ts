@@ -4,12 +4,12 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { AgentHandle } from '@deepseek-ai/dsh-agent'
-import { createUserMessage, LlmAdapter } from '@deepseek-ai/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@deepseek-ai/dsh-llm'
-import type { SessionId, SessionId as SessionIdValue } from '@deepseek-ai/dsh-session'
-import type {} from '@deepseek-ai/dsh-subagent'
-import type {} from '@deepseek-ai/dsh-workspace'
+import type { AgentHandle } from '@noharness/agent'
+import { createUserMessage, LlmAdapter } from '@noharness/llm'
+import type { GenerateOptions, StreamChunk } from '@noharness/llm'
+import type { SessionId, SessionId as SessionIdValue } from '@noharness/session'
+import type {} from '@noharness/subagent'
+import type {} from '@noharness/workspace'
 import {
   assertFixtureInventory,
   captureStableAria,
@@ -20,7 +20,7 @@ import {
   type WebScaffold,
 } from './scaffold.ts'
 import { connectFreshWorkspace, newEnglishPage, saveFailureShot } from './support.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const SNAPSHOT_DIR = fileURLToPath(new URL('./expected/sidebar-subagent-activity', import.meta.url))
 const RUNNING_OWNER_EXPECTED = join(SNAPSHOT_DIR, 'owner-running.expected.md')

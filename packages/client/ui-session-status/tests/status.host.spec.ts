@@ -1,16 +1,16 @@
-import { Context } from '@deepseek-ai/cordis'
-import SessionStore, { Session, SessionId, type SessionEvent } from '@deepseek-ai/dsh-session'
-import Projections from '@deepseek-ai/dsh-session-projection'
-import RemoteAccess from '@deepseek-ai/dsh-api-remote-access'
-import Typert from '@deepseek-ai/dsh-typert-registry'
-import { Peer } from '@deepseek-ai/dsh-client-connection'
+import { Context } from '@noharness/cordis'
+import SessionStore, { Session, SessionId, type SessionEvent } from '@noharness/session'
+import Projections from '@noharness/session-projection'
+import RemoteAccess from '@noharness/api-remote-access'
+import Typert from '@noharness/typert-registry'
+import { Peer } from '@noharness/client-connection'
 import { afterEach, expect, it, vi } from 'vitest'
-import { remoteMethods, type RemoteInvocation } from '@deepseek-ai/dsh-typert-protocol'
+import { remoteMethods, type RemoteInvocation } from '@noharness/typert-protocol'
 import SessionStatusService from '../src/index.ts'
 import { SessionReadFollower } from '../src/feed.ts'
 import type { SessionReadState, SessionReadFrame } from '../src/types.ts'
 
-declare module '@deepseek-ai/dsh-typert-protocol' {
+declare module '@noharness/typert-protocol' {
   interface PrincipalMap {
     'reading-test': { readonly kind: 'reading-test' }
   }

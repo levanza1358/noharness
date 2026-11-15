@@ -1,9 +1,9 @@
 /** Session-targeted confirmation that outlives the model menu which opened it. */
 import { useState } from 'react'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import { Button, Modal } from '@deepseek-ai/dsh-client-ui-primitives'
-import type { HostObservable, InjectFace, PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
-import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
+import type { SessionId } from '@noharness/session/types'
+import { Button, Modal } from '@noharness/client-ui-primitives'
+import type { HostObservable, InjectFace, PropsLocale, PropsRuntime } from '@noharness/client-ui-slots'
+import type {} from '@noharness/client-ui-layout/client'
 import type { NS } from './locales.ts'
 import css from './TeamDisableConfirmation.module.css'
 

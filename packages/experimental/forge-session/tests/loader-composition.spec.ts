@@ -5,36 +5,36 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import LocalBashExecutor from '@deepseek-ai/dsh-bash-local'
-import ForgeService from '@deepseek-ai/dsh-experimental-forge'
-import * as ForgeGitHub from '@deepseek-ai/dsh-experimental-forge-github'
-import LocalFileSystem from '@deepseek-ai/dsh-fs-local'
-import LlmRuntime, { createUserMessage, LlmAdapter, type ToolCallId } from '@deepseek-ai/dsh-llm'
-import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk, ToolCallBlock } from '@deepseek-ai/dsh-llm'
-import NodeRuntime from '@deepseek-ai/dsh-ptc-runtime-node'
-import LocalSandbox from '@deepseek-ai/dsh-sandbox-local'
-import SandboxPolicy from '@deepseek-ai/dsh-sandbox-policy'
-import SessionStore, { pluginRecordOf, type SessionId } from '@deepseek-ai/dsh-session'
-import type { Session } from '@deepseek-ai/dsh-session'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import * as ShellEnv from '@deepseek-ai/dsh-shell-env'
-import LocalSubprocessRuntime from '@deepseek-ai/dsh-subprocess-local'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import * as ToolBash from '@deepseek-ai/dsh-tool-bash'
-import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
-import * as PtcToolExecutor from '@deepseek-ai/dsh-tool-executor-ptc'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import WorkingDirectoryService from '@deepseek-ai/dsh-working-directory'
+import { Context } from '@noharness/cordis'
+import Loader from '@noharness/cordis-plugin-loader'
+import Include from '@noharness/cordis-plugin-include'
+import AgentRegistry from '@noharness/agent'
+import AgentLoop from '@noharness/agent-loop'
+import LocalBashExecutor from '@noharness/bash-local'
+import ForgeService from '@noharness/experimental-forge'
+import * as ForgeGitHub from '@noharness/experimental-forge-github'
+import LocalFileSystem from '@noharness/fs-local'
+import LlmRuntime, { createUserMessage, LlmAdapter, type ToolCallId } from '@noharness/llm'
+import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk, ToolCallBlock } from '@noharness/llm'
+import NodeRuntime from '@noharness/ptc-runtime-node'
+import LocalSandbox from '@noharness/sandbox-local'
+import SandboxPolicy from '@noharness/sandbox-policy'
+import SessionStore, { pluginRecordOf, type SessionId } from '@noharness/session'
+import type { Session } from '@noharness/session'
+import SessionProjectionRegistry from '@noharness/session-projection'
+import * as ShellEnv from '@noharness/shell-env'
+import LocalSubprocessRuntime from '@noharness/subprocess-local'
+import SystemPrompt from '@noharness/system-prompt'
+import * as ToolBash from '@noharness/tool-bash'
+import * as NativeToolExecutor from '@noharness/tool-executor-native'
+import * as PtcToolExecutor from '@noharness/tool-executor-ptc'
+import ToolRuntime from '@noharness/tools'
+import WorkingDirectoryService from '@noharness/working-directory'
 import ForgeSessionService from '../src/index.ts'
 import type { SessionChangeRequest, SessionChangeRequestsListener } from '../src/index.ts'
-import type { ShellExecution } from '@deepseek-ai/dsh-shell'
-import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@deepseek-ai/dsh-tools'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import type { ShellExecution } from '@noharness/shell'
+import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@noharness/tools'
+import { brandString } from '@noharness/brand'
 
 /**
  * GitHub CLI fixture: `pr create` prints PR 8; `pr view` prints PR 9, whose description links PR 6;
@@ -176,10 +176,10 @@ const suite = process.platform === 'win32' ? describe.skip : describe
 
 /** Plugins that replace the native executor in PTC mode, in load order. */
 const PTC_MODULES = [
-  ['@deepseek-ai/dsh-sandbox-local', LocalSandbox],
-  ['@deepseek-ai/dsh-sandbox-policy', SandboxPolicy],
-  ['@deepseek-ai/dsh-ptc-runtime-node', NodeRuntime],
-  ['@deepseek-ai/dsh-tool-executor-ptc', PtcToolExecutor],
+  ['@noharness/sandbox-local', LocalSandbox],
+  ['@noharness/sandbox-policy', SandboxPolicy],
+  ['@noharness/ptc-runtime-node', NodeRuntime],
+  ['@noharness/tool-executor-ptc', PtcToolExecutor],
 ] as const
 
 /**
@@ -187,7 +187,7 @@ const PTC_MODULES = [
  * the Node program runtime, and the sandbox services that runtime requires.
  */
 async function load(mode: 'native' | 'ptc' = 'native') {
-  root = await realpath(await mkdtemp(join(tmpdir(), 'dsh-forge-session-loader-')))
+  root = await realpath(await mkdtemp(join(tmpdir(), 'nhs-forge-session-loader-')))
   const bin = join(root, 'bin')
   await mkdir(bin)
   await writeFile(join(root, 'fake-gh.mjs'), FAKE_GH)
@@ -197,32 +197,32 @@ async function load(mode: 'native' | 'ptc' = 'native') {
   await chmod(join(bin, 'git'), 0o755)
 
   const modules = new Map<string, unknown>([
-    ['@deepseek-ai/dsh-llm', LlmRuntime],
-    ['@deepseek-ai/dsh-session', SessionStore],
-    ['@deepseek-ai/dsh-session-projection', SessionProjectionRegistry],
-    ['@deepseek-ai/dsh-system-prompt', SystemPrompt],
-    ['@deepseek-ai/dsh-fs-local', LocalFileSystem],
-    ['@deepseek-ai/dsh-working-directory', WorkingDirectoryService],
-    ['@deepseek-ai/dsh-tools', ToolRuntime],
-    ...mode === 'native' ? [['@deepseek-ai/dsh-tool-executor-native', NativeToolExecutor] as const] : PTC_MODULES,
-    ['@deepseek-ai/dsh-agent', AgentRegistry],
-    ['@deepseek-ai/dsh-agent-loop', AgentLoop],
-    ['@deepseek-ai/dsh-subprocess-local', LocalSubprocessRuntime],
-    ['@deepseek-ai/dsh-shell-env', ShellEnv],
-    ['@deepseek-ai/dsh-bash-local', LocalBashExecutor],
-    ['@deepseek-ai/dsh-tool-bash', ToolBash],
-    ['@deepseek-ai/dsh-experimental-forge', ForgeService],
-    ['@deepseek-ai/dsh-experimental-forge-github', ForgeGitHub],
-    ['@deepseek-ai/dsh-experimental-forge-session', ForgeSessionService],
+    ['@noharness/llm', LlmRuntime],
+    ['@noharness/session', SessionStore],
+    ['@noharness/session-projection', SessionProjectionRegistry],
+    ['@noharness/system-prompt', SystemPrompt],
+    ['@noharness/fs-local', LocalFileSystem],
+    ['@noharness/working-directory', WorkingDirectoryService],
+    ['@noharness/tools', ToolRuntime],
+    ...mode === 'native' ? [['@noharness/tool-executor-native', NativeToolExecutor] as const] : PTC_MODULES,
+    ['@noharness/agent', AgentRegistry],
+    ['@noharness/agent-loop', AgentLoop],
+    ['@noharness/subprocess-local', LocalSubprocessRuntime],
+    ['@noharness/shell-env', ShellEnv],
+    ['@noharness/bash-local', LocalBashExecutor],
+    ['@noharness/tool-bash', ToolBash],
+    ['@noharness/experimental-forge', ForgeService],
+    ['@noharness/experimental-forge-github', ForgeGitHub],
+    ['@noharness/experimental-forge-session', ForgeSessionService],
   ])
   const configs: Record<string, readonly string[]> = {
-    '@deepseek-ai/dsh-agent-loop': ['agents: []'],
-    '@deepseek-ai/dsh-shell-env': [`dshHome: ${JSON.stringify(join(root, 'dsh-home'))}`],
-    '@deepseek-ai/dsh-sandbox-policy': ['mode: danger-full-access'],
-    '@deepseek-ai/dsh-bash-local': ['timeoutMs: 20000'],
-    '@deepseek-ai/dsh-experimental-forge': ['activeIntervalMs: 600000', 'idleIntervalMs: 600000'],
-    '@deepseek-ai/dsh-experimental-forge-github': [`ghCommand: ${JSON.stringify(join(bin, 'gh'))}`],
-    '@deepseek-ai/dsh-experimental-forge-session': ['discoveryTimeoutMs: 20000'],
+    '@noharness/agent-loop': ['agents: []'],
+    '@noharness/shell-env': [`nhsHome: ${JSON.stringify(join(root, 'nhs-home'))}`],
+    '@noharness/sandbox-policy': ['mode: danger-full-access'],
+    '@noharness/bash-local': ['timeoutMs: 20000'],
+    '@noharness/experimental-forge': ['activeIntervalMs: 600000', 'idleIntervalMs: 600000'],
+    '@noharness/experimental-forge-github': [`ghCommand: ${JSON.stringify(join(bin, 'gh'))}`],
+    '@noharness/experimental-forge-session': ['discoveryTimeoutMs: 20000'],
   }
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [...modules.keys()].flatMap(name => [
@@ -256,7 +256,7 @@ async function observerFixture() {
     isError: false, content: [{ type: 'text', text: '{"number":9}' }],
     value: { kind: 'foreground', cwd: root, exitCode: 0, signal: null, timedOut: false, aborted: false },
   }
-  const entry = [...ctx.loader.entries()].find(candidate => candidate.options.name === 'cordis:@deepseek-ai/dsh-experimental-forge-session')!
+  const entry = [...ctx.loader.entries()].find(candidate => candidate.options.name === 'cordis:@noharness/experimental-forge-session')!
   const records = () => handle.agent.session.snapshotEvents().flatMap((event) => {
     const record = pluginRecordOf(event)
     return record?.type === 'plugin:forge-session/binding' ? [record.data] : []
@@ -433,7 +433,7 @@ suite('forge-session through a real cordis.yml Loader composition', () => {
       ? [entry.update.snapshot.title, entry.update.snapshot.checksRollup]
       : null)).toEqual([['Change 7', 'pending'], ['Change 8', 'success'], ['Change 9', 'success']]) })
 
-    const entry = [...ctx.loader.entries()].find(candidate => candidate.options.name === 'cordis:@deepseek-ai/dsh-experimental-forge-session')
+    const entry = [...ctx.loader.entries()].find(candidate => candidate.options.name === 'cordis:@noharness/experimental-forge-session')
     const row = ctx.sessionProjections.checkpoint(agent.session).forgeChangeRequests
     await entry?.fiber?.dispose()
     expect(ctx.sessionProjections.checkpoint(agent.session)).toHaveProperty('forgeChangeRequests', row)

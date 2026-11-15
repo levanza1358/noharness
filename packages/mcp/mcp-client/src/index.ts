@@ -10,13 +10,13 @@
  * disposing the old instance and creating a new one; identical `serverName`
  * reproduces identical public tool names.
  *
- * @module @deepseek-ai/dsh-mcp-client
+ * @module @noharness/mcp-client
  */
 
-import { Context, type Fiber } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import { scopeOf } from '@deepseek-ai/dsh-scope'
-import { MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
+import { Context, type Fiber } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import { scopeOf } from '@noharness/scope'
+import { MAX_TIMER_DELAY_MS } from '@noharness/timeout'
 import { DEFAULT_MAX_INSTRUCTION_BYTES, RECONNECT_DEFAULTS, resolveReconnectPolicy, startConnection } from './connection.ts'
 
 export { resolveReconnectPolicy } from './connection.ts'
@@ -25,7 +25,7 @@ import { registerServerContext } from './server-context.ts'
 import { connectionStatusIn, registerStatusCell } from './status.ts'
 import type { McpConnectionStatusHandle } from './status.ts'
 // Side-effect type import: declaration-merges `ctx.tools` onto Context.
-import type {} from '@deepseek-ai/dsh-tools'
+import type {} from '@noharness/tools'
 
 export { createMcpToolDefinition } from './tools.ts'
 export { McpLocalError, McpToolError } from './diagnostic.ts'
@@ -147,7 +147,7 @@ type ConfigInput = StdioConfigInput | StreamableHttpConfigInput
 
 /**
  * Reconnect-policy section schema, exported so a manager composing mcp-client
- * instances (`dsh-mcp-manager`) validates the same fields, defaults, and
+ * instances (`nhs-mcp-manager`) validates the same fields, defaults, and
  * bounds without restating them.
  */
 export const ReconnectSchema: z<ReconnectConfig> = z.object({

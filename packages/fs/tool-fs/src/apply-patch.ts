@@ -1,6 +1,6 @@
 /** Multi-file patch tool over the guarded patch executor. */
-import type { Context } from '@deepseek-ai/cordis'
-import { defineTool } from '@deepseek-ai/dsh-tools'
+import type { Context } from '@noharness/cordis'
+import { defineTool } from '@noharness/tools'
 import { executePatch } from './patch/index.ts'
 import { patchOutputSchema, patchToolValue, renderPatch, patchPresentationMeta } from './apply-patch-output.ts'
 import { presentPatchCall, presentPatchResult } from './apply-patch-presentation.ts'

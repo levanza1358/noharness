@@ -3,14 +3,14 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Storage from '@deepseek-ai/dsh-storage'
-import { DomainFacility } from '@deepseek-ai/dsh-storage-domain'
-import { JsonStorageBackend } from '@deepseek-ai/dsh-storage-json'
+import { Context } from '@noharness/cordis'
+import Storage from '@noharness/storage'
+import { DomainFacility } from '@noharness/storage-domain'
+import { JsonStorageBackend } from '@noharness/storage-json'
 import { scheduleDomain } from '../src/storage.ts'
 import { createAtScheduleRecord } from '../src/domain.ts'
 import type { ScheduleId } from '../src/types.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const roots: string[] = []
 const contexts: Context[] = []
@@ -20,7 +20,7 @@ afterEach(async () => {
 })
 
 async function open() {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-schedule-malformed-')); roots.push(root)
+  const root = await mkdtemp(join(tmpdir(), 'nhs-schedule-malformed-')); roots.push(root)
   const ctx = new Context(); contexts.push(ctx)
   await ctx.plugin(Storage)
   const backend = new JsonStorageBackend(root)

@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { GenerateOptions, StreamChunk } from '@deepseek-ai/dsh-llm'
-import { LlmAdapter } from '@deepseek-ai/dsh-llm'
-import type {} from '@deepseek-ai/dsh-agent-default-model'
+import type { GenerateOptions, StreamChunk } from '@noharness/llm'
+import { LlmAdapter } from '@noharness/llm'
+import type {} from '@noharness/agent-default-model'
 import {
   assertFixtureInventory,
   captureStableAria,

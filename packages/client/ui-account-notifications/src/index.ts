@@ -1,6 +1,6 @@
 /** Publishes public configuration for the account notification client plugin. */
-import type { Context } from '@deepseek-ai/cordis'
-import type {} from '@deepseek-ai/dsh-host-webserver'
+import type { Context } from '@noharness/cordis'
+import type {} from '@noharness/host-webserver'
 import { Config, NOTIFICATIONS_CONFIG_GLOBAL } from './config.ts'
 export { Config } from './config.ts'
 

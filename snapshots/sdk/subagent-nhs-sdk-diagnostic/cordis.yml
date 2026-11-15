@@ -1,0 +1,65 @@
+# TypeScript SDK snapshot patch for automatic NHS SDK failure notices.
+
+- id: skill-filesystem
+  name: '@noharness/skill-filesystem'
+  config:
+    includeDefaultRoots: false
+
+- id: llm-deepseek
+  name: '@noharness/llm-deepseek-api-key'
+  config:
+    thinking: enabled
+    reasoningEffort: max
+
+- id: session-persistence-jsonl
+  name: '@noharness/session-persistence-jsonl'
+  config:
+    root: !!js nhsHomePath('sessions')
+    compression: !!js "process.env.NHS_SNAPSHOT === undefined ? 'zstd' : 'none'"
+
+- id: session-log-deepseek
+  name: '@noharness/session-log-deepseek'
+  config:
+    enabled: true
+
+- insert:
+    - id: subagent-nhs-sdk-diagnostic
+      name: '@noharness/subagent-nhs-sdk'
+      config:
+        providerName: nhs-sdk-diagnostic
+        profile: sdk
+        patches:
+          - !!js process.env.NHS_TEST_CHILD_PATCH
+        nhsHome: !!js nhsHomePath('children/first')
+        provider: mock
+        model: mock-echo
+        env:
+          NHS_TELEMETRY_DISABLED: '1'
+          NHS_TEST_CHILD_FAILURE: '1'
+    - id: tool-subagent-nhs-sdk-diagnostic
+      name: '@noharness/tool-subagent'
+      config:
+        provider: nhs-sdk-diagnostic
+        toolName: subagent_nhs_sdk
+        maxDepth: provider-managed
+    - id: subagent-nhs-sdk-diagnostic-second
+      name: '@noharness/subagent-nhs-sdk'
+      config:
+        providerName: nhs-sdk-diagnostic-second
+        profile: sdk
+        patches:
+          - !!js process.env.NHS_TEST_CHILD_PATCH
+        nhsHome: !!js nhsHomePath('children/second')
+        provider: mock
+        model: mock-echo
+        env:
+          NHS_TELEMETRY_DISABLED: '1'
+          NHS_TEST_CHILD_FAILURE: '1'
+    - id: tool-subagent-nhs-sdk-diagnostic-second
+      name: '@noharness/tool-subagent'
+      config:
+        provider: nhs-sdk-diagnostic-second
+        toolName: subagent_nhs_sdk_second
+        maxDepth: provider-managed
+    - id: await-external-subagents
+      name: '../../../packages/test-support/session-snapshot/tests/fixtures/subagent-settlement-barrier.ts'

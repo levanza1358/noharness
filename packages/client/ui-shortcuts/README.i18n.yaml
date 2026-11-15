@@ -5,33 +5,33 @@
 /:
   en: 425afaf83c04db08
   zh: d9e6db1541ba0911
-/deepseek-ai-dsh-client-ui-shortcuts:
-  en: 736bacbd5c6483a5
-  zh: 1c49a7b2c6141a74
-/deepseek-ai-dsh-client-ui-shortcuts/summary:
+/noharness-client-ui-shortcuts:
+  en: a3088ae775ecf737
+  zh: bfb3658641c26979
+/noharness-client-ui-shortcuts/summary:
   en: 17b5fa1a23fa2756
   zh: ec6223b8d2a090f0
-/deepseek-ai-dsh-client-ui-shortcuts/table-of-contents:
+/noharness-client-ui-shortcuts/table-of-contents:
   en: d152484eb41ac6b4
   zh: 0cd57b7b8d8c9b59
-/deepseek-ai-dsh-client-ui-shortcuts/use-this-package:
-  en: 84a109505e902f0a
-  zh: 87053c34cf4da672
-/deepseek-ai-dsh-client-ui-shortcuts/understand-the-implementation:
+/noharness-client-ui-shortcuts/use-this-package:
+  en: 0b92f73c323be441
+  zh: 965c991febfab588
+/noharness-client-ui-shortcuts/understand-the-implementation:
   en: f56f2610e7258825
   zh: 249d7cdd55c57166
-/deepseek-ai-dsh-client-ui-shortcuts/further-exploration:
-  en: 8fe02ef5221e434d
-  zh: 3aabfcfeb6d49a0e
-/deepseek-ai-dsh-client-ui-shortcuts/model-experience:
+/noharness-client-ui-shortcuts/further-exploration:
+  en: 26e47754984b47d7
+  zh: 78e6eb2ef02b3107
+/noharness-client-ui-shortcuts/model-experience:
   en: 3120df665299c634
   zh: e2dc75ed76d271bc
-/deepseek-ai-dsh-client-ui-shortcuts/model-experience/kv-cache-effect:
+/noharness-client-ui-shortcuts/model-experience/kv-cache-effect:
   en: ca75c51c89c2c9b0
   zh: a0e9f8d52b4b62ee
-/deepseek-ai-dsh-client-ui-shortcuts/known-limitations-and-deferred-work:
-  en: 4c1ee388c3bbb5b0
-  zh: f3e5d73036a449b5
-/deepseek-ai-dsh-client-ui-shortcuts/known-limitations-and-deferred-work/dev-note:
+/noharness-client-ui-shortcuts/known-limitations-and-deferred-work:
+  en: f02294e62f446aaf
+  zh: f88b5d5387b34d76
+/noharness-client-ui-shortcuts/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: e88aeb617ffb74ea

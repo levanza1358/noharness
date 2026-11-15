@@ -3,22 +3,22 @@
  * preparation, input/token/time bounds, cancellation, exact auxiliary request
  * logging, and stream assembly. Title wording, length targets, reasoning
  * selection, and output interpretation belong to each provider.
- * @module @deepseek-ai/dsh-session-title-llm
+ * @module @noharness/session-title-llm
  */
 
-declare module '@deepseek-ai/dsh-llm/types' {
+declare module '@noharness/llm/types' {
   interface LlmRequestPurposeMap {
     'session-title': true
   }
 }
 
-import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import { createUserMessage, BlockAssembler } from '@deepseek-ai/dsh-llm'
-import type { ContextFormed } from '@deepseek-ai/dsh-llm'
-declare module '@deepseek-ai/dsh-llm' {
+import type { Context } from '@noharness/cordis'
+import z from '@noharness/schemastery'
+import { createUserMessage, BlockAssembler } from '@noharness/llm'
+import type { ContextFormed } from '@noharness/llm'
+declare module '@noharness/llm' {
   interface MessageSourceMap {
-    'dsh-session-title-llm': { kind: 'dsh-session-title-llm' } & ContextFormed
+    'nhs-session-title-llm': { kind: 'nhs-session-title-llm' } & ContextFormed
   }
 }
 
@@ -29,15 +29,15 @@ import type {
   LlmResolvedModelInfo,
   Message,
   ReasoningEffortId,
-} from '@deepseek-ai/dsh-llm'
-import { deadline, MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
-import { assertNever, deepFreeze } from '@deepseek-ai/dsh-util-values'
-import type { SessionSeq } from '@deepseek-ai/dsh-session'
-import type { SessionTitleProviderId } from '@deepseek-ai/dsh-session-title/types'
+} from '@noharness/llm'
+import { deadline, MAX_TIMER_DELAY_MS } from '@noharness/timeout'
+import { assertNever, deepFreeze } from '@noharness/util-values'
+import type { SessionSeq } from '@noharness/session'
+import type { SessionTitleProviderId } from '@noharness/session-title/types'
 import type {
   SessionTitleModelIdentity,
   SessionTitleProviderRequest,
-} from '@deepseek-ai/dsh-session-title'
+} from '@noharness/session-title'
 
 /** Exact model-visible request recorded before one auxiliary title dispatch. */
 export interface SessionTitleLlmRequestEventData {
@@ -57,7 +57,7 @@ export interface SessionTitleLlmRequestEventData {
   readonly reasoningEffort?: ReasoningEffortId
 }
 
-declare module '@deepseek-ai/dsh-session/types' {
+declare module '@noharness/session/types' {
   interface SessionEventMap {
     /** Log-only pre-dispatch record of one session-title model request. */
     'session/title-llm-request': SessionTitleLlmRequestEventData
@@ -251,7 +251,7 @@ export async function executeSessionTitleLlm(
   const route = resolveRoute(config, request)
   const messages: Message[] = [createUserMessage({
     content: [{ type: 'text', text: prepared.input }],
-    source: { kind: 'dsh-session-title-llm' },
+    source: { kind: 'nhs-session-title-llm' },
   })]
   using callDeadline = deadline(request.signal, config.timeoutMs, SESSION_TITLE_TIMEOUT_CODE)
   const maxTokens = config.maxOutputTokens

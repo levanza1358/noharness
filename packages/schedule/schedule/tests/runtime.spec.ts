@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import { brandString } from '@deepseek-ai/dsh-brand'
-import type { MessageId } from '@deepseek-ai/dsh-llm/types'
-import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
+import type { Agent } from '@noharness/agent'
+import type { SessionId } from '@noharness/session'
+import { brandString } from '@noharness/brand'
+import type { MessageId } from '@noharness/llm/types'
+import { RemoteError } from '@noharness/typert-protocol'
 import { ScheduleRuntime, MAX_TIMER_DELAY_MS } from '../src/runtime.ts'
 import {
   createAfterScheduleRecord,

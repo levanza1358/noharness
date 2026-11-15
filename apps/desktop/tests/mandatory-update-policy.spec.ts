@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { AccountClientMetadata } from '@deepseek-ai/dsh-deepseek-account/types'
+import type { AccountClientMetadata } from '@noharness/deepseek-account/types'
 import { DesktopMandatoryUpdatePolicy, desktopPolicyPage, resolveDesktopPolicyConfig, type DesktopPolicyState } from '../src/mandatory-update-policy.ts'
 
 const identity = { platform: 'win32', arch: 'x64', channel: 'nightly', bundledDshVersion: '0.1.5-rc.1' } as const
@@ -62,7 +62,7 @@ describe('mandatory update policy', () => {
     expect(options).toMatchObject({ credentials: 'omit', cache: 'no-store', redirect: 'error', headers: {
       'x-client-platform': 'desktop-win', 'x-client-version': '1.2.3', 'x-client-bundle-id': '',
       'x-client-locale': 'zh_CN', 'x-client-timezone-offset': '28800', 'x-client-arch': 'x64', 'x-client-update-channel': 'nightly',
-      'x-client-bundled-dsh-version': '0.1.5-rc.1',
+      'x-client-bundled-nhs-version': '0.1.5-rc.1',
     } })
   })
 

@@ -4,20 +4,20 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import * as JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import Storage from '@deepseek-ai/dsh-storage'
-import * as StorageDomain from '@deepseek-ai/dsh-storage-domain'
-import * as StorageJson from '@deepseek-ai/dsh-storage-json'
+import { Context } from '@noharness/cordis'
+import type { Agent } from '@noharness/agent'
+import AgentLoop from '@noharness/agent-loop'
+import { mountAgentLoopTestDependencies } from '@noharness/agent-loop-testkit'
+import type { SessionId } from '@noharness/session'
+import * as JsonlSessionPersistence from '@noharness/session-persistence-jsonl'
+import Storage from '@noharness/storage'
+import * as StorageDomain from '@noharness/storage-domain'
+import * as StorageJson from '@noharness/storage-json'
 import { createAfterScheduleRecord } from '../src/domain.ts'
 import type { ScheduleId } from '../src/types.ts'
 import ScheduleService from '../src/index.ts'
 import { boundTask, seedTasks } from './harness.ts'
-import { brandString } from '@deepseek-ai/dsh-brand'
+import { brandString } from '@noharness/brand'
 
 const roots: string[] = []
 const contexts: Context[] = []
@@ -37,7 +37,7 @@ async function core(persistenceRoot: string) {
 
 describe('due delivery during Agent creation', () => {
   it('enqueues the reminder without starting a turn before every creation listener finishes', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-schedule-serial-'))
+    const root = await mkdtemp(join(tmpdir(), 'nhs-schedule-serial-'))
     roots.push(root)
     const ctx = await core(join(root, 'sessions'))
     const warnings = vi.spyOn(ctx.logger, 'warn')

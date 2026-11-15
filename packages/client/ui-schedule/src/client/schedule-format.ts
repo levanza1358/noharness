@@ -339,7 +339,7 @@ export function formatScheduleFrequency(
  * cards use.
  *
  * The month is a locale-owned name, not a zero-padded number: `en` renders
- * `Dec 31, 9:00 AM` and `zh-CN` renders `12月31日 09:00`, so neither locale can
+ * Dec 31, 9:00 AM and a Japanese sample, so neither locale can
  * produce a `12-31` string. The year appears only when the instant falls outside
  * the current year in the displayed zone, so a same-year target or delivery
  * stays compact while an older record still dates itself.
@@ -370,26 +370,19 @@ export function formatScheduleNextRun(scheduledAt: string, locale: string, timeZ
 }
 
 /**
- * Languages whose absolute date reads the year. The design pins English and
- * Chinese (`en` states it, `zh` reads month and day only), and every other
- * language joins English: silently dropping the year would hide the year of a
+ * Languages whose absolute date omits the year. Empty: every supported
+ * language states it, because silently dropping the year would hide it for a
  * target that can sit months or a year away.
  */
-const YEAR_LANGUAGES: readonly string[] = ['en']
-const NO_YEAR_LANGUAGES: readonly string[] = ['zh']
-
+const NO_YEAR_LANGUAGES: readonly string[] = []
 /**
  * Whether one locale's absolute date states the year.
  * @param locale - BCP-47 locale tag.
- * @returns whether the year is stated; an unlisted language states it.
+ * @returns whether the year is stated; every supported language states it.
  */
 function statesYear(locale: string): boolean {
   const language = locale.toLowerCase().replace(/-.*$/, '')
-  if (YEAR_LANGUAGES.includes(language)) return true
-  if (NO_YEAR_LANGUAGES.includes(language)) return false
-  // Unlisted languages take the stated default, so no language silently loses
-  // the year for a target that can sit months or a year away.
-  return true
+  return !NO_YEAR_LANGUAGES.includes(language)
 }
 
 /**
@@ -399,7 +392,7 @@ function statesYear(locale: string): boolean {
  * reader's zone: the instant is the same one, and the reader compares it with
  * their own clock. The locale owns the month name, the field order, and the
  * separators, so the stamp reads `Sep 19, 2026, 15:51` in English and
- * `9月19日 15:51` in Chinese.
+ * the same date and time in Japanese.
  *
  * Whether a bare date reads the year is a per-language typographic choice, and
  * the languages the design pins are stated in {@link YEAR_LANGUAGES} and
@@ -429,7 +422,7 @@ export function formatScheduleAbsolute(scheduledAt: string, locale: string): str
  *
  * A delivery floor lasts from one minute to one week, so the clock reads to the
  * second and the month and day appear only for another day: `15:51:37` today,
- * and `Oct 20, 15:51:37` in English or `10月20日 15:51:37` in Chinese otherwise.
+ * and Oct 20, 15:51:37 in English or the same date in Japanese otherwise.
  * @param at - epoch milliseconds when the action becomes available.
  * @param locale - BCP-47 locale owning the month name, field order, and clock.
  * @param now - current epoch milliseconds.

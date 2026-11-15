@@ -9,12 +9,11 @@ type CronWeekdayKey = `frequency.weekday.${1 | 2 | 3 | 4 | 5 | 6 | 7}`
 export type CronDescriptionKey =
   | CronWeekdayKey
   | 'cron.list.join'
-  | 'cron.part.join'
+  | 'cron.day.everyDay'
   | 'cron.weekday.name'
   | 'cron.weekday.range'
   | 'cron.months'
   | 'cron.day.every'
-  | 'cron.day.weekdays'
   | 'cron.day.monthDays'
   | 'cron.day.both'
   | 'cron.day.bothStarred'
@@ -202,12 +201,12 @@ function cronDayText(
   // phrase to the intersection. A field covering every value adds nothing to that
   // intersection (and covers everything in a union).
   if (dayOfMonth.starred || dayOfWeek.starred) {
-    if (dayOfMonth.full && dayOfWeek.full) return { everyDay: months === '', text: t('cron.day.every', { months }) }
+    if (dayOfMonth.full && dayOfWeek.full) return { everyDay: months === '', text: t(months === '' ? 'cron.day.everyDay' : 'cron.day.every', { months }) }
     if (dayOfMonth.full) return { everyDay: false, text: t('cron.day.weekdays', params) }
     if (dayOfWeek.full) return { everyDay: false, text: t('cron.day.monthDays', params) }
     return { everyDay: false, text: t('cron.day.bothStarred', params) }
   }
-  if (dayOfMonth.full || dayOfWeek.full) return { everyDay: months === '', text: t('cron.day.every', { months }) }
+  if (dayOfMonth.full || dayOfWeek.full) return { everyDay: months === '', text: t(months === '' ? 'cron.day.everyDay' : 'cron.day.every', { months }) }
   return { everyDay: false, text: t('cron.day.both', params) }
 }
 
@@ -294,7 +293,7 @@ function cronTimeText(
   }
   if (step !== undefined && step >= 2) {
     const text = t('cron.time.hoursEveryMinutes', { hours, step })
-    return { interval: false, text, joined: text }
+    return { interval: false, text: ` ${text}`, joined: text }
   }
   // A zero minute over an evenly stepped hour set repeats whole hours: `0 */2 * * *`
   // reads as `Every 2 hours` rather than naming its zero minute.

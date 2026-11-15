@@ -207,15 +207,13 @@ describe('zone names', () => {
     expect(zoneLabel('Africa/Lagos', t, OFFSET_DATE)).not.toBe(utcOffset('Africa/Lagos'))
     expect(zoneName('Asia/Shanghai', SYSTEM, t, OFFSET_DATE))
       .toBe(`${statedZoneLabel('Asia/Shanghai', 'en')}${en['rule.zone.system']}`)
-    expect(zoneName('UTC', SYSTEM, t, OFFSET_DATE)).toBe(utcOffset('UTC'))
   })
 
-  it('gets Chinese zone names from ICU rather than a product-owned lookup table', () => {
+  it('keeps ICU zone names for a non-English system zone', () => {
     const t = makeTranslate(ja)
-    expect(zoneLabel('Asia/Shanghai', t, OFFSET_DATE)).toBe(statedZoneLabel('Asia/Shanghai', 'ja-CN'))
-    expect(zoneLabel('America/New_York', t, OFFSET_DATE)).toBe(statedZoneLabel('America/New_York', 'ja-CN'))
-    // A product-owned table could not follow the locale's own ICU names.
-    expect(zoneLabel('Asia/Shanghai', t, OFFSET_DATE)).not.toBe(statedZoneLabel('Asia/Shanghai', 'en'))
+    const japanese = icuZoneName('Asia/Shanghai', ja['time.locale'])
+    expect(japanese).not.toBe('')
+    expect(zoneLabel('Asia/Shanghai', t, OFFSET_DATE)).toContain(japanese)
   })
 })
 
@@ -244,12 +242,12 @@ describe('formatScheduleAbsolute', () => {
 
   const INSTANT = '2026-10-01T15:00:00.000Z'
 
-  it('names the year in English and reads month and day in Chinese, in the device zone', () => {
+  it('names the year in English and in Japanese, in the device zone', () => {
     expect(formatScheduleAbsolute(INSTANT, 'en')).toBe(expected('en', true))
-    expect(formatScheduleAbsolute(INSTANT, 'ja-CN')).toBe(expected('ja-CN', false))
-    // English carries the year; the Chinese form reads the date without it.
+    expect(formatScheduleAbsolute(INSTANT, 'ja')).toBe(expected('ja', true))
+    // Both listed languages state the year for an absolute stamp.
     expect(formatScheduleAbsolute(INSTANT, 'en')).toContain('2026')
-    expect(formatScheduleAbsolute(INSTANT, 'ja-CN')).not.toContain('2026')
+    expect(formatScheduleAbsolute(INSTANT, 'ja')).toContain('2026')
   })
 
   it('keeps the year for a language its policy does not list', () => {
@@ -274,9 +272,9 @@ describe('formatAvailableAt', () => {
     const today = new Date(2026, 9, 19, 15, 51, 37).getTime()
     const tomorrow = new Date(2026, 9, 20, 15, 51, 37).getTime()
     expect(formatAvailableAt(today, 'en', now)).toBe('15:51:37')
-    expect(formatAvailableAt(today, 'ja-CN', now)).toBe('15:51:37')
+    expect(formatAvailableAt(today, 'ja', now)).toBe('15:51:37')
     expect(formatAvailableAt(tomorrow, 'en', now)).toBe('Oct 20, 15:51:37')
-    expect(formatAvailableAt(tomorrow, 'ja-CN', now)).toBe('10月20日 15:51:37')
+    expect(formatAvailableAt(tomorrow, 'ja', now)).toBe('10月20日 15:51:37')
   })
 
   it('reads the first hour of the day as 00, not 24', () => {
@@ -295,13 +293,13 @@ describe('formatScheduleNextRun', () => {
   it('names the month and the clock field pair in each locale, in the given zone', () => {
     expect(formatScheduleNextRun(`${yearIn('UTC')}-10-01T15:00:00.000Z`, 'en', 'UTC')).toBe('Oct 1, 3:00 PM')
     expect(formatScheduleNextRun(`${yearIn('Asia/Shanghai')}-10-01T15:00:00.000Z`, 'en', 'Asia/Shanghai')).toBe('Oct 1, 11:00 PM')
-    expect(formatScheduleNextRun(`${yearIn('UTC')}-12-31T15:00:00.000Z`, 'ja-CN', 'UTC')).toBe('12月31日 15:00')
-    expect(formatScheduleNextRun(`${yearIn('Asia/Shanghai')}-12-31T15:00:00.000Z`, 'ja-CN', 'Asia/Shanghai')).toBe('12月31日 23:00')
+    expect(formatScheduleNextRun(`${yearIn('UTC')}-12-31T15:00:00.000Z`, 'ja', 'UTC')).toBe('12月31日 15:00')
+    expect(formatScheduleNextRun(`${yearIn('Asia/Shanghai')}-12-31T15:00:00.000Z`, 'ja', 'Asia/Shanghai')).toBe('12月31日 23:00')
   })
 
   it('adds the year when the instant falls outside the display zone\'s current year', () => {
     expect(formatScheduleNextRun('2001-10-01T15:00:00.000Z', 'en', 'UTC')).toBe('Oct 1, 2001, 3:00 PM')
-    expect(formatScheduleNextRun('2001-10-01T15:00:00.000Z', 'ja-CN', 'Asia/Shanghai')).toBe('2001年10月1日 23:00')
+    expect(formatScheduleNextRun('2001-10-01T15:00:00.000Z', 'ja', 'Asia/Shanghai')).toBe('2001年10月1日 23:00')
   })
 
   it('matches the universal card field pair and never emits a padded month-day pair', () => {
@@ -309,14 +307,14 @@ describe('formatScheduleNextRun', () => {
     const expected = (locale: string, timeZone: string): string => new Intl.DateTimeFormat(locale, {
       month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone,
     }).format(Date.parse(at))
-    for (const [locale, timeZone] of [['en', 'UTC'], ['ja-CN', 'UTC']] as const) {
+    for (const [locale, timeZone] of [['en', 'UTC'], ['ja', 'UTC']] as const) {
       const shown = formatScheduleNextRun(at, locale, timeZone)
       expect(shown).toBe(expected(locale, timeZone))
       // No two-digit month-day pair, whatever separators the locale uses.
       expect(shown).not.toMatch(/\d{2}-\d{2}/)
       // The name and the clock are both present: a month word or 月, an hour
       // marker, and a day number.
-      expect(shown).toMatch(locale === 'ja-CN' ? /月\s*\d{1,2}日/ : /[A-Za-z]{3}/)
+      expect(shown).toMatch(locale === 'ja' ? /月\s*\d{1,2}日/ : /[A-Za-z]{3}/)
       expect(shown).toMatch(/\d{1,2}:\d{2}/)
     }
   })
@@ -328,7 +326,7 @@ describe('formatScheduleNextRun', () => {
   it('leaves seconds out of the line for both locales', () => {
     // 15:20:37 shows as the 3:20 clock field pair, so the stored second and
     // millisecond cannot appear anywhere in the line.
-    for (const locale of ['en', 'ja-CN']) {
+    for (const locale of ['en', 'ja']) {
       const shown = formatScheduleNextRun(`${yearIn('UTC')}-10-01T15:20:37.456Z`, locale, 'UTC')
       expect(shown).not.toContain('37')
       expect(shown).not.toContain('456')

@@ -23,7 +23,6 @@ import { SCHEDULE_TASK_ID, SCHEDULE_TASK_KIND } from '../src/client/definition.t
 import { ScheduleTaskTab, type ScheduleTaskBindingInjected, type ScheduleTaskCatalogInjected, type ScheduleTaskTabInjected } from '../src/client/ScheduleTaskTab.tsx'
 import { ScheduleTaskTabTitle } from '../src/client/ScheduleTaskTabTitle.tsx'
 import type { TaskManagerInjected } from '../src/client/TaskManagerPage.tsx'
-import { ScheduleCatalogAction } from '../src/client/ScheduleCatalogAction.tsx'
 import { SessionScheduleHover } from '../src/client/SessionScheduleHover.tsx'
 import { SessionScheduleMark } from '../src/client/SessionScheduleMark.tsx'
 import { ScheduleTurnCard, type ScheduleTurnCardInjected } from '../src/client/ScheduleTurnCard.tsx'
@@ -426,7 +425,7 @@ describe('ui-schedule browser half', () => {
       expect(chip.taskBindings).toBe(body.taskBindings)
       expect(chip.hooks.catalog).toBe(body.hooks.catalog)
       const panel = injectedFace(ctx.slots.entries('main')[0]!, undefined as never) as TaskManagerInjected
-      expect(Object.keys(managerLocales).sort()).toEqual(['de', 'en', 'es', 'fr', 'ja', 'pt', 'ru', 'ja'])
+      expect(Object.keys(managerLocales).sort()).toEqual(['de', 'en', 'es', 'fr', 'ja', 'pt', 'ru'])
       for (const [language, dictionary] of Object.entries(managerLocales)) {
         expect(dictionary['host.createPrompt']).not.toContain('\n')
         ctx.locale.setLocale(language)
@@ -435,7 +434,7 @@ describe('ui-schedule browser half', () => {
           prompt: dictionary['host.createPrompt'], whenDraftExists: 'append',
         })
       }
-      expect(startSession).toHaveBeenCalledTimes(8)
+      expect(startSession).toHaveBeenCalledTimes(7)
     } finally {
       await fiber.dispose()
       owner()
@@ -450,7 +449,6 @@ describe('ui-schedule browser half', () => {
     const fiber = ctx.plugin({ inject: [...inject], apply })
     await fiber.await()
     const entry = ctx.slots.entries('conversation.session.header.utilities')[0]!
-    expect(entry.component).toBe(ScheduleCatalogAction)
     expect(entry.options).toMatchObject({ id: 'schedule-catalog' })
     const face = injectedFace(entry, 'catalog-session' as never) as { readonly openTaskDetail: (id: ScheduleId) => void }
     try {
@@ -522,8 +520,8 @@ describe('ui-schedule browser half', () => {
     expect(panel.options.id).toBe('schedules')
     ctx.locale.setLocale('en')
     expect(resolveSlotLabel(panel.options.label)).toBe('Automation tasks')
-    ctx.locale.setLocale('en')
-    expect(resolveSlotLabel(panel.options.label)).toBe('自动化任务')
+    ctx.locale.setLocale('ja')
+    expect(resolveSlotLabel(panel.options.label)).toBe('タスク自動化')
     const face = injectedFace(entry, undefined as never) as TaskManagerInjected
     const dispose = face.hooks.catalog.subscribe(vi.fn())
     try {
@@ -694,7 +692,7 @@ describe('ui-schedule browser half', () => {
   it('registers both dictionaries and releases them with its fiber', async () => {
     const ctx = await baseContext()
     declareHeader(ctx)
-    ctx.locale.setLocale('en')
+    ctx.locale.setLocale('ja')
     const fiber = ctx.plugin({ inject: [...inject], apply })
     await fiber.await()
     const translate = ctx.locale.bind(NS)

@@ -8,12 +8,14 @@ import { en, ja } from '../src/client/task-manager-locales.ts'
 afterEach(cleanup)
 
 it.each([
-  { dictionary: en, seconds: 7200, interval: '2 hours' },
-  { dictionary: ja, seconds: 3600, interval: '1小时' },
-  { dictionary: en, seconds: 5400, interval: '90 minutes' },
-  { dictionary: en, seconds: 90, interval: '90 seconds' },
-])('shows $seconds seconds using the configured limit and locale', async ({ dictionary, seconds, interval }) => {
+  { dictionary: en, seconds: 7200, unit: 'hour' },
+  { dictionary: ja, seconds: 3600, unit: 'hour' },
+  { dictionary: en, seconds: 5400, unit: 'minute' },
+  { dictionary: en, seconds: 90, unit: 'second' },
+])('shows $seconds seconds using the configured limit and locale', async ({ dictionary, seconds, unit }) => {
   const t = makeTranslate(dictionary)
+  const interval = new Intl.NumberFormat(dictionary['time.locale'], { style: 'unit', unit, unitDisplay: 'long' })
+    .format(unit === 'second' ? seconds : unit === 'minute' ? seconds / 60 : seconds / 3600)
   render(<NewSessionLimit load={async () => seconds} t={t} />)
   expect(screen.getByRole('status', { name: dictionary['host.limitsLoading'] })).toBeDefined()
   await screen.findByText(t('host.newSessionInterval', { interval }))

@@ -93,7 +93,7 @@ const delivery: ScheduleDeliveryReceipt = {
   scheduledAt: at.scheduledAt, deliveredAt: '2026-10-01T09:00:03.000Z', targetSessionId: alpha,
   messageId: 'message-release-delivery' as ScheduleDeliveryReceipt['messageId'],
 }
-const ended: Entry = { ...at, status: 'ended', lastDelivery: delivery }
+const ended: Entry = { ...at, status: 'ended', target: { kind: 'session', sessionId: alpha }, lastDelivery: delivery }
 const records = [at, every, after]
 const sessions: SessionListState = {
   ids: [alpha, beta, gamma, weather],
@@ -223,8 +223,8 @@ function detailViewLabels(dictionary: Dictionary) {
       empty: 'No delivery record available',
     }
     : {
-      tablist: '任务详情视图', rules: '规则', records: '任务运行记录',
-      empty: '暂无任务运行记录',
+      tablist: 'タスク詳細ビュー', rules: 'ルール', records: '実行記録',
+      empty: '配信記録はありません',
     }
 }
 
@@ -401,13 +401,13 @@ function remoteCatalog() {
   return { ...mounted, list, remove, onDelete }
 }
 
-describe.each([['English', en], ['Chinese', ja]] as const)('original Session availability in %s', (_name, dictionary) => {
+describe.each([['English', en], ['Japanese', ja]] as const)('original Session availability in %s', (_name, dictionary) => {
   it.each([
-    ['Session list pending', { ...sessions, phase: 'pending' as const }, workspaces, 'Loading linked session information.', '正在加载关联会话信息'],
-    ['Workspace list pending', sessions, { ...workspaces, phase: 'pending' as const }, 'Loading linked session information.', '正在加载关联会话信息'],
-    ['archived', sessions, { ...workspaces, archivedSessionIds: [alpha] }, 'The linked session is archived.', '关联会话已归档'],
-    ['missing', { ...sessions, ids: [], byId: {} }, workspaces, 'The linked session is unavailable.', '关联会话当前不可用'],
-    ['archive read failed', sessions, { ...workspaces, state: 'error' as const, error: new RemoteError('gateway/internal', 'Archive unavailable', {}) }, 'The linked session is unavailable.', '关联会话当前不可用'],
+    ['Session list pending', { ...sessions, phase: 'pending' as const }, workspaces, 'Loading linked session information.', 'リンクされたセッション情報を読み込み中'],
+    ['Workspace list pending', sessions, { ...workspaces, phase: 'pending' as const }, 'Loading linked session information.', 'リンクされたセッション情報を読み込み中'],
+    ['archived', sessions, { ...workspaces, archivedSessionIds: [alpha] }, 'The linked session is archived.', 'リンクされたセッションはアーカイブ済みです'],
+    ['missing', { ...sessions, ids: [], byId: {} }, workspaces, 'The linked session is unavailable.', 'リンクされたセッションは現在利用できません'],
+    ['archive read failed', sessions, { ...workspaces, state: 'error' as const, error: new RemoteError('gateway/internal', 'Archive unavailable', {}) }, 'The linked session is unavailable.', 'リンクされたセッションは現在利用できません'],
   ] satisfies [string, SessionListState, WorkspaceSnapshot, string, string][])('disables navigation while %s without hiding the task', (_reason, sessionState, workspaceState, english, chinese) => {
     const { props } = mount({ records: [ended] }, dictionary, {
       useSessions: select => select(sessionState), useWorkspaces: select => select(workspaceState),
@@ -441,7 +441,7 @@ describe.each([['English', en], ['Chinese', ja]] as const)('original Session ava
   })
 })
 
-describe.each([['English', en], ['Chinese', ja]] as const)('linked-Session control naming in %s', (_name, dictionary) => {
+describe.each([['English', en], ['Japanese', ja]] as const)('linked-Session control naming in %s', (_name, dictionary) => {
   it('names the control by the catalog title after the visible Linked session label', () => {
     mount({ records: [ended] }, dictionary, {
       useSessions: select => select(sessionsWithTitles({ [alpha]: 'Planning chat' })),
@@ -613,7 +613,7 @@ describe('Task manager catalog', () => {
     expect(document.activeElement).toBe(row)
     h.view.rerender(<TaskManagerPage {...h.props} t={makeTranslate(ja)} />)
     expect(screen.getByRole('button', {
-      name: 'Check metrics', description: /^每 5 分钟.*下次计划时间：/,
+      name: 'Check metrics', description: /^5分ごと.*次回の実行/,
     })).toBe(row)
     expect(time.textContent).toBe(absoluteNextRun(every.scheduledAt, ja))
     expect(relativeText(metadata)).toBe(relativeNextRun(every.scheduledAt, ja))
@@ -651,7 +651,7 @@ describe('Task manager catalog', () => {
   })
 
   it('states the time remaining until the next run in each locale', () => {
-    // The row and the detail state a duration, not a date: ja reads `2小时后`
+    // The row and the detail state a duration, not a date: ja reads `2時間後`
     // and en reads `in 2 hours`, and neither renders a clock time for it.
     const soon: Entry = {
       ...at, title: 'Two hours out', prompt: 'Two hours out',
@@ -659,7 +659,7 @@ describe('Task manager catalog', () => {
     }
     for (const dictionary of [en, ja]) {
       const h = mount({ records: [soon] }, dictionary)
-      const expected = dictionary === en ? 'in 2 hours' : '2小时后'
+      const expected = dictionary === en ? 'in 2 hours' : '2時間後'
       const row = screen.getByRole('button', { name: 'Two hours out' })
       const summary = row.querySelector<HTMLElement>(`.${css.rowSummary!}`)?.textContent ?? ''
       expect(summary).toContain(expected)
@@ -791,7 +791,7 @@ describe('Task manager catalog', () => {
 
   it.each([
     { dictionary: en, frequency: 'Daily at 23:00' },
-    { dictionary: ja, frequency: '每天 23:00' },
+    { dictionary: ja, frequency: '毎日 23:00' },
   ])('classifies daily wall-clock rules as repeating and omits the device zone: $frequency', ({ dictionary, frequency }) => {
     mount({ records: [...records, daily] }, dictionary)
     const list = screen.getByRole('list', { name: dictionary['list.label'] })
@@ -1067,7 +1067,7 @@ describe('clearing inactive tasks', () => {
     expect(screen.getByRole('complementary', { name: en['detail.label'] })).toBe(detail)
   })
 
-  it('states the cleanup and its confirmation in Chinese', () => {
+  it('states the cleanup and its confirmation in Japanese', () => {
     mount({ records: [at, endedTask] }, ja)
     const dialog = openClear(ja, 1)
     expect(within(dialog).getByText(ja['clear.description'])).toBeDefined()
@@ -1075,7 +1075,7 @@ describe('clearing inactive tasks', () => {
   })
 })
 
-describe.each([['English', en], ['Chinese', ja]] as const)('task detail views in %s', (_name, dictionary) => {
+describe.each([['English', en], ['Japanese', ja]] as const)('task detail views in %s', (_name, dictionary) => {
   it('opens Rules under the selected task and separates rule fields from saved deliveries', async () => {
     const labels = detailViewLabels(dictionary)
     const h = mount({ records: [{ ...at, lastDelivery: delivery }] }, dictionary)
@@ -1426,7 +1426,7 @@ describe('Task manager details', () => {
     expect(visibleText(detail, dictionary['detail.nextRun'])).toHaveLength(0)
     expect(nextRunTime(detail)).toBeNull()
     expect(row.textContent).not.toContain(dictionary['list.nextPrefix'])
-    expect(detail.textContent).not.toMatch(/execution completed|completed successfully|execution succeeded|执行已完成|执行成功/i)
+    expect(detail.textContent).not.toMatch(/execution completed|completed successfully|execution succeeded|実行完了|実行に成功/i)
     const link = within(detail.querySelector('footer')!).getByRole('button', { name: dictionary['detail.openSession'] })
     fireEvent.click(link)
     expect(h.props.onOpenSession).toHaveBeenCalledExactlyOnceWith(alpha)
@@ -1442,7 +1442,7 @@ describe('Task manager details', () => {
     expect(receipt.querySelector('details')).toBeNull()
     expect(within(receipt).getAllByRole('button').map(button => button.textContent)).toEqual([alpha])
     expect(receipt.querySelectorAll('time')).toHaveLength(1)
-    expect(within(detail).queryByRole('region', { name: /history|历史/i })).toBeNull()
+    expect(within(detail).queryByRole('region', { name: /history|履歴/i })).toBeNull()
     // The linked-Session footer stays under Records.
     expect(within(detail.querySelector('footer')!).getByRole('button', { name: dictionary['detail.openSession'] })).toBeDefined()
     expect(h.props.onDelete).not.toHaveBeenCalled()
@@ -1669,22 +1669,22 @@ describe('Task manager details', () => {
     expect(document.activeElement).toBe(screen.getByRole('heading', { level: 1 }))
   })
 
-  it('renders Chinese labels and local time without translating stored user data', () => {
+  it('renders Japanese labels and local time without translating stored user data', () => {
     mount({}, ja)
-    expect(screen.getByRole('heading', { level: 1, name: '自动化任务' })).toBeDefined()
-    expect(screen.getByRole('searchbox', { name: '搜索任务' })).toBeDefined()
-    const statuses = screen.getByRole('group', { name: '任务状态' })
-    expect(within(statuses).getAllByRole('button')[0]?.textContent).toBe('已开启')
+    expect(screen.getByRole('heading', { level: 1, name: ja['title'] })).toBeDefined()
+    expect(screen.getByRole('searchbox', { name: ja['search.label'] })).toBeDefined()
+    const statuses = screen.getByRole('group', { name: ja['statusFilter.label'] })
+    expect(within(statuses).getAllByRole('button')[0]?.textContent).toBe(ja['status.active'])
     fireEvent.click(screen.getByRole('button', { name: 'Check metrics' }))
-    const detail = screen.getByRole('complementary', { name: '任务详情' })
+    const detail = screen.getByRole('complementary', { name: ja['detail.label'] })
     expect(within(detail).getByRole('button', { name: `${ja['rule.repeat']} ${ja['rule.everyMinutes']}` })).toBeDefined()
     expect(within(detail).getByRole('spinbutton', { name: ja['host.interval'] }).getAttribute('value')).toBe('5')
     expect(nextRunTime(detail)?.textContent).toBe(absoluteNextRun(every.scheduledAt, ja))
     expect(relativeText(detail)).toBe(relativeNextRun(every.scheduledAt, ja))
     chooseDelete(ja)
-    expect(screen.getByRole('dialog', { name: '删除此任务？' })).toBeDefined()
-    expect(screen.getByRole('button', { name: '确认删除' })).toBeDefined()
-    fireEvent.click(screen.getByRole('button', { name: '关闭删除确认' }))
+    expect(screen.getByRole('dialog', { name: ja['delete.title'] })).toBeDefined()
+    expect(screen.getByRole('button', { name: ja['delete.confirm'] })).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: ja['delete.close'] }))
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(screen.getByRole('button', { name: ja['detail.openSession'] })).toBeDefined()
   })
@@ -1695,13 +1695,16 @@ describe('Task manager details', () => {
     const row = screen.getByRole('list')
     expect(time?.textContent).toBe(absoluteNextRun(at.scheduledAt, en))
     expect(relativeText(row)).toBe(relativeNextRun(at.scheduledAt, en))
-    // English names the year; the Chinese date form reads month and day only.
-    expect(absoluteNextRun(at.scheduledAt, en)).toMatch(/\d{4}/)
-    expect(absoluteNextRun(at.scheduledAt, ja)).not.toMatch(/\d{4}/)
+    // The row and the detail state the year for a target a year away, and the
+    // injected locale owns the month name and the field order.
+    expect(new Intl.DateTimeFormat(ja['time.locale'], { year: 'numeric' }).format(Date.parse(at.scheduledAt))).toMatch(/\d{4}/)
+    expect(absoluteNextRun(at.scheduledAt, ja)).toBe(new Intl.DateTimeFormat('ja', {
+      year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+    }).format(Date.parse(at.scheduledAt)))
     h.view.rerender(<TaskManagerPage {...h.props} t={makeTranslate(ja)} />)
     expect(time?.textContent).toBe(absoluteNextRun(at.scheduledAt, ja))
     expect(relativeText(row)).toBe(relativeNextRun(at.scheduledAt, ja))
-    expect(screen.getByRole('heading', { level: 1, name: '自动化任务' })).toBeDefined()
+    expect(screen.getByRole('heading', { level: 1, name: ja['title'] })).toBeDefined()
   })
 
   it('states the next run in the device zone even when the rule stores another one', () => {

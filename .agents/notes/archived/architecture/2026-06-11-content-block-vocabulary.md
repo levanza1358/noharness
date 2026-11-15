@@ -1,4 +1,4 @@
-# Agent Note: Provider-neutral content-block vocabulary owned by nhs-llm
+# Agent Note: Provider-neutral content-block vocabulary owned by dsh-llm
 
 Status: implemented
 Archived: 2026-09-30

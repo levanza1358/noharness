@@ -168,7 +168,7 @@ describe('chat row web body', () => {
     const globe = render(<IconGlobeOutlineRegular />).container.querySelector('svg')!.outerHTML
     const view = render(<WebRow {...rowProps(settledSearch(), 'web_search')} useContextMenu={contextMenuHook()} />)
     // Collapsed: the summary row alone, no card in the DOM.
-    expect(view.getByText('网页搜索')).toBeTruthy()
+    expect(view.getByText('Search')).toBeTruthy()
     expect(view.container.querySelector('svg')?.outerHTML).toBe(globe)
     expect(view.queryByText('Titled')).toBeNull()
     expect(view.container.querySelector('[data-web]')).toBeNull()
@@ -182,7 +182,7 @@ describe('chat row web body', () => {
 
   it('the WebRow expands to the fetch card, titled Fetch', () => {
     const view = render(<WebRow {...rowProps(settledFetch(), 'web_fetch')} useContextMenu={contextMenuHook()} />)
-    expect(view.getByText('网页获取')).toBeTruthy()
+    expect(view.getByText('Fetch')).toBeTruthy()
     expect(view.container.querySelector('[data-web]')).toBeNull()
     toggleRow(view)
     // The url shows as the card's link; scope to the card.
@@ -219,13 +219,13 @@ describe('chat row web body', () => {
   })
 
   it.each([
-    ['WEB_FETCH_DNS_FAILED', 'could not resolve the host name (ENOTFOUND): getaddrinfo ENOTFOUND example.com', '无法解析域名，请检查网络、代理或 DNS 设置'],
-    ['WEB_FETCH_CONNECTION_REFUSED', 'the server refused the connection (ECONNREFUSED): connect ECONNREFUSED 127.0.0.1:8080', '连接被拒绝，请检查地址、端口或代理'],
-    ['WEB_FETCH_CONNECTION_TIMEOUT', 'the connection timed out (UND_ERR_CONNECT_TIMEOUT): Connect Timeout Error', '连接超时，请检查网络或代理后重试'],
-    ['WEB_FETCH_CERTIFICATE_INVALID', 'the server certificate could not be verified (CERT_HAS_EXPIRED): certificate has expired', '安全证书校验失败，请检查系统时间、代理或证书配置'],
-    ['WEB_FETCH_CONNECTION_INTERRUPTED', 'the connection was interrupted (UND_ERR_SOCKET): other side closed', '连接中断，请稍后重试'],
-    ['WEB_FETCH_NETWORK_UNREACHABLE', 'the network or host is unreachable (ENETUNREACH): connect ENETUNREACH 10.0.0.1:443', '网络或主机不可达，请检查网络连接或代理'],
-    ['WEB_FETCH_NETWORK_ERROR', 'the network request failed (EPROTO): write EPROTO', '网络请求失败，详情见输出'],
+    ['WEB_FETCH_DNS_FAILED', 'could not resolve the host name (ENOTFOUND): getaddrinfo ENOTFOUND example.com', "Couldn't resolve the host name. Check your network, proxy, or DNS settings."],
+    ['WEB_FETCH_CONNECTION_REFUSED', 'the server refused the connection (ECONNREFUSED): connect ECONNREFUSED 127.0.0.1:8080', 'Connection refused. Check the address, port, or proxy.'],
+    ['WEB_FETCH_CONNECTION_TIMEOUT', 'the connection timed out (UND_ERR_CONNECT_TIMEOUT): Connect Timeout Error', 'Connection timed out. Check your network or proxy, then retry.'],
+    ['WEB_FETCH_CERTIFICATE_INVALID', 'the server certificate could not be verified (CERT_HAS_EXPIRED): certificate has expired', 'Certificate verification failed. Check the system clock, proxy, or certificates.'],
+    ['WEB_FETCH_CONNECTION_INTERRUPTED', 'the connection was interrupted (UND_ERR_SOCKET): other side closed', 'Connection interrupted. Try again later.'],
+    ['WEB_FETCH_NETWORK_UNREACHABLE', 'the network or host is unreachable (ENETUNREACH): connect ENETUNREACH 10.0.0.1:443', 'Network or host unreachable. Check your network connection or proxy.'],
+    ['WEB_FETCH_NETWORK_ERROR', 'the network request failed (EPROTO): write EPROTO', 'Network request failed. See the output for details.'],
   ])('a %s web fetch leads with its localized summary and keeps the detail in the output', (code, detail, summary) => {
     const text = `Error: web fetch failed: ${detail}`
     const view = render(<WebRow {...rowProps(transportFailure(code, text), 'web_fetch')} useContextMenu={contextMenuHook()} />)
@@ -249,7 +249,7 @@ describe('chat row web body', () => {
 
   it('a running web call is the summary row alone, with nothing to expand', () => {
     const view = render(<WebRow {...rowProps(runningSearch(), 'web_search')} useContextMenu={contextMenuHook()} />)
-    expect(view.getByText('网页搜索')).toBeTruthy()
+    expect(view.getByText('Search')).toBeTruthy()
     expect(view.queryByText('Titled')).toBeNull()
     // No card material and no expandable body: clicking the row reveals nothing.
     expect(view.container.querySelector('[data-expandable]')).toBeNull()
@@ -260,7 +260,7 @@ describe('chat row web body', () => {
     const view = render(<WebRow {...rowProps(settledSearch({
       isError: true,
     }), 'web_search')} useContextMenu={contextMenuHook()} />)
-    expect(view.getByText('网页搜索')).toBeTruthy()
+    expect(view.getByText('Search')).toBeTruthy()
     expect(view.container.querySelector('[data-web]')).toBeNull()
     // The row reflects the error state so the summary line still reads as failed.
     expect(view.container.querySelector('[data-state="error"]')).not.toBeNull()

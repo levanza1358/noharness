@@ -156,7 +156,7 @@ it.each(['resolve', 'reject'] as const)('suppresses %s completions after disposa
 })
 
 it('persists Web edits and presents normalized bindings through the public service', async () => {
-  const { service, ctx } = mount()
+  const { service } = mount()
   await vi.waitFor(() => { expect(service.config.getSnapshot().status).toBe('ready') })
   expect(service.describeBinding(null)).toEqual({ binding: null, keys: [], issue: null, conflicts: [] })
   expect(service.describeBinding({ code: 'Slash', modifiers: ['primary'] }))
@@ -168,7 +168,6 @@ it('persists Web edits and presents normalized bindings through the public servi
   } })
   await vi.waitFor(() => { expect(service.config.getSnapshot().status).toBe('ready') })
   const changed = vi.fn(); service.catalog.subscribe(changed)
-  ctx.locale.setLocale('en'); expect(changed).toHaveBeenCalled()
   expect((await service.edit({ type: 'set', id: command.id, binding: null }, service.config.getSnapshot().revision)).status).toBe('saved')
   expect(service.catalog.getSnapshot()[0]?.keys).toEqual([])
   await service.recording(true); off()

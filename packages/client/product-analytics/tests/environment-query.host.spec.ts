@@ -12,8 +12,8 @@ const options = () => ({ timeoutMillis: 5000, maxOutputBytes: 16384, signal: new
 
 // These Node snippets are metadata-command stand-ins, with no Cordis or application boot.
 it('captures UTF-8 output and closes the child before returning', async () => {
-  expect(await queryEnvironment(process.execPath, ['-e', "process.stdout.write('CPU 型号')"], options()))
-    .toEqual({ kind: 'value', stdout: 'CPU 型号' })
+  expect(await queryEnvironment(process.execPath, ['-e', "process.stdout.write('CPU model')"], options()))
+    .toEqual({ kind: 'value', stdout: 'CPU model' })
 })
 
 it('omits nonzero command output and raw error text', async () => {

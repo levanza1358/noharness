@@ -234,7 +234,7 @@ describe('ui-theme apply', () => {
             "⌘",
             "=",
           ],
-          "label": "增大字号",
+          "label": "Increase font size",
         },
         {
           "bindings": [
@@ -244,7 +244,7 @@ describe('ui-theme apply', () => {
             "⌘",
             "-",
           ],
-          "label": "减小字号",
+          "label": "Decrease font size",
         },
       ]
     `)
@@ -302,8 +302,8 @@ describe('ui-theme apply', () => {
     const before = await bench()
     declareItems(before.slots)
     await before.ctx.plugin({ inject: [...inject], apply }).await()
-    expect(before.locale.bind(SETTINGS_NS)('appearance.title')).toBe('外观')
-    expect(before.locale.bind(SETTINGS_NS)('fontSize.text.title')).toBe('字号大小')
+    expect(before.locale.bind(SETTINGS_NS)('appearance.title')).toBe('Appearance')
+    expect(before.locale.bind(SETTINGS_NS)('fontSize.text.title')).toBe('Font size')
     before.locale.setLocale('en')
     expect(before.locale.bind(SETTINGS_NS)('appearance.title')).toBe('Appearance')
     const entry = before.slots.entries(SLOT).find(e => e.component === AppearanceRow)!

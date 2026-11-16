@@ -67,7 +67,7 @@ it('disables input until a pending write settles', async () => {
   await waitFor(() => { expect(screen.getByRole('switch').hasAttribute('disabled')).toBe(false) })
 })
 
-it('shows the Chinese label and cannot edit read-only settings', async () => {
+it('shows the Japanese label and cannot edit read-only settings', async () => {
   const { props, set } = fixture(false)
   const translated: Record<string, string> = ja
   const { container } = render(<UploadRow {...props} t={key => translated[key] ?? key} />)

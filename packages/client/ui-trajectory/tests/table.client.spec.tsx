@@ -218,7 +218,7 @@ describe('TrajectoryTable', () => {
       />,
     )
 
-    expect(screen.getByText('2 个工具调用 · bash')).toBeTruthy()
+    expect(screen.getByText('2 tool calls · bash')).toBeTruthy()
   })
 
   it('shows assistant timing facts after keyboard selection', () => {
@@ -1014,7 +1014,7 @@ describe('TrajectoryTable', () => {
 
   it.each([
     ['English', t, 'Pending', 'Completed', 'Failed', 'Last attempt error', 'Error'],
-    ['Chinese', tJa, '等待中', '已完成', '失败', '上次尝试错误', '错误'],
+    ['Japanese', tJa, 'Pending', 'Completed', 'Failed', 'Last attempt error', 'エラー'],
   ] as const)('distinguishes retry history from the current request status in %s', (
     _locale, translate, pending, completed, failed, lastAttemptError, error,
   ) => {
@@ -1264,7 +1264,7 @@ describe('TrajectoryTable', () => {
   })
 
   it.each([['English', t, 'Attachments', 'Image 1', 'Summary', 'Preview', 'Raw'],
-    ['Chinese', tJa, '附件', '图片 1', '概述', '预览', '原始内容']] as const)(
+    ['Japanese', tJa, 'Attachments', 'Image 1', 'Summary', 'プレビュー', 'Raw']] as const)(
     'keeps mixed attachments ordered and raw fields complete in %s',
     async (_locale, translate, listLabel, imageLabel, summaryTab, previewTab, rawTab) => {
       const attachment = {

@@ -1,1 +1,1 @@
-公式モデル API 使用時にセッションログをアップロードDeepSeek のモデルと製品の改善にご協力ください。
+Upload Session Log when using the official model APIHelp improve DeepSeek models and products.

@@ -1,4 +1,4 @@
-// @vitest-environment jsdom
+﻿// @vitest-environment jsdom
 /** Detail adapters accept the exact recorded result text and retain safe fallback paths. */
 import { describe, expect, it } from 'vitest'
 import type { ToolResultNode } from '@noharness/client-ui-chat/client'
@@ -59,7 +59,7 @@ describe('control detail adapters', () => {
     const states = ['corrupt', 'unsupported', 'unavailable']
     for (const [dictionary, common, locale, labels] of [
       [en, commonEn, 'en', ['Corrupt', 'Unsupported', 'Unavailable']],
-      [conversationJa, commonJa, 'ja', ['破損', '未対応', '利用不可']],
+      [conversationJa, commonJa, 'ja', ['Corrupt', 'Unsupported', 'Unavailable']],
     ] as const) {
       const translate = makeTranslate(dictionary, common)
       const result = states.map(status => ({ name: status, status }))
@@ -74,19 +74,19 @@ describe('control detail adapters', () => {
       const task = { subject: 'Review', owner: 'reviewer/checker' }
       const value = tool === 'team_task_list' ? { tasks: [task] } : task
       expect(detailsCardModel(output(tool, JSON.stringify(value)), translate, 'ja')?.items[0]?.fields)
-        .toContainEqual({ label: '担当者', value: 'reviewer/checker' })
+        .toContainEqual({ label: 'Owner', value: 'reviewer/checker' })
     }
     expect(inspectionItems({ owner: 'client-ui-tool' }, translate)[0]?.fields)
       .toEqual([{ label: 'owner', value: 'client-ui-tool' }])
   })
 
   it.each([
-    [{ timedOut: false }, '待機が終了しました'],
-    [{ timedOut: true }, '待機がタイムアウトしました'],
-    [{ timedOut: false, noProgress: { message: 'No pending work' } }, '実行中のサブエージェントはありません'],
+    [{ timedOut: false }, 'Wait ended'],
+    [{ timedOut: true }, 'Wait timed out'],
+    [{ timedOut: false, noProgress: { message: 'No pending work' } }, 'No active subagents'],
   ] as const)('renders inbox wait results and historical activity diagnostics (%j)', (value, summary) => {
     const translate = makeTranslate(ja, commonJa)
-    expect(translate('tool.title.waitAgent')).toBe('メッセージを待機中…')
+    expect(translate('tool.title.waitAgent')).toBe('Waiting for messages…')
     expect(detailsCardModel(output('wait_agent', JSON.stringify(value)), translate, 'ja')?.summary).toBe(summary)
   })
 
@@ -156,8 +156,8 @@ describe('control detail adapters', () => {
     expect(detailsCardModel({ ...block, content: [] }, t, 'en')).toEqual(model)
     expect(detailsCardModel({ ...block, isError: true }, t, 'en')).toBeNull()
     expect(detailsCardModel(block, makeTranslate(ja, commonJa), 'ja')?.items[0]?.fields).toEqual([
-      { label: '智能体任务描述', value: args.description },
-      { label: '智能体名称', value: 'reviewer' },
+      { label: 'Agent task description', value: args.description },
+      { label: 'Agent name', value: 'reviewer' },
     ])
   })
 

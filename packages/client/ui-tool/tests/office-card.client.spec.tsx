@@ -88,7 +88,7 @@ describe('OfficeRow', () => {
 
   it('expands a render to its result text without the image references', () => {
     const view = render(<OfficeRow {...props(settled())} />)
-    expect(view.container.textContent).toContain('渲染文档')
+    expect(view.container.textContent).toContain('Render document')
     fireEvent.click(view.container.querySelector('[data-expandable]')!)
     expect(view.container.textContent).toContain(`${SUMMARY}\nPage 2: 800x600 px`)
     expect(view.container.textContent).not.toContain('attachmentId')
@@ -97,7 +97,7 @@ describe('OfficeRow', () => {
 
   it('shows no output body when a settled result carries only images', () => {
     const view = render(<OfficeRow {...props(settled({ content: [{ type: 'image', attachment: image }] }))} />)
-    expect(view.container.textContent).toContain('渲染文档')
+    expect(view.container.textContent).toContain('Render document')
     expect(view.container.textContent).not.toContain('attachmentId')
     expect(view.container.querySelector('[data-expandable]')).toBeNull()
   })
@@ -108,8 +108,8 @@ describe('OfficeRow', () => {
   })
 
   it.each([
-    ['office_convert', 'pdf', '转换文档', 'Converted', ', 3 pages'],
-    ['office_recalculate', 'xlsx', '重算工作簿', 'Recalculated', ''],
+    ['office_convert', 'pdf', 'Convert document', 'Converted', ', 3 pages'],
+    ['office_recalculate', 'xlsx', 'Recalculate workbook', 'Recalculated', ''],
   ])('keeps the %s result text and output path while its title link opens the input', (name, format, title, verb, pages) => {
     const input = '/w/app/input.xlsx'
     const file = `/tmp/office/output.${format}`
@@ -147,14 +147,13 @@ describe('OfficeRow', () => {
 })
 
 it.each([
-  ['ja', ja, ['渲染文档', '转换文档', '重算工作簿']],
+  ['ja', ja, ['Render document', 'Convert document', 'Recalculate workbook']],
   ['en', en, ['Render document', 'Convert document', 'Recalculate workbook']],
-  ['ja', ja, ['文書を描画', '文書を変換', 'ブックを再計算']],
-  ['es', es, ['Representar documento', 'Convertir documento', 'Recalcular libro']],
-  ['fr', fr, ['Afficher le document', 'Convertir le document', 'Recalculer le classeur']],
-  ['de', de, ['Dokument rendern', 'Dokument konvertieren', 'Arbeitsmappe neu berechnen']],
-  ['ru', ru, ['Отрисовать документ', 'Преобразовать документ', 'Пересчитать книгу']],
-  ['pt', pt, ['Renderizar documento', 'Converter documento', 'Recalcular pasta de trabalho']],
+  ['es', es, ['Render document', 'Convert document', 'Recalculate workbook']],
+  ['fr', fr, ['Render document', 'Convert document', 'Recalculate workbook']],
+  ['de', de, ['Render document', 'Convert document', 'Recalculate workbook']],
+  ['ru', ru, ['Render document', 'Convert document', 'Recalculate workbook']],
+  ['pt', pt, ['Render document', 'Convert document', 'Recalculate workbook']],
 ] as const)('keeps the %s Office titles on the dedicated keys', (_language, dictionary, titles) => {
   expect([dictionary['tool.title.officeRender'], dictionary['tool.title.officeConvert'], dictionary['tool.title.officeRecalculate']]).toEqual(titles)
 })

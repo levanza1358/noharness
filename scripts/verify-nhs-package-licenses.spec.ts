@@ -28,20 +28,18 @@ function createWorkspace(): string {
 }
 
 describe('NHS package license gate', () => {
-  it('checks root, unhyphenated CLI, and nhs-prefixed package names while ignoring other families', () => {
+  it('checks every @noharness package and ignores other scopes', () => {
     const root = createWorkspace()
     writeManifest(root, 'apps/cli/package.json', { name: '@noharness/cli', license: 'MIT' })
     writeManifest(root, 'packages/core/agent/package.json', {
       name: '@noharness/agent',
       license: 'BSD-3-Clause',
     })
-    writeManifest(root, 'vendor/cordis/package.json', {
-      name: '@noharness/cordis',
-      license: 'BSD-3-Clause',
-    })
+    writeManifest(root, 'vendor/cordis/package.json', { name: '@noharness/cordis', license: 'MIT' })
+    writeManifest(root, 'vendor/other/package.json', { name: '@other/thing', license: 'BSD-3-Clause' })
 
     expect(inspectDshPackageLicenses(root)).toEqual({
-      packageCount: 3,
+      packageCount: 4,
       failures: [
         'packages/core/agent/package.json: @noharness/agent must declare "license": "MIT"; found "BSD-3-Clause".',
       ],

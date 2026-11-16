@@ -139,7 +139,7 @@ export function collectPackageNames(): string[] {
  */
 export function mappedSpecifiers(text: string): Set<string> {
   const keys = new Set<string>()
-  for (const match of text.matchAll(/^\s*"(@noharness\/nhs-[^"/]+)":/gm)) {
+  for (const match of text.matchAll(/^\s*"(@noharness\/[^"/]+)":/gm)) {
     const key = match[1]
     if (key !== undefined) keys.add(key)
   }

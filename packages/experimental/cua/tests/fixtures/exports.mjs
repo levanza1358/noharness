@@ -4,7 +4,7 @@ import { registerHooks } from 'node:module'
 
 const guard = registerHooks({
   resolve(specifier, context, next) {
-    assert(!/^(?:react(?:-dom)?(?:\/|$)|@noharness\/nhs-client-)/.test(specifier), `Headless import reached ${specifier}`)
+    assert(!/^(?:react(?:-dom)?(?:\/|$)|@noharness\/client-)/.test(specifier), `Headless import reached ${specifier}`)
     const result = next(specifier, context)
     assert(!/\/cua\/lib\/(?:client(?:\/|\.)|types\/client\/)/.test(result.url), `Headless import reached ${result.url}`)
     return result

@@ -146,7 +146,7 @@ function fixture(name = '@noharness/core'): {
   // and the long directory name for a Windows tmpdir spelled with an 8.3 short name.
   const root = realpathSync.native(mkdtempSync(join(tmpdir(), 'nhs-profile-resolution-')))
   roots.push(root)
-  const installDir = join(root, 'global', 'node_modules', '@noharness', 'nhs')
+  const installDir = join(root, 'global', 'node_modules', '@noharness', 'cli')
   const installed = join(installDir, 'node_modules', name)
   const installAnchor = pkg(installDir, '@noharness/cli', 0, { [name]: '*' })
   pkg(installed, name, 1)

@@ -136,7 +136,7 @@ describe('session format catalog generator', () => {
     writeFileSync(manifest.path, JSON.stringify(manifest.value))
 
     expect(() => collectSessionFormatMigrations(root, 2))
-      .toThrow(/must depend on @noharness\/nhs-session-format-v0-to-v1/)
+      .toThrow(/must depend on @noharness\/session-format-v0-to-v1/)
   })
 
   it('requires the package name to identify its declared adjacent edge', () => {
@@ -146,7 +146,7 @@ describe('session format catalog generator', () => {
     writeFileSync(manifest.path, JSON.stringify(manifest.value))
 
     expect(() => collectSessionFormatMigrations(root, 2))
-      .toThrow(/name must be @noharness\/nhs-session-format-v1-to-v2/)
+      .toThrow(/name must be @noharness\/session-format-v1-to-v2/)
   })
 
   it('requires the catalog to share the installed Session package as a peer', () => {
@@ -162,6 +162,6 @@ describe('session format catalog generator', () => {
     writeFileSync(path, JSON.stringify(manifest))
 
     expect(() => collectSessionFormatMigrations(root, 2))
-      .toThrow(/must share @noharness\/nhs-session through peer \+ dev dependencies/)
+      .toThrow(/must share @noharness\/session through peer \+ dev dependencies/)
   })
 })

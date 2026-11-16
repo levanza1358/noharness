@@ -71,7 +71,11 @@ describe('plugin compatibility', () => {
     })).toEqual({
       ...identity,
       runtimeVersion: runtime,
-      requirements: { '@noharness/session': '>=0.2.0', '@noharness/tools': '<0.1.0' },
+      requirements: {
+        '@noharness/cordis': '^99.0.0',
+        '@noharness/session': '>=0.2.0',
+        '@noharness/tools': '<0.1.0',
+      },
       exempted: false,
     })
   })
@@ -84,8 +88,7 @@ describe('plugin compatibility', () => {
 
   it('ignores unrelated names and dependency fields', () => {
     expect(check({
-      '@noharness/cordis': 'broken', '@noharness/cordis-plugin-loader': '^99',
-      '@other/nhs': '^99', '@noharness/nhsx': '^99', nhs: '^99',
+      '@other/nhs': '^99', '@other/nhsx': '^99', nhs: '^99',
       constructor: '^99', hasOwnProperty: '^99', ['__proto__']: '^99',
     })).toBeUndefined()
     expect(evaluatePluginCompatibility({ dependencies: { '@noharness/cli': '^99' } }, {}, runtime)).toBeUndefined()

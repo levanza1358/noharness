@@ -37,8 +37,8 @@ function packageSetProject(): {
   mkdirSync(packageDir)
   const nhsBody = Buffer.from('nhs')
   const hostBody = Buffer.from('host')
-  const nhs = record('@noharness/nhs', 'nhs.tgz', nhsBody)
-  const host = record('@noharness/nhs-desktop-host', 'nhs-desktop-host.tgz', hostBody)
+  const nhs = record('@noharness/cli', 'nhs.tgz', nhsBody)
+  const host = record('@noharness/desktop-host', 'nhs-desktop-host.tgz', hostBody)
   writeFileSync(join(packageDir, nhs.file), nhsBody)
   writeFileSync(join(packageDir, host.file), hostBody)
   writeFileSync(join(root, DESKTOP_PACKAGE_SET_FILE), `${JSON.stringify({
@@ -58,8 +58,8 @@ describe('desktop core package set', () => {
     const packageSet = verifyDesktopCorePackageSet(root, '1.2.3')
     expect(desktopDshPackageSpec(packageSet)).toBe('file:./desktop-packages/nhs.tgz')
     expect(desktopCorePackageOverrides(packageSet)).toEqual({
-      '@noharness/nhs': 'file:./desktop-packages/nhs.tgz',
-      '@noharness/nhs-desktop-host': 'file:./desktop-packages/nhs-desktop-host.tgz',
+      '@noharness/cli': 'file:./desktop-packages/nhs.tgz',
+      '@noharness/desktop-host': 'file:./desktop-packages/nhs-desktop-host.tgz',
     })
   })
 
@@ -70,7 +70,7 @@ describe('desktop core package set', () => {
     expect(() => parseDesktopCorePackageSet({
       schemaVersion: 1,
       packages: [nhs, { ...host, version: '2.0.0' }],
-    }, '1.2.3')).toThrow(/@noharness\/nhs-desktop-host@2\.0\.0 does not match Desktop 1\.2\.3/u)
+    }, '1.2.3')).toThrow(/@noharness\/desktop-host@2\.0\.0 does not match Desktop 1\.2\.3/u)
     expect(() => verifyDesktopCorePackageSet(root, '2.0.0')).toThrow(/does not match Desktop/u)
     writeFileSync(join(root, DESKTOP_PACKAGES_DIR, nhs.file), 'changed')
     expect(() => verifyDesktopCorePackageSet(root, '1.2.3')).toThrow(/integrity check failed/u)
@@ -79,18 +79,18 @@ describe('desktop core package set', () => {
   })
 
   it('rejects registry resolutions for names supplied by the local package set', () => {
-    const nhs = record('@noharness/nhs', 'nhs.tgz', Buffer.from('nhs'))
-    const host = record('@noharness/nhs-desktop-host', 'host.tgz', Buffer.from('host'))
+    const nhs = record('@noharness/cli', 'nhs.tgz', Buffer.from('nhs'))
+    const host = record('@noharness/desktop-host', 'host.tgz', Buffer.from('host'))
     const packageSet = parseDesktopCorePackageSet({ schemaVersion: 1, packages: [nhs, host] })
     expect(() => {
       verifyDesktopCoreLockfile(
-        "packages:\n  '@noharness/nhs@file:desktop-packages/nhs.tgz':\n    resolution: {}\n",
+        "packages:\n  '@noharness/cli@file:desktop-packages/nhs.tgz':\n    resolution: {}\n",
         packageSet,
       )
     }).not.toThrow()
     expect(() => {
       verifyDesktopCoreLockfile(
-        "packages:\n  '@noharness/nhs@1.2.3':\n    resolution: {integrity: sha512-registry}\n",
+        "packages:\n  '@noharness/cli@1.2.3':\n    resolution: {integrity: sha512-registry}\n",
         packageSet,
       )
     }).toThrow(/outside the local package set/u)

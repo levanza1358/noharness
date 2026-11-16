@@ -15,7 +15,7 @@ import ts from 'typescript'
 const SLOTS_MODULE = '@noharness/client-ui-slots'
 
 /** Cheap textual prefilter for a slot-contract merge, quote-style agnostic. */
-const MERGE_HEAD = /declare module ['"]@noharness\/nhs-client-ui-slots['"]/
+const MERGE_HEAD = /declare module ['"]@noharness\/client-ui-slots['"]/
 
 /** Cheap textual prefilter for a Slot or Factory registration call site. */
 const REGISTER_HEAD = /\.(?:register|registerFactory)\(/

@@ -7,7 +7,7 @@ import { globSync, readFileSync } from 'node:fs'
 import { resolve, sep } from 'node:path'
 
 const ROOT = resolve(import.meta.dirname, '..')
-const NHS_PACKAGE_NAME = /^@noharness\/nhs(?:-|$)/
+const NHS_PACKAGE_NAME = /^@noharness\//
 
 /** Result of checking every NHS package reachable through the root workspace list. */
 export interface DshPackageLicenseReport {

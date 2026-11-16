@@ -110,7 +110,7 @@ it.each(['png', 'jpg', 'jpeg', 'webp'].flatMap(extension => ['manifest', 'export
   },
 )
 
-it.each(['@local/demo', '@noharness/other'])('keeps nonofficial %s SVGs outside official artwork conventions', (name) => {
+it.each(['@local/demo', '@other/plugin'])('keeps nonofficial %s SVGs outside official artwork conventions', (name) => {
   manifest({ name, icon: './icon.svg', files: ['icon.svg'] })
   file('icon.svg', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"/>')
   expect(packageMetaProblems(root)).toEqual([])
@@ -173,7 +173,7 @@ it.each([['lib'], ['art', '!art/icon.webp']])('rejects an exported icon omitted 
 
 it.each([false, 1, '', './icon.gif', '/tmp/icon.svg', './missing.png', '../outside.svg'])('validates exported icon targets: %j', (icon) => {
   manifest({ exports: { './icon': icon } })
-  expect(packageMetaProblems(root).join('\n')).toMatch(/Plugin metadata for @noharness\/nhs-test-plugin:|exports\["\.\/icon"\] must resolve to a file/u)
+  expect(packageMetaProblems(root).join('\n')).toMatch(/Plugin metadata for @noharness\/test-plugin:|exports\["\.\/icon"\] must resolve to a file/u)
 })
 
 it.each([['assets'], ['lib']])('checks publication of the Node-selected conditional icon: %j', (...files) => {

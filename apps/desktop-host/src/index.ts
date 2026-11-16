@@ -42,7 +42,7 @@ async function main(): Promise<void> {
   const projectDir = process.argv[3] as string
   // Set before the launch-environment snapshot and profile evaluation; empty means the payload sits beside the runtime directory.
   process.env.NHS_PRIMARY_RUNTIME = process.argv[4] || join(runtimeDir, '..', 'runtime', 'primary-runtime')
-  const installAnchor = join(runtimeDir, 'node_modules', '@noharness', 'nhs', 'package.json')
+  const installAnchor = join(runtimeDir, 'node_modules', '@noharness', 'cli', 'package.json')
   const profile = loadProfileDirectory('nhs', projectDir, installAnchor)
   reportSkippedBundles('nhs', profile)
   const application = runProfile({

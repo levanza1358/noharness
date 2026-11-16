@@ -1246,9 +1246,9 @@ describe.skipIf(!existsSync(nhsBin))('nhs BUILT bin (node lib/bin.js, no tsx)', 
       expect(code).toBe(0)
       expect(stderr).toBe('')
       expect(stdout).toContain("name: '@noharness/headless'")
-      expect(stdout).not.toMatch(/name: '@noharness\/nhs-host-/)
+      expect(stdout).not.toMatch(/name: '@noharness\/host-/)
       expect(stdout).not.toContain("name: '@noharness/web-app'")
-      expect(stdout).not.toMatch(/name: '@noharness\/nhs-client-/)
+      expect(stdout).not.toMatch(/name: '@noharness\/client-/)
     }, SPAWN_TIMEOUT_MS + 30_000)
 
     it('prints the exact standalone sdk-minimal tree without nhs-base', async () => {

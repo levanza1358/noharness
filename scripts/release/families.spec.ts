@@ -384,7 +384,7 @@ describe('release families', () => {
     // would order this, and the traversal drops the install edge instead. That
     // order would publish charlie before the alpha it installs, so it is refused
     // here rather than published.
-    expect(() => { nhs.publishOrder(members) }).toThrow(/no publish order honours @noharness\/nhs-charlie -> @noharness\/nhs-alpha/)
+    expect(() => { nhs.publishOrder(members) }).toThrow(/no publish order honours @noharness\/charlie -> @noharness\/alpha/)
   })
 
   it('ignores devDependencies when ordering', () => {
@@ -418,12 +418,12 @@ describe('release families', () => {
     const installed = member('apps/cli', '@noharness/cli')
 
     expect(() => { nhs.validatePayload(installed, ['package/lib/index.js', 'package/src/bin.ts']) })
-      .toThrow(/@noharness\/nhs packed no documentation/)
+      .toThrow(/@noharness\/cli packed no documentation/)
     expect(() => { nhs.validatePayload(installed, ['package/lib/index.js', 'package/docs/guide.md', 'package/src/bin.ts']) })
-      .toThrow(/@noharness\/nhs packed no upgrade guide index/)
+      .toThrow(/@noharness\/cli packed no upgrade guide index/)
     const docs = ['package/docs/guide.md', 'package/docs/upgrade-guide/README.md']
     expect(() => { nhs.validatePayload(installed, ['package/lib/index.js', ...docs]) })
-      .toThrow(/@noharness\/nhs packed no source/)
+      .toThrow(/@noharness\/cli packed no source/)
     expect(() => { nhs.validatePayload(installed, ['package/lib/index.js', ...docs, 'package/src/bin.ts']) })
       .not.toThrow()
   })

@@ -91,9 +91,9 @@ process.send({ type: 'starting', runId: 'c254ab28-97c9-4382-95e6-2db9c66f98c8' }
 function projectWithHost(source = HTTP_HOST): string {
   const project = mkdtempSync(join(tmpdir(), 'nhs-desktop-host-test-'))
   roots.push(project)
-  const packageRoot = join(project, 'node_modules', '@noharness', 'nhs-desktop-host')
+  const packageRoot = join(project, 'node_modules', '@noharness', 'desktop-host')
   mkdirSync(join(packageRoot, 'lib'), { recursive: true })
-  writeFileSync(join(packageRoot, 'package.json'), '{"name":"@noharness/nhs-desktop-host","type":"module"}\n')
+  writeFileSync(join(packageRoot, 'package.json'), '{"name":"@noharness/desktop-host","type":"module"}\n')
   writeFileSync(join(packageRoot, 'lib', 'index.js'), source)
   return project
 }

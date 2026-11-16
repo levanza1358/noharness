@@ -57,7 +57,7 @@ function desktopRelease(): DesktopRelease {
   const version = manifestVersion(join(APP_ROOT, 'package.json'), 'desktop package')
   const nhsVersion = manifestVersion(resolve(APP_ROOT, '..', '..', 'package.json'), 'root nhs package')
   if (version !== nhsVersion) {
-    throw new Error(`desktop runtime: Electron ${version} must bind the same version of @noharness/nhs, found ${nhsVersion}`)
+    throw new Error(`desktop runtime: Electron ${version} must bind the same version of @noharness/cli, found ${nhsVersion}`)
   }
   const runtime = JSON.parse(readFileSync(join(RUNTIME_ROOT, 'versions.json'), 'utf8')) as Record<string, unknown>
   return parseDesktopRelease({

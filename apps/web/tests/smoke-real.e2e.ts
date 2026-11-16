@@ -366,7 +366,7 @@ describe('nhs web keyless CLI smoke', () => {
         /^\/plugins\/\?\?.+\/client\.js,.+\/client\.js&rev=[a-f\d]{12}$/.test(path)
       ))).toHaveLength(2)
       expect(batchPaths).toContainEqual(expect.stringMatching(
-        /^\/plugins\/\?\?@noharness\/nhs-client-modules\/client\.js&rev=[a-f\d]{12}$/,
+        /^\/plugins\/\?\?@noharness\/client-modules\/client\.js&rev=[a-f\d]{12}$/,
       ))
       const readyOrigin = new URL(readyUrl).origin
       expect([...cacheHeaders.values()]).toEqual([

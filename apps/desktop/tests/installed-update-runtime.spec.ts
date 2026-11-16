@@ -30,11 +30,11 @@ describe('installed-update runtime preparation', () => {
         const runtime = join(run.root, version, 'nhs')
         const descriptor = await verifyDesktopRuntime(runtime, version)
         expect(descriptor.sharedPackages.find(entry => entry.name === '@noharness/cordis')?.version).toBe(version)
-        expect(descriptor.sharedPackages.find(entry => entry.name === '@noharness/nhs')?.version).toBe(version)
-        const metadata = JSON.parse(await readFile(join(runtime, 'node_modules/@noharness/nhs/package.json'), 'utf8')) as {
+        expect(descriptor.sharedPackages.find(entry => entry.name === '@noharness/cli')?.version).toBe(version)
+        const metadata = JSON.parse(await readFile(join(runtime, 'node_modules/@noharness/cli/package.json'), 'utf8')) as {
           dependencies: Record<string, string>
         }
-        expect(metadata.dependencies['@noharness/nhs-desktop-host']).toBe(version)
+        expect(metadata.dependencies['@noharness/desktop-host']).toBe(version)
         expect(metadata.dependencies['@noharness/cordis']).toBe(version)
       }
       expect(await readFile(join(original, 'desktop-runtime.json'))).toEqual(before)

@@ -55,11 +55,11 @@ export interface ProbeTarget {
   /** Settings namespace whose adapter family answers. */
   settingsNs: string
   /**
-   * Route being edited, when the card edits one. An adapter that already
-   * describes it answers from its own registry, so such a card can ask without
-   * an endpoint at all.
+   * Route being edited. The Models page edits a route's own models, so it
+   * always names the route, and an adapter that already describes it answers
+   * from its own registry.
    */
-  provider?: string
+  provider: string
   /** Endpoint as the form currently shows it. */
   baseURL?: string
   /** Wire protocol the form names, when it names one. */
@@ -214,7 +214,7 @@ export function ModelListEditor(props: ModelListEditorProps): ReactNode {
     setFailure(undefined)
     try {
       const answer = await operations.discoverModels(probe.settingsNs, {
-        ...probe.provider === undefined ? {} : { provider: probe.provider },
+        provider: probe.provider,
         ...probe.baseURL === undefined || probe.baseURL.length === 0 ? {} : { baseURL: probe.baseURL },
         ...probe.api === undefined ? {} : { api: probe.api },
         ...probe.apiKey === undefined ? {} : { apiKey: probe.apiKey },
@@ -224,7 +224,6 @@ export function ModelListEditor(props: ModelListEditorProps): ReactNode {
         return
       }
       const found = answer.models
-      if (catalogProvider !== undefined) setInheritedCatalog({ provider: catalogProvider, models: found })
       if (found.length === 0) {
         setFailure(t('fetchEmpty'))
         return
@@ -306,9 +305,8 @@ export function ModelListEditor(props: ModelListEditorProps): ReactNode {
     })
   }
 
-  // A route the adapter already describes answers without an endpoint; only a
-  // draft with neither has nothing to ask about.
-  const askable = probe.provider !== undefined || (probe.baseURL !== undefined && probe.baseURL.length > 0)
+  // The page names the route, so the button is never waiting on an endpoint.
+  const askable = probe.provider.length > 0
   return (
     <section className={styles['modelCatalog']} aria-label={t('models')}>
       <div className={styles['modelListHead']}>
@@ -340,7 +338,7 @@ export function ModelListEditor(props: ModelListEditorProps): ReactNode {
           disabled={disabled || busy || !askable || props.probeBlocked !== undefined}
           title={props.probeBlocked !== undefined
             ? t(props.probeBlocked)
-            : askable ? undefined : t('fetchNeedsBaseUrl')}
+            : undefined}
           onClick={() => { void fetchModels() }}
         >
           {busy ? t('fetching') : t('fetchModels')}

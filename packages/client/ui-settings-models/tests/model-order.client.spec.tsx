@@ -26,7 +26,7 @@ function Editor(props: {
   return props.family === 'deepseek'
     ? <DeepSeekModelsEditor {...shared} defaultContextWindow={undefined} defaultMaxTokens={undefined} />
     : <ModelListEditor
-      {...shared} probe={{ settingsNs: 'llm-pi-ai' }} onBusyChange={() => {}}
+      {...shared} probe={{ settingsNs: 'llm-pi-ai', provider: 'acme' }} onBusyChange={() => {}}
       operations={{ discoverModels: vi.fn(), storeCredential: vi.fn(), removeCredential: vi.fn(), writeSettings: vi.fn() }}
     />
 }

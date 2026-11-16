@@ -151,7 +151,9 @@ describe('ModelsPage', () => {
     })
     scripted.face.settings.describe.mockResolvedValue(remoteOk({ writable: true, hasDocument: false, namespaces }))
     await mountPage(scripted)
-    expect(screen.getByRole('region', { name: en.models })).toBeTruthy()
+    // A declared route reaches this page's model editor — the one place its
+    // models are managed — even while its credential state cannot be read.
+    expect(screen.getByLabelText(en.customApi)).toBeTruthy()
     expect(screen.getAllByText('Acme').length).toBeGreaterThan(0)
   })
 

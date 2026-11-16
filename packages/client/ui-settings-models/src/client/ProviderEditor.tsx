@@ -290,6 +290,7 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
       ) : (
         <CuratedFields
           family={family}
+          layout={layout}
           props={props}
           reads={editorReads}
           draft={draft}

@@ -8,7 +8,7 @@ import {
 } from './RetryPolicyEditor.tsx'
 import { inheritedModels } from './provider-apply.ts'
 import { stringAt } from './provider-card.ts'
-import type { EditorReads, ProviderEditorProps } from './provider-card.ts'
+import type { EditorLayout, EditorReads, ProviderEditorProps } from './provider-card.ts'
 import { keyState } from './provider-key.ts'
 import { KeyField, RouteFields } from './provider-fields.tsx'
 import type { ReasoningChoices } from './provider-card.ts'
@@ -28,6 +28,8 @@ export interface RetryReads {
 /** What the curated field sets read from this card. */
 export interface CuratedInput {
   readonly family: 'deepseek' | 'pi-ai'
+  /** Whether the models below this provider are edited here or by the Models page. */
+  readonly layout: EditorLayout
   readonly props: ProviderEditorProps
   readonly reads: EditorReads
   readonly draft: Record<string, unknown>
@@ -146,16 +148,16 @@ export function CuratedFields(input: CuratedInput): ReactNode {
         }}
       />
     )
-  // Both families edit the same rows through the same contract; only the
-  // extras differ — DeepSeek's inherited capacities, pi-ai's endpoint
-  // interrogation.
+  // A declared route's models are the Models page's business; only the
+  // catalog family's provider-scoped model list is edited here.
+  const editsModelsHere = input.layout === 'pi-ai' && props.declared !== true
   const defaultContextWindow = schema.getPath(fallback, [
     'defaultContextWindow',
   ])
   const defaultMaxTokens = schema.getPath(fallback, ['maxTokens'])
   const defaultInput = schema.getPath(fallback, ['defaultInput'])
-  const modelFields =
-    input.family === 'deepseek' ? (
+  const modelFields = input.layout === 'deepseek'
+    ? (
       <DeepSeekModelsEditor
         {...catalogProps}
         defaultContextWindow={
@@ -167,23 +169,26 @@ export function CuratedFields(input: CuratedInput): ReactNode {
           typeof defaultMaxTokens === 'number' ? defaultMaxTokens : undefined
         }
       />
-    ) : (
-      <ModelListEditor
-        {...catalogProps}
-        catalogProvider={props.declared === true ? undefined : props.provider}
-        reasoningLevels={input.reasoning.levels}
-        reasoningLevelsOnly={input.reasoning.levelsOnly}
-        defaultInput={Array.isArray(defaultInput) ? defaultInput : undefined}
-        probe={input.probe as never}
-        probeBlocked={
-          reads.keyRemoval !== undefined
-            ? 'keyRemovePending'
-            : input.shownKeyFailure
-        }
-        operations={operations}
-        onBusyChange={input.setListBusy}
-      />
     )
+    : editsModelsHere
+      ? (
+        <ModelListEditor
+          {...catalogProps}
+          catalogProvider={props.provider}
+          reasoningLevels={input.reasoning.levels}
+          reasoningLevelsOnly={input.reasoning.levelsOnly}
+          defaultInput={Array.isArray(defaultInput) ? defaultInput : undefined}
+          probe={input.probe as never}
+          probeBlocked={
+            reads.keyRemoval !== undefined
+              ? 'keyRemovePending'
+              : input.shownKeyFailure
+          }
+          operations={operations}
+          onBusyChange={input.setListBusy}
+        />
+      )
+      : null
   return (
     <>
       <KeyField

@@ -17,7 +17,7 @@ import { TargetEditor } from './provider-target-editor.tsx'
 import { ProviderList } from './provider-list.tsx'
 import { DeleteDialog } from './provider-delete-dialog.tsx'
 import { removeProviderProfile } from './provider-remove.ts'
-import { protocolChoices, reasoningLevelChoices } from './store.ts'
+import { protocolChoices } from './store.ts'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
 import styles from './ModelsSection.module.css'
 
@@ -134,7 +134,6 @@ function Loaded(
               initial={draft}
               taken={state.rows.map(row => row.entry.provider)}
               protocols={protocolChoices(namespace, schema)}
-              reasoningLevels={reasoningLevelChoices(namespace, schema)}
               revision={namespace.revision}
               operations={operations}
               t={t}

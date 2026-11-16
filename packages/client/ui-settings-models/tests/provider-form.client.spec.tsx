@@ -555,33 +555,28 @@ describe('endpoint interrogation', () => {
     expect(mutate).not.toHaveBeenCalled()
   })
 
-  it('inherits a custom provider default input and persists an explicit model override', async () => {
+  it('shows no model list on a declared route, whose models belong to the Models page', async () => {
     const { discover, mutate } = await mountSection({
       providers: {
         'acme-gateway': {
           api: 'openai-completions', baseURL: 'https://gateway.acme.example/v1',
-          defaultInput: ['text', 'image'], models: [{ id: 'custom' }],
+          models: [{ id: 'custom' }],
         },
       },
       declaredRoutes: ['acme-gateway'],
     })
     openEditor('acme-gateway')
-    expandModel(1)
-    const types = within(screen.getByRole('group', { name: `${en.modelInputTypes} 1` }))
-    expect(types.getByRole<HTMLInputElement>('checkbox', { name: en.modelInputText }).checked).toBe(true)
-    const image = types.getByRole<HTMLInputElement>('checkbox', { name: en.modelInputImage })
-    expect(image.checked).toBe(true)
-    expect(image.disabled).toBe(false)
-    expect(discover).not.toHaveBeenCalled()
-    expect(mutate).not.toHaveBeenCalled()
 
-    fireEvent.click(image)
+    // Declaring the route, its endpoint, and its key is this card's whole
+    // business: no rows, no endpoint interrogation, nothing to write here.
+    expect(screen.queryByRole('region', { name: en.models })).toBeNull()
+    expect(screen.queryByRole('button', { name: en.addModel })).toBeNull()
+    expect(screen.queryByText(en.fetchModels)).toBeNull()
+    expect(discover).not.toHaveBeenCalled()
+    fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'gw-key' } })
     fireEvent.click(screen.getByText(en.apply))
     await waitFor(() => { expect(mutate).toHaveBeenCalledTimes(1) })
-    expect(firstMutate(mutate).ops).toEqual([{
-      op: 'set', path: ['providers', 'acme-gateway', 'models'],
-      value: [{ id: 'custom', input: ['text'] }],
-    }])
+    expect(firstMutate(mutate).ops.map(op => op.path)).toEqual([['providers', 'acme-gateway', 'apiKeyEnv']])
   })
 
   it('asks the endpoint the form shows, with a key that is not yet stored', async () => {
@@ -655,6 +650,38 @@ describe('endpoint interrogation', () => {
       { id: 'kept', contextWindow: 111 },
       { id: 'fresh', contextWindow: 4096, maxTokens: 2048, name: 'Fresh', input: ['text', 'image'] },
     ])
+  })
+
+  it('inherits a custom provider default input and persists an explicit model override', async () => {
+    const discover = vi.fn(() => Promise.resolve(ok([{ id: 'custom', inputModalities: ['text', 'image'] }])))
+    const { mutate } = await mountSection({
+      discover,
+      providers: {
+        'acme-gateway': {
+          api: 'openai-completions', baseURL: 'https://gateway.acme.example/v1',
+          defaultInput: ['text', 'image'], models: [{ id: 'custom' }],
+        },
+      },
+    })
+    openEditor('acme-gateway')
+    expandModel(1)
+    const types = within(screen.getByRole('group', { name: `${en.modelInputTypes} 1` }))
+    expect(types.getByRole<HTMLInputElement>('checkbox', { name: en.modelInputText }).checked).toBe(true)
+    const image = types.getByRole<HTMLInputElement>('checkbox', { name: en.modelInputImage })
+    expect(image.checked).toBe(true)
+    // The provider's own listing is what the page's editor asks for, not an
+    // endpoint the card would have typed.
+    await waitFor(() => { expect(discover).toHaveBeenCalledWith('llm-pi-ai', { provider: 'acme-gateway' }) })
+    expect(image.disabled).toBe(false)
+    expect(mutate).not.toHaveBeenCalled()
+
+    fireEvent.click(image)
+    fireEvent.click(screen.getByText(en.apply))
+    await waitFor(() => { expect(mutate).toHaveBeenCalledTimes(1) })
+    expect(firstMutate(mutate).ops).toEqual([{
+      op: 'set', path: ['providers', 'acme-gateway', 'models'],
+      value: [{ id: 'custom', input: ['text'] }],
+    }])
   })
 
   it('removes an unchecked configured model and keeps one the provider does not list', async () => {
@@ -743,18 +770,17 @@ describe('endpoint interrogation', () => {
     expect(screen.queryByLabelText(`${en.modelId} 3`)).toBeNull()
   })
 
-  it('keeps the rows editable when the provider cannot be interrogated', async () => {
-    const discover = vi.fn(() => Promise.resolve(
-      fail('https://proxy.example/v1/models answered 401; check the API key', 'llm/model-discovery-rejected'),
-    ))
-    await mountSection({ discover })
-    openEditor('openai')
+  it('keeps the rows editable when the provider cannot be interrogated', async () => {    const discover = vi.fn(() => Promise.resolve(
+    fail('https://proxy.example/v1/models answered 401; check the API key', 'llm/model-discovery-rejected'),
+  ))
+  await mountSection({ discover })
+  openEditor('openai')
 
-    fireEvent.click(screen.getByText(en.fetchModels))
+  fireEvent.click(screen.getByText(en.fetchModels))
 
-    await screen.findByText(/answered 401; check the API key/)
-    // The failure is a detour, not a dead end: hand-entry is still offered.
-    expect(screen.getByRole('button', { name: en.addModel })).toBeTruthy()
+  await screen.findByText(/answered 401; check the API key/)
+  // The failure is a detour, not a dead end: hand-entry is still offered.
+  expect(screen.getByRole('button', { name: en.addModel })).toBeTruthy()
   })
 
   it('reports an empty listing', async () => {
@@ -763,6 +789,19 @@ describe('endpoint interrogation', () => {
     openEditor('openai')
     fireEvent.click(screen.getByText(en.fetchModels))
     await screen.findByText(en.fetchEmpty)
+  })
+
+  it('records an empty listing as the route\u2019s own answer rather than falling back', async () => {
+    const discover = vi.fn(() => Promise.resolve(ok([])))
+    await mountSection({ discover, providers: { openai: { models: [{ id: 'kept' }] } } })
+    openEditor('openai')
+    expandModel(1)
+    fireEvent.click(screen.getByText(en.fetchModels))
+    await screen.findByText(en.fetchEmpty)
+    expect(discover).toHaveBeenLastCalledWith('llm-pi-ai', { provider: 'openai' })
+    // The route answered, and answered nothing: the row keeps its own input
+    // types instead of inheriting from an answer it never gave.
+    expect(within(screen.getByRole('group', { name: `${en.modelInputTypes} 1` })).getByRole<HTMLInputElement>('checkbox', { name: en.modelInputImage }).checked).toBe(false)
   })
 
   it('can be asked for a configured route even with no endpoint', async () => {
@@ -778,24 +817,26 @@ describe('endpoint interrogation', () => {
     expect(lastProbe(discover)).toEqual({ settingsNs: 'llm-pi-ai', provider: 'openai' })
   })
 
-  it('keeps the create card asking only once it has an endpoint', () => {
-    // A provider being declared has no route yet, so the endpoint is the only
-    // thing an interrogation could go on.
+  it('keeps the create card asking only once it has an endpoint', async () => {
+    // A provider being declared names its id too, so the endpoint is not the
+    // only thing an interrogation goes on.
     const scripted = scriptedFace()
     render(
       <CustomProviderCard
-        taken={[]} protocols={PROTOCOLS} reasoningLevels={LEVELS} revision={7} operations={operationsWith(scripted.face)}
+        taken={[]} protocols={PROTOCOLS} revision={7} operations={operationsWith(scripted.face)}
         t={t} readOnly={false} onClose={vi.fn()}
       />,
     )
-    expect(buttonNamed(en.fetchModels).disabled).toBe(true)
-    expect(buttonNamed(en.fetchModels).title).toBe(en.fetchNeedsBaseUrl)
+    expect(buttonNamed(en.testConnection).disabled).toBe(true)
 
+    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
+    expect(buttonNamed(en.testConnection).disabled).toBe(true)
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    expect(buttonNamed(en.fetchModels).disabled).toBe(false)
-    fireEvent.click(screen.getByText(en.fetchModels))
+    expect(buttonNamed(en.testConnection).disabled).toBe(false)
+    fireEvent.click(screen.getByText(en.testConnection))
+    await screen.findByText(en.testConnectionOk)
 
-    // A provider being declared names no route, so only the endpoint travels.
+    // The route is still being declared, so only the draft endpoint travels.
     expect(lastProbe(scripted.discover)).toEqual({
       settingsNs: 'llm-pi-ai',
       baseURL: 'https://acme.test/v1',
@@ -963,7 +1004,6 @@ describe('hand-declared providers', () => {
       <CustomProviderCard
         taken={['openai']}
         protocols={PROTOCOLS}
-        reasoningLevels={LEVELS}
         revision={7}
         operations={operationsWith(scripted.face)}
         t={t}
@@ -981,8 +1021,6 @@ describe('hand-declared providers', () => {
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme-gateway' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.example/v1' } })
     fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'test-key' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'model' } })
     fireEvent.click(screen.getByText(en.create))
     await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
     expect(mutate).toHaveBeenCalledOnce()
@@ -997,10 +1035,6 @@ describe('hand-declared providers', () => {
     fireEvent.change(screen.getByLabelText(en.customDisplayName), { target: { value: 'Acme Gateway' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.acme.example/v1' } })
     fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'gw-key' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'acme-large' } })
-    expandModel(1)
-    fireEvent.change(screen.getByLabelText(`${en.contextWindow} 1`), { target: { value: '65536' } })
     fireEvent.click(screen.getByText(en.create))
 
     await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
@@ -1014,7 +1048,6 @@ describe('hand-declared providers', () => {
           apiKeyEnv: 'ACME_GATEWAY_API_KEY',
           api: 'openai-completions',
           baseURL: 'https://gateway.acme.example/v1',
-          models: [{ id: 'acme-large', contextWindow: 65_536 }],
         },
       }],
       // The section this card was drafted over: a route another tab declared
@@ -1249,7 +1282,7 @@ describe('hand-declared providers', () => {
     expect(buttonNamed(en.apply).disabled).toBe(declared)
   })
 
-  it('tests the connection, adopts what it discloses, and creates without any model', async () => {
+  it('reports a verified connection without adopting the models it discloses', async () => {
     const discover = vi.fn(() => Promise.resolve(ok([{ id: 'listed' }])))
     const { mutate, onClose } = mountCard({}, { discover })
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
@@ -1261,11 +1294,12 @@ describe('hand-declared providers', () => {
     fireEvent.click(screen.getByText(en.testConnection))
     await screen.findByText(en.testConnectionOk)
     expect(lastProbe(discover)).toMatchObject({ baseURL: 'https://acme.test/v1', apiKey: 'gw-key' })
-    // The listing lands as the model list, and is written with the profile.
-    expect(screen.getByLabelText<HTMLInputElement>(`${en.modelId} 1`).value).toBe('listed')
+    // What the endpoint lists belongs to the Models page: the profile this
+    // card writes carries no model at all.
+    expect(screen.queryByLabelText(`${en.modelId} 1`)).toBeNull()
     fireEvent.click(screen.getByText(en.create))
     await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
-    expect(firstMutate(mutate).ops[0]?.value).toMatchObject({ models: [{ id: 'listed' }] })
+    expect(firstMutate(mutate).ops[0]?.value).not.toHaveProperty('models')
 
     // Editing the endpoint invalidates the answer.
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v2' } })
@@ -1284,17 +1318,16 @@ describe('hand-declared providers', () => {
     expect(firstMutate(mutate).ops[0]?.value).not.toHaveProperty('models')
   })
 
-  it('reports an empty listing beside a verified connection, without adding a row', async () => {
+  it('reports an empty listing as a verified connection, without adding a row', async () => {
     const discover = vi.fn(() => Promise.resolve(ok([])))
     mountCard({}, { discover })
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
     fireEvent.click(screen.getByText(en.testConnection))
 
-    await screen.findByText(en.fetchEmpty)
-    // The endpoint answered, so the connection itself is verified; the empty
-    // list is a fact about the provider, not a failed test.
-    expect(screen.getByText(en.testConnectionOk)).toBeTruthy()
+    // The endpoint answered, so the connection itself is verified; how many
+    // models it lists is a fact the Models page reads.
+    await screen.findByText(en.testConnectionOk)
     expect(screen.queryByLabelText(`${en.modelId} 1`)).toBeNull()
     // The route is still creatable; only the model list is empty.
     expect(buttonNamed(en.create).disabled).toBe(false)
@@ -1320,8 +1353,6 @@ describe('hand-declared providers', () => {
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
     fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: '  gw-key  ' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
     fireEvent.click(screen.getByText(en.create))
 
     // The profile landed; only the key failed. The card says so and stays open.
@@ -1354,8 +1385,6 @@ describe('hand-declared providers', () => {
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
     fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'gw-key' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
     fireEvent.click(screen.getByText(en.create))
     await waitFor(() => { expect(screen.getByText('nope')).toBeTruthy() })
 
@@ -1369,22 +1398,20 @@ describe('hand-declared providers', () => {
     mountCard()
     const routeField = screen.getByLabelText(en.customRoute)
     fireEvent.change(routeField, { target: { value: '2' } })
-    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
 
     // The route field explains itself right under the input; the shared line
-    // must stay silent rather than falling through to "no models yet" while
-    // the list above plainly has one.
+    // must stay silent rather than naming a gate further down that is only
+    // unmet because the route is.
     expect(screen.getByText(en.customRouteInvalid)).toBeTruthy()
-    expect(screen.queryByText(en.customNeedsModels)).toBeNull()
+    expect(screen.queryByText(en.customNeedsBaseUrl)).toBeNull()
 
     // Fixing the route hands the line back to the gate that is actually unmet.
     fireEvent.change(routeField, { target: { value: 'acme' } })
-    expect(screen.queryByText(en.customNeedsModels)).toBeNull()
+    expect(screen.getByText(en.customNeedsBaseUrl)).toBeTruthy()
+    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
+    expect(screen.queryByText(en.customNeedsBaseUrl)).toBeNull()
     expect(buttonNamed(en.create).disabled).toBe(false)
   })
-
   it('refuses a route id whose derived credential reference would be illegal', () => {
     mountCard()
     const routeField = screen.getByLabelText(en.customRoute)
@@ -1420,14 +1447,11 @@ describe('hand-declared providers', () => {
     'rejects the non-HTTP base URL %j before discovery or creation', (baseURL) => {
       const { discover, mutate } = mountCard()
       fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
-      fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-      fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
       fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: baseURL } })
 
       expect(screen.getByText(en.customBaseUrlInvalid)).toBeTruthy()
       expect(screen.getByLabelText(en.baseUrl).getAttribute('aria-invalid')).toBe('true')
-      expect(buttonNamed(en.fetchModels).disabled).toBe(true)
-      expect(buttonNamed(en.fetchModels).title).toBe(en.customBaseUrlInvalid)
+      expect(buttonNamed(en.testConnection).disabled).toBe(true)
       expect(buttonNamed(en.create).disabled).toBe(true)
       expect(discover).not.toHaveBeenCalled()
       expect(mutate).not.toHaveBeenCalled()
@@ -1442,14 +1466,12 @@ describe('hand-declared providers', () => {
   ])('allows the HTTP base URL %j to be interrogated', (baseURL) => {
     const { discover } = mountCard()
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: baseURL } })
 
     expect(screen.queryByText(en.customBaseUrlInvalid)).toBeNull()
-    expect(buttonNamed(en.fetchModels).disabled).toBe(false)
+    expect(buttonNamed(en.testConnection).disabled).toBe(false)
     expect(buttonNamed(en.create).disabled).toBe(false)
-    fireEvent.click(screen.getByText(en.fetchModels))
+    fireEvent.click(screen.getByText(en.testConnection))
     expect(lastProbe(discover)).toMatchObject({ baseURL })
   })
 
@@ -1462,12 +1484,10 @@ describe('hand-declared providers', () => {
     })
 
     expect(screen.queryByText(en.customBaseUrlInvalid)).toBeNull()
-    fireEvent.click(screen.getByText(en.fetchModels))
-    await waitFor(() => { expect(discover).toHaveBeenCalledTimes(1) })
+    fireEvent.click(screen.getByText(en.testConnection))
+    await screen.findByText(en.testConnectionOk)
     expect(lastProbe(discover)).toMatchObject({ baseURL: 'https://gateway.acme.example/v1' })
 
-    fireEvent.click(await screen.findByText(en.fetchAdopt))
-    await waitFor(() => { expect(buttonNamed(en.create).disabled).toBe(false) })
     fireEvent.click(screen.getByText(en.create))
     await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
     expect(firstMutate(mutate).ops[0]?.value).toMatchObject({ baseURL: 'https://gateway.acme.example/v1' })
@@ -1476,13 +1496,13 @@ describe('hand-declared providers', () => {
   it('keeps a network failure distinct from base URL syntax', async () => {
     const discover = vi.fn(() => Promise.resolve(fail('connection refused', 'gateway/internal')))
     mountCard({}, { discover })
+    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'http://localhost:11434/v1' } })
-    fireEvent.click(screen.getByText(en.fetchModels))
+    fireEvent.click(screen.getByText(en.testConnection))
 
     await screen.findByText('connection refused')
     expect(screen.queryByText(en.customBaseUrlInvalid)).toBeNull()
   })
-
   it('derives a reference the credential seam accepts for every id it admits', () => {
     // The two rules have to stay in step; this is the relation, checked
     // directly rather than through the DOM.
@@ -1492,95 +1512,21 @@ describe('hand-declared providers', () => {
     }
   })
 
-  it('names the blocked gate under the form, and nothing once it is satisfied', () => {
+  it('names the blocked gate under the form, and says models are not one', () => {
     mountCard()
+    // The route-id gate owns its own line, so the shared line waits for it.
+    expect(screen.queryByText(en.customNeedsBaseUrl)).toBeNull()
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
-
-    // Endpoint first: the gate names the one thing standing in the way.
+    // Endpoint next: the gate names the one thing standing in the way.
     expect(screen.getByText(en.customNeedsBaseUrl)).toBeTruthy()
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    // A complete endpoint is creatable: models belong to the Models page.
+    // A complete endpoint is creatable, and the line says where models live.
     expect(screen.queryByText(en.customNeedsBaseUrl)).toBeNull()
     expect(screen.getByText(en.customNeedsModelsOptional)).toBeTruthy()
     expect(buttonNamed(en.create).disabled).toBe(false)
-
-    // A model row, once added, is validated instead.
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'acme-large' } })
-    expect(screen.queryByText(en.customNeedsBaseUrl)).toBeNull()
-    expect(buttonNamed(en.create).disabled).toBe(false)
   })
 
-  it('refuses to create while a capacity is unreadable', () => {
-    mountCard()
-    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
-    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'acme-large' } })
-    expandModel(1)
-    fireEvent.change(screen.getByLabelText(`${en.contextWindow} 1`), { target: { value: '64 KiB' } })
-
-    expect(screen.getByText(`${en.model} 1: ${en.modelContextInvalid}`)).toBeTruthy()
-    expect(buttonNamed(en.create).disabled).toBe(true)
-  })
-
-  it('keeps each half-typed capacity with its own row across a removal', () => {
-    mountCard()
-    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
-    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    for (const [at, id] of [[1, 'first'], [2, 'second'], [3, 'third']] as const) {
-      fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-      fireEvent.change(screen.getByLabelText(`${en.modelId} ${String(at)}`), { target: { value: id } })
-      expandModel(at)
-      // Deliberately mid-word: the buffer exists so text like this survives.
-      fireEvent.change(screen.getByLabelText(`${en.contextWindow} ${String(at)}`),
-        { target: { value: `${String(at)}.` } })
-    }
-
-    // Removing the middle row: the one before keeps its position and text, the
-    // one after moves down carrying its own, and the removed row's text goes.
-    fireEvent.click(screen.getByLabelText(`${en.removeModel} 2`))
-    expect(screen.getByLabelText<HTMLInputElement>(`${en.modelId} 1`).value).toBe('first')
-    expect(screen.getByLabelText<HTMLInputElement>(`${en.contextWindow} 1`).value).toBe('1.')
-    expect(screen.getByLabelText<HTMLInputElement>(`${en.modelId} 2`).value).toBe('third')
-    expect(screen.getByLabelText<HTMLInputElement>(`${en.contextWindow} 2`).value).toBe('3.')
-  })
-
-  it('refuses two models sharing one id', () => {
-    mountCard()
-    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
-    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'same' } })
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 2`), { target: { value: 'same' } })
-
-    // The adapter refuses a duplicate outright, so the form must not offer to
-    // write one.
-    expect(screen.getByText(`${en.model} 2: ${en.modelIdDuplicate}`)).toBeTruthy()
-    expect(buttonNamed(en.create).disabled).toBe(true)
-
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 2`), { target: { value: 'other' } })
-    expect(buttonNamed(en.create).disabled).toBe(false)
-  })
-
-  it('creates a model with no capacities, which the route\u2019s fallbacks size', async () => {
-    const { mutate, onClose } = mountCard()
-    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
-    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'bare' } })
-
-    // A listing that discloses nothing but ids is enough to create a working
-    // provider; the adapter sizes what configuration leaves out.
-    expect(buttonNamed(en.create).disabled).toBe(false)
-    fireEvent.click(screen.getByText(en.create))
-
-    await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
-    expect(firstMutate(mutate).ops[0]?.value).toMatchObject({ models: [{ id: 'bare' }] })
-  })
-
-  it('refuses to create until the route, endpoint, and a model are usable', () => {
+  it('refuses to create until the route and endpoint are usable', () => {
     mountCard()
     expect(buttonNamed(en.create).disabled).toBe(true)
 
@@ -1594,12 +1540,6 @@ describe('hand-declared providers', () => {
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
     // Models are optional: the endpoint alone is enough to create.
     expect(buttonNamed(en.create).disabled).toBe(false)
-
-    // A model row with no id is not a model.
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    expect(buttonNamed(en.create).disabled).toBe(true)
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
-    expect(buttonNamed(en.create).disabled).toBe(false)
   })
 
   it('surfaces a refused write without closing', async () => {
@@ -1608,8 +1548,6 @@ describe('hand-declared providers', () => {
 
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
     fireEvent.click(screen.getByText(en.create))
 
     await screen.findByText('read-only settings')
@@ -1622,8 +1560,6 @@ describe('hand-declared providers', () => {
 
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
     fireEvent.click(screen.getByText(en.create))
 
     await screen.findByText(en.conflict)
@@ -1637,8 +1573,6 @@ describe('hand-declared providers', () => {
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
     fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'k' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
     fireEvent.click(screen.getByText(en.create))
 
     await screen.findByText('credential is read-only')
@@ -1661,8 +1595,6 @@ describe('hand-declared providers', () => {
     fireEvent.change(protocol, { target: { value: 'anthropic-messages' } })
     expect(baseUrl.placeholder).toBe('https://gateway.example')
     expect(baseUrl.value).toBe('https://acme.test/anthropic')
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
     fireEvent.click(screen.getByText(en.create))
 
     await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
@@ -1673,7 +1605,6 @@ describe('hand-declared providers', () => {
     expect(firstMutate(mutate).ops[0]?.value).toEqual({
       api: 'anthropic-messages',
       baseURL: 'https://acme.test/anthropic',
-      models: [{ id: 'm' }],
     })
   })
 
@@ -1736,8 +1667,6 @@ describe('hand-declared providers', () => {
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'gemini-gateway' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.example/v1beta' } })
     fireEvent.change(screen.getByLabelText(en.customApi), { target: { value: 'google-generative-ai' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'gemini-pro' } })
 
     expect(screen.getByText(en.keyRequired)).toBeTruthy()
     expect(buttonNamed(en.create).disabled).toBe(true)
@@ -1757,26 +1686,11 @@ describe('hand-declared providers', () => {
     expect(screen.queryByText(en.keyBlankNew)).toBeNull()
   })
 
-  it('offers a Gemini model only the levels the protocol accepts', () => {
-    mountCard()
-    fireEvent.change(screen.getByLabelText(en.customApi), { target: { value: 'google-generative-ai' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.click(screen.getByRole('button', { name: `${en.modelAdvanced} 1` }))
-    fireEvent.click(screen.getByRole('switch', { name: `${en.modelReasoning} 1` }))
-
-    const level = screen.getByRole<HTMLSelectElement>('combobox', { name: `${en.modelReasoningLevel} 1` })
-    expect(level.value).toBe('low')
-    expect([...level.options].map(option => option.value)).toEqual(['minimal', 'low'])
-    expect(screen.getByRole<HTMLInputElement>('textbox', { name: `low ${en.modelReasoningValue}` }).disabled).toBe(true)
-  })
-
   it('refuses an unusable key on the field and blocks creation', () => {
     const { mutate, set } = mountCard()
 
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme-gateway' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.acme.example/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'acme-large' } })
     fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'sk-\u{1F600}' } })
 
     // A hand-declared route reaches the same judgement as an edited one, so a
@@ -1792,8 +1706,6 @@ describe('hand-declared providers', () => {
 
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme-gateway' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.acme.example/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'acme-large' } })
     fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'sk-\u{1F600}' } })
 
     // Route, endpoint, and models are all satisfied, so answering with the
@@ -1808,15 +1720,12 @@ describe('hand-declared providers', () => {
 
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme-gateway' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.acme.example/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'acme-large' } })
     fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: '   ' } })
 
     // There is no stored key to keep here, so the blank case says the thing
     // that is true of a route being declared: it may authenticate elsewhere.
     expect(screen.getByText(en.keyBlankNew)).toBeTruthy()
     expect(screen.queryByText(en.keyBlank)).toBeNull()
-    expect(buttonNamed(en.fetchModels).title).toBe(en.keyBlankNew)
     expect(buttonNamed(en.create).disabled).toBe(true)
     expect(mutate).not.toHaveBeenCalled()
   })
@@ -1826,8 +1735,6 @@ describe('hand-declared providers', () => {
 
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'ambient-gateway' } })
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.acme.example/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'acme-large' } })
     fireEvent.click(screen.getByText(en.create))
 
     await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
@@ -1941,8 +1848,6 @@ describe('API key field', () => {
     openCustomMode()
     fireEvent.change(screen.getByRole('textbox', { name: en.customRoute }), { target: { value: 'acme' } })
     fireEvent.change(screen.getByRole('textbox', { name: en.baseUrl }), { target: { value: 'https://acme.test/v1' } })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'm' } })
     fireEvent.click(screen.getByText(en.create))
 
     await waitFor(() => { expect(mutate).toHaveBeenCalledOnce() })

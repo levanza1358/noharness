@@ -131,8 +131,6 @@ describe('ProvidersSection', () => {
       fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.example/v1' } })
       fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'test-key' } })
     })
-    fireEvent.click(screen.getByRole('button', { name: en.addModel }))
-    fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'model' } })
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.create })) })
     await waitFor(() => { expect(load).toHaveBeenCalled() })
     await waitFor(() => { expect(screen.queryByRole('button', { name: en.create })).toBeNull() })

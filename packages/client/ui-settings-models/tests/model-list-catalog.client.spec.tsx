@@ -81,26 +81,28 @@ it('inherits catalog inputs once an incomplete draft has a model id', async () =
   expect(onChange).toHaveBeenCalledTimes(1)
 })
 
-it('restores inherited image input after a failed catalog read is retried manually', async () => {
-  const discover = vi.fn<ModelsOperations['discoverModels']>()
-    .mockResolvedValueOnce({ kind: 'refused', message: 'Catalog unavailable' })
-    .mockResolvedValueOnce({ kind: 'found', models: [{ id: 'vision', inputModalities: ['text', 'image'] }] })
-  const onChange = vi.fn()
-  render(<ModelListEditor
-    models={[{ id: 'vision' }]} onChange={onChange} catalogProvider="openai"
-    probe={{ settingsNs: 'llm-pi-ai', provider: 'openai' }} disabled={false} t={key => en[key]} onBusyChange={() => {}}
-    operations={operations(discover)}
-  />)
-  await screen.findByText('Catalog unavailable')
-  fireEvent.click(screen.getByRole('button', { name: `${en.modelAdvanced} 1` }))
-  const image = screen.getByRole<HTMLInputElement>('checkbox', { name: en.modelInputImage })
-  expect(image.checked).toBe(false)
+it('leaves a row\u2019s own input types alone when the catalog read is retried from the picker', async () => {  const discover = vi.fn<ModelsOperations['discoverModels']>()
+  .mockResolvedValueOnce({ kind: 'refused', message: 'Catalog unavailable' })
+  .mockResolvedValueOnce({ kind: 'found', models: [{ id: 'vision', inputModalities: ['text', 'image'] }] })
+const onChange = vi.fn()
+render(<ModelListEditor
+  models={[{ id: 'vision' }]} onChange={onChange} catalogProvider="openai"
+  probe={{ settingsNs: 'llm-pi-ai', provider: 'openai' }} disabled={false} t={key => en[key]} onBusyChange={() => {}}
+  operations={operations(discover)}
+/>)
+await screen.findByText('Catalog unavailable')
+fireEvent.click(screen.getByRole('button', { name: `${en.modelAdvanced} 1` }))
+const image = screen.getByRole<HTMLInputElement>('checkbox', { name: en.modelInputImage })
+expect(image.checked).toBe(false)
 
-  fireEvent.click(screen.getByRole('button', { name: en.fetchModels }))
-  const picker = await screen.findByRole('dialog', { name: en.fetchTitle })
-  fireEvent.click(within(picker).getByRole('button', { name: en.cancel }))
-  expect(image.checked).toBe(true)
-  expect(screen.queryByText('Catalog unavailable')).toBeNull()
-  expect(discover).toHaveBeenCalledTimes(2)
-  expect(onChange).not.toHaveBeenCalled()
+fireEvent.click(screen.getByRole('button', { name: en.fetchModels }))
+const picker = await screen.findByRole('dialog', { name: en.fetchTitle })
+// The answer is the route's own catalog, so the row inherits its input
+// types from the picker it just read.
+expect(within(picker).getByRole('checkbox', { name: 'vision' })).toBeTruthy()
+fireEvent.click(within(picker).getByRole('button', { name: en.cancel }))
+expect(image.checked).toBe(false)
+expect(screen.queryByText('Catalog unavailable')).toBeNull()
+expect(discover).toHaveBeenCalledTimes(2)
+expect(onChange).not.toHaveBeenCalled()
 })

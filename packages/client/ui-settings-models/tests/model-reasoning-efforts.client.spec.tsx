@@ -293,7 +293,7 @@ describe('reasoning levels in the model list', () => {
       return (
         <ModelListEditor
           models={models} onChange={(next) => { writes.push(next); setModels(next) }} reasoningLevels={LEVELS}
-          probe={{ settingsNs: 'llm-pi-ai' }} operations={operations} disabled={false} t={t} onBusyChange={() => {}}
+          probe={{ settingsNs: 'llm-pi-ai', provider: 'acme' }} operations={operations} disabled={false} t={t} onBusyChange={() => {}}
         />
       )
     }

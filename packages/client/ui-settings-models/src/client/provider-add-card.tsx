@@ -7,7 +7,7 @@ import { targetOf } from './provider-identity.ts'
 import type { EditorTarget, ProviderIdentity } from './provider-identity.ts'
 import { ProviderEditor } from './ProviderEditor.tsx'
 import type { AddableRow, CatalogDraft } from './provider-row.tsx'
-import { protocolChoices, reasoningLevelChoices } from './store.ts'
+import { protocolChoices } from './store.ts'
 import type { ProviderRow } from './store.ts'
 import type { ModelsOperations } from './operations.ts'
 import type { SettingsSchemaOperations } from './schema-operations.ts'
@@ -197,7 +197,6 @@ export function AddCard(props: AddCardProps): ReactNode {
                   <CustomProviderCard
                     taken={rows.map(row => row.entry.provider)}
                     protocols={protocols}
-                    reasoningLevels={reasoningLevelChoices(piAi, schema)}
                     revision={piAi.revision}
                     operations={operations}
                     t={t}

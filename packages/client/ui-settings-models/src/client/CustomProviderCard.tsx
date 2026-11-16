@@ -1,4 +1,4 @@
-/**
+﻿/**
  * The card that declares a provider pi-ai does not ship — a gateway, a
  * self-hosted server, or a provider newer than the installed catalog.
  *
@@ -12,29 +12,21 @@
  * under the reference the profile records, exactly as an existing provider's
  * key does.
  *
- * The card declares an endpoint, a protocol, and a key, and nothing else: a
- * route is creatable without a model listing. Test connection interrogates the
- * endpoint with the same protocol and key the profile will carry, and lists
- * whatever models it discloses; the list is optional, and a route created
- * without one grows its first model on the Models page. Each model row a
- * user does add declares its own `reasoningEfforts`, so there is no
- * provider-scoped effort control here or on the editor card: effort is a
- * per-MODEL capability, and the models under one provider disagree about it.
+ * The card declares a provider and nothing else: its name, endpoint, protocol,
+ * and key. Models belong to the Models page, so no model row, listing, or
+ * reasoning control appears here — Test connection only answers whether the
+ * endpoint accepts the protocol and key this profile will carry.
  */
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 import type { JsonValue } from '@noharness/util-values'
 import { apiKeyFailure } from './apiKey.ts'
 import { ApiKeyInput } from './ApiKeyInput.tsx'
 import { EditorFooter } from './EditorFooter.tsx'
-import { validateDeepSeekModels } from './DeepSeekModelsEditor.tsx'
-import { ModelListEditor, adopt } from './ModelListEditor.tsx'
-import type { ModelDraft } from './ModelListEditor.tsx'
-import { validateReasoningEfforts } from './ModelReasoningEfforts.tsx'
 import { deriveKeyRef } from './store.ts'
 import { protocolLabel } from './protocol-label.ts'
-import { protocolNeedsKey, protocolReasoningLevels } from './protocol-rules.ts'
+import { protocolNeedsKey } from './protocol-rules.ts'
 import type { ModelsOperations } from './operations.ts'
 import type { en, ModelsKey } from './locales.ts'
 import styles from './ModelsSection.module.css'
@@ -82,8 +74,6 @@ export interface CustomProviderCardProps {
   taken: readonly string[]
   /** Wire protocols the adapter can serve, in the order it reports them. */
   protocols: readonly string[]
-  /** Reasoning levels the adapter's schema accepts, in escalation order; empty shows no reasoning control. */
-  reasoningLevels: readonly string[]
   /**
    * Revision of the `llm-pi-ai` user section this card opened at, sent with
    * the create so a route another tab declared meanwhile is a refusal rather
@@ -107,11 +97,11 @@ export interface CustomProviderCardProps {
 
 /**
  * Render the custom-provider creation card.
- * @param props - existing routes, protocol choices, wire faces, and copy.
+ * @param props - existing routes, protocol choices, and copy.
  * @returns the creation card.
  */
 export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
-  const { taken, protocols, reasoningLevels, operations, t, onBusyChange } = props
+  const { taken, protocols, operations, t, onBusyChange } = props
   // The write is checked against the revision on which this draft was opened.
   const [openedAt] = useState(() => props.revision)
   const [route, setRoute] = useState(props.initial?.route ?? '')
@@ -119,13 +109,11 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
   const [baseURL, setBaseURL] = useState('')
   const [protocol, setProtocol] = useState(protocols[0] ?? '')
   const [keyDraft, setKeyDraft] = useState('')
-  const [models, setModels] = useState<readonly ModelDraft[]>([])
   const [busy, setBusy] = useState(false)
-  const [listBusy, setListBusy] = useState(false)
-  /** Whether the Test connection probe has answered for the current endpoint, protocol, and key. */
-  const [tested, setTested] = useState(false)
-  useEffect(() => { onBusyChange?.(busy || listBusy) }, [busy, listBusy, onBusyChange])
+  onBusyChange?.(busy)
   const [failure, setFailure] = useState<string | undefined>(undefined)
+  /** The endpoint answered, which is what this line reports. */
+  const [tested, setTested] = useState(false)
   /**
    * The profile write landed. Only the key write can still be outstanding, so
    * the fields that describe the provider are settled and the retry path is
@@ -137,16 +125,11 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
   const profileDisabled = disabled || committed
 
   const routeInvalid = route.length > 0 && !ROUTE_PATTERN.test(route)
-  const routeTaken = taken.includes(route)
+  // After the write the id is the provider's, so its own presence in the
+  // directory is no longer a collision.
+  const routeTaken = taken.includes(route) && !committed
   const normalizedBaseURL = baseURL.trim()
   const baseUrlInvalid = baseURL.length > 0 && !isHttpUrl(normalizedBaseURL)
-  // Rows are checked by the same per-row validator the editor cards use, so a
-  // bad row is named by its position here too. The list is optional: a route
-  // created without one declares its own models on the Models page. Every row
-  // of this hand-declared route edits its reasoning levels, so they are checked too.
-  const reasoning = protocolReasoningLevels(protocol, reasoningLevels)
-  const modelFailure = validateDeepSeekModels(models)
-    ?? validateReasoningEfforts(models, reasoning.levelsOnly ? reasoning.levels : undefined)
   // A blank key is a legal choice only where the protocol can authenticate without one.
   const keyMissing = protocolNeedsKey(protocol) && keyDraft.trim().length === 0
   const keyFailure = keyMissing ? 'keyRequired' as const : apiKeyFailure(keyDraft)
@@ -156,33 +139,27 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
   const keyValue = keyDraft.trim()
   const endpointReady = route.length > 0 && !routeInvalid && !routeTaken
     && normalizedBaseURL.length > 0 && !baseUrlInvalid
-  const ready = endpointReady && modelFailure === undefined && keyFailure === undefined
+  const ready = endpointReady && keyFailure === undefined
   /** A probe needs a complete endpoint; a key the protocol requires counts. */
   const testReady = endpointReady && !keyMissing
-  // The one blocked gate worth a line under the form. A satisfied card says
-  // nothing at all rather than printing an empty paragraph.
+  // The blocked gate worth a line under the form, or the note that models are
+  // not one. The key and route-id gates own their own lines, so a card blocked
+  // only by one of them stays silent here rather than naming a gate that is
+  // already satisfied.
   const hint = failure !== undefined
-    // The key field prints its own failure directly beneath itself, so a card
-    // blocked only by the key stays silent here rather than answering with the
-    // next unmet gate — which is satisfied, and reads as a second, false fault.
     || keyFailure !== undefined
-    // Same for the route id, and it must be tested rather than assumed: the
-    // fallback arm below reads "no endpoints yet", so an unmet route gate would
-    // fall through to it and contradict the filled-in fields right above.
     || route.length === 0 || routeInvalid || routeTaken || baseUrlInvalid
     ? undefined
-    : !endpointReady
-      ? t('customNeedsBaseUrl')
-      : modelFailure === undefined
-        // A complete endpoint is ready to create; the line explains what the
-        // optional test does for a route that has no models yet.
-        ? t('customNeedsModelsOptional')
-        : `${t('model')} ${String(modelFailure.index + 1)}: ${t(modelFailure.key)}`
+    : endpointReady ? t('customNeedsModelsOptional') : t('customNeedsBaseUrl')
 
-  /** Interrogate the endpoint this card would write, and adopt what it discloses. */
+  /** Report the endpoint answer beside the button, dropping a stale one when the draft moves. */
+  const changed = (): void => { setTested(false) }
+
+  /** Interrogate the endpoint this card would write. */
   const testConnection = async (): Promise<void> => {
     setBusy(true)
     setFailure(undefined)
+    setTested(false)
     try {
       const answer = await operations.discoverModels(NS, {
         baseURL: normalizedBaseURL,
@@ -190,20 +167,12 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
         ...keyValue.length === 0 ? {} : { apiKey: keyValue },
       })
       if (answer.kind === 'refused') {
-        setTested(false)
         setFailure(answer.message)
         return
       }
+      // How many models the endpoint lists is the Models page's business; the
+      // test reports only whether it answered.
       setTested(true)
-      // The listing is optional: an endpoint that answers with none still
-      // connects, and its models are added on the Models page.
-      const found = answer.models
-      if (found.length === 0) {
-        setFailure(t('fetchEmpty'))
-        return
-      }
-      const discovered = found.map(adopt)
-      setModels(previous => [...new Map([...previous, ...discovered].map(model => [String(model['id']), model] as const)).values()])
     } finally {
       setBusy(false)
     }
@@ -223,10 +192,6 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
         ...storesKey ? { apiKeyEnv: keyRef } : {},
         api: protocol,
         baseURL: normalizedBaseURL,
-        // A route the installed catalog does not describe resolves its models
-        // from this list; an empty one is written as absent so the route is
-        // declared with no models rather than refused.
-        ...models.length === 0 ? {} : { models: models.map(model => ({ ...model })) },
       }
       // `taken` is a snapshot too, so the id check alone cannot see a route
       // declared after this card opened; the revision makes that race a
@@ -312,7 +277,7 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
           disabled={profileDisabled}
           onChange={(event) => {
             setBaseURL(event.target.value)
-            setTested(false)
+            changed()
           }}
         />
       </div>
@@ -326,7 +291,7 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
           disabled={profileDisabled}
           onChange={(event) => {
             setProtocol(event.target.value)
-            setTested(false)
+            changed()
           }}
         >
           {protocols.map(choice => <option key={choice} value={choice}>{protocolLabel(t, choice)}</option>)}
@@ -343,7 +308,7 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
           disabled={disabled}
           onChange={(event) => {
             setKeyDraft(event.target.value)
-            setTested(false)
+            changed()
           }}
         />
         {/* A create card has no stored key to keep, so the blank case says
@@ -365,25 +330,6 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
         </button>
         {tested ? <span className={styles['advancedHint']}>{t('testConnectionOk')}</span> : null}
       </div>
-      <ModelListEditor
-        models={models}
-        onChange={setModels}
-        reasoningLevels={reasoning.levels}
-        reasoningLevelsOnly={reasoning.levelsOnly}
-        probe={{
-          settingsNs: NS,
-          baseURL: normalizedBaseURL,
-          api: protocol,
-          ...keyValue.length === 0 ? {} : { apiKey: keyValue },
-        }}
-        probeBlocked={baseUrlInvalid
-          ? 'customBaseUrlInvalid'
-          : keyFailure === 'keyBlank' ? 'keyBlankNew' : keyFailure}
-        operations={operations}
-        t={t}
-        disabled={profileDisabled}
-        onBusyChange={setListBusy}
-      />
       {failure !== undefined ? <p className={styles['error']}>{failure}</p> : null}
       {/* Only the gates with something to say render; the route-id gate has its
           own field-level hint, so its blocked state would print an empty line. */}

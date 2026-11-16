@@ -1758,7 +1758,7 @@ describe('ModelsSection', () => {
     expect(mutate).toHaveBeenCalledOnce()
   })
 
-  it('locks the mode switch while the custom form is asking the endpoint for models', async () => {
+  it('locks the mode switch while the custom form is testing the endpoint', async () => {
     const scripted = scriptedFace()
     let settle: (() => void) | undefined
     const pending = new Promise<void>((resolve) => { settle = resolve })
@@ -1767,8 +1767,9 @@ describe('ModelsSection', () => {
     fireEvent.click(screen.getByRole('button', { name: en.add }))
     fireEvent.click(screen.getByRole('tab', { name: en.addCustom }))
     const custom = within(screen.getByRole('tabpanel', { name: en.addCustom }))
+    fireEvent.change(custom.getByRole('textbox', { name: en.customRoute }), { target: { value: 'acme' } })
     fireEvent.change(custom.getByRole('textbox', { name: en.baseUrl }), { target: { value: 'https://acme.test/v1' } })
-    fireEvent.click(custom.getByRole('button', { name: en.fetchModels }))
+    fireEvent.click(custom.getByRole('button', { name: en.testConnection }))
     await waitFor(() => { expect(screen.getByRole<HTMLButtonElement>('tab', { name: en.addCatalog }).disabled).toBe(true) })
     await act(async () => { settle!(); await pending })
     await waitFor(() => { expect(screen.getByRole<HTMLButtonElement>('tab', { name: en.addCatalog }).disabled).toBe(false) })

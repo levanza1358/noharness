@@ -55,16 +55,31 @@
   border: 0.5px solid var(--dsw-alias-settings-card-stroke);
   background: var(--dsw-alias-settings-card-fill);
   border-radius: var(--dsw-radius-xl);
-  padding: 12px 14px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  /* A declared provider answers the pointer: the card lifts 2px and its
+     hairline steps up one tone, so the list reads as things, not a table. */
+  .rowCard:hover {
+    transform: translateY(-2px);
+    border-color: var(--dsw-alias-border-l3);
+  }
+}
+
+/* Row head and its identity stay the same height as the row controls beside
+   them, so a name, a dot and two buttons share one optical line. */
 .rowHead {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 28px;
 }
 
 .rowIdentity {
@@ -75,8 +90,8 @@
 }
 
 .rowName {
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 15px;
+  line-height: 24px;
   font-weight: 500;
   color: var(--dsw-alias-label-primary);
 }
@@ -90,6 +105,7 @@
   padding: 1px 6px;
   border: 0.5px solid var(--dsw-alias-border-l3);
   border-radius: var(--dsw-radius-xs);
+  font-family: var(--ds-font-family-code);
   font-size: 11px;
   line-height: 16px;
   color: var(--dsw-alias-label-secondary);
@@ -263,6 +279,22 @@
   font-size: 12px;
   line-height: 18px;
   color: var(--dsw-alias-label-tertiary);
+}
+
+/* The Models page's one choice, read before its editor card: it takes the full
+   column at control height rather than the short enum width other pickers use. */
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.picker select.input {
+  box-sizing: border-box;
+  max-width: none;
+  height: 40px;
+  font-size: 15px;
+  line-height: 24px;
 }
 
 .field {
@@ -935,6 +967,15 @@ select.input {
   .customizedSummary::before,
   .switchThumb {
     transition: none;
+  }
+
+  /* The lift is the one motion the card has; the tone change still answers. */
+  .rowCard {
+    transition: none;
+  }
+
+  .rowCard:hover {
+    transform: none;
   }
 }
 

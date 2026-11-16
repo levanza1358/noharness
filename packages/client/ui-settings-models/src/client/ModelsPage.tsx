@@ -96,7 +96,7 @@ function Loaded(
       {row === undefined
         ? <p className={styles['advancedHint']}>{t('noModelsProvider')}</p>
         : (
-          <div className={styles['field']}>
+          <div className={styles['picker']}>
             <span className={styles['fieldLabel']}>{t('providerSelect')}</span>
             <select
               className={`${styles['input']} ${styles['selectInput']}`}

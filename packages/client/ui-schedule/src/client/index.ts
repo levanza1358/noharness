@@ -106,8 +106,8 @@ function inputCorrection(error: RemoteFailure): 'host.notFuture' | 'host.invalid
 export function apply(ctx: ClientContext): void {
   ctx.effect(() => ctx.locale.register(NS, { en, ja, es, fr, de, ru, pt }), 'ui-schedule: dictionaries')
   const managerDictionaries = {
-    en: managerEn,
-    ja: managerJa,
+    en: { ...en, ...managerEn },
+    ja: { ...ja, ...managerJa },
     es: managerEs,
     fr: managerFr,
     de: managerDe,

@@ -13,7 +13,7 @@ import { formatTokens } from '../src/client/chat/token-format.ts'
 import { en } from '../src/client/locale.ts'
 import { chatSnapshotFixture } from './chat-snapshot-fixture.client.ts'
 
-const seconds = String(commonEn['duration.secondUnit'])
+const seconds = en['duration.secondUnit']
 const tEn: StatPillProps['t'] = makeTranslate(en, commonEn)
 
 /** Both composer-dock entries in their registered order, as the dock renders them. */

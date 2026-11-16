@@ -9,6 +9,7 @@ type CronWeekdayKey = `frequency.weekday.${1 | 2 | 3 | 4 | 5 | 6 | 7}`
 export type CronDescriptionKey =
   | CronWeekdayKey
   | 'cron.list.join'
+  | 'cron.part.join'
   | 'cron.day.everyDay'
   | 'cron.weekday.name'
   | 'cron.weekday.range'
@@ -17,6 +18,7 @@ export type CronDescriptionKey =
   | 'cron.day.monthDays'
   | 'cron.day.both'
   | 'cron.day.bothStarred'
+  | 'cron.day.weekdays'
   | 'cron.hours.range'
   | 'cron.hours.list'
   | 'cron.time.everyMinute'

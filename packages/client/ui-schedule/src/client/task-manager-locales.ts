@@ -421,6 +421,7 @@ export const es = {
   'rule.weekly': 'Semanal',
   'rule.zone.system': ' (sistema)',
   'delete.action': 'Eliminar tarea',
+  'delete.pending': 'Eliminando…',
   'delete.title': '¿Eliminar esta tarea?',
   'delete.description': 'Esto evita que la tarea se active y la elimina junto con sus registros de entrega guardados. '
     + 'La sesión original y sus mensajes permanecen; los mensajes en cola no se retiran.',

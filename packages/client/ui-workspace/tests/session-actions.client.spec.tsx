@@ -444,6 +444,7 @@ describe('RowActionToast', () => {
   /** The notice surface over a test-owned notice source; dismissal clears the notice the way apply does. */
   async function toastSurface(
     viewState: { archivedFilter?: 'default' | 'show' | 'only' } = { archivedFilter: 'default' },
+    translate: PropsLocale<'workspace'>['t'] = tEn,
   ) {
     const toast = createSnapshotStore<RowToastState | null>(null)
     const instance = createWorkspaceViewStore().create()
@@ -463,6 +464,7 @@ describe('RowActionToast', () => {
     runtime.ctx.effect(() => locale.addLanguage({ id: 'ja', label: '日本語', fallback: 'en' }))
     locale.setLocale('en')
     locale.register('workspace', { en, ja })
+    void translate
     runtime.ctx.provide('locale', locale)
     runtime.slots.installLocale(locale)
     await runtime.root.declare({ 'shell.overlay': { kind: 'list', scope: 'root' } }, ToastFrame)

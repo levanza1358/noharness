@@ -16,8 +16,9 @@ import type {} from '@noharness/client-ui-renderer/client'
 // Type-only: pulls the ctx.remote merge and the forwarded-event key face
 // (settings/credentials invalidations ride the allowlist) into this program.
 import type {} from '@noharness/api-remotes/client'
-import { ModelsSection } from './ModelsSection.tsx'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
+import { ProvidersSection } from './ProvidersSection.tsx'
+import { ModelsPage } from './ModelsPage.tsx'
 import { DeepSeekOnboardingDialog } from './DeepSeekOnboardingDialog.tsx'
 import type { DeepSeekOnboardingInjected } from './DeepSeekOnboardingDialog.tsx'
 import { WelcomeNotice } from './WelcomeNotice.tsx'
@@ -30,7 +31,9 @@ import { en, ja, es, fr, de, ru, pt, type ModelsKey } from './locales.ts'
 import { WELCOME_NOTICE_SETTINGS_NAMESPACE } from '../onboarding-copy.ts'
 import { Config, ONBOARDING_CONFIG_GLOBAL } from '../onboarding-config.ts'
 
-export type { ModelsSectionInjected, ModelsSectionProps } from './ModelsSection.tsx'
+export type { ModelsSectionInjected } from './ModelsSection.tsx'
+export type { ModelsPageProps } from './ModelsPage.tsx'
+export type { ProvidersSectionProps } from './ProvidersSection.tsx'
 export type { ModelsFooterOwnerProps, ProviderCardExtrasOwnerProps } from './slot-contract.ts'
 export type { ModelsKey } from './locales.ts'
 
@@ -135,6 +138,13 @@ export function apply(ctx: ClientContext): void {
 
   ctx.slots.inject('settings.section', () => ctx.slots.register({
     name: 'settings.section',
+    id: 'providers',
+    order: 5,
+    label: () => t('providersNav'),
+    inject: injected,
+  }, ProvidersSection))
+  ctx.slots.inject('settings.section', () => ctx.slots.register({
+    name: 'settings.section',
     id: 'models',
     order: 10,
     label: () => t('nav'),
@@ -143,7 +153,7 @@ export function apply(ctx: ClientContext): void {
       'settings.models.provider-card': { kind: 'keyed', scope: 'root' },
       'settings.models.footer': { kind: 'list', scope: 'root' },
     },
-  }, ModelsSection))
+  }, ModelsPage))
   if (!('nhsDesktop' in globalThis)) ctx.slots.inject('settings.onboarding', () => ctx.slots.register({
     name: 'settings.onboarding',
     id: 'welcome-notice',

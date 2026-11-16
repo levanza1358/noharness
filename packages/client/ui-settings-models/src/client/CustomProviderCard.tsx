@@ -52,7 +52,7 @@ const NS = 'llm-pi-ai'
  * digit-leading id passes every check this card makes and then fails at the
  * credential seam with a raw regular expression the user cannot act on.
  */
-const ROUTE_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/
+export const ROUTE_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/
 
 /**
  * Endpoint examples for protocols whose SDK expects a different base than an
@@ -75,6 +75,11 @@ function isHttpUrl(value: string): boolean {
 
 /** Props of {@link CustomProviderCard}. */
 export interface CustomProviderCardProps {
+  /**
+   * Route id and display name chosen in the add-provider dialog before this
+   * form opened; both fields start settled and are edited here afterwards.
+   */
+  initial?: { route: string; displayName: string }
   /** Route ids already declared, so the card refuses to shadow one. */
   taken: readonly string[]
   /** Wire protocols the adapter can serve, in the order it reports them. */
@@ -111,8 +116,8 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
   const { taken, protocols, reasoningLevels, operations, t, onBusyChange } = props
   // The write is checked against the revision on which this draft was opened.
   const [openedAt] = useState(() => props.revision)
-  const [route, setRoute] = useState('')
-  const [displayName, setDisplayName] = useState('')
+  const [route, setRoute] = useState(props.initial?.route ?? '')
+  const [displayName, setDisplayName] = useState(props.initial?.displayName ?? '')
   const [baseURL, setBaseURL] = useState('')
   const [protocol, setProtocol] = useState(protocols[0] ?? '')
   const [keyDraft, setKeyDraft] = useState('')

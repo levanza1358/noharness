@@ -25,11 +25,13 @@ import { useId, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Button, IconPlusOutlineRegular, Modal, SegmentedControl } from '@noharness/client-ui-primitives'
 import type { InjectFace, PropsRenderSlots } from '@noharness/client-ui-slots'
-import type { LlmNativeAuth, SettingsNamespaceView } from '@noharness/api-remotes/client'
+import type { SettingsNamespaceView } from '@noharness/api-remotes/client'
 // Type-only: pulls this package's SlotMap merge (the two Models child slots).
 import type {} from './slot-contract.ts'
 import { CustomProviderCard } from './CustomProviderCard.tsx'
-import { deriveKeyRef, protocolChoices, providerUsable, reasoningLevelChoices } from './store.ts'
+import { providerCopy, targetOf } from './provider-identity.ts'
+import type { EditorTarget, ProviderIdentity } from './provider-identity.ts'
+import { protocolChoices, providerUsable, reasoningLevelChoices } from './store.ts'
 import type { ModelsSettingsStore, ProviderRow } from './store.ts'
 import type { ModelsOperations } from './operations.ts'
 import type { SettingsSchemaOperations } from './schema-operations.ts'
@@ -76,29 +78,8 @@ export type ModelsSectionProps = Partial<InjectFace<ModelsSectionInjected>> & Pr
 
 type ModelsSectionFace = InjectFace<ModelsSectionInjected>
 
-/** Provider identity shared by row actions and confirmation copy. */
-export interface ProviderIdentity {
-  /** Stable provider route id. */
-  provider: string
-  /** Human-facing provider name. */
-  displayName: string
-}
-
-/** One existing row or dormant directory entry addressed by an editor action. */
-interface EditorTarget extends ProviderIdentity {
-  settingsNs: string
-  settingsPath: readonly string[]
-  /** Writable credential identified under this page's conventional reference. */
-  credentialRef?: string
-  /** The adapter reports this route as one it does not ship (see {@link ProviderEditorProps.declared}). */
-  declared?: boolean
-  /** The route's catalog endpoint (see {@link ProviderEditorProps.defaultBaseURL}). */
-  defaultBaseURL?: string
-  /** Environment used to construct an endpoint (see {@link ProviderEditorProps.baseURLEnv}). */
-  baseURLEnv?: readonly string[]
-  /** The route's native authentication (see {@link ProviderEditorProps.nativeAuth}). */
-  nativeAuth?: LlmNativeAuth
-}
+export { providerCopy, providerTargetLabel, targetOf } from './provider-identity.ts'
+export type { EditorTarget, ProviderIdentity } from './provider-identity.ts'
 
 /** A dormant directory row the add card can adopt, with its registered namespace. */
 interface AddableRow {
@@ -195,39 +176,6 @@ function keyConfiguredOf(row: ProviderRow): boolean {
   return row.apiKeyEnv !== undefined
     ? row.credential?.configured === true
     : row.derivedCredential?.configured === true
-}
-
-function targetOf(row: ProviderRow): EditorTarget {
-  const managedRef = deriveKeyRef(row.entry.provider)
-  const credentialRef = row.apiKeyEnv === managedRef
-    && row.credential?.configured === true
-    && row.credential.writable
-    ? managedRef
-    : undefined
-  return {
-    provider: row.entry.provider,
-    displayName: row.entry.displayName,
-    settingsNs: row.entry.settingsNs,
-    settingsPath: row.entry.settingsPath,
-    ...credentialRef === undefined ? {} : { credentialRef },
-    // Only declared routes may expose route-owned fields.
-    ...row.entry.declared === true ? { declared: true } : {},
-    ...row.entry.defaultBaseURL === undefined ? {} : { defaultBaseURL: row.entry.defaultBaseURL },
-    ...row.entry.baseURLEnv === undefined ? {} : { baseURLEnv: row.entry.baseURLEnv },
-    ...row.entry.nativeAuth === undefined ? {} : { nativeAuth: row.entry.nativeAuth },
-  }
-}
-
-/** Stable visible and accessible identity for one provider target. */
-export function providerTargetLabel(target: ProviderIdentity): string {
-  return target.provider === target.displayName
-    ? target.provider
-    : `${target.displayName} (${target.provider})`
-}
-
-/** Replace the one provider placeholder in localized destructive-action copy. */
-export function providerCopy(template: string, target: ProviderIdentity): string {
-  return template.replace('{provider}', () => providerTargetLabel(target))
 }
 
 /**

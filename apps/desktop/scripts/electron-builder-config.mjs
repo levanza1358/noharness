@@ -126,7 +126,8 @@ export function createElectronBuilderConfig(
     electronDist: buildPaths.electron,
     electronFuses: { runAsNode: true },
     beforeBuild: async () => {
-      if (resolvedPlatform !== 'win32') return true
+      // An unpacked application directory carries no NSIS installer, so its native helper is never embedded.
+      if (resolvedPlatform !== 'win32' || env.NHS_DESKTOP_DIRECTORY_ONLY === '1') return true
       await promisify(execFile)('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
         fileURLToPath(new URL('./prepare-windows-installer.ps1', import.meta.url)),
         '-OutputDirectory', join(buildPaths.root, 'installer-ui')], {
@@ -142,12 +143,10 @@ export function createElectronBuilderConfig(
     files: [
       'lib/main.js',
       'lib/operation-report-worker.js',
-      'lib/welcome/**/*',
       'lib/preload-app.cjs',
       'lib/preload-mandatory.cjs',
       'lib/preload-platform-account.cjs',
       'lib/preload-update-dialog.cjs',
-      'lib/preload-welcome.cjs',
       'renderer/**/*',
       'package.json',
       '!node_modules/**/*.{js,cjs,mjs,ts,cts,mts,css}.map',

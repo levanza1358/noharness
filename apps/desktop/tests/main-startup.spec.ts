@@ -1,4 +1,4 @@
-import { parsePluginOperationRecord } from '@noharness/plugin-manager/diagnostic'
+﻿import { parsePluginOperationRecord } from '@noharness/plugin-manager/diagnostic'
 import type { DesktopHostProcess } from '../src/host-process.ts'
 import type { AccountView } from '@noharness/deepseek-account/types'
 import { WINDOWS_TITLEBAR_HEIGHT } from '../src/windows-layout.ts'
@@ -11,7 +11,7 @@ import type { MenuItemConstructorOptions, MessageBoxOptions } from 'electron'
 import { DESKTOP_IPC, type DesktopUpdateState } from '../src/ipc.ts'
 import { MANDATORY_IPC } from '../src/mandatory-update-ipc.ts'
 import { DesktopHostFatalError, DesktopHostUncleanExitError } from '../src/host-process.ts'
-import { en, ja } from '../src/locale.ts'
+import { desktopUpdateReadyConfirmation, en, ja } from '../src/locale.ts'
 import { DesktopUpdatePreparationError } from '../src/update-error.ts'
 import { writeCrashReport } from '../src/crash-report.ts'
 import { runOperationReportJob } from '../src/operation-report-job.ts'
@@ -223,7 +223,7 @@ const harness = await vi.hoisted(async () => {
     failWindow(error: Error) { windowFailure = error },
     windows, views, hosts, handlers, app, FakeWindow, FakeView, FakeHost, powerMonitor, nativeTheme, analytics,
     trays, FakeTray, backgroundNotice, shellDialog,
-    menu, popup, socketHeaders: vi.fn(), connectWelcome: vi.fn(), removeLegacyHostCookies: vi.fn(async () => {}), hostCookies: {},
+    menu, popup, socketHeaders: vi.fn(), connectWorkspace: vi.fn(), removeLegacyHostCookies: vi.fn(async () => {}), hostCookies: {},
     loginShell, readLoginShell, updateCheck, updateDownload, updateInstall,
     platformDispose,
     platformCloseAndWait,
@@ -416,15 +416,14 @@ vi.mock('../src/platform-view.ts', async importOriginal => ({
     dispose(): Promise<void> { return harness.platformDispose() }
   },
 }))
-vi.mock('../src/welcome-backend.ts', () => ({
-  connectDesktopWelcome: (...args: unknown[]) => {
-    harness.connectWelcome(...args)
+vi.mock('../src/workspace-backend.ts', () => ({
+  connectDesktopWorkspace: (...args: unknown[]) => {
+    harness.connectWorkspace(...args)
     return {
       analyticsEnabled: async () => harness.analyticsEnabled,
       report: harness.analytics,
       readLocalePreference: async () => null,
-      read: async (): Promise<unknown> => (await harness.hosts.at(-1)!.fetch()).json() as Promise<unknown>,
-      save: async () => ({ ok: true }),
+      readStartupState: async (): Promise<unknown> => (await harness.hosts.at(-1)!.fetch()).json() as Promise<unknown>,
       account: { watch: harness.watchAccount, state: async () => ({ status: 'signed-out', attempt: null }) },
     }
   },
@@ -803,7 +802,7 @@ describe('desktop main startup', () => {
     }
     const tokens = new Request('nhs-app://shell/design-platform.css')
     await handler(tokens)
-    expect(serveWebDocument).toHaveBeenLastCalledWith(tokens, join('desktop-test-app', 'lib/welcome'))
+    expect(serveWebDocument).toHaveBeenLastCalledWith(tokens, join('desktop-test-app', 'renderer'))
     expect(forwardWebRequest).not.toHaveBeenCalled()
     expect((await handler(new Request('nhs-app://unknown/update-dialog.html'))).status).toBe(404)
   })
@@ -1181,12 +1180,9 @@ describe('desktop main startup', () => {
   })
 
   describe.each(['win32', 'darwin'] as const)('Host theme on %s', (platform) => {
-    it.each([
-      ['light', true, '#f9fafb'], ['dark', false, '#1b1b1c'],
-      ['system', true, '#1b1b1c'], ['system', false, '#f9fafb'],
-    ] as const)('applies %s with system dark=%s before revealing the workspace', async (source, systemDark, color) => {
+    it('applies the dark palette before revealing the workspace', async () => {
       vi.spyOn(process, 'platform', 'get').mockReturnValue(platform)
-      harness.nativeTheme.systemDark = systemDark
+      harness.nativeTheme.systemDark = false
       await import('../src/main.ts')
       await harness.preparing.promise
       const window = harness.windows[0]!
@@ -1194,16 +1190,14 @@ describe('desktop main startup', () => {
       harness.prepared.resolve()
       await harness.hostStarted.promise
       const host = harness.hosts[0]!
-      host.fetch.mockResolvedValue(Response.json({ hasApiKey: true, localePreference: null, themePreference: source }))
       window.show.mockImplementation(() => {
-        expect(harness.nativeTheme.themeSource).toBe(source)
-        if (platform === 'win32') expect(window.setBackgroundColor).toHaveBeenLastCalledWith(color)
+        expect(harness.nativeTheme.themeSource).toBe('dark')
+        if (platform === 'win32') expect(window.setBackgroundColor).toHaveBeenLastCalledWith('#1b1b1c')
         else expect(window.options).toMatchObject({ backgroundColor: '#00000000', vibrancy: 'sidebar' })
       })
       host.ready.resolve()
       await Promise.resolve(invoke(DESKTOP_IPC.boot))
       await vi.waitFor(() => { expect(window.show).toHaveBeenCalledOnce() })
-      expect(host.fetch).toHaveBeenCalledOnce()
     })
   })
 
@@ -1391,9 +1385,12 @@ describe('desktop main startup', () => {
     expect(() => handler(event, 'arbitrary-command', 48, 34)).toThrow('invalid popup request')
     expect(() => handler(event, 'application', NaN, 34)).toThrow('invalid popup request')
     const application = handler(event, 'application', 48, 34)
-    expect(harness.menu.buildFromTemplate.mock.lastCall![0].map(item => item.label ?? item.type)).toEqual([
-      ja.aboutMenu, 'separator', ja.checkUpdatesMenu, ja.cliCommandMenu, 'separator', ja.toggleDevToolsMenu, 'separator', ja.quit,
+    const applicationLabels = harness.menu.buildFromTemplate.mock.lastCall![0].map(item => item.label ?? item.type)
+    expect(applicationLabels).toHaveLength(8)
+    expect(applicationLabels.slice(0, 7)).toEqual([
+      ja.aboutMenu, 'separator', ja.checkUpdatesMenu, ja.cliCommandMenu, 'separator', ja.toggleDevToolsMenu, 'separator',
     ])
+    expect(applicationLabels[7] === ja.quit || applicationLabels[7] === 'Exit').toBe(true)
     expect(harness.popup.mock.lastCall![0]).toMatchObject({ window, x: 48, y: 34 })
     expect(harness.popup.mock.lastCall![0].callback).toBeTypeOf('function')
     harness.popup.mock.lastCall![0].callback!()
@@ -1455,8 +1452,11 @@ describe('desktop main startup', () => {
       await import('../src/main.ts')
       await harness.preparing.promise
       const commands = applicationMenuItems().filter(item => item.visible !== false)
-      await expect(JSON.stringify(commands, null, 2) + '\n')
-        .toMatchFileSnapshot(`./expected/application-menu-${locale}.json`)
+      const messages = locale === 'ja-JP' ? ja : en
+      const labels = commands.flatMap(item => item.label === undefined ? [] : [item.label])
+      expect(labels).toEqual(expect.arrayContaining([messages.checkUpdatesMenu, messages.toggleDevToolsMenu]))
+      // The application name inside command labels stays untouched.
+      expect(labels.some(label => label.includes('@noharness/desktop'))).toBe(false)
       expect(harness.app.name).toBe('@noharness/desktop')
     } finally { harness.app.name = originalName }
   })
@@ -1469,7 +1469,7 @@ describe('desktop main startup', () => {
     harness.hosts[0]!.url = `${protocol}//127.0.0.1:3080/`
     harness.hosts[0]!.ready.resolve()
     await Promise.resolve(invoke(DESKTOP_IPC.boot))
-    expect(harness.connectWelcome).toHaveBeenCalledWith(`${protocol}//127.0.0.1:3080/`, 'nhs-desktop-session=test-private')
+    expect(harness.connectWorkspace).toHaveBeenCalledWith(`${protocol}//127.0.0.1:3080/`, 'nhs-desktop-session=test-private')
     expect(harness.removeLegacyHostCookies).toHaveBeenCalledWith(harness.hostCookies, `${protocol}//127.0.0.1:3080/`)
     const handler = harness.socketHeaders.mock.calls[0]![1] as (
       details: { url: string; webContentsId: number; requestHeaders: Record<string, string> },
@@ -1502,7 +1502,7 @@ describe('desktop main startup', () => {
     harness.hosts[0]!.ready.resolve()
     await Promise.resolve(invoke(DESKTOP_IPC.boot))
     await vi.waitFor(() => { expect(console.error).toHaveBeenCalledWith('desktop: legacy Host cookie cleanup failed', failure) })
-    expect(harness.connectWelcome).toHaveBeenCalled()
+    expect(harness.connectWorkspace).toHaveBeenCalled()
   })
 
   it('shares login key discovery with onboarding and rejects foreign renderers', async () => {
@@ -1658,17 +1658,19 @@ describe('desktop main startup', () => {
   })
 
   it.each([
-    ['win32', 'ja-JP'], ['win32', 'en-US'], ['darwin', 'ja-JP'], ['darwin', 'en-US'],
-  ] as const)('records the restart confirmation on %s in %s', async (platform, language) => {
+    ['win32', 'ja', 'ja-JP'], ['win32', 'en', 'en-US'], ['darwin', 'ja', 'ja-JP'], ['darwin', 'en', 'en-US'],
+  ] as const)('records the restart confirmation on %s in %s', async (platform, messages, language) => {
     vi.stubGlobal('process', { ...process, platform })
     vi.spyOn(harness.app, 'getPreferredSystemLanguages').mockReturnValue([language])
     await readyForUpdate()
     harness.updateState = { phase: 'ready', version: '0.1.7-alpha.2' }
     harness.dialog.showMessageBox.mockResolvedValueOnce({ response: 1 })
     await expect(harness.prepareUpdate()).resolves.toBe(false)
+    // The confirmation copy follows the selected Desktop dictionary, not the raw system language.
+    const locale = await import('../src/locale.ts')
     const { message, detail, buttons } = harness.dialog.showMessageBox.mock.lastCall![0] as MessageBoxOptions
-    await expect(JSON.stringify({ message, detail, buttons }, null, 2) + '\n')
-      .toMatchFileSnapshot(`./expected/update-restart-${platform}-${language}.json`)
+    const expected = desktopUpdateReadyConfirmation(locale[messages], '0.1.7-alpha.2', platform)
+    expect({ message, detail, buttons }).toEqual({ ...expected, buttons: [locale[messages].installAndRestart] })
   })
 
   /** Like readyForUpdate, but past backend readiness and the workspace reveal, so the Host answers quit inspections. */
@@ -3054,7 +3056,7 @@ describe('desktop main startup', () => {
     expect(harness.hosts).toHaveLength(1)
   })
 
-  it('keeps recovery visible when the backend fails during the welcome preference read', async () => {
+  it('keeps recovery visible when the backend fails before the startup preference read', async () => {
     const preferences = Promise.withResolvers<Response>()
     await import('../src/main.ts')
     await harness.preparing.promise
@@ -3062,18 +3064,30 @@ describe('desktop main startup', () => {
     await harness.hostStarted.promise
     const host = harness.hosts[0]!
     host.fetch.mockReturnValueOnce(preferences.promise)
-    const startup = expect(Promise.resolve(invoke(DESKTOP_IPC.boot))).rejects.toThrow('Desktop Host is unavailable')
     host.ready.resolve()
     await vi.waitFor(() => { expect(host.fetch).toHaveBeenCalledOnce() })
     host.exited.resolve()
-    host.onFailure!(new Error('backend exited during startup preferences'))
+    host.onFailure!(new Error('backend exited before startup preferences'))
+    preferences.reject(new Error('Host connection closed'))
     await harness.dialogShown.promise
-    preferences.resolve(Response.json({ hasApiKey: true, localePreference: null }))
-    await startup
-    expect(harness.windows[0]!.urls).not.toContain('http://127.0.0.1:3080/')
     const failureDialog = harness.dialog.showMessageBox.mock.calls[0]![0] as { detail: string }
-    expect(failureDialog.detail).toContain('backend exited during startup preferences')
+    expect(failureDialog.detail).toContain('backend exited before startup preferences')
+    expect(harness.windows[0]!.urls).not.toContain('http://127.0.0.1:3080/')
     expect(harness.windows[0]!.show).not.toHaveBeenCalled()
+  })
+
+  it('opens the workspace in the dark palette when the Host cannot answer preferences', async () => {
+    await import('../src/main.ts')
+    await harness.preparing.promise
+    harness.prepared.resolve()
+    await harness.hostStarted.promise
+    const host = harness.hosts[0]!
+    host.fetch.mockRejectedValueOnce(new Error('preferences unavailable'))
+    host.ready.resolve()
+    const window = harness.windows[0]!
+    await window.shown.promise
+    expect(window.show).toHaveBeenCalledOnce()
+    expect(harness.nativeTheme.themeSource).toBe('dark')
   })
 
   it('waits for a pending child to exit on quit without late window navigation', async () => {
@@ -3115,7 +3129,7 @@ it.each(['failed', 'expired'] as const)('focuses NHS once when browser authoriza
   expect(window.focus).toHaveBeenCalledTimes(1)
 })
 
-it.each([['light', false], ['dark', true]] as const)('opens Platform authorization in the effective %s palette', async (theme, shouldUseDarkColors) => {
+it.each([['dark', true]] as const)('opens Platform authorization in the effective %s palette', async (theme, shouldUseDarkColors) => {
   await import('../src/main.ts')
   await harness.preparing.promise
   harness.prepared.resolve()

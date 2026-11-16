@@ -7,7 +7,7 @@ import { SettingsDescribeMirror } from '@noharness/client-ui-settings/src/client
 import { ProvidersSection } from '../src/client/ProvidersSection.tsx'
 import { ModelsSettingsStore } from '../src/client/store.ts'
 import { en } from '../src/client/locales.ts'
-import { ctxWith, operationsWith, scriptedFace } from './page-fixture.client.ts'
+import { ctxWith, operationsWith, remoteFail, remoteOk, scriptedFace } from './page-fixture.client.ts'
 import { settingsSchema } from './settings-schema.client.ts'
 
 afterEach(cleanup)
@@ -148,5 +148,79 @@ describe('ProvidersSection', () => {
     fireEvent.click(screen.getByRole('button', { name: en.cancel }))
     await waitFor(() => { expect(screen.queryByLabelText(en.customDisplayName)).toBeNull() })
     expect(addButton()).toBeTruthy()
+  })
+
+  it('lists every declared provider of the adapter namespace, with its key state', async () => {
+    await mountPage(scriptedFace())
+    // The declared routes come from the directory, not from the live routes:
+    // a provider created here keeps its row before it ever serves a request.
+    for (const name of ['openai', 'anthropic', 'zombie']) {
+      expect(screen.getByText(name)).toBeTruthy()
+    }
+    // Another namespace's provider belongs to its own page.
+    expect(screen.queryByText('plain')).toBeNull()
+    expect(screen.getByLabelText(en.credentialConfigured)).toBeTruthy()
+    // Only a user-layer profile can be removed from here.
+    expect(screen.getByLabelText(`${en.remove} openai`)).toBeTruthy()
+    expect(screen.queryByLabelText(`${en.remove} anthropic`)).toBeNull()
+  })
+
+  it('opens a listed provider in its editor card', async () => {
+    await mountPage(scriptedFace())
+    await act(async () => { fireEvent.click(screen.getByLabelText(`${en.edit} openai`)) })
+    expect(screen.getByLabelText<HTMLInputElement>(en.baseUrl)).toBeTruthy()
+    // Closing the card without a write keeps the page where it was.
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.cancel })) })
+    expect(screen.queryByLabelText(en.baseUrl)).toBeNull()
+  })
+
+  it('shows the route id beside a display name of its own', async () => {
+    const scripted = scriptedFace({}, {
+      providers: () => Promise.resolve(remoteOk([
+        {
+          provider: 'acme-gateway', displayName: 'Acme Gateway', settingsNs: 'llm-pi-ai',
+          settingsPath: ['providers', 'acme-gateway'], declared: true,
+          error: 'llm-pi-ai: provider "acme-gateway" resolves no models',
+        },
+      ])),
+    })
+    await mountPage(scripted)
+    // A declared route whose name differs from its key names both, and states
+    // the adapter's own diagnostic for a route it cannot serve yet.
+    expect(screen.getByText('Acme Gateway')).toBeTruthy()
+    expect(screen.getByText('acme-gateway')).toBeTruthy()
+    expect(screen.getByText(/resolves no models/)).toBeTruthy()
+  })
+
+  it('closes the removal dialog without writing', async () => {
+    const scripted = scriptedFace()
+    await mountPage(scripted)
+    await act(async () => { fireEvent.click(screen.getByLabelText(`${en.remove} openai`)) })
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.cancel })) })
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(scripted.mutate).not.toHaveBeenCalled()
+  })
+
+  it('keeps a failed removal visible and retryable', async () => {
+    const scripted = scriptedFace({
+      mutate: vi.fn(() => Promise.resolve(remoteFail('read-only settings', 'settings/rejected'))),
+    })
+    await mountPage(scripted)
+    await act(async () => { fireEvent.click(screen.getByLabelText(`${en.remove} openai`)) })
+    await act(async () => { fireEvent.click(screen.getAllByRole('button', { name: 'Delete openai' }).at(-1)!) })
+    await screen.findByText('read-only settings')
+    // The dialog stays open on its failure so the user can retry.
+    expect(screen.getByRole('dialog')).toBeTruthy()
+  })
+
+  it('removes a listed provider after confirmation and reloads the directory', async () => {
+    const scripted = scriptedFace()
+    const { controller } = await mountPage(scripted)
+    const load = vi.spyOn(controller, 'load')
+    await act(async () => { fireEvent.click(screen.getByLabelText(`${en.remove} openai`)) })
+    expect(screen.getByRole('dialog')).toBeTruthy()
+    await act(async () => { fireEvent.click(screen.getAllByRole('button', { name: 'Delete openai' }).at(-1)!) })
+    await waitFor(() => { expect(load).toHaveBeenCalled() })
+    expect(scripted.mutate).toHaveBeenCalled()
   })
 })

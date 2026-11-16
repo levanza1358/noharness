@@ -991,8 +991,13 @@ describe('provider profile lifecycle', () => {
     expect(resolveProfiles(undefined).size).toBe(0)
     expect(() => resolveProfiles({ '': {} })).toThrow(/non-empty/)
     // A route the installed catalog does not ship is allowed, but it has no
-    // defaults to fall back on: it must describe its own models.
+    // defaults to fall back on: a write must describe its own models.
     expect(() => resolveProfiles({ 'not-real': {} })).toThrow(/resolves no models/)
+    // A stored read keeps the route so the settings surface can show it before
+    // its first model arrives; the diagnostic rides along on the profile.
+    const empty = resolveProfiles({ 'not-real': {} }, 'deferred').get('not-real')
+    expect(empty?.piProvider?.getModels()).toEqual([])
+    expect(empty?.catalogError).toMatch(/resolves no models/)
     // The pre-release array shape and its per-profile provider field fail
     // loud with migration directions instead of half-working.
     expect(() => resolveProfiles([{ provider: 'openai' }] as never)).toThrow(/dict keyed by provider/)

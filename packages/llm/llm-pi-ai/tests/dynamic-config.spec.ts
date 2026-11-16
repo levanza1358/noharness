@@ -257,11 +257,17 @@ describe('request-level dynamic profiles', () => {
     const ctx = await boot(dir, { providers: { openai: {} } })
 
     // Shape-valid but unserviceable: a route the catalog does not ship and
-    // that lists no models of its own. The section schema resolves the whole
-    // profile set, so this is refused where it is written rather than stored
+    // that names a protocol the schema refuses.
+    await expect(configurations.get(ctx)!.update({ providers: { 'not-a-real-provider': { api: 'not-a-protocol' } } }))
+      .rejects.toThrow(/not-a-real-provider\.api/)
+    expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai'])
+
+    // And the section schema resolves every profile it stores, so an
+    // unserviceable write is refused where it is written rather than stored
     // and then quietly disabling every route in the namespace.
-    await expect(configurations.get(ctx)!.update({ providers: { 'not-a-real-provider': {} } }))
-      .rejects.toThrow(/resolves no models/)
+    await expect(configurations.get(ctx)!.update({
+      providers: { 'not-a-real-provider': { api: 'anthropic-messages' } },
+    })).rejects.toThrow(/resolves no models/)
     expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai'])
 
     await expect(configurations.get(ctx)!.update({

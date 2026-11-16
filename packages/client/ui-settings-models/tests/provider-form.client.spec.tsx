@@ -1249,6 +1249,68 @@ describe('hand-declared providers', () => {
     expect(buttonNamed(en.apply).disabled).toBe(declared)
   })
 
+  it('tests the connection, adopts what it discloses, and creates without any model', async () => {
+    const discover = vi.fn(() => Promise.resolve(ok([{ id: 'listed' }])))
+    const { mutate, onClose } = mountCard({}, { discover })
+    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
+    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
+    fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'gw-key' } })
+
+    // Nothing to test until the endpoint and the protocol's key are there.
+    expect(buttonNamed(en.testConnection).disabled).toBe(false)
+    fireEvent.click(screen.getByText(en.testConnection))
+    await screen.findByText(en.testConnectionOk)
+    expect(lastProbe(discover)).toMatchObject({ baseURL: 'https://acme.test/v1', apiKey: 'gw-key' })
+    // The listing lands as the model list, and is written with the profile.
+    expect(screen.getByLabelText<HTMLInputElement>(`${en.modelId} 1`).value).toBe('listed')
+    fireEvent.click(screen.getByText(en.create))
+    await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
+    expect(firstMutate(mutate).ops[0]?.value).toMatchObject({ models: [{ id: 'listed' }] })
+
+    // Editing the endpoint invalidates the answer.
+    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v2' } })
+    expect(screen.queryByText(en.testConnectionOk)).toBeNull()
+  })
+
+  it('creates a provider from its name, endpoint, protocol, and key alone', async () => {
+    const { mutate, onClose } = mountCard()
+    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
+    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
+    fireEvent.change(screen.getByLabelText(en.keyInput), { target: { value: 'gw-key' } })
+    fireEvent.click(screen.getByText(en.create))
+
+    await waitFor(() => { expect(onClose).toHaveBeenCalledWith(true) })
+    // No models key at all: the route is declared and grows its list on the Models page.
+    expect(firstMutate(mutate).ops[0]?.value).not.toHaveProperty('models')
+  })
+
+  it('reports an empty listing beside a verified connection, without adding a row', async () => {
+    const discover = vi.fn(() => Promise.resolve(ok([])))
+    mountCard({}, { discover })
+    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
+    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
+    fireEvent.click(screen.getByText(en.testConnection))
+
+    await screen.findByText(en.fetchEmpty)
+    // The endpoint answered, so the connection itself is verified; the empty
+    // list is a fact about the provider, not a failed test.
+    expect(screen.getByText(en.testConnectionOk)).toBeTruthy()
+    expect(screen.queryByLabelText(`${en.modelId} 1`)).toBeNull()
+    // The route is still creatable; only the model list is empty.
+    expect(buttonNamed(en.create).disabled).toBe(false)
+  })
+
+  it('surfaces a refused connection test without adopting anything', async () => {
+    const discover = vi.fn(() => Promise.resolve(fail('bad key', 'gateway/internal')))
+    mountCard({}, { discover })
+    fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
+    fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
+    fireEvent.click(screen.getByText(en.testConnection))
+
+    await screen.findByText('bad key')
+    expect(screen.queryByText(en.testConnectionOk)).toBeNull()
+  })
+
   it('retries only the key after the profile landed, and reports the provider on cancel', async () => {
     const set = vi.fn()
       .mockResolvedValueOnce(remoteFail('credential store is read-only'))
@@ -1437,13 +1499,15 @@ describe('hand-declared providers', () => {
     // Endpoint first: the gate names the one thing standing in the way.
     expect(screen.getByText(en.customNeedsBaseUrl)).toBeTruthy()
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    expect(screen.getByText(en.customNeedsModels)).toBeTruthy()
+    // A complete endpoint is creatable: models belong to the Models page.
+    expect(screen.queryByText(en.customNeedsBaseUrl)).toBeNull()
+    expect(screen.getByText(en.customNeedsModelsOptional)).toBeTruthy()
+    expect(buttonNamed(en.create).disabled).toBe(false)
 
-    // Satisfied: the shared line disappears rather than rendering empty.
+    // A model row, once added, is validated instead.
     fireEvent.click(screen.getByRole('button', { name: en.addModel }))
     fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'acme-large' } })
     expect(screen.queryByText(en.customNeedsBaseUrl)).toBeNull()
-    expect(screen.queryByText(en.customNeedsModels)).toBeNull()
     expect(buttonNamed(en.create).disabled).toBe(false)
   })
 
@@ -1528,8 +1592,8 @@ describe('hand-declared providers', () => {
     fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme' } })
     expect(screen.getByText(en.customNeedsBaseUrl)).toBeTruthy()
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://acme.test/v1' } })
-    expect(screen.getByText(en.customNeedsModels)).toBeTruthy()
-    expect(buttonNamed(en.create).disabled).toBe(true)
+    // Models are optional: the endpoint alone is enough to create.
+    expect(buttonNamed(en.create).disabled).toBe(false)
 
     // A model row with no id is not a model.
     fireEvent.click(screen.getByRole('button', { name: en.addModel }))

@@ -898,9 +898,21 @@ export function resolveRouteModels(
   const entries: readonly PiAiModelProfile[] = configured.length > 0
     ? configured
     : [...defaults.values()].map(model => ({ id: model.id, ...overrides[model.id] }))
+  // A route may be declared before it names any model: the settings surface
+  // creates a provider from its name, endpoint, protocol, and key alone, and
+  // its models arrive later. A stored read keeps the empty catalog and the
+  // diagnostic so the provider stays visible; only a write refuses it.
   if (entries.length === 0) {
-    invalid(provider, 'resolves no models; the installed catalog does not describe this route, so its models'
-      + ' must be listed in configuration')
+    const message = 'resolves no models; the installed catalog does not describe this route, so its models'
+      + ' must be listed in configuration'
+    if (validation !== 'deferred') {
+      invalid(provider, message)
+    }
+    return {
+      models: [],
+      modelErrors: new Map([['', `llm-pi-ai: provider "${provider}" ${message}`]]),
+      configuredMaxTokens: new Map(),
+    }
   }
   const routeApi = sharedCatalogApi(defaults)
   // Vocabulary before protocols: a withheld or undeclared switch is refused

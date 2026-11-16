@@ -139,7 +139,7 @@ function capacitySpelling(value: number | undefined): string {
 }
 
 /** Adopt a candidate, preserving disclosed capacities and input types. */
-function adopt(candidate: LlmDiscoveredModel): ModelDraft {
+export function adopt(candidate: LlmDiscoveredModel): ModelDraft {
   return {
     id: candidate.id,
     ...candidate.name === undefined ? {} : { name: candidate.name },

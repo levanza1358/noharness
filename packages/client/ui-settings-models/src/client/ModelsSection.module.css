@@ -974,8 +974,10 @@ select.input {
     transition: none;
   }
 
-  .rowCard:hover {
-    transform: none;
+  @media (hover: hover) {
+    .rowCard:hover {
+      transform: none;
+    }
   }
 }
 

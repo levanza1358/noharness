@@ -13,6 +13,7 @@ import { IconPlusOutlineRegular, Modal } from '@noharness/client-ui-primitives'
 import type { InjectFace } from '@noharness/client-ui-slots'
 import { CustomProviderCard, ROUTE_PATTERN } from './CustomProviderCard.tsx'
 import type { EditorTarget } from './provider-identity.ts'
+import { routeIdFromName } from './provider-identity.ts'
 import { TargetEditor } from './provider-target-editor.tsx'
 import { ProviderList } from './provider-list.tsx'
 import { DeleteDialog } from './provider-delete-dialog.tsx'
@@ -51,7 +52,6 @@ function Loaded(
   const { controller, operations, schema, t, useSnapshot } = injected
   const state = useSnapshot(value => value)
   const [naming, setNaming] = useState(false)
-  const [route, setRoute] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [draft, setDraft] = useState<{ route: string; displayName: string } | undefined>(undefined)
   const [editing, setEditing] = useState<EditorTarget | undefined>(undefined)
@@ -63,6 +63,8 @@ function Loaded(
   // Only providers declared on this page: a route the user layer carries, or one
   // the adapter does not ship. The adapter's own catalog entries are defaults.
   const providers = state.rows.filter(declaredHere)
+  // The id is the name lowercased, so the user names a provider once.
+  const route = routeIdFromName(displayName)
   const routeInvalid = route.length > 0 && !ROUTE_PATTERN.test(route)
   const routeTaken = state.rows.some(row => row.entry.provider === route)
   const ready = route.length > 0 && !routeInvalid && !routeTaken && namespace !== undefined
@@ -156,7 +158,6 @@ function Loaded(
               disabled={disabled}
               onClick={() => {
                 setEditing(undefined)
-                setRoute('')
                 setDisplayName('')
                 setNaming(true)
               }}
@@ -188,7 +189,7 @@ function Loaded(
               className={styles['primaryButton']}
               disabled={!ready}
               onClick={() => {
-                setDraft({ route, displayName: displayName.length === 0 ? route : displayName })
+                setDraft({ route, displayName })
                 setNaming(false)
               }}
             >
@@ -203,7 +204,7 @@ function Loaded(
             className={styles['input']}
             type="text"
             value={displayName}
-            placeholder={route.length === 0 ? t('namePlaceholder') : route}
+            placeholder={t('namePlaceholder')}
             aria-label={t('nameLabel')}
             onChange={(event) => { setDisplayName(event.target.value) }}
           />
@@ -214,13 +215,11 @@ function Loaded(
             className={styles['input']}
             type="text"
             value={route}
-            placeholder="acme-gateway"
+            readOnly
             aria-label={t('customRoute')}
             aria-invalid={routeInvalid || routeTaken}
-            onChange={(event) => { setRoute(event.target.value) }}
           />
-        </div>
-        {routeInvalid || routeTaken
+        </div>        {routeInvalid || routeTaken
           ? <p className={styles['error']}>{t(routeInvalid ? 'customRouteInvalid' : 'customRouteTaken')}</p>
           : <p className={styles['advancedHint']}>{t('customRouteHint')}</p>}
       </Modal>

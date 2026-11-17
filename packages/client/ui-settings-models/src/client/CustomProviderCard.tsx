@@ -25,6 +25,7 @@ import { apiKeyFailure } from './apiKey.ts'
 import { ApiKeyInput } from './ApiKeyInput.tsx'
 import { EditorFooter } from './EditorFooter.tsx'
 import { deriveKeyRef } from './store.ts'
+import { routeIdFromName } from './provider-identity.ts'
 import { protocolLabel } from './protocol-label.ts'
 import { protocolNeedsKey } from './protocol-rules.ts'
 import type { ModelsOperations } from './operations.ts'
@@ -67,7 +68,8 @@ function isHttpUrl(value: string): boolean {
 export interface CustomProviderCardProps {
   /**
    * Route id and display name chosen in the add-provider dialog before this
-   * form opened; both fields start settled and are edited here afterwards.
+   * form opened. The id is always derived from the name; only the name is
+   * edited here afterwards.
    */
   initial?: { route: string; displayName: string }
   /** Route ids already declared, so the card refuses to shadow one. */
@@ -104,8 +106,12 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
   const { taken, protocols, operations, t, onBusyChange } = props
   // The write is checked against the revision on which this draft was opened.
   const [openedAt] = useState(() => props.revision)
-  const [route, setRoute] = useState(props.initial?.route ?? '')
+  const [routeState, setRouteState] = useState<{ id: string; touched: boolean }>(
+    () => ({ id: props.initial?.route ?? routeIdFromName(props.initial?.displayName ?? ''), touched: false }),
+  )
   const [displayName, setDisplayName] = useState(props.initial?.displayName ?? '')
+  // The id follows the name until someone edits it by hand.
+  const route = routeState.id
   const [baseURL, setBaseURL] = useState('')
   const [protocol, setProtocol] = useState(protocols[0] ?? '')
   const [keyDraft, setKeyDraft] = useState('')
@@ -245,7 +251,7 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
           placeholder="acme-gateway"
           aria-label={t('customRoute')}
           disabled={profileDisabled}
-          onChange={(event) => { setRoute(event.target.value) }}
+          onChange={(event) => { setRouteState({ id: event.target.value, touched: true }) }}
         />
       </div>
       {/* A rejected id reads as a fault, not as guidance — the same split the
@@ -262,7 +268,11 @@ export function CustomProviderCard(props: CustomProviderCardProps): ReactNode {
           placeholder={route.length === 0 ? t('customDisplayName') : route}
           aria-label={t('customDisplayName')}
           disabled={profileDisabled}
-          onChange={(event) => { setDisplayName(event.target.value) }}
+          onChange={(event) => {
+            setDisplayName(event.target.value)
+            // An untouched id follows the name it is derived from.
+            if (!routeState.touched) setRouteState({ id: routeIdFromName(event.target.value), touched: false })
+          }}
         />
       </div>
       <div className={styles['field']}>

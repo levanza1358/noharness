@@ -42,24 +42,25 @@ describe('ProvidersSection', () => {
     expect(screen.getByRole('dialog', { name: en.nameTitle })).toBeTruthy()
     expect(screen.getByText(en.nameDescription)).toBeTruthy()
     await act(async () => {
-      fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme-gateway' } })
-      fireEvent.change(screen.getByLabelText(en.nameLabel), { target: { value: 'Acme' } })
+      fireEvent.change(screen.getByLabelText(en.nameLabel), { target: { value: 'Acme Gateway' } })
     })
+    // The id is the name lowercased, so naming the provider is the whole form.
+    expect(screen.getByLabelText<HTMLInputElement>(en.customRoute).value).toBe('acme-gateway')
     expect(proceed().disabled).toBe(false)
     await act(async () => { fireEvent.click(proceed()) })
     await waitFor(() => { expect(screen.queryByRole('dialog', { name: en.nameTitle })).toBeNull() })
     expect(screen.getByLabelText<HTMLInputElement>(en.customRoute).value).toBe('acme-gateway')
-    expect(screen.getByLabelText<HTMLInputElement>(en.customDisplayName).value).toBe('Acme')
+    expect(screen.getByLabelText<HTMLInputElement>(en.customDisplayName).value).toBe('Acme Gateway')
   })
 
-  it('keeps Continue disabled until the route id is new and well formed', async () => {
+  it('keeps Continue disabled until the derived route id is new and well formed', async () => {
     await mountPage(scriptedFace())
     fireEvent.click(addButton())
     expect(proceed().disabled).toBe(true)
-    await act(async () => { fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: '1bad' } }) })
+    await act(async () => { fireEvent.change(screen.getByLabelText(en.nameLabel), { target: { value: '1bad' } }) })
     expect(screen.getByText(en.customRouteInvalid)).toBeTruthy()
     expect(proceed().disabled).toBe(true)
-    await act(async () => { fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'openai' } }) })
+    await act(async () => { fireEvent.change(screen.getByLabelText(en.nameLabel), { target: { value: 'openai' } }) })
     expect(screen.getByText(en.customRouteTaken)).toBeTruthy()
     expect(proceed().disabled).toBe(true)
     expect(screen.queryByText(en.customRouteHint)).toBeNull()
@@ -103,13 +104,12 @@ describe('ProvidersSection', () => {
     expect(render(<ProvidersSection />).container.innerHTML).toBe('')
   })
 
-  it('names the route when the display name is left blank', async () => {
+  it('requires a provider name before continuing', async () => {
     await mountPage(scriptedFace())
     fireEvent.click(addButton())
-    await act(async () => { fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme-gateway' } }) })
-    await act(async () => { fireEvent.click(proceed()) })
-    await waitFor(() => { expect(screen.queryByRole('dialog', { name: en.nameTitle })).toBeNull() })
-    expect(screen.getByLabelText<HTMLInputElement>(en.customDisplayName).value).toBe('acme-gateway')
+    await act(async () => { fireEvent.change(screen.getByLabelText(en.nameLabel), { target: { value: '   ' } }) })
+    expect(screen.getByLabelText<HTMLInputElement>(en.customRoute).value).toBe('')
+    expect(proceed().disabled).toBe(true)
   })
 
   it('closes the dialog from its close control', async () => {
@@ -125,7 +125,7 @@ describe('ProvidersSection', () => {
     const { controller } = await mountPage(scripted)
     const load = vi.spyOn(controller, 'load')
     fireEvent.click(addButton())
-    await act(async () => { fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme-gateway' } }) })
+    await act(async () => { fireEvent.change(screen.getByLabelText(en.nameLabel), { target: { value: 'Acme Gateway' } }) })
     await act(async () => { fireEvent.click(proceed()) })
     await act(async () => {
       fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://gateway.example/v1' } })
@@ -140,7 +140,7 @@ describe('ProvidersSection', () => {
   it('drops the form when its card is cancelled without a write', async () => {
     await mountPage(scriptedFace())
     fireEvent.click(addButton())
-    await act(async () => { fireEvent.change(screen.getByLabelText(en.customRoute), { target: { value: 'acme-gateway' } }) })
+    await act(async () => { fireEvent.change(screen.getByLabelText(en.nameLabel), { target: { value: 'Acme Gateway' } }) })
     await act(async () => { fireEvent.click(proceed()) })
     await waitFor(() => { expect(screen.getByLabelText(en.customDisplayName)).toBeTruthy() })
     fireEvent.click(screen.getByRole('button', { name: en.cancel }))

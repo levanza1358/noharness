@@ -66,6 +66,16 @@ export function providerTargetLabel(target: ProviderIdentity): string {
 }
 
 /**
+ * Derive a route id from a provider name: lowercase, with every run of
+ * characters an id cannot carry collapsed into one dash.
+ * @param name - the provider name the user typed.
+ * @returns the derived id, possibly empty or still rejected by `ROUTE_PATTERN`.
+ */
+export function routeIdFromName(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+}
+
+/**
  * Replace the one provider placeholder in localized destructive-action copy.
  * @param template - the localized template naming `{provider}`.
  * @param target - the provider the sentence is about.

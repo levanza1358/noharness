@@ -900,19 +900,22 @@ export function resolveRouteModels(
     : [...defaults.values()].map(model => ({ id: model.id, ...overrides[model.id] }))
   // A route may be declared before it names any model: the settings surface
   // creates a provider from its name, endpoint, protocol, and key alone, and
-  // its models arrive later. A stored read keeps the empty catalog and the
-  // diagnostic so the provider stays visible; only a write refuses it.
+  // its models arrive later. That is a state of the configuration, not a
+  // fault, so no diagnostic is reported for it: the route serves nothing until
+  // a model arrives, and the Models page is where one is added. What a route
+  // the installed catalog does not describe still owes is the two facts
+  // nothing else can default.
   if (entries.length === 0) {
-    const message = 'resolves no models; the installed catalog does not describe this route, so its models'
-      + ' must be listed in configuration'
-    if (validation !== 'deferred') {
-      invalid(provider, message)
+    if (defaults.size === 0) {
+      if (request.api === undefined) {
+        invalid(provider, 'needs an api; the installed catalog does not describe this route, so set the route\'s api to'
+          + ' the wire protocol its endpoint speaks')
+      }
+      if (request.baseURL === undefined) {
+        invalid(provider, 'needs a baseURL; the installed catalog does not describe this route')
+      }
     }
-    return {
-      models: [],
-      modelErrors: new Map([['', `llm-pi-ai: provider "${provider}" ${message}`]]),
-      configuredMaxTokens: new Map(),
-    }
+    return { models: [], modelErrors: new Map(), configuredMaxTokens: new Map() }
   }
   const routeApi = sharedCatalogApi(defaults)
   // Vocabulary before protocols: a withheld or undeclared switch is refused

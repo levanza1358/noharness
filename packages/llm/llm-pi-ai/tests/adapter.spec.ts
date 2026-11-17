@@ -990,14 +990,16 @@ describe('provider profile lifecycle', () => {
     expect(resolveProfiles({}).size).toBe(0)
     expect(resolveProfiles(undefined).size).toBe(0)
     expect(() => resolveProfiles({ '': {} })).toThrow(/non-empty/)
-    // A route the installed catalog does not ship is allowed, but it has no
-    // defaults to fall back on: a write must describe its own models.
-    expect(() => resolveProfiles({ 'not-real': {} })).toThrow(/resolves no models/)
-    // A stored read keeps the route so the settings surface can show it before
-    // its first model arrives; the diagnostic rides along on the profile.
-    const empty = resolveProfiles({ 'not-real': {} }, 'deferred').get('not-real')
+    // A route may exist before it names any model: the settings surface creates
+    // a provider from its name, endpoint, protocol, and key alone, and its
+    // models arrive on the Models page. Such a route serves nothing and reports
+    // no diagnostic, on a write as on a stored read.
+    const empty = resolveProfiles({ 'not-real': { api: 'openai-completions', baseURL: 'https://acme.test' } }, 'deferred')
+      .get('not-real')
     expect(empty?.piProvider?.getModels()).toEqual([])
-    expect(empty?.catalogError).toMatch(/resolves no models/)
+    expect(empty?.catalogError).toBeUndefined()
+    // A route with no protocol at all still has nothing to serve it.
+    expect(() => resolveProfiles({ 'not-real': {} })).toThrow(/needs an api/)
     // The pre-release array shape and its per-profile provider field fail
     // loud with migration directions instead of half-working.
     expect(() => resolveProfiles([{ provider: 'openai' }] as never)).toThrow(/dict keyed by provider/)

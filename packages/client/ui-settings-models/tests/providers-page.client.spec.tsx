@@ -198,7 +198,7 @@ describe('ProvidersSection', () => {
         {
           provider: 'acme-gateway', displayName: 'Acme Gateway', settingsNs: 'llm-pi-ai',
           settingsPath: ['providers', 'acme-gateway'], declared: true,
-          error: 'llm-pi-ai: provider "acme-gateway" resolves no models',
+          error: 'llm-pi-ai: provider "acme-gateway" needs an api',
         },
       ])),
     })
@@ -207,7 +207,7 @@ describe('ProvidersSection', () => {
     // the adapter's own diagnostic for a route it cannot serve yet.
     expect(screen.getByText('Acme Gateway')).toBeTruthy()
     expect(screen.getByText('acme-gateway')).toBeTruthy()
-    expect(screen.getByText(/resolves no models/)).toBeTruthy()
+    expect(screen.getByText(/needs an api/)).toBeTruthy()
   })
 
   it('closes the removal dialog without writing', async () => {

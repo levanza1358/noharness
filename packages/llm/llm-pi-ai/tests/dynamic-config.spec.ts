@@ -127,16 +127,16 @@ describe('request-level dynamic profiles', () => {
     const dir = await home()
     const stored = { providers: {
       anthropic: { modelOverrides: { 'removed-model': { maxTokens: 4096 } } },
-      'retired-route': {},
+      'retired-route': { api: 'openai-completions', baseURL: 'https://acme.test', models: [{ id: 'm' }, { id: 'm' }] },
     } }
     const ctx = await boot(dir, stored)
     expect(ctx.llm.listConfigurableProviders().find(entry => entry.provider === 'anthropic')?.error)
       .toContain('modelOverrides names "removed-model"')
     expect(ctx.llm.listConfigurableProviders().find(entry => entry.provider === 'retired-route')?.error)
-      .toContain('resolves no models')
+      .toContain('lists model "m" more than once')
     expect((await ctx.llm.listModels('anthropic')).length).toBeGreaterThan(0)
     await expect(ctx.llm.resolveModelInfo('anthropic', 'removed-model')).rejects.toThrow('modelOverrides names "removed-model"')
-    await expect(ctx.llm.resolveModelInfo('retired-route', 'anything')).rejects.toThrow('resolves no models')
+    await expect(ctx.llm.resolveModelInfo('retired-route', 'm')).rejects.toThrow('lists model "m" more than once')
     await configurations.get(ctx)!.replace({ providers: { anthropic: {} } })
     expect(ctx.llm.listProviders()).toEqual([{ id: 'anthropic', name: 'anthropic' }])
     expect(ctx.llm.listConfigurableProviders().find(entry => entry.provider === 'retired-route')).toBeUndefined()
@@ -267,13 +267,24 @@ describe('request-level dynamic profiles', () => {
     // and then quietly disabling every route in the namespace.
     await expect(configurations.get(ctx)!.update({
       providers: { 'not-a-real-provider': { api: 'anthropic-messages' } },
-    })).rejects.toThrow(/resolves no models/)
+    })).rejects.toThrow(/needs a baseURL/)
     expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai'])
+
+    // A route may land before its first model: the Providers page writes the
+    // endpoint and protocol it was given, and models arrive on the Models page.
+    await configurations.get(ctx)!.update({
+      providers: { 'not-a-real-provider': { api: 'anthropic-messages', baseURL: 'https://acme.test' } },
+    })
+    expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai', 'not-a-real-provider'])
+    expect(await ctx.llm.listModels('not-a-real-provider')).toEqual([])
+    expect(ctx.llm.listConfigurableProviders().find(entry => entry.provider === 'not-a-real-provider')?.error)
+      .toBeUndefined()
 
     await expect(configurations.get(ctx)!.update({
       providers: { openai: { headers: { 'bad header name': 'value' } } },
     })).rejects.toThrow(/provider "openai" header "bad header name" is not valid for Fetch/)
-    expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai'])
+    // The rejected write left every route exactly as the last accepted one did.
+    expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai', 'not-a-real-provider'])
   })
 
   it('keeps serving its routes when a settings-born route collides with another adapter', async () => {

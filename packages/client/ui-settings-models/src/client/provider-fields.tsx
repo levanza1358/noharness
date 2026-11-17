@@ -170,11 +170,9 @@ export interface KeyFieldInput {
   readonly keyRemoval: { readonly removed?: true } | undefined
   readonly keyDraft: KeyDraft | undefined
   readonly disabled: boolean
-  readonly credentialRequired: boolean
   readonly protocolNeedsKeyHere: boolean
   readonly protocolKeyMissing: boolean
   readonly shownKeyFailure: keyof typeof en | undefined
-  readonly autoFocus: boolean
   readonly t: (key: keyof typeof en) => string
   readonly onChange: (next: string) => void
   readonly onClear: () => void
@@ -241,8 +239,7 @@ export function KeyField(props: KeyFieldInput): ReactNode {
             ? undefined
             : `${props.provider}-credential-hint`
         }
-        required={props.credentialRequired || props.protocolNeedsKeyHere}
-        autoFocus={props.autoFocus}
+        required={props.protocolNeedsKeyHere}
         disabled={props.disabled || props.keyRemoval?.removed === true}
         onChange={(event) => {
           props.onChange(event.target.value)

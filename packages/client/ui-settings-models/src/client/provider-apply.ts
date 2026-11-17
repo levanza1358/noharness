@@ -16,7 +16,6 @@ export type ModelCheck = (
 
 /** The card state a write reads and updates. */
 export interface ApplyInput {
-  readonly credentialOnly: boolean
   readonly layout: 'deepseek' | 'pi-ai' | 'unknown'
   readonly namespace: SettingsNamespaceView
   readonly schema: SettingsSchemaOperations
@@ -87,19 +86,17 @@ export async function applyOnce(
     keyValue.length > 0
       ? schema.setPath(profileDraft, ['apiKeyEnv'], input.keyRef)
       : profileDraft
-  if (!input.credentialOnly) {
-    // The same checker gates the submit button, so a card cannot reach this
-    // with a bad row; it stays because the schema check below would refuse
-    // the write with a message naming a path instead of the row, and because
-    // nothing but this function decides what is written.
-    const failure = input.validateModels(schema.getPath(next, ['models']))
-    /* v8 ignore next 3 -- unreachable from the card: the same failure disables submit */
-    if (failure !== undefined) {
-      return `${t('model')} ${String(failure.index + 1)}: ${t(failure.key)}`
-    }
+  // The same checker gates the submit button, so a card cannot reach this
+  // with a bad row; it stays because the schema check below would refuse
+  // the write with a message naming a path instead of the row, and because
+  // nothing but this function decides what is written.
+  const failure = input.validateModels(schema.getPath(next, ['models']))
+  /* v8 ignore next 3 -- unreachable from the card: the same failure disables submit */
+  if (failure !== undefined) {
+    return `${t('model')} ${String(failure.index + 1)}: ${t(failure.key)}`
   }
   /* v8 ignore next -- apply is only reachable from the rendered card, which refused an unresolved path */
-  if (!input.credentialOnly && settingsPath.length === 0) {
+  if (settingsPath.length === 0) {
     const sectionError = schema.validate(input.node, next)
     if (sectionError !== undefined) return sectionError
   }
@@ -108,11 +105,9 @@ export async function applyOnce(
     schema.getPath(namespace.value, settingsPath) === undefined &&
     input.committedOriginal === undefined &&
     Object.keys(next).length === 0
-  const ops: SettingsPathOpView[] = input.credentialOnly
-    ? []
-    : materializesNativeProfile
-      ? [{ op: 'set', path: [...settingsPath], value: {} }]
-      : pathOps(settingsPath, input.committedOriginal, next)
+  const ops: SettingsPathOpView[] = materializesNativeProfile
+    ? [{ op: 'set', path: [...settingsPath], value: {} }]
+    : pathOps(settingsPath, input.committedOriginal, next)
   if (keyRemoval !== undefined && keyRemoval.removed !== true) {
     const removed = await operations.removeCredential(keyRemoval.ref)
     if (removed !== undefined) return removed

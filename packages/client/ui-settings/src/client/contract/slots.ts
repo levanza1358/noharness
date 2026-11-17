@@ -148,8 +148,6 @@ export interface SettingsSectionIconOwnerProps {
 export interface SettingsOnboardingOwnerProps {
   /** Stable id of the step currently selected by the coordinator. */
   stepId: string
-  /** User explicitly reopened this step outside first-run onboarding. */
-  explicit?: boolean
   /** Complete or skip this step and transfer ownership to the next entry. */
   complete: () => void
   /** Open the settings panel directly on one registered section. */
@@ -166,6 +164,4 @@ export interface SettingsLauncherOwnerProps {
   settingsShortcut?: { readonly keys: readonly string[]; readonly aria?: string | undefined }
   /** @param sectionId - section to open; absent uses the shell's default section. */
   openSettings: (sectionId?: string) => void
-  /** @param id - registered onboarding editor to open explicitly. */
-  openOnboarding: (id: string) => void
 }

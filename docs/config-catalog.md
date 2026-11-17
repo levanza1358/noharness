@@ -673,22 +673,6 @@ export type OnboardingProcess = 'compact' | 'standard' | 'detailed'
 ```
 <!-- END GENERATED config-catalog:@noharness/client-ui-settings-account -->
 
-<!-- BEGIN GENERATED config-catalog:@noharness/client-ui-settings-models -->
-<a id="noharnessnhs-client-ui-settings-models"></a>
-
-## `@noharness/client-ui-settings-models`
-
-- `source`: [`packages/client/ui-settings-models/src/onboarding-config.ts:6`](../packages/client/ui-settings-models/src/onboarding-config.ts)
-
-```ts config-catalog
-/** Onboarding options after schema defaults are applied. */
-export interface Config {
-  /** Offer the browser API-key step when no native shell owns credential onboarding. */
-  credentialOnboarding: boolean
-}
-```
-<!-- END GENERATED config-catalog:@noharness/client-ui-settings-models -->
-
 <!-- BEGIN GENERATED config-catalog:@noharness/client-ui-sidebar-documentpreview -->
 <a id="noharnessnhs-client-ui-sidebar-documentpreview"></a>
 

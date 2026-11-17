@@ -46,7 +46,6 @@ export function keyState(input: {
     Readonly<Record<string, CredentialInfo>> | undefined
   readonly keyText: string
   readonly keyRemoval: { readonly removed?: true } | undefined
-  readonly credentialRequired: boolean
   readonly t: (key: keyof typeof en) => string
 }): KeyState {
   // A named reference is the only credential the adapter reads for this
@@ -91,35 +90,33 @@ export function keyState(input: {
   const savedCredential =
     detected?.[1]?.source === 'file' && detectedVisibleRef !== undefined
   const removing = input.keyRemoval
-  const credentialHint = input.credentialRequired
-    ? undefined
-    : input.keyText.length > 0
-      ? savedCredential
-        ? input.t('keyReplacePending')
-        : undefined
-      : removing !== undefined
-        ? removing.removed === true
-          ? input.t('keyRemoveApplied')
-          : keyHint === undefined
-            ? input.t('keyRemovePending')
-            : input
-              .t('keyRemovePendingEnvironment')
-              .replace('{hint}', () => keyHint)
+  const credentialHint = input.keyText.length > 0
+    ? savedCredential
+      ? input.t('keyReplacePending')
+      : undefined
+    : removing !== undefined
+      ? removing.removed === true
+        ? input.t('keyRemoveApplied')
         : keyHint === undefined
-          ? undefined
-          : savedCredential
-            ? input.t('keySaved')
-            : input
-              .t(
-                detectedRef === undefined
-                  ? missingRefs
-                    ? 'keyFallbackMissing'
-                    : 'keyFallbackUnchecked'
-                  : detectedVisibleRef === undefined
-                    ? 'keyFallbackDetectedHidden'
-                    : 'keyFallbackDetected',
-              )
-              .replace('{hint}', () => detectedVisibleRef ?? keyHint)
+          ? input.t('keyRemovePending')
+          : input
+            .t('keyRemovePendingEnvironment')
+            .replace('{hint}', () => keyHint)
+      : keyHint === undefined
+        ? undefined
+        : savedCredential
+          ? input.t('keySaved')
+          : input
+            .t(
+              detectedRef === undefined
+                ? missingRefs
+                  ? 'keyFallbackMissing'
+                  : 'keyFallbackUnchecked'
+                : detectedVisibleRef === undefined
+                  ? 'keyFallbackDetectedHidden'
+                  : 'keyFallbackDetected',
+            )
+            .replace('{hint}', () => detectedVisibleRef ?? keyHint)
   return {
     keyHint,
     visibleRefs,
@@ -133,27 +130,8 @@ export function keyState(input: {
     keylessNativeAuth: nativeAuth?.env.length === 0 && nativeAuth.oauth,
     credentialHint,
     keyPlaceholder:
-      keyHint === undefined || input.credentialRequired
+      keyHint === undefined
         ? input.t('keyPlaceholder')
         : input.t('keyPlaceholderFallback').replace('{hint}', () => keyHint),
   }
-}
-
-/**
- * Whether the user has to supply a key before this card can commit.
- * @param input - the requirement and what the field currently holds.
- * @returns the failure key, or undefined when nothing is missing.
- */
-export function credentialRequirement(input: {
-  readonly credentialRequired: boolean
-  readonly protocolKeyMissing: boolean
-  readonly keyText: string
-  readonly keyValue: string
-}): 'keyRequired' | undefined {
-  return (input.credentialRequired &&
-    input.keyText.length > 0 &&
-    input.keyValue.length === 0) ||
-    input.protocolKeyMissing
-    ? 'keyRequired'
-    : undefined
 }

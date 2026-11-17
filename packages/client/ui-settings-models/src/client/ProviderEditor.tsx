@@ -164,7 +164,6 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
   const retryFailure =
     retryNode === undefined ||
     retryDefaults === undefined ||
-    props.credentialOnly === true ||
     props.modelsOnly === true
       ? undefined
       : retryPolicyFailure(
@@ -193,7 +192,6 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
     keyText,
     keyValue,
     probeApi,
-    credentialRequired: props.credentialRequired === true,
     t,
     protocolNeedsKey,
   })
@@ -210,7 +208,9 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
     keyRemoval,
     disabled,
   }
-  const shownKeyFailure = props.modelsOnly === true ? undefined : reads.credentialRequiredFailure ?? keyFailure
+  const shownKeyFailure = props.modelsOnly === true
+    ? undefined
+    : reads.protocolKeyMissing ? 'keyRequired' as const : keyFailure
   // An edited-but-unsaved endpoint, and a key typed but not yet stored.
   const probe = {
     settingsNs: namespace.ns,
@@ -228,7 +228,6 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
     setFailure(undefined)
     try {
       const failure = await applyOnce({
-        credentialOnly: props.credentialOnly === true,
         layout,
         namespace,
         schema,
@@ -271,11 +270,7 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
 
   const family = hasCuratedFields(layout) ? layout : undefined
   return (
-    <div
-      className={
-        props.credentialOnly === true ? styles['addBlock'] : styles['editor']
-      }
-    >
+    <div className={styles['editor']}>
       {props.hideTitle === true ? null : (
         <div className={styles['editorHeader']}>
           <span className={styles['editorTitle']}>{props.displayName}</span>
@@ -318,7 +313,7 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
       {failure !== undefined ? (
         <p className={styles['error']}>{failure}</p>
       ) : null}
-      {props.credentialOnly === true || modelFailure === undefined ? null : (
+      {modelFailure === undefined ? null : (
         <p className={styles['advancedHint']}>
           {`${t('model')} ${String(modelFailure.index + 1)}: ${t(modelFailure.key)}`}
         </p>
@@ -335,10 +330,9 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
         submitDisabled={
           disabled ||
           layout === 'unknown' ||
-          (props.credentialOnly !== true && modelFailure !== undefined) ||
+          modelFailure !== undefined ||
           retryFailure !== undefined ||
-          shownKeyFailure !== undefined ||
-          (props.credentialRequired === true && keyValue.length === 0)
+          shownKeyFailure !== undefined
         }
         submitLabelKey={props.submitLabelKey ?? 'apply'}
         submitBusyLabelKey={props.submitBusyLabelKey ?? 'applying'}
@@ -351,7 +345,6 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
           props.onClose(false)
         }}
         onSubmit={() => {
-          props.onSubmitCredential?.()
           void apply()
         }}
       />

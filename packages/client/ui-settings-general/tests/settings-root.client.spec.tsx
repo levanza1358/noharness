@@ -553,17 +553,6 @@ describe('SettingsRoot onboarding', () => {
     view.unmount()
     appRoot.remove()
   })
-
-  it('explicitly reopens one onboarding editor during an existing session', () => {
-    const { renderSlot } = mount({ onboardingActive: false })
-    const launcher = renderSlot.mock.calls.find(call => call[0] === 'settings.launcher')
-    act(() => { (launcher?.[1] as { openOnboarding: (id: string) => void }).openOnboarding('credential') })
-    const call = renderSlot.mock.calls.filter(call => call[0] === 'settings.onboarding').at(-1)
-    expect(call?.[1]).toMatchObject({ stepId: 'credential', explicit: true })
-    act(() => { (call?.[1] as { complete: () => void }).complete() })
-    renderSlot.mockClear()
-    expect(screen.queryByTestId('onboarding')).toBeNull()
-  })
 })
 
 describe('SettingsRoot launcher', () => {

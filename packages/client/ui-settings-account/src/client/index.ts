@@ -17,7 +17,6 @@ import { ContactConfig, CONTACT_CONFIG_GLOBAL } from '../contact-config.ts'
 import { contactUrl } from './contact-url.ts'
 import { authorizeUrlWithTheme } from './authorize-url.ts'
 import { BrowserLogin } from './browser-login.ts'
-import { AccountOnboarding } from './AccountOnboarding.tsx'
 import { AccountPlatformHost, type AccountPlatformHostInjected } from './AccountPlatformHost.tsx'
 import { AccountMenu } from './AccountMenu.tsx'
 import { createPlatformPages, type PlatformPages } from './platform-pages.ts'
@@ -213,7 +212,6 @@ export function apply(ctx: Context): void {
       })()
     },
     showLogin(visible) { publish({ ...snapshot, loginVisible: visible }) },
-    setOnboarding(active) { publish({ ...snapshot, onboarding: active }) },
     hooks: {
       account: {
         getSnapshot: () => snapshot,
@@ -291,9 +289,6 @@ export function apply(ctx: Context): void {
       }),
     }, DesktopOnboardingEntry))
   }
-  ctx.remoteAccess.whenAccess('account/watch', () => ctx.slots.inject('settings.models.sign-in', () => ctx.slots.register({
-    name: 'settings.models.sign-in', locale: 'settings.account', inject: () => operations,
-  }, AccountOnboarding)))
   ctx.remoteAccess.whenAccess('account/watch', () => ctx.slots.inject('shell.quota-notice', () => ctx.slots.register({
     name: 'shell.quota-notice', locale: 'settings.account',
     select: owner => owner.code === 'ACCOUNT_QUOTA' ? owner : null,

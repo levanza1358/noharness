@@ -3,7 +3,7 @@
  * directory (`llm/listProviders` joined with `llm/listConfigurableProviders`),
  * the settings namespaces (shared settings mirror),
  * and the referenced credentials (`credentials/describe`). The host stays the
- * single fact source — every mutation writes through the wire and the page
+ * single fact source â€” every mutation writes through the wire and the page
  * re-renders from the next describe, pushed or refetched.
  */
 
@@ -91,7 +91,7 @@ export interface ProviderRow {
   credential: CredentialInfo | undefined
   /**
    * Credential state for the page's derived `<ROUTE>_API_KEY`, described only
-   * while the profile names no reference — the provider-card seat's
+   * while the profile names no reference â€” the provider-card seat's
    * `keyConfigured` fact for dormant and keyless rows, matching the editor's
    * own derivation rule.
    */
@@ -354,75 +354,4 @@ export function providerUsable(row: ProviderRow): boolean {
  */
 export function declaredHere(row: ProviderRow): boolean {
   return row.removable || row.entry.declared === true
-}
-
-/** First-run onboarding readiness derived only from the shared Models join. */
-export type OnboardingReadiness =
-  | { kind: 'loading' }
-  | { kind: 'adapter-absent' }
-  | { kind: 'provider-ready' }
-  | { kind: 'credential-missing' }
-  | {
-    kind: 'unavailable'
-    reason:
-      | 'load-failed'
-      | 'provider-inactive'
-      | 'credentials-unavailable'
-      | 'settings-read-only'
-      | 'credential-read-only'
-  }
-
-/**
- * Project first-run readiness from the provider/settings/credential join used
- * by the Models page. The step exists to leave the user with a model to talk
- * to, so ANY usable provider ends it; only when none exists does the official
- * DeepSeek route — the one route the prompt can offer a key field for — decide
- * whether prompting can help. A missing official configurable-provider
- * declaration means the adapter is not repairable by navigating to Models.
- * @param state - current shared Models join snapshot.
- * @returns the onboarding state without reading a parallel fact source.
- */
-export function onboardingReadiness(state: ModelsSettingsState): OnboardingReadiness {
-  if ((state.status === 'idle' || state.status === 'loading') && state.rows.length === 0) {
-    return { kind: 'loading' }
-  }
-  if (state.status === 'error') {
-    return {
-      kind: 'unavailable',
-      reason: 'load-failed',
-    }
-  }
-  if (state.rows.some(providerUsable)) return { kind: 'provider-ready' }
-  const row = state.rows.find(candidate =>
-    candidate.entry.provider === 'deepseek-official'
-    && candidate.entry.settingsNs === 'llm-deepseek'
-    && candidate.entry.settingsPath.length === 0)
-  if (row === undefined) return { kind: 'adapter-absent' }
-  if (!row.entry.active) {
-    return {
-      kind: 'unavailable',
-      reason: 'provider-inactive',
-    }
-  }
-  // Past the usable gate an active route names a reference it has no stored
-  // credential for, so the remaining questions are all about that credential.
-  if (state.credentialError !== null || row.credential === undefined) {
-    return {
-      kind: 'unavailable',
-      reason: 'credentials-unavailable',
-    }
-  }
-  if (!state.writable) {
-    return {
-      kind: 'unavailable',
-      reason: 'settings-read-only',
-    }
-  }
-  if (!row.credential.writable) {
-    return {
-      kind: 'unavailable',
-      reason: 'credential-read-only',
-    }
-  }
-  return { kind: 'credential-missing' }
 }

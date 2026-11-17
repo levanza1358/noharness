@@ -81,7 +81,6 @@ export function CuratedFields(input: CuratedInput): ReactNode {
     credentialChecks: props.credentialChecks,
     keyText: reads.keyText,
     keyRemoval: reads.keyRemoval,
-    credentialRequired: props.credentialRequired === true,
     t,
   })
   const modelsOverridden = schema.hasPath(draft, ['models'])
@@ -201,11 +200,9 @@ export function CuratedFields(input: CuratedInput): ReactNode {
           keyRemoval={reads.keyRemoval}
           keyDraft={reads.keyDraft}
           disabled={reads.disabled}
-          credentialRequired={props.credentialRequired === true}
           protocolNeedsKeyHere={reads.profiles.protocolNeedsKeyHere}
           protocolKeyMissing={reads.profiles.protocolKeyMissing}
           shownKeyFailure={input.shownKeyFailure}
-          autoFocus={props.autoFocusCredential === true}
           t={t}
           onChange={(next) => {
             // Clearing a saved key stages its removal instead of a replacement.
@@ -226,11 +223,6 @@ export function CuratedFields(input: CuratedInput): ReactNode {
       )}
       {props.modelsOnly === true ? (
         modelFields
-      ) : props.credentialOnly === true ? (
-        <div className={styles['customizedBody']}>
-          {routeFields}
-          {modelFields}
-        </div>
       ) : (
         <details
           className={styles['customized']}

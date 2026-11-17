@@ -11,10 +11,11 @@ function mount() {
 }
 
 describe('BootPage', () => {
-  it('draws the loading skeleton before any plugin state arrives', () => {
+  it('draws the splash before any plugin state arrives', () => {
     const { el } = mount()
     expect(el.firstElementChild?.getAttribute('data-nhs-boot')).toBe('')
-    expect(el.textContent).toContain('HARNESS')
+    expect(el.textContent).toContain('NoHarness')
+    expect(el.querySelector('svg path')).not.toBeNull()
     expect(el.textContent).toContain('Loading plugins…')
   })
 

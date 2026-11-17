@@ -54,7 +54,6 @@ describe('key state', () => {
       credentialChecks: undefined,
       keyText: '',
       keyRemoval: { removed: true },
-      credentialRequired: false,
       t,
     })
     expect(state.credentialHint).toBe(en.keyRemoveApplied)
@@ -72,7 +71,6 @@ describe('key state', () => {
       credentialChecks: undefined,
       keyText: '',
       keyRemoval: undefined,
-      credentialRequired: false,
       t,
     })
     expect(state.keylessNativeAuth).toBe(true)
@@ -94,14 +92,12 @@ describe('profile reads', () => {
       keyText: '',
       keyValue: '',
       probeApi: undefined,
-      credentialRequired: false,
       t,
       protocolNeedsKey,
     })
     expect(reads.endpointHint).toBe(
       en.baseUrlEnvironment.replace('{env}', 'PI_BASE_URL'),
     )
-    expect(reads.credentialRequiredFailure).toBeUndefined()
   })
 
   it('clears the derived reference before a removal restores native auth', () => {
@@ -118,7 +114,6 @@ describe('profile reads', () => {
       keyText: '',
       keyValue: '',
       probeApi: 'openai-responses',
-      credentialRequired: true,
       t,
       protocolNeedsKey,
     })

@@ -43,7 +43,6 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
   // stays put and any Session is one click away. Leaving it by any route
   // (panel switch included) is what closing the page means.
   const pageOpen = usePanelInfo(info => info.activePanelId === SETTINGS_PANEL_ID)
-  const [requestedOnboarding, setRequestedOnboarding] = useState<string | undefined>()
   const [completedOnboarding, setCompletedOnboarding] = useState<ReadonlySet<string>>(() => new Set())
   const [showRecovery, setShowRecovery] = useState(false)
   const [holdConnecting, setHoldConnecting] = useState(false)
@@ -64,11 +63,9 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
   })
   // A step only owns the viewport when one is available to mount; a mounted
   // section stays put otherwise.
-  const nextOnboardingStep = requestedOnboarding !== undefined
-    ? onboardingSteps.find(step => step.id === requestedOnboarding)
-    : onboardingActive
-      ? onboardingSteps.find(step => !completedOnboarding.has(step.id))
-      : undefined
+  const nextOnboardingStep = onboardingActive
+    ? onboardingSteps.find(step => !completedOnboarding.has(step.id))
+    : undefined
   const onboardingStep = onboardingSteps.length === 0 ? undefined : nextOnboardingStep
 
   useEffect(() => {
@@ -123,7 +120,6 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
   }, [connectionState])
 
   const completeOnboardingStep = useCallback((id: string) => {
-    setRequestedOnboarding(undefined)
     setCompletedOnboarding((previous) => {
       if (previous.has(id)) return previous
       return new Set([...previous, id])
@@ -148,7 +144,6 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
             else openSettings(sectionId)
           },
           ...(shortcut?.keys.length ? { settingsShortcut: { keys: shortcut.keys, aria: shortcut.aria } } : {}),
-          openOnboarding: (id) => { showSettingsPage(); setRequestedOnboarding(id) },
         }, { fallback: <Tooltip disabled={pageOpen} label={t('trigger')} shortcutKeys={shortcut?.keys}>
           <button
             type="button"
@@ -178,7 +173,6 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
           renders null, so nothing paints or blocks while it decides. */}
       {onboardingStep !== undefined && renderSlot('settings.onboarding', {
         stepId: onboardingStep.id,
-        explicit: requestedOnboarding !== undefined,
         complete: () => { completeOnboardingStep(onboardingStep.id) },
         openSection: (sectionId) => { openSettings(sectionId) },
       }, { only: onboardingStep.id })}

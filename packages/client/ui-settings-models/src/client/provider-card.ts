@@ -5,7 +5,6 @@ import type {
   LlmNativeAuth,
   SettingsNamespaceView,
 } from '@noharness/api-remotes/client'
-import { credentialRequirement } from './provider-key.ts'
 import { deriveKeyRef } from './store.ts'
 import type { ModelsOperations } from './operations.ts'
 import type { SettingsSchemaOperations } from './schema-operations.ts'
@@ -122,8 +121,6 @@ export interface ProfileReads {
   readonly protocolNeedsKeyHere: boolean
   /** Whether that required key is still missing. */
   readonly protocolKeyMissing: boolean
-  /** The `credentialRequired` failure, as a copy key. */
-  readonly credentialRequiredFailure: 'keyRequired' | undefined
 }
 
 /** The base URL field's placeholder text. */
@@ -147,7 +144,6 @@ export function profileReads(input: {
   readonly keyText: string
   readonly keyValue: string
   readonly probeApi: string | undefined
-  readonly credentialRequired: boolean
   readonly t: (key: keyof typeof en) => string
   readonly protocolNeedsKey: (api: string | undefined) => boolean
 }): ProfileReads {
@@ -185,12 +181,6 @@ export function profileReads(input: {
     clearsDerivedRef,
     protocolNeedsKeyHere,
     protocolKeyMissing,
-    credentialRequiredFailure: credentialRequirement({
-      credentialRequired: input.credentialRequired,
-      protocolKeyMissing,
-      keyText: input.keyText,
-      keyValue: input.keyValue,
-    }),
   }
 }
 
@@ -232,8 +222,6 @@ export interface ProviderEditorProps {
   t: (key: keyof typeof en) => string
   /** Disable writes (read-only settings provider). */
   readOnly: boolean
-  /** Render only the credential field and actions, without provider settings. */
-  credentialOnly?: boolean
   /**
    * Render only this provider's model list and its fetch action. The Models
    * page edits the catalog of an already-connected provider, whose endpoint,
@@ -245,10 +233,6 @@ export interface ProviderEditorProps {
    * provider; its models are the Models page's business.
    */
   hideModels?: boolean
-  /** Require a newly entered credential before this editor can submit. */
-  credentialRequired?: boolean
-  /** Give the credential field initial focus when this editor mounts. */
-  autoFocusCredential?: boolean
   /** Override the dismiss action copy. */
   cancelLabelKey?: keyof typeof en
   /** Override the idle commit action copy. */
@@ -257,8 +241,6 @@ export interface ProviderEditorProps {
   submitBusyLabelKey?: keyof typeof en
   /** Close the editor; `changed` reports whether an Apply committed. */
   onClose: (changed: boolean) => void
-  /** Called on a credential form submission before the save starts. */
-  onSubmitCredential?: () => void
   /**
    * Called once per change with whether the apply or the model list's
    * endpoint interrogation is in flight, so the owner can hold its surface

@@ -185,11 +185,6 @@ export const en = {
   welcomeBody: 'NoHarness 0.2 is still in preview, and many areas need continued improvement and refinement. We welcome feedback and suggestions from all developers and users. The new desktop app now targets a broad range of users, while developer-related advanced features can be enabled in the settings. NoHarness’s product features and plugin APIs are expected to continue rapid iteration and evolution, and will gradually stabilize over time.\n\nWe look forward to exploring the limits of intelligence together with users and developers around the world, building on open-source, reusable, and composable infrastructure. We welcome everyone to bring their ideas to life with NoHarness and participate in the community to enrich the plugin ecosystem.',
   welcomeContinue: 'Continue',
   welcomeError: 'The acknowledgement could not be saved. Please try again.',
-  onboardingTitle: 'Add an API key to get started',
-  onboardingDescription: 'Configure the official DeepSeek provider to start building.',
-  onboardingLater: 'Configure later',
-  onboardingSave: 'Save and continue',
-  onboardingSaving: 'Saving…',
   keyRequired: 'Enter an API key to continue.',
 }
 
@@ -385,11 +380,6 @@ export const ja = {
   'welcomeBody': 'NoHarness 0.2 is still in preview, and many areas need continued improvement and refinement. We welcome feedback and suggestions from all developers and users. The new desktop app now targets a broad range of users, while developer-related advanced features can be enabled in the settings. NoHarness’s product features and plugin APIs are expected to continue rapid iteration and evolution, and will gradually stabilize over time.\n\nWe look forward to exploring the limits of intelligence together with users and developers around the world, building on open-source, reusable, and composable infrastructure. We welcome everyone to bring their ideas to life with NoHarness and participate in the community to enrich the plugin ecosystem.',
   'welcomeContinue': 'Continue',
   'welcomeError': 'The acknowledgement could not be saved. Please try again.',
-  'onboardingTitle': 'Add an API key to get started',
-  'onboardingDescription': 'Configure the official DeepSeek provider to start building.',
-  'onboardingLater': 'Configure later',
-  'onboardingSave': 'Save and continue',
-  'onboardingSaving': 'Saving…',
   'keyRequired': 'Enter an API key to continue.',
 } as const
 
@@ -578,11 +568,6 @@ export const es = {
   welcomeBody: 'NoHarness 0.2 aún está en versión preliminar y muchas áreas necesitan mejoras y refinamientos continuos. Agradecemos los comentarios y sugerencias de todos los desarrolladores y usuarios. La nueva aplicación de escritorio ahora está dirigida a una amplia gama de usuarios, mientras que las funciones avanzadas relacionadas con los desarrolladores se pueden habilitar en la configuración. Se espera que las características del producto y las API de complementos de NoHarness continúen con una rápida iteración y evolución, y se estabilicen gradualmente con el tiempo.\n\nEsperamos explorar los límites de la inteligencia junto con usuarios y desarrolladores de todo el mundo, basándose en una infraestructura de código abierto, reutilizable y componible. Invitamos a todos a dar vida a sus ideas con NoHarness y participar en la comunidad para enriquecer el ecosistema de complementos.',
   welcomeContinue: 'Continuar',
   welcomeError: 'El reconocimiento no se pudo guardar. Por favor inténtalo de nuevo.',
-  onboardingTitle: 'Agregue una clave API para comenzar',
-  onboardingDescription: 'Configure el proveedor oficial DeepSeek para comenzar a construir.',
-  onboardingLater: 'Configurar más tarde',
-  onboardingSave: 'Guardar y continuar',
-  onboardingSaving: 'Guardando…',
   keyRequired: 'Ingrese una clave API para continuar.',
 } as const
 
@@ -771,11 +756,6 @@ export const fr = {
   welcomeBody: "NoHarness 0.2 est toujours en version préliminaire et de nombreux domaines nécessitent une amélioration et un perfectionnement continus. Nous apprécions les commentaires et suggestions de tous les développeurs et utilisateurs. La nouvelle application de bureau cible désormais un large éventail d'utilisateurs, tandis que les fonctionnalités avancées liées aux développeurs peuvent être activées dans les paramètres. Les fonctionnalités du produit et les API de plug-in de NoHarness devraient poursuivre leurs itérations et leur évolution rapides, et se stabiliseront progressivement au fil du temps. \n\nNous sommes impatients d'explorer les limites de l'intelligence avec les utilisateurs et les développeurs du monde entier, en nous appuyant sur une infrastructure open source, réutilisable et composable. Nous invitons chacun à donner vie à ses idées avec NoHarness et à participer à la communauté pour enrichir l'écosystème des plugins.",
   welcomeContinue: 'Continuer',
   welcomeError: "L'accusé de réception n'a pas pu être enregistré. Veuillez réessayer.",
-  onboardingTitle: 'Ajoutez une clé API pour commencer',
-  onboardingDescription: 'Configurez le fournisseur officiel DeepSeek pour commencer la construction.',
-  onboardingLater: 'Configurer plus tard',
-  onboardingSave: 'Enregistrer et continuer',
-  onboardingSaving: 'Sauvegarde…',
   keyRequired: 'Entrez une clé API pour continuer.',
 } as const
 
@@ -964,11 +944,6 @@ export const de = {
   welcomeBody: 'NoHarness 0.2 befindet sich noch in der Vorschau und viele Bereiche müssen weiter verbessert und verfeinert werden. Wir freuen uns über Feedback und Vorschläge aller Entwickler und Benutzer. Die neue Desktop-App richtet sich nun an ein breites Nutzerspektrum, während entwicklerbezogene erweiterte Funktionen in den Einstellungen aktiviert werden können. Es wird erwartet, dass die Produktfunktionen und Plugin-APIs von NoHarness ihre schnelle Iteration und Weiterentwicklung fortsetzen und sich im Laufe der Zeit allmählich stabilisieren. Wir heißen jeden willkommen, seine Ideen mit NoHarness zum Leben zu erwecken und sich an der Community zu beteiligen, um das Plugin-Ökosystem zu bereichern.',
   welcomeContinue: 'Weiter',
   welcomeError: 'Die Bestätigung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.',
-  onboardingTitle: 'Fügen Sie einen API-Schlüssel hinzu, um loszulegen',
-  onboardingDescription: 'Konfigurieren Sie den offiziellen DeepSeek-Anbieter, um mit der Erstellung zu beginnen.',
-  onboardingLater: 'Später konfigurieren',
-  onboardingSave: 'Speichern und fortfahren',
-  onboardingSaving: 'Speichern…',
   keyRequired: 'Geben Sie einen API-Schlüssel ein, um fortzufahren.',
 } as const
 
@@ -1157,11 +1132,6 @@ export const ru = {
   welcomeBody: 'NoHarness 0.2 все еще находится в предварительной версии, и многие области нуждаются в дальнейшем улучшении и доработке. Мы приветствуем отзывы и предложения от всех разработчиков и пользователей. Новое настольное приложение теперь ориентировано на широкий круг пользователей, а расширенные функции, связанные с разработчиком, можно включить в настройках. Ожидается, что функции продукта NoHarness и API-интерфейсы плагинов будут продолжать быстро меняться и развиваться и со временем будут постепенно стабилизироваться. \n\nМы надеемся изучить пределы интеллекта вместе с пользователями и разработчиками по всему миру, опираясь на многоразовую и компонуемую инфраструктуру с открытым исходным кодом. Мы приглашаем всех воплотить свои идеи в жизнь с помощью NoHarness и принять участие в сообществе, чтобы обогатить экосистему плагинов.',
   welcomeContinue: 'Продолжить',
   welcomeError: 'Не удалось сохранить подтверждение. Пожалуйста, попробуйте еще раз.',
-  onboardingTitle: 'Добавьте ключ API, чтобы начать работу.',
-  onboardingDescription: 'Настройте официального поставщика DeepSeek, чтобы начать сборку.',
-  onboardingLater: 'Настроить позже',
-  onboardingSave: 'Сохранить и продолжить',
-  onboardingSaving: 'Сохранение…',
   keyRequired: 'Введите ключ API, чтобы продолжить.',
 } as const
 
@@ -1350,10 +1320,5 @@ export const pt = {
   welcomeBody: 'NoHarness 0.2 ainda está em versão prévia e muitas áreas precisam de melhorias e refinamentos contínuos. Agradecemos comentários e sugestões de todos os desenvolvedores e usuários. O novo aplicativo de desktop agora é direcionado a uma ampla gama de usuários, enquanto recursos avançados relacionados ao desenvolvedor podem ser habilitados nas configurações. Espera-se que os recursos do produto e as APIs de plug-in do NoHarness continuem com rápida iteração e evolução e se estabilizem gradualmente ao longo do tempo.\n\nEsperamos explorar os limites da inteligência junto com usuários e desenvolvedores em todo o mundo, desenvolvendo uma infraestrutura de código aberto, reutilizável e combinável. Convidamos todos a dar vida às suas ideias com NoHarness e participar da comunidade para enriquecer o ecossistema de plug-ins.',
   welcomeContinue: 'Continuar',
   welcomeError: 'A confirmação não pôde ser salva. Por favor, tente novamente.',
-  onboardingTitle: 'Adicione uma chave API para começar',
-  onboardingDescription: 'Configure o provedor DeepSeek oficial para começar a compilar.',
-  onboardingLater: 'Configurar mais tarde',
-  onboardingSave: 'Salvar e continuar',
-  onboardingSaving: 'Salvando…',
   keyRequired: 'Insira uma chave de API para continuar.',
 } as const

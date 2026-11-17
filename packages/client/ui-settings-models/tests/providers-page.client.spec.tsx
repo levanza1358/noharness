@@ -148,19 +148,29 @@ describe('ProvidersSection', () => {
     expect(addButton()).toBeTruthy()
   })
 
-  it('lists every declared provider of the adapter namespace, with its key state', async () => {
+  it('lists only the providers this page declared, with their key state', async () => {
     await mountPage(scriptedFace())
-    // The declared routes come from the directory, not from the live routes:
-    // a provider created here keeps its row before it ever serves a request.
-    for (const name of ['openai', 'anthropic', 'zombie']) {
+    // A provider the user layer carries is one this page created; the
+    // adapter's own catalog entries are defaults, not rows added here.
+    for (const name of ['openai', 'zombie']) {
       expect(screen.getByText(name)).toBeTruthy()
     }
+    expect(screen.queryByText('anthropic')).toBeNull()
     // Another namespace's provider belongs to its own page.
     expect(screen.queryByText('plain')).toBeNull()
     expect(screen.getByLabelText(en.credentialConfigured)).toBeTruthy()
-    // Only a user-layer profile can be removed from here.
     expect(screen.getByLabelText(`${en.remove} openai`)).toBeTruthy()
-    expect(screen.queryByLabelText(`${en.remove} anthropic`)).toBeNull()
+  })
+
+  it('shows the empty state when no provider was declared here', async () => {
+    await mountPage(scriptedFace({}, {
+      providers: () => Promise.resolve(remoteOk([
+        { provider: 'anthropic', displayName: 'anthropic', settingsNs: 'llm-pi-ai', settingsPath: ['providers', 'anthropic'] },
+      ])),
+    }))
+    expect(screen.getByText(en.providersEmpty)).toBeTruthy()
+    expect(screen.queryByText('anthropic')).toBeNull()
+    expect(addButton()).toBeTruthy()
   })
 
   it('opens a listed provider in its editor card', async () => {

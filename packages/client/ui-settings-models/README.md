@@ -29,7 +29,7 @@ Saving credentials or a custom provider preserves the selected model. The user c
 
 DeepSeek Account appears first and DeepSeek second in the provider list; third-party providers retain their directory order.
 
-Open the Providers page from the Settings navigation to see every configured provider as a row. A whole-section provider whose key is not configured anywhere renders as its open setup card instead, but only in the first-run posture and only until the user closes that card. Each card kind owns its own open state, so closing one never discards a draft in another.
+Open the Providers page from the Settings navigation to see the providers the page itself declared as rows, starting empty: the adapter's own catalog entries are defaults and stay off this list. **Add custom provider** names a route, then the form behind it takes the endpoint, protocol, and key. A whole-section provider whose key is not configured anywhere renders as its open setup card instead, but only in the first-run posture and only until the user closes that card. Each card kind owns its own open state, so closing one never discards a draft in another.
 
 The Models page picks one configured provider and edits that provider's model list: its rows, **Add model**, and **Fetch available models**. Endpoint, protocol, display name, API key, retry policy, and backoff are the Providers page's business and never appear beside the list.
 

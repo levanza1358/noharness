@@ -18,7 +18,6 @@ import { ProviderList } from './provider-list.tsx'
 import { DeleteDialog } from './provider-delete-dialog.tsx'
 import { removeProviderProfile } from './provider-remove.ts'
 import { protocolChoices } from './store.ts'
-import { layoutOf } from './provider-card.ts'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
 import styles from './ModelsSection.module.css'
 
@@ -61,8 +60,10 @@ function Loaded(
   const [deleteFailure, setDeleteFailure] = useState<string | undefined>(undefined)
   if (state.status === 'idle') void controller.load()
   const namespace = state.namespaces.get(NS)
-  const providers = state.rows.filter(row =>
-    layoutOf(row.entry.settingsNs) !== 'unknown' && state.namespaces.has(row.entry.settingsNs))
+  // Only providers that exist because someone declared them here: a route the
+  // user layer carries, or one the adapter does not ship. The adapter's own
+  // catalog entries are defaults, not rows added on this page.
+  const providers = state.rows.filter(row => row.removable || row.entry.declared === true)
   const routeInvalid = route.length > 0 && !ROUTE_PATTERN.test(route)
   const routeTaken = state.rows.some(row => row.entry.provider === route)
   const ready = route.length > 0 && !routeInvalid && !routeTaken && namespace !== undefined
@@ -101,6 +102,7 @@ function Loaded(
       <h2 className={styles['title']}>{t('providersTitle')}</h2>
       <p className={styles['intro']}>{t('providersIntro')}</p>
       {state.writable ? null : <p className={styles['notice']}>{t('readOnly')}</p>}
+      {providers.length === 0 ? <p className={styles['advancedHint']}>{t('providersEmpty')}</p> : null}
       <ProviderList
         rows={providers}
         t={t}

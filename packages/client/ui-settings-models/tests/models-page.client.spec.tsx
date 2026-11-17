@@ -82,26 +82,23 @@ describe('ModelsPage', () => {
     await waitFor(() => { expect(controller.store.getSnapshot().status).toBe('ready') })
   })
 
-  it('opens with the provider endpoint and key as the page fields', async () => {
+  it('opens on the chosen provider model list without its profile fields', async () => {
     await mountPage(scriptedFace())
-    expect(screen.getByText(en.customized)).toBeTruthy()
-    expect(screen.getByLabelText(en.keyInput)).toBeTruthy()
-    expect(screen.getByLabelText(en.baseUrl)).toBeTruthy()
+    expect(screen.getByRole('region', { name: en.models })).toBeTruthy()
+    expect(screen.getByRole('button', { name: en.addModel })).toBeTruthy()
+    // Endpoint, protocol, key, and retry policy are the Providers page's.
+    expect(screen.queryByLabelText(en.keyInput)).toBeNull()
+    expect(screen.queryByLabelText(en.baseUrl)).toBeNull()
   })
 
-  it('leads a credential card with the key and no fallback reference', async () => {
-    await mountPage(scriptedFace())
-    expect(screen.getByLabelText<HTMLInputElement>(en.keyInput).required).toBe(false)
-    expect(screen.getByLabelText(en.baseUrl)).toBeTruthy()
-  })
-
-  it('reports the provider an applied edit names', async () => {
-    await mountPage(scriptedFace())
+  it('edits the chosen provider models and reports the save', async () => {
+    const { controller } = await mountPage(scriptedFace())
     await act(async () => {
-      fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'https://relay.example/v1' } })
+      fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'deepseek-v4-tiny' } })
     })
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.apply })) })
     await waitFor(() => { expect(screen.getByRole('status').textContent).toContain('DeepSeek') })
+    expect(controller.store.getSnapshot().status).toBe('ready')
   })
 
   it('renders nothing before the shell injects', () => {
@@ -134,7 +131,7 @@ describe('ModelsPage', () => {
     await waitFor(() => { expect(screen.getByLabelText(en.providerSelect)).toBeTruthy() })
   })
 
-  it('carries a declared route into the editor while credential state is unread', async () => {
+  it('edits a declared route model list while credential state is unread', async () => {
     const namespaces = wireNamespaces().map(view => view.ns === 'llm-pi-ai'
       ? {
         ...view,
@@ -153,11 +150,12 @@ describe('ModelsPage', () => {
     await mountPage(scripted)
     // A declared route reaches this page's model editor — the one place its
     // models are managed — even while its credential state cannot be read.
-    expect(screen.getByLabelText(en.customApi)).toBeTruthy()
-    expect(screen.getAllByText('Acme').length).toBeGreaterThan(0)
+    expect(screen.getByRole('region', { name: en.models })).toBeTruthy()
+    expect(screen.getByRole('button', { name: en.fetchModels })).toBeTruthy()
+    expect(screen.queryByLabelText(en.customApi)).toBeNull()
   })
 
-  it('carries a hand-declared route protocol and endpoint into the page editor', async () => {
+  it('takes a declared route model list from its endpoint', async () => {
     const namespaces = wireNamespaces().map(view => view.ns === 'llm-pi-ai'
       ? {
         ...view,
@@ -170,24 +168,23 @@ describe('ModelsPage', () => {
         provider: 'acme-gateway', displayName: 'Acme', settingsNs: 'llm-pi-ai', settingsPath: ['providers', 'acme-gateway'],
         declared: true, defaultBaseURL: 'https://acme.example/v1',
       }])),
+      discoverModels: () => Promise.resolve(remoteOk([
+        { id: 'acme-large', name: 'Acme Large', contextWindow: 200_000 },
+      ])),
     })
     scripted.face.settings.describe.mockResolvedValue(remoteOk({ writable: true, hasDocument: false, namespaces }))
     await mountPage(scripted)
-    const protocol = screen.getByLabelText<HTMLSelectElement>(en.customApi)
-    expect([...protocol.options].map(option => option.value)).toContain('openai-completions')
-    await act(async () => { fireEvent.change(protocol, { target: { value: 'anthropic-messages' } }) })
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.apply })) })
-    await waitFor(() => { expect(screen.getByRole('status')).toBeTruthy() })
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.fetchModels })) })
+    await waitFor(() => { expect(screen.getByRole('dialog', { name: en.fetchTitle })).toBeTruthy() })
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.fetchAdopt })) })
+    await waitFor(() => { expect(screen.getByDisplayValue('acme-large')).toBeTruthy() })
   })
 
-  it('drops a cleared endpoint back to the route default and names its key reference', async () => {
+  it('keeps the provider endpoint off the model list', async () => {
     await mountPage(scriptedFace())
-    const endpoint = screen.getByLabelText<HTMLInputElement>(en.baseUrl)
-    expect(endpoint.value).toBe('https://base')
-    expect(screen.getByLabelText<HTMLInputElement>(en.keyInput).placeholder).toContain('DEEPSEEK_API_KEY')
-    await act(async () => { fireEvent.change(endpoint, { target: { value: '' } }) })
-    expect(endpoint.value).toBe('')
-    expect(screen.getByLabelText<HTMLInputElement>(en.keyInput).placeholder).toContain('DEEPSEEK_API_KEY')
+    expect(screen.queryByLabelText(en.baseUrl)).toBeNull()
+    expect(screen.queryByLabelText(en.keyInput)).toBeNull()
+    expect(screen.getByRole('region', { name: en.models })).toBeTruthy()
   })
 
   it('stays on the page when the editor is closed without a change', async () => {

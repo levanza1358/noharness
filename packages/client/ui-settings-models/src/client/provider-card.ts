@@ -234,6 +234,17 @@ export interface ProviderEditorProps {
   readOnly: boolean
   /** Render only the credential field and actions, without provider settings. */
   credentialOnly?: boolean
+  /**
+   * Render only this provider's model list and its fetch action. The Models
+   * page edits the catalog of an already-connected provider, whose endpoint,
+   * protocol, key, and retry policy belong to the Providers page.
+   */
+  modelsOnly?: boolean
+  /**
+   * Omit the model list from a full card. The Providers page connects a
+   * provider; its models are the Models page's business.
+   */
+  hideModels?: boolean
   /** Require a newly entered credential before this editor can submit. */
   credentialRequired?: boolean
   /** Give the credential field initial focus when this editor mounts. */

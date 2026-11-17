@@ -121,6 +121,8 @@ function Loaded(
               key={`${row.entry.settingsNs}:${row.entry.provider}`}
               provider={target.provider}
               displayName={target.displayName}
+              hideTitle
+              modelsOnly
               settingsPath={target.settingsPath}
               {...target.declared === true ? { declared: true } : {}}
               {...target.defaultBaseURL === undefined ? {} : { defaultBaseURL: target.defaultBaseURL }}

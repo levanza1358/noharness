@@ -164,7 +164,8 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
   const retryFailure =
     retryNode === undefined ||
     retryDefaults === undefined ||
-    props.credentialOnly === true
+    props.credentialOnly === true ||
+    props.modelsOnly === true
       ? undefined
       : retryPolicyFailure(
         schema,
@@ -209,7 +210,7 @@ export function ProviderEditor(props: ProviderEditorProps): ReactNode {
     keyRemoval,
     disabled,
   }
-  const shownKeyFailure = reads.credentialRequiredFailure ?? keyFailure
+  const shownKeyFailure = props.modelsOnly === true ? undefined : reads.credentialRequiredFailure ?? keyFailure
   // An edited-but-unsaved endpoint, and a key typed but not yet stored.
   const probe = {
     settingsNs: namespace.ns,

@@ -166,10 +166,20 @@ describe('ProvidersSection', () => {
   it('opens a listed provider in its editor card', async () => {
     await mountPage(scriptedFace())
     await act(async () => { fireEvent.click(screen.getByLabelText(`${en.edit} openai`)) })
-    expect(screen.getByLabelText<HTMLInputElement>(en.baseUrl)).toBeTruthy()
+    expect(screen.getByLabelText(en.baseUrl)).toBeTruthy()
+    // The profile is what this card edits; its models belong to the Models page.
+    expect(screen.getByLabelText(en.keyInput)).toBeTruthy()
+    expect(screen.queryByRole('button', { name: en.addModel })).toBeNull()
     // Closing the card without a write keeps the page where it was.
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.cancel })) })
     expect(screen.queryByLabelText(en.baseUrl)).toBeNull()
+  })
+
+  it('keeps the model list off the profile card of a catalog provider', async () => {
+    await mountPage(scriptedFace())
+    await act(async () => { fireEvent.click(screen.getByLabelText(`${en.edit} openai`)) })
+    expect(screen.queryByRole('button', { name: en.addModel })).toBeNull()
+    expect(screen.queryByRole('button', { name: en.fetchModels })).toBeNull()
   })
 
   it('shows the route id beside a display name of its own', async () => {

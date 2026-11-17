@@ -26,7 +26,7 @@ export interface CatalogDraft {
 /** Values that vary around the shared provider-editor rendering. */
 export interface ProviderEditorRenderProps extends Pick<
   ProviderEditorProps,
-  'namespace' | 'schema' | 'operations' | 't' | 'readOnly' | 'onClose'
+  'namespace' | 'schema' | 'operations' | 't' | 'readOnly' | 'onClose' | 'hideModels'
 > {
   target: EditorTarget
   row: ProviderRow

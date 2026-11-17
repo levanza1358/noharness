@@ -18,6 +18,7 @@ import { ProviderList } from './provider-list.tsx'
 import { DeleteDialog } from './provider-delete-dialog.tsx'
 import { removeProviderProfile } from './provider-remove.ts'
 import { protocolChoices } from './store.ts'
+import { layoutOf } from './provider-card.ts'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
 import styles from './ModelsSection.module.css'
 
@@ -60,7 +61,8 @@ function Loaded(
   const [deleteFailure, setDeleteFailure] = useState<string | undefined>(undefined)
   if (state.status === 'idle') void controller.load()
   const namespace = state.namespaces.get(NS)
-  const providers = state.rows.filter(row => row.entry.settingsNs === NS)
+  const providers = state.rows.filter(row =>
+    layoutOf(row.entry.settingsNs) !== 'unknown' && state.namespaces.has(row.entry.settingsNs))
   const routeInvalid = route.length > 0 && !ROUTE_PATTERN.test(route)
   const routeTaken = state.rows.some(row => row.entry.provider === route)
   const ready = route.length > 0 && !routeInvalid && !routeTaken && namespace !== undefined

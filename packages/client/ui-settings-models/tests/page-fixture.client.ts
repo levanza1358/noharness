@@ -147,6 +147,7 @@ export function scriptedFace(overrides: {
 } = {}, answer: {
   providers?: () => ReturnType<PageContext['remote']['llm']['listConfigurableProviders']>
   describeCredentials?: PageContext['remote']['credentials']['describe']
+  discoverModels?: PageContext['remote']['llm']['discoverModels']
 } = {}) {
   const providerNamespace = wireNamespaces().find(view => view.ns === 'llm-pi-ai')!
   const update = overrides.update ?? vi.fn(() => Promise.resolve(remoteOk(providerNamespace)))
@@ -174,7 +175,7 @@ export function scriptedFace(overrides: {
         { provider: 'broken', displayName: 'broken', settingsNs: 'llm-pi-ai', settingsPath: ['nope', 'x'], active: false },
         { provider: 'plain', displayName: 'plain', settingsNs: 'llm-plain', settingsPath: ['profiles', 'plain'], active: false },
       ].map(({ active: _active, ...entry }) => entry))))),
-      discoverModels: vi.fn(() => Promise.resolve(remoteOk([]))),
+      discoverModels: vi.fn(answer.discoverModels ?? (() => Promise.resolve(remoteOk([])))),
     },
     settings: {
       describe: vi.fn(() => Promise.resolve(remoteOk({ writable: true, hasDocument: false, namespaces: wireNamespaces() }))),

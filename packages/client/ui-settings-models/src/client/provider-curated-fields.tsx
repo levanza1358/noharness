@@ -149,14 +149,16 @@ export function CuratedFields(input: CuratedInput): ReactNode {
       />
     )
   // A declared route's models are the Models page's business; only the
-  // catalog family's provider-scoped model list is edited here.
-  const editsModelsHere = input.layout === 'pi-ai' && props.declared !== true
+  // catalog family's provider-scoped model list is edited here, and the Models
+  // page asks for that list alone.
+  const editsModelsHere = props.modelsOnly === true
+    || (input.layout === 'pi-ai' && props.declared !== true)
   const defaultContextWindow = schema.getPath(fallback, [
     'defaultContextWindow',
   ])
   const defaultMaxTokens = schema.getPath(fallback, ['maxTokens'])
   const defaultInput = schema.getPath(fallback, ['defaultInput'])
-  const modelFields = input.layout === 'deepseek'
+  const modelFields = props.hideModels === true ? null : input.layout === 'deepseek'
     ? (
       <DeepSeekModelsEditor
         {...catalogProps}
@@ -191,36 +193,40 @@ export function CuratedFields(input: CuratedInput): ReactNode {
       : null
   return (
     <>
-      <KeyField
-        state={key}
-        provider={props.provider}
-        keyText={reads.keyText}
-        keyRemoval={reads.keyRemoval}
-        keyDraft={reads.keyDraft}
-        disabled={reads.disabled}
-        credentialRequired={props.credentialRequired === true}
-        protocolNeedsKeyHere={reads.profiles.protocolNeedsKeyHere}
-        protocolKeyMissing={reads.profiles.protocolKeyMissing}
-        shownKeyFailure={input.shownKeyFailure}
-        autoFocus={props.autoFocusCredential === true}
-        t={t}
-        onChange={(next) => {
-          // Clearing a saved key stages its removal instead of a replacement.
-          input.setKeyDraft(
-            next === '' && key.savedCredential && key.detected !== undefined
-              ? key.detected[1].writable
-                ? { ref: key.detected[0] }
-                : ''
-              : next,
-          )
-          input.setFailure(undefined)
-        }}
-        onClear={() => {
-          input.setKeyDraft({ ref: key.clearRef })
-          input.setFailure(undefined)
-        }}
-      />
-      {props.credentialOnly === true ? (
+      {input.props.modelsOnly === true ? null : (
+        <KeyField
+          state={key}
+          provider={props.provider}
+          keyText={reads.keyText}
+          keyRemoval={reads.keyRemoval}
+          keyDraft={reads.keyDraft}
+          disabled={reads.disabled}
+          credentialRequired={props.credentialRequired === true}
+          protocolNeedsKeyHere={reads.profiles.protocolNeedsKeyHere}
+          protocolKeyMissing={reads.profiles.protocolKeyMissing}
+          shownKeyFailure={input.shownKeyFailure}
+          autoFocus={props.autoFocusCredential === true}
+          t={t}
+          onChange={(next) => {
+            // Clearing a saved key stages its removal instead of a replacement.
+            input.setKeyDraft(
+              next === '' && key.savedCredential && key.detected !== undefined
+                ? key.detected[1].writable
+                  ? { ref: key.detected[0] }
+                  : ''
+                : next,
+            )
+            input.setFailure(undefined)
+          }}
+          onClear={() => {
+            input.setKeyDraft({ ref: key.clearRef })
+            input.setFailure(undefined)
+          }}
+        />
+      )}
+      {props.modelsOnly === true ? (
+        modelFields
+      ) : props.credentialOnly === true ? (
         <div className={styles['customizedBody']}>
           {routeFields}
           {modelFields}

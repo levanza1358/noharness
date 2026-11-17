@@ -30,7 +30,7 @@ export function TargetEditor(props: TargetEditorProps): ReactNode {
   const { target, row, namespace, schema, operations, t, readOnly, onClose } = props
   return (
     <div className={styles['addCard']}>
-      {renderProviderEditor({ target, row, namespace, schema, operations, t, readOnly, onClose })}
+      {renderProviderEditor({ target, row, namespace, schema, operations, t, readOnly, onClose, hideModels: true })}
     </div>
   )
 }

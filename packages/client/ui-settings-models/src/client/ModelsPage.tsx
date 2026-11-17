@@ -9,6 +9,7 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import type { InjectFace, PropsRenderSlots } from '@noharness/client-ui-slots'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
+import { declaredHere } from './store.ts'
 import { providerCopy, targetOf } from './provider-identity.ts'
 import type { ProviderIdentity } from './provider-identity.ts'
 import { ProviderEditor } from './ProviderEditor.tsx'
@@ -76,7 +77,7 @@ function Loaded(
   }
   const rows = state.rows.map(row => row.entry.provider === 'deepseek-account'
     ? { ...row, entry: { ...row.entry, displayName: t('deepSeekAccount') } } : row)
-  const configured = rows.filter(row => row.configured)
+  const configured = rows.filter(row => row.configured && declaredHere(row))
   // The picked provider keeps its selection across refreshes; an untouched
   // selection follows the first configured row, so the page opens on content.
   const row = configured.find(candidate => candidate.entry.provider === picked) ?? configured[0]

@@ -31,7 +31,7 @@ DeepSeek Account appears first and DeepSeek second in the provider list; third-p
 
 Open the Providers page from the Settings navigation to see the providers the page itself declared as rows, starting empty: the adapter's own catalog entries are defaults and stay off this list. **Add custom provider** names a route, then the form behind it takes the endpoint, protocol, and key. A whole-section provider whose key is not configured anywhere renders as its open setup card instead, but only in the first-run posture and only until the user closes that card. Each card kind owns its own open state, so closing one never discards a draft in another.
 
-The Models page picks one configured provider and edits that provider's model list: its rows, **Add model**, and **Fetch available models**. Endpoint, protocol, display name, API key, retry policy, and backoff are the Providers page's business and never appear beside the list.
+The Models page picks one provider from the rows this page's Providers page declared and edits that provider's model list: its rows, **Add model**, and **Fetch available models**. An adapter default route such as DeepSeek is not listed until it is declared here. Endpoint, protocol, display name, API key, retry policy, and backoff are the Providers page's business and never appear beside the list.
 
 A provider with a stored catalog error remains visible with its diagnostic and edit/delete actions. Add actions are offered only for registered settings namespaces, so an unavailable namespace cannot leave a button that opens no editor. A rejected save leaves the editor open and displays the Host diagnostic.
 

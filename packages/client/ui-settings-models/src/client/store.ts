@@ -345,6 +345,17 @@ export function providerUsable(row: ProviderRow): boolean {
   return row.credential?.configured === true
 }
 
+/**
+ * Whether a joined row exists because a user declared it here, rather than as
+ * an adapter default. Settings pages list only these: the catalog the adapter
+ * ships with is not something anyone added on these pages.
+ * @param row - one joined provider row.
+ * @returns whether the row came from a user layer profile or a hand-declared route.
+ */
+export function declaredHere(row: ProviderRow): boolean {
+  return row.removable || row.entry.declared === true
+}
+
 /** First-run onboarding readiness derived only from the shared Models join. */
 export type OnboardingReadiness =
   | { kind: 'loading' }

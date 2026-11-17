@@ -40,19 +40,19 @@ describe('ModelsPage', () => {
     expect(screen.queryByLabelText(en.providerSelect)).toBeNull()
   })
 
-  it('opens on the first configured provider with its model list', async () => {
+  it('opens on the first declared provider with its model list', async () => {
     await mountPage(scriptedFace())
     expect(screen.getByRole('heading', { name: en.title })).toBeTruthy()
     expect(screen.getByText(en.intro)).toBeTruthy()
-    expect(screen.getByLabelText<HTMLSelectElement>(en.providerSelect).value).toBe('deepseek-official')
+    expect(screen.getByLabelText<HTMLSelectElement>(en.providerSelect).value).toBe('openai')
     expect(screen.getByRole('region', { name: en.models })).toBeTruthy()
   })
 
   it('switches the edited provider from the picker', async () => {
     const { renderSlot } = await mountPage(scriptedFace())
     const picker = screen.getByLabelText(en.providerSelect) as HTMLSelectElement
-    await act(async () => { fireEvent.change(picker, { target: { value: 'openai' } }) })
-    expect(screen.getByLabelText<HTMLSelectElement>(en.providerSelect).value).toBe('openai')
+    await act(async () => { fireEvent.change(picker, { target: { value: 'zombie' } }) })
+    expect(screen.getByLabelText<HTMLSelectElement>(en.providerSelect).value).toBe('zombie')
     const seats = renderSlot.mock.calls.filter(call => call[0] === 'settings.models.provider-card')
     expect((seats.at(-1)?.[2] as { entryKey: string }).entryKey).toBe('llm-pi-ai')
   })
@@ -60,7 +60,7 @@ describe('ModelsPage', () => {
   it('dispatches the provider-card seat for the chosen provider', async () => {
     const { renderSlot } = await mountPage(scriptedFace())
     const calls = renderSlot.mock.calls.filter(call => call[0] === 'settings.models.provider-card')
-    expect(calls[0]?.[2]).toMatchObject({ entryKey: 'llm-deepseek' })
+    expect(calls[0]?.[2]).toMatchObject({ entryKey: 'llm-pi-ai' })
   })
 
   it('loads the directory on its own when it mounts idle', async () => {
@@ -93,11 +93,12 @@ describe('ModelsPage', () => {
 
   it('edits the chosen provider models and reports the save', async () => {
     const { controller } = await mountPage(scriptedFace())
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.addModel })) })
     await act(async () => {
-      fireEvent.change(screen.getByLabelText(`${en.modelId} 1`), { target: { value: 'deepseek-v4-tiny' } })
+      fireEvent.change(screen.getByLabelText(new RegExp(en.modelId)), { target: { value: 'acme-large' } })
     })
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: en.apply })) })
-    await waitFor(() => { expect(screen.getByRole('status').textContent).toContain('DeepSeek') })
+    await waitFor(() => { expect(screen.getByRole('status').textContent).toContain('openai') })
     expect(controller.store.getSnapshot().status).toBe('ready')
   })
 
@@ -105,19 +106,12 @@ describe('ModelsPage', () => {
     expect(render(<ModelsPage renderSlot={(() => null) as never} />).container.innerHTML).toBe('')
   })
 
-  it('names the account route in the picker and reports a derived key through the seat', async () => {
-    const { renderSlot } = await mountPage(scriptedFace({}, {
-      providers: () => Promise.resolve(remoteOk([
-        { provider: 'deepseek-official', displayName: 'DeepSeek', settingsNs: 'llm-deepseek', settingsPath: [] },
-        { provider: 'deepseek-account', displayName: 'deepseek-account', settingsNs: 'llm-deepseek-account', settingsPath: [] },
-      ])),
-    }))
+  it('keeps an adapter default route off the picker', async () => {
+    // DeepSeek ships with the adapter; it is not a provider anyone added here,
+    // so neither Settings page lists it.
+    await mountPage(scriptedFace())
     const picker = screen.getByLabelText(en.providerSelect) as HTMLSelectElement
-    expect([...picker.options].map(option => option.textContent)).toEqual([en.deepSeekAccount, 'DeepSeek'])
-    await act(async () => { fireEvent.change(picker, { target: { value: 'deepseek-account' } }) })
-    const seats = renderSlot.mock.calls.filter(call => call[0] === 'settings.models.provider-card')
-    // A keyless route has no profile reference, so the seat reads the derived one.
-    expect(seats.at(-1)?.[1]).toMatchObject({ keyConfigured: false })
+    expect([...picker.options].map(option => option.value)).toEqual(['openai', 'zombie'])
   })
 
   it('starts over after a failed refresh of a loaded page', async () => {

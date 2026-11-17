@@ -4,7 +4,7 @@ import * as fsp from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, expect, it, onTestFinished, vi } from 'vitest'
-import { readDesktopSettings } from '../src/settings.ts'
+import { readDesktopSettings, saveShellExposure, saveShellTray } from '../src/settings.ts'
 
 vi.mock('node:fs/promises', async importOriginal => ({ ...await importOriginal<typeof import('node:fs/promises')>() }))
 
@@ -23,8 +23,10 @@ it('creates a discoverable default file on first launch without touching other p
   const { userData, path } = fixture()
   rmSync(join(userData, 'desktop'), { recursive: true })
   writeFileSync(join(userData, 'keybindings.json'), 'existing shortcuts\n')
-  expect(await readDesktopSettings(userData)).toEqual({ updates: { allowTestAuthPopupWindow: false } })
-  expect(readFileSync(path, 'utf8')).toBe('{\n  "updates": {\n    "allowTestAuthPopupWindow": false\n  }\n}\n')
+  expect(await readDesktopSettings(userData)).toEqual({
+    updates: { allowTestAuthPopupWindow: false }, shell: { tray: true, network: false },
+  })
+  expect(readFileSync(path, 'utf8')).toBe('{\n  "updates": {\n    "allowTestAuthPopupWindow": false,\n    "trayEnabled": true,\n    "exposedNetwork": false\n  }\n}\n')
   expect(readFileSync(join(userData, 'keybindings.json'), 'utf8')).toBe('existing shortcuts\n')
 })
 
@@ -81,4 +83,13 @@ it('continues with defaults even when warning output fails', async () => {
   vi.mocked(console.warn).mockImplementation(() => { throw new Error('output unavailable') })
   expect((await readDesktopSettings(userData)).updates.allowTestAuthPopupWindow).toBe(false)
   expect(readFileSync(path, 'utf8')).toBe('{')
+})
+
+it('resolves and saves the LAN exposure preference independently of the tray', async () => {
+  const { userData } = fixture()
+  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: true, network: false })
+  await saveShellExposure(userData, true)
+  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: true, network: true })
+  await saveShellTray(userData, false)
+  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: false, network: true })
 })

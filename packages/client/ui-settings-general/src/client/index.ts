@@ -26,16 +26,24 @@ import type {} from '@noharness/client-ui-settings/client'
 import type {} from '@noharness/client-locale/client'
 import type {} from '@noharness/client-ui-renderer/client'
 import type {} from '@noharness/client-ui-session/client'
+import type {} from '@noharness/client-ui-layout/client'
 import type {} from '@noharness/client-product-analytics/client'
 import type {
-  SettingsOnboardingStep, SettingsRootInjected, SettingsSectionRow,
+  SettingsOnboardingStep, SettingsPageInjected, SettingsRootInjected, SettingsSectionRow,
 } from './shell-contract.ts'
 import type { ShortcutCommandId } from '@noharness/client-shortcuts/client'
 import { createSettingsShellStore } from './shell-store.ts'
 import { SettingsRoot } from './SettingsRoot.tsx'
+import { SettingsPage, SETTINGS_PANEL_ID } from './SettingsPage.tsx'
 import { DesktopUpdateBadge } from './DesktopUpdateIndicator.tsx'
-import type { DesktopUpdateBridge } from '../types.ts'
+import type {
+  DesktopNetworkExposureBridge, DesktopShellPreferenceBridge, DesktopUpdateBridge,
+} from '../types.ts'
 import { DesktopChannelSource } from './desktop-channel-source.ts'
+import { DesktopNetworkSource } from './desktop-network-source.ts'
+import { DesktopTraySource } from './desktop-tray-source.ts'
+import { NetworkRow } from './NetworkRow.tsx'
+import { TrayRow } from './TrayRow.tsx'
 import { DesktopChannelRow, DesktopChannelToast } from './DesktopChannelRow.tsx'
 import { DesktopUpdateSource } from './desktop-update-source.ts'
 import { CloseLabel, HeaderContent, TriggerContent } from './chrome.tsx'
@@ -74,7 +82,7 @@ const NS = 'settings'
  * ui-settings' apply, whose activation order relative to this one is NOT
  * constrained; registrations depend on their slots through `slots.inject()`.
  */
-export const inject = ['slots', 'locale', 'connection', 'remote', 'remote.settings', 'configForms', 'shortcuts', 'modules', 'remoteAccess']
+export const inject = ['slots', 'locale', 'connection', 'remote', 'remote.settings', 'configForms', 'shortcuts', 'modules', 'remoteAccess', 'layout']
 
 /**
  * Register the `settings` dictionaries, the chrome content, and the General
@@ -103,7 +111,13 @@ export function apply(ctx: ClientContext): void {
   }, CurrentVersionRow))
   ctx.effect(() => ctx.locale.register(NS, { en, ja, es, fr, de, ru, pt }), 'ui-settings-general: dictionaries')
   const connection = ctx.get('connection') as ConnectionHandle
-  const carrier = (globalThis as typeof globalThis & { nhsDesktop?: { protocolVersion: number; updates?: DesktopUpdateBridge } }).nhsDesktop
+  const carrier = (globalThis as typeof globalThis & {
+    nhsDesktop?: {
+      protocolVersion: number
+      updates?: DesktopUpdateBridge
+      shell?: { tray?: DesktopShellPreferenceBridge; network?: DesktopNetworkExposureBridge }
+    }
+  }).nhsDesktop
   const desktopUpdate = new DesktopUpdateSource(carrier?.protocolVersion === 1 ? carrier.updates : undefined)
   ctx.effect(() => () => { desktopUpdate.dispose() }, 'ui-settings-general: desktop update carrier')
   const channelBridge = carrier?.protocolVersion === 1 ? carrier.updates?.channels : undefined
@@ -119,6 +133,24 @@ export function apply(ctx: ClientContext): void {
       inject: () => ({ hooks: { channel: channel.store },
         dismiss: (sequence: number) => { channel.dismissNotice(sequence) }, openConfiguration: () => { desktopUpdate.open() } }),
     }, DesktopChannelToast))
+  }
+  const trayBridge = carrier?.protocolVersion === 1 ? carrier.shell?.tray : undefined
+  if (trayBridge !== undefined) {
+    const tray = new DesktopTraySource(trayBridge)
+    ctx.effect(() => () => { tray.dispose() }, 'ui-settings-general: desktop tray')
+    ctx.slots.inject('settings.general.item', () => ctx.slots.register({
+      name: 'settings.general.item', id: 'desktop-tray', order: 90, locale: NS,
+      inject: () => ({ hooks: { tray: tray.store }, setEnabled: (enabled: boolean) => tray.set(enabled) }),
+    }, TrayRow))
+  }
+  const networkBridge = carrier?.protocolVersion === 1 ? carrier.shell?.network : undefined
+  if (networkBridge !== undefined) {
+    const network = new DesktopNetworkSource(networkBridge)
+    ctx.effect(() => () => { network.dispose() }, 'ui-settings-general: desktop network')
+    ctx.slots.inject('settings.general.item', () => ctx.slots.register({
+      name: 'settings.general.item', id: 'desktop-network', order: 85, locale: NS,
+      inject: () => ({ hooks: { network: network.store }, setEnabled: (enabled: boolean) => network.set(enabled) }),
+    }, NetworkRow))
   }
 
   ctx.slots.inject('sidebar.toggle.badge', () => ctx.slots.register({
@@ -142,7 +174,7 @@ export function apply(ctx: ClientContext): void {
     })
   ctx.effect(() => () => { documentController?.dispose() }, 'ui-settings-general: document action directory')
   // The settings shell: this package occupies the sidebar-owned hole and
-  // declares the settings slots. Ledger → nav-row projection as an observable
+  // declares the settings slots. Ledger —  nav-row projection as an observable
   // source (uSES contract: getSnapshot returns the cached rows until the
   // ledger version moves). Labels may be locale-following thunks, so the cache
   // key includes the locale revision and subscribers ride both sources.
@@ -151,7 +183,7 @@ export function apply(ctx: ClientContext): void {
   let rows: readonly SettingsSectionRow[] = []
   let onboardingVersion = -1
   let onboardingSteps: readonly SettingsOnboardingStep[] = []
-  const shellInjected = (): SettingsRootInjected => ({
+  const shellInjected = (): Omit<SettingsRootInjected, 'openSettings' | 'showSettingsPage'> => ({
     openDesktopUpdate: () => { desktopUpdate.open() },
     reconnect: () => { connection.reconnect() },
     hooks: {
@@ -202,14 +234,30 @@ export function apply(ctx: ClientContext): void {
         },
         subscribe: listener => ctx.slots.subscribe('settings.onboarding', listener),
       },
+      panelInfo: ctx.layout.panelInfo,
     },
   })
   // The settings shell reads this host's configuration, so it follows access to its description.
   ctx.remoteAccess.whenAccess('settings/describe', () =>
-    ctx.slots.inject('sidebar.settings', () => {
+    ctx.slots.inject('sidebar.settings', function* () {
       const shellHandle = createSettingsShellStore()
       const shellInstance = shellHandle.create()
       const shellStore: typeof shellHandle = { ...shellHandle, create: () => shellInstance }
+      const { openSection, select } = shellInstance.actions
+      const shellViewModel: SettingsRootInjected = {
+        ...shellInjected(),
+        // A section opens the page there; a bare call comes from an onboarding
+        // step taking the viewport, which leaves the column to that step.
+        openSettings: (sectionId?: string) => {
+          if (sectionId !== undefined) openSection(sectionId)
+          ctx.layout.selectPanel(sectionId === undefined ? null : SETTINGS_PANEL_ID)
+        },
+        showSettingsPage: () => { ctx.layout.selectPanel(SETTINGS_PANEL_ID) },
+      }
+      // The page is a center-column panel: opening selects it, closing returns
+      // the column to the Conversation. A panel switch (New Session, a Session)
+      // needs no store write — the page only renders while it is selected.
+      const close = (): void => { ctx.layout.selectPanel(null) }
       const disposeCommand = ctx.shortcuts.register({
         id: 'settings.open' as ShortcutCommandId, label: () => t('shortcut.open'), aliases: ['settings', 'preferences'],
         defaults: {
@@ -224,53 +272,61 @@ export function apply(ctx: ClientContext): void {
           if (modal !== null && modal !== 'settings') return { status: 'blocked', reason: 'modal' }
           return { status: 'handled', run: () => {
             if (modal === 'settings') closeTopModal(document)
-            else shellInstance.actions.open()
+            else ctx.layout.selectPanel(SETTINGS_PANEL_ID)
           } }
         },
       })
 
-      const disposeSlot = ctx.slots.register({
+      const shellProps = (): SettingsRootInjected => shellViewModel
+      const disposeShell = ctx.slots.register({
         name: 'sidebar.settings',
         locale: NS,
         store: shellStore,
         children: {
           'settings.launcher': { kind: 'single', scope: 'root' },
           'settings.trigger': { kind: 'single', scope: 'root' },
+          'settings.onboarding': { kind: 'list', scope: 'root' },
+        },
+        inject: shellProps,
+      }, SettingsRoot)
+      const disposePage = ctx.slots.register({
+        name: 'main',
+        key: SETTINGS_PANEL_ID,
+        locale: NS,
+        store: shellStore,
+        children: {
           'settings.header': { kind: 'single', scope: 'root' },
           'settings.action': { kind: 'list', scope: 'root' },
           'settings.close': { kind: 'single', scope: 'root' },
           'settings.section': { kind: 'list', scope: 'root' },
           'settings.section.icon': { kind: 'list', scope: 'root', inline: true },
-          'settings.onboarding': { kind: 'list', scope: 'root' },
         },
-        inject: shellInjected,
-      }, SettingsRoot)
-      return () => { disposeCommand(); disposeSlot() }
+        inject: (): SettingsPageInjected => ({ select, close, hooks: { sections: shellViewModel.hooks.sections } }),
+      }, SettingsPage)
+      const disposeTriggerContent = ctx.slots.register({ name: 'settings.trigger', locale: NS }, TriggerContent)
+      const disposeHeader = ctx.slots.register({ name: 'settings.header', locale: NS }, HeaderContent)
+      const disposeCloseLabel = ctx.slots.register({ name: 'settings.close', locale: NS }, CloseLabel)
+      const disposeGeneral = ctx.slots.register({
+        name: 'settings.section',
+        id: 'general',
+        order: 0,
+        label: () => t('general.nav'),
+        locale: NS,
+        children: { 'settings.general.item': { kind: 'list', scope: 'root' } },
+      }, GeneralSection)
+      const disposeDocument = documentInjected === undefined
+        ? undefined
+        : ctx.slots.register({ name: 'settings.action', id: 'open-document', order: 0, locale: NS, inject: documentInjected }, SettingsDocumentAction)
+      yield disposeCommand
+      yield disposeShell
+      yield disposePage
+      yield disposeTriggerContent
+      yield disposeHeader
+      yield disposeCloseLabel
+      yield disposeGeneral
+      if (disposeDocument !== undefined) yield disposeDocument
     }))
 
-  ctx.slots.inject('settings.trigger', () =>
-    ctx.slots.register({ name: 'settings.trigger', locale: NS }, TriggerContent))
-  ctx.slots.inject('settings.header', () =>
-    ctx.slots.register({ name: 'settings.header', locale: NS }, HeaderContent))
-  if (documentInjected !== undefined) {
-    ctx.slots.inject('settings.action', () => ctx.slots.register({
-      name: 'settings.action',
-      id: 'open-document',
-      order: 0,
-      locale: NS,
-      inject: documentInjected,
-    }, SettingsDocumentAction))
-  }
-  ctx.slots.inject('settings.close', () =>
-    ctx.slots.register({ name: 'settings.close', locale: NS }, CloseLabel))
-  ctx.slots.inject('settings.section', () => ctx.slots.register({
-    name: 'settings.section',
-    id: 'general',
-    order: 0,
-    label: () => t('general.nav'),
-    locale: NS,
-    children: { 'settings.general.item': { kind: 'list', scope: 'root' } },
-  }, GeneralSection))
   // The page's module system applies no plugin update from another Host release; this dialog offers the reload.
   const releasePromptInjected = (): HostReleasePromptInjected => ({
     dismissRelease: () => { ctx.modules.entries.dismissRelease() },

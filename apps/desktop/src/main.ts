@@ -2,7 +2,9 @@
 
 import { installFileActions } from './file-actions.ts'
 import { configurationFailure, channelSaveFailure, configurationMessage } from './update-configuration.ts'
-import type { DesktopChannelState, DesktopChannelChangeResult } from '@noharness/client-ui-settings-general/types'
+import type {
+  DesktopChannelChangeResult, DesktopChannelState, DesktopNetworkExposureView,
+} from '@noharness/client-ui-settings-general/types'
 import { DesktopUpdateSettings } from './update-settings.ts'
 import { isDesktopUpdateChannel } from './settings-file.ts'
 import type { ProductEventMap, ProductEvent } from '@noharness/client-product-analytics/types'
@@ -58,7 +60,7 @@ import { DesktopMandatoryUpdatePolicy, resolveDesktopPolicyConfig, type DesktopP
 import { desktopClientMetadata, desktopClientVersion } from './client-metadata.ts'
 import { DesktopMandatoryUpdateWindow } from './mandatory-update-window.ts'
 import { DesktopPolicyTestAuth } from './policy-test-auth.ts'
-import { readDesktopSettings } from './settings.ts'
+import { readDesktopSettings, saveShellExposure, saveShellTray } from './settings.ts'
 import { readDesktopLocaleCache, writeDesktopLocaleCache } from './locale-cache.ts'
 import { DesktopUpdateDialog, type UpdateDialogOptions } from './update-dialog.ts'
 import { readDesktopRuntime } from './runtime-tree.ts'
@@ -67,6 +69,7 @@ import { installDesktopShortcuts } from './keyboard.ts'
 import { DesktopUpdateOverlays } from './update-overlay.ts'
 import { DesktopQuitConfirmation } from './quit-confirmation.ts'
 import { DesktopTray } from './tray.ts'
+import { DesktopNetworkExposure } from './network-exposure.ts'
 import { DesktopBackgroundNotice } from './background-notice.ts'
 
 let focusPrimaryWindow = (): void => {}
@@ -659,6 +662,10 @@ async function main(): Promise<void> {
         await Promise.all([manager.applyRelease(), prepareHostEnvironment()])
       })
       if (backend.host !== undefined) await openInitialWindow()
+      if (backend.host !== undefined && desktopSettings.shell.network) {
+        await applyNetwork(true)
+        publishNetwork()
+      }
       if (backend.host !== undefined) updateJournal?.action('workspace-ready')
       // The existing Web document resumes through the boot IPC response.
     })().catch((error: unknown) => {
@@ -885,7 +892,87 @@ async function main(): Promise<void> {
     assertProductSender(event)
     return channelState
   })
+  // The tray preference is shell state: the window reads and writes it, and the
+  // icon follows immediately on every window that asked.
+  let trayEnabled = desktopSettings.shell.tray
+  ipcMain.handle(DESKTOP_IPC.shellTrayGet, (event) => {
+    assertProductSender(event)
+    return trayEnabled
+  })
+  ipcMain.handle(DESKTOP_IPC.shellTraySet, async (event, enabled: unknown): Promise<void> => {
+    assertProductSender(event)
+    if (typeof enabled !== 'boolean') throw new Error('desktop shell: unsupported tray preference')
+    await saveShellTray(app.getPath('userData'), enabled)
+    trayEnabled = enabled
+    tray?.setShown(enabled)
+    for (const window of BrowserWindow.getAllWindows()) {
+      if (!window.isDestroyed()) window.webContents.send(DESKTOP_IPC.shellTrayChanged, enabled)
+    }
+  })
   let channelRequests = 0
+  // LAN access runs through a token-gated proxy in front of the loopback Host;
+  // the preference is shell state, saved only after the proxy reflects it.
+  let networkExposure: DesktopNetworkExposure | undefined
+  let networkUrl: string | undefined
+  let networkEnabled = false
+  let networkPending = false
+  const networkView = (failed = false): DesktopNetworkExposureView => ({
+    enabled: networkEnabled, failed, pending: networkPending,
+    ...(networkUrl === undefined ? {} : { url: networkUrl }),
+  })
+  const publishNetwork = (failed = false): DesktopNetworkExposureView => {
+    const state = networkView(failed)
+    for (const window of BrowserWindow.getAllWindows()) {
+      if (!window.isDestroyed()) window.webContents.send(DESKTOP_IPC.shellNetworkChanged, state)
+    }
+    return state
+  }
+  const applyNetwork = async (enabled: boolean): Promise<boolean> => {
+    networkPending = true
+    try {
+      if (enabled) {
+        if (networkExposure === undefined) {
+          const exposure = new DesktopNetworkExposure({
+            upstream: () => hostUrl === undefined || hostCookie === undefined
+              ? undefined : { url: hostUrl, cookie: hostCookie },
+          })
+          const started = await exposure.start()
+          networkExposure = exposure
+          networkUrl = started.url
+        }
+        networkEnabled = true
+      } else {
+        const running = networkExposure
+        networkExposure = undefined
+        networkUrl = undefined
+        networkEnabled = false
+        await running?.stop()
+      }
+      return true
+    } catch (error) {
+      console.error('desktop network exposure: could not change LAN access', error)
+      return false
+    } finally {
+      networkPending = false
+    }
+  }
+  ipcMain.handle(DESKTOP_IPC.shellNetworkGet, (event) => {
+    assertProductSender(event)
+    return networkView()
+  })
+  ipcMain.handle(DESKTOP_IPC.shellNetworkSet, async (event, enabled: unknown): Promise<DesktopNetworkExposureView> => {
+    assertProductSender(event)
+    if (typeof enabled !== 'boolean') throw new Error('desktop shell: unsupported network preference')
+    if (!await applyNetwork(enabled)) return publishNetwork(true)
+    try {
+      await saveShellExposure(app.getPath('userData'), enabled)
+    } catch (error) {
+      console.error('desktop network exposure: could not save the preference', error)
+      await applyNetwork(!enabled)
+      return publishNetwork(true)
+    }
+    return publishNetwork(false)
+  })
   ipcMain.handle(DESKTOP_IPC.updatesChannelSet, async (event, channel: unknown): Promise<DesktopChannelChangeResult> => {
     assertProductSender(event)
     if (!isDesktopUpdateChannel(channel)) throw new Error('desktop update: unsupported channel')
@@ -1219,9 +1306,11 @@ async function main(): Promise<void> {
   const trayIconPath = development ? join(app.getAppPath(), 'resources', 'tray-windows.ico') : join(process.resourcesPath, 'tray.ico')
   if (process.platform === 'win32') {
     // The tray is the way back to a hidden window; without it, relaunching the application still focuses it.
+    // The General page may hide it later in the run through the shell preference.
     try {
       tray = new DesktopTray({ iconPath: trayIconPath, locale: currentDesktopLocale,
         open: () => { focusPrimaryWindow() }, quit: () => { app.quit() } })
+      tray.setShown(desktopSettings.shell.tray)
     } catch (error) { console.warn('desktop tray: unavailable', error) }
   }
   const backgroundNotice = process.platform === 'win32'
@@ -1412,6 +1501,7 @@ async function main(): Promise<void> {
     backgroundNotice?.dispose()
     tray?.dispose()
     stopAccount?.()
+    void networkExposure?.stop().catch((error: unknown) => { console.error(error) })
     if (mainWindow !== undefined && !mainWindow.isDestroyed()) mainWindow.hide()
     updateSchedule.dispose()
     updateDialog.dispose()
@@ -1433,6 +1523,7 @@ async function main(): Promise<void> {
       backgroundNotice?.dispose()
       updateJournal?.action('quit-requested')
       tray?.dispose()
+      void networkExposure?.stop().catch((error: unknown) => { console.error(error) })
       updateDialog.dispose()
       mandatoryUI?.dispose()
       // Installation preparation already awaited Platform storage cleanup.

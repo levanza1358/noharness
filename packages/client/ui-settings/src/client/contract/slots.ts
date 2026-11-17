@@ -132,7 +132,7 @@ export interface SettingsHeaderOwnerProps {
  * onboarding coordinator's `openSection`/`complete` precedent, inverted.
  */
 export interface SettingsSectionOwnerProps {
-  /** Close the settings panel (the shell owns the open state). */
+  /** Close the settings page (the shell owns the open state). */
   close: () => void
 }
 
@@ -160,7 +160,7 @@ export interface SettingsOnboardingOwnerProps {
 export interface SettingsLauncherOwnerProps {
   /** Whether the sidebar shows labels. */
   wide: boolean
-  /** Whether the settings dialog covers the sidebar; a launcher may treat a false-to-true edge as one Settings entry. */
+  /** Whether the settings page currently occupies the center column; a launcher may treat a false-to-true edge as one Settings entry. */
   settingsOpen: boolean
   /** Effective Settings key labels and accessible combination; omitted when unbound. */
   settingsShortcut?: { readonly keys: readonly string[]; readonly aria?: string | undefined }

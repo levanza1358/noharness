@@ -7,6 +7,8 @@ import { z } from 'zod'
 const preferencesSchema = z.object({
   allowTestAuthPopupWindow: z.boolean(),
   channel: z.enum(['nightly', 'stable']),
+  trayEnabled: z.boolean(),
+  exposedNetwork: z.boolean(),
 })
 const documentSchema = z.looseObject({ updates: z.looseObject({}).optional() })
 
@@ -104,6 +106,8 @@ export class DesktopSettingsFile {
       allowTestAuthPopupWindow: field(preferencesSchema.shape.allowTestAuthPopupWindow,
         document.updates?.allowTestAuthPopupWindow, 'allowTestAuthPopupWindow', this.path),
       channel: field(preferencesSchema.shape.channel, document.updates?.channel, 'channel', this.path),
+      trayEnabled: field(preferencesSchema.shape.trayEnabled, document.updates?.trayEnabled, 'trayEnabled', this.path),
+      exposedNetwork: field(preferencesSchema.shape.exposedNetwork, document.updates?.exposedNetwork, 'exposedNetwork', this.path),
     } }
   }
 
@@ -142,7 +146,9 @@ export class DesktopSettingsFile {
         if (current.kind === 'error') throw current.error
         if (request.kind === 'initialize' && current.kind !== 'missing') return current
         const document = current.kind === 'ready' ? current.document : {}
-        const updates = request.kind === 'initialize' ? { allowTestAuthPopupWindow: false } : request.updates
+        const updates = request.kind === 'initialize'
+          ? { allowTestAuthPopupWindow: false, trayEnabled: true, exposedNetwork: false }
+          : request.updates
         const next = { ...document, updates: { ...document.updates, ...updates } }
         const raw = `${JSON.stringify(next, null, 2)}\n`
         effect = 'unknown'

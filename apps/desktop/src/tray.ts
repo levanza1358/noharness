@@ -14,15 +14,30 @@ export interface DesktopTrayOptions {
   readonly quit: () => void
 }
 
-/** Tray icon present for the whole run, not only while the window is hidden. */
+/** Tray icon whose presence follows the shell preference, not only the window state. */
 export class DesktopTray {
   private tray: Tray | undefined
+  private shown: boolean | undefined
 
   /** @param options - Icon path, locale reader, and the open and quit actions. */
-  constructor(private readonly options: DesktopTrayOptions) {
-    const tray = new Tray(nativeImage.createFromPath(options.iconPath))
-    this.tray = tray
-    tray.on('click', () => { options.open() })
+  constructor(private readonly options: DesktopTrayOptions) {}
+
+  /**
+   * Apply the shell preference; creating or removing the icon only on a change.
+   * @param shown - Whether the tray icon belongs on screen for this run.
+   */
+  setShown(shown: boolean): void {
+    if (shown === this.shown) return
+    this.shown = shown
+    const tray = this.tray
+    if (!shown) {
+      this.tray = undefined
+      tray?.destroy()
+      return
+    }
+    const created = new Tray(nativeImage.createFromPath(this.options.iconPath))
+    this.tray = created
+    created.on('click', () => { this.options.open() })
     this.relabel()
   }
 
@@ -43,6 +58,7 @@ export class DesktopTray {
   dispose(): void {
     const tray = this.tray
     this.tray = undefined
+    this.shown = undefined
     tray?.destroy()
   }
 }

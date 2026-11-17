@@ -84,7 +84,9 @@ it('serializes initializers and patches from separate storage instances without 
   const other = new DesktopSettingsFile(root)
   await Promise.all([file.initialize(), other.initialize()])
   await Promise.all([file.saveUpdates({ channel: 'stable' }), other.saveUpdates({ allowTestAuthPopupWindow: true })])
-  expect(JSON.parse(await readFile(file.path, 'utf8'))).toEqual({ updates: { channel: 'stable', allowTestAuthPopupWindow: true } })
+  expect(JSON.parse(await readFile(file.path, 'utf8'))).toEqual({
+    updates: { channel: 'stable', allowTestAuthPopupWindow: true, trayEnabled: true, exposedNetwork: false },
+  })
   await expect(fs.access(`${file.path}.lock`)).rejects.toMatchObject({ code: 'ENOENT' })
 })
 

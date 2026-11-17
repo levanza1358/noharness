@@ -32,6 +32,7 @@ function setup(locale = 'en') {
   const open = vi.fn()
   const quit = vi.fn()
   const tray = new DesktopTray({ iconPath: 'C:/app/resources/tray.ico', locale: () => current, open, quit })
+  tray.setShown(true)
   return { tray, open, quit, native: native.trays[0]!, setLocale: (next: string) => { current = resolveDesktopLocale(next) } }
 }
 
@@ -57,6 +58,22 @@ it('opens the window on a single click and routes menu entries to the open and q
   ;(menu[2] as { click: () => void }).click()
   expect(f.open).toHaveBeenCalledTimes(2)
   expect(f.quit).toHaveBeenCalledOnce()
+})
+
+it('creates and removes the icon only when the shell preference changes', () => {
+  const f = setup()
+  const first = f.native
+  f.tray.setShown(true)
+  expect(native.trays).toHaveLength(1)
+  f.tray.setShown(false)
+  expect(first.destroy).toHaveBeenCalledOnce()
+  f.tray.setShown(false)
+  expect(native.trays).toHaveLength(1)
+  f.tray.setShown(true)
+  expect(native.trays).toHaveLength(2)
+  expect(native.createFromPath).toHaveBeenCalledTimes(2)
+  f.tray.dispose()
+  expect(native.trays[1]!.destroy).toHaveBeenCalledOnce()
 })
 
 it('relabels the menu in the current locale and ignores relabel after disposal', () => {

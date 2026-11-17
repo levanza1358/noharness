@@ -62,56 +62,26 @@
   white-space: nowrap;
 }
 
-/* Full-viewport layer (figma Mask 501:29946 #000@24%): mask tokens match the
-   Modal primitive (--dsw-alias-bg-mask-1 + --dsw-mask-blur). */
-.overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* The full-viewport overlay blocks background clicks above the painted mask too. */
-.mask {
-  position: absolute;
-  inset: var(--nhs-frame-chrome-top, 0px) 0 0;
-  background: var(--dsw-alias-bg-mask-1);
-  backdrop-filter: var(--dsw-mask-blur);
-}
-
-/* Settings uses a shared 800×800 panel; longer sections scroll
-   inside the options column; the navigation scrolls independently. One height for
-   every section, taken from the viewport rather than the content, because a
-   content-sized panel would resize under the pointer on every nav click.
-   The viewport height leaves 24px of air above and below, widened to the
-   frame's published overlay inset on both sides, so the panel sits centered
-   and clear of the strip.
-   The four shell seats are direct children placed by area: the rail's title
-   and the content header share the first row, the rail's cells and the active
-   section the second. Narrow browser windows use a full-viewport panel and
-   rearrange these areas into a horizontal layout. */
+/* The page fills the frame's center column: one surface for the whole column,
+   scrolling only inside the options area. The four shell seats are direct
+   children placed by area: the rail's title and the content header share the
+   first row, the rail's cells and the active section the second. Narrow
+   browser windows rearrange these areas into a horizontal layout. */
 .panel {
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: 188px minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
     'title header'
     'nav options';
-  width: 800px;
-  height: min(800px, calc(100vh - 2 * max(24px, var(--nhs-frame-overlay-top, 24px))));
-  max-width: calc(100vw - 48px);
-  border-radius: var(--dsw-radius-panel);
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
   overflow: hidden;
   background: var(--dsw-alias-bg-layer-2);
-  box-shadow: var(--dsw-elevation-prominent);
-  /* Elevated surface: the scrollbar thumb takes the l2 elevation tokens.
-     Declared on the panel rather than the scrolling `.options` child so the
-     elevation choice sits with the surface; the custom properties inherit
-     down to whichever descendant scrolls (see ui-theme
+  /* The column surface owns the scrollbar thumb tokens, so whichever
+     descendant scrolls takes the l2 elevation theming (see ui-theme
      styles/scrollbar.css for the rebinding contract). */
   --nhs-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
   --nhs-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
@@ -122,7 +92,7 @@
 }
 
 /* Nav rail (figma .Setting-nav 501:29958): the 188px track's cells, pad
-   (12,0), no own fill — the panel white shows through. */
+   (12,0), no own fill — the page surface shows through. */
 .nav {
   grid-area: nav;
   min-width: 0;
@@ -250,18 +220,12 @@
   overflow-y: auto;
 }
 
-/* Browsers below 768px use the full-viewport panel and horizontal navigation.
+/* Browsers below 768px use horizontal navigation.
    Windows custom captions and macOS native titlebars retain the desktop rail;
    their independent root markers exclude both window-chrome layouts. Linux
    follows the browser layout. The selected cell receives initial focus and
-   scrolls into view when the panel opens. */
+   scrolls into view when the page opens. */
 @media (max-width: 767px) {
-  :global(html:not([data-windows-titlebar]):not([data-platform='darwin'])) .overlay {
-    position: absolute;
-    height: 100%;
-    background: var(--dsw-alias-bg-layer-2);
-  }
-
   :global(html:not([data-windows-titlebar]):not([data-platform='darwin'])) .panel {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-rows: auto auto minmax(0, 1fr);
@@ -269,10 +233,6 @@
       'title header'
       'nav nav'
       'options options';
-    width: 100%;
-    max-width: none;
-    height: 100%;
-    border-radius: 0;
   }
 
   :global(html:not([data-windows-titlebar]):not([data-platform='darwin'])) .navTitle {
@@ -336,7 +296,5 @@
   white-space: nowrap;
 }
 
-/* No app-region rule here: the overlay portals beside #root (SettingsRoot), so
-   ui-web base.css's `body > :not(#root)` subtraction covers it wherever it
-   overlaps a chrome row's drag — including above every column, which an in-root
-   overlay could not promise once a chrome row declares drag itself. */
+/* No app-region rule here: the page occupies the center column inside #root,
+   so ui-web base.css's app-region subtraction for in-root content applies. */

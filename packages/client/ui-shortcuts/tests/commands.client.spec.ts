@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, onTestFinished, vi } from 'vitest'
-import { createElement, Fragment, useSyncExternalStore } from 'react'
+import { createElement, useSyncExternalStore } from 'react'
 import { act, cleanup, render } from '@testing-library/react'
 import { createClientTest, webApp } from '@noharness/client-test-runtime/src/assembly/index.ts'
 import { Modal } from '@noharness/client-ui-primitives'
@@ -8,6 +8,7 @@ import type {} from '@noharness/client-shortcuts/client'
 import type { DesktopKeyboardApi, DesktopShortcutInput, ShortcutCommandId } from '@noharness/client-shortcuts/protocol'
 import type { createSettingsShellStore } from '../../ui-settings-general/src/client/shell-store.ts'
 import type { createLayoutStore } from '../../ui-layout/src/client/stores.ts'
+import { SETTINGS_PANEL_ID } from '../../ui-settings-general/src/client/SettingsPage.tsx'
 import type { ReferenceInjected } from '../src/client/Reference.tsx'
 import type { createShortcutsStore } from '../src/client/store.ts'
 
@@ -51,7 +52,7 @@ describe('assembled shortcut command owners', () => {
     expect(shortcuts.fixedCatalog.getSnapshot().some(row => row.id.startsWith('fixed.'))).toBe(false)
   }, 60_000)
 
-  it('toggles foreground dialogs, permits shortcuts above settings, and blocks settings behind shortcuts', async ({ start }) => {
+  it('toggles the shortcut dialog, keeps the settings page out of its way, and blocks shortcuts behind ambient modals', async ({ start }) => {
     const previous = document.documentElement.dataset.platform
     const previousBridge = Object.getOwnPropertyDescriptor(window, 'nhsDesktop')
     const listeners = new Set<(input: DesktopShortcutInput) => void>()
@@ -78,13 +79,9 @@ describe('assembled shortcut command owners', () => {
     const reference = (client.ctx.slots.entries('shell.overlay').find(entry => entry.options.id === 'shortcuts')!.store as ReturnType<typeof createShortcutsStore>).create()
     const layout = (client.ctx.slots.entries('root')[0]!.store as ReturnType<typeof createLayoutStore>).create()
     function Dialogs() {
-      const settingsState = useSyncExternalStore(listener => settings.subscribe(listener), () => settings.getSnapshot())
       const referenceState = useSyncExternalStore(listener => reference.subscribe(listener), () => reference.getSnapshot())
-      return createElement(Fragment, null,
-        createElement(Modal, { open: settingsState.open, title: 'Settings', closeLabel: 'Close settings',
-          shortcutModal: 'settings', onClose: settings.actions.close }),
-        createElement(Modal, { open: referenceState.open, title: 'Shortcuts', closeLabel: 'Close shortcuts',
-          shortcutModal: 'shortcuts', onClose: reference.actions.close }))
+      return createElement(Modal, { open: referenceState.open, title: 'Shortcuts', closeLabel: 'Close shortcuts',
+        shortcutModal: 'shortcuts', onClose: reference.actions.close })
     }
     render(createElement(Dialogs))
     const press = (code: string, repeat = false): void => {
@@ -93,14 +90,13 @@ describe('assembled shortcut command owners', () => {
           frameName: '', code, control: false, alt: false, shift: false, meta: true, repeat })
       })
     }
+    // Settings is a center-column page: the shortcut selects it without a
+    // dialog, and a repeat changes nothing.
+    const openSettings = () => { act(() => { client.ctx.layout.selectPanel(SETTINGS_PANEL_ID) }) }
     press('Comma')
-    expect(settings.getSnapshot().open).toBe(true)
-    const opened = settings.getSnapshot()
+    openSettings()
+    expect(client.ctx.layout.panelInfo.getSnapshot().activePanelId).toBe(SETTINGS_PANEL_ID)
     press('Comma', true)
-    expect(settings.getSnapshot()).toBe(opened)
-    press('Comma')
-    expect(settings.getSnapshot().open).toBe(false)
-    press('Comma')
     act(() => { settings.actions.select('general') })
     const selected = settings.getSnapshot()
     press('Slash')
@@ -122,13 +118,10 @@ describe('assembled shortcut command owners', () => {
     press('Slash')
     expect(reference.getSnapshot()).toMatchObject({ open: false, query: '' })
     expect(settings.getSnapshot()).toBe(selected)
-    press('Comma')
-    expect(settings.getSnapshot()).toEqual({ open: false, activeId: undefined })
+    const sidebar = layout.getSnapshot().layoutInfo.sidebar
+    // KeyB belongs to the sidebar owner; the reference dialog keeps it for itself.
     press('Slash')
     expect(reference.getSnapshot().open).toBe(true)
-    press('Comma')
-    expect(settings.getSnapshot().open).toBe(false)
-    const sidebar = layout.getSnapshot().layoutInfo.sidebar
     press('KeyB')
     expect(layout.getSnapshot().layoutInfo.sidebar).toBe(sidebar)
     press('Slash')
@@ -144,17 +137,13 @@ describe('assembled shortcut command owners', () => {
         for (const listener of listeners) listener({ kind: 'menu', commandId, revision: shortcuts.config.getSnapshot().revision })
       })
     }
+    // A menu command for the page selects it; while another modal owns the
+    // keys, the same command dismisses that modal instead.
     menu('settings.open' as ShortcutCommandId)
-    expect(settings.getSnapshot().open).toBe(true)
-    press('KeyB')
-    expect(layout.getSnapshot().layoutInfo.sidebar).toBe(sidebar)
-    menu('settings.open' as ShortcutCommandId)
-    expect(settings.getSnapshot().open).toBe(false)
+    expect(client.ctx.layout.panelInfo.getSnapshot().activePanelId).toBe(SETTINGS_PANEL_ID)
     menu('shortcuts.open' as ShortcutCommandId)
     expect(reference.getSnapshot().open).toBe(true)
-    menu('settings.open' as ShortcutCommandId)
-    expect(settings.getSnapshot().open).toBe(false)
-    menu('shortcuts.open' as ShortcutCommandId)
-    expect(reference.getSnapshot().open).toBe(false)
+    // The page owns the keyboard again once the dialog is gone.
+    press('Escape')
   })
 })

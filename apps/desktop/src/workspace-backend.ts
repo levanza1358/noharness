@@ -29,6 +29,11 @@ function record(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
+/** @returns never; names a Host answer that omits the settings namespaces. */
+function throwMissing(): never {
+  throw new Error('desktop workspace: missing settings namespaces')
+}
+
 /**
  * Connect the native HTTP client to the Desktop Host; every request sends `cookie` explicitly and uses no cookie jar.
  * @param hostUrl - URL of the running Desktop Host; only its origin is used.
@@ -64,8 +69,9 @@ export function connectDesktopWorkspace(
   const account = desktopAccountBackend(origin, invoke, cookie)
   const settingsNamespaces = async (): Promise<unknown[]> => {
     const settings = await invoke({ namespace: 'settings', method: 'describe', args: {} })
-    if (!record(settings) || !Array.isArray(settings.namespaces)) throw new Error('desktop workspace: missing settings namespaces')
-    return settings.namespaces
+    const candidate: unknown = record(settings) ? settings.namespaces : undefined
+    const namespaces: unknown[] = Array.isArray(candidate) ? candidate : throwMissing()
+    return namespaces
   }
   const localePreference = (namespaces: unknown[]): string | null => {
     const locale: unknown = namespaces.find((item: unknown) => record(item) && item.ns === 'locale')

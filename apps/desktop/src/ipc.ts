@@ -2,7 +2,9 @@ import type { DesktopFileActions } from '@noharness/client-ui-file-actions/types
 /** Typed preload operations exposed only by the Electron shell. */
 
 export type { DesktopChannelState, DesktopChannelChangeResult } from '@noharness/client-ui-settings-general/types'
-import type { DesktopChannelBridge, DesktopChannelState } from '@noharness/client-ui-settings-general/types'
+import type {
+  DesktopChannelBridge, DesktopChannelState, DesktopNetworkExposureBridge, DesktopShellPreferenceBridge,
+} from '@noharness/client-ui-settings-general/types'
 import type { DesktopKeyboardApi, DesktopShortcutsApi } from '@noharness/client-shortcuts/protocol'
 import type { IpcMainInvokeEvent } from 'electron'
 import type { DesktopBrowserBridge } from '@noharness/client-ui-sidebar-browser/types'
@@ -32,6 +34,12 @@ export const DESKTOP_IPC = {
   fileDragStart: 'nhs-desktop:file-drag-start',
   fileDragRelease: 'nhs-desktop:file-drag-release',
   deviceInfo: 'nhs-desktop:device-info',
+  shellTrayGet: 'nhs-desktop:shell-tray-get',
+  shellTraySet: 'nhs-desktop:shell-tray-set',
+  shellTrayChanged: 'nhs-desktop:shell-tray-changed',
+  shellNetworkGet: 'nhs-desktop:shell-network-get',
+  shellNetworkSet: 'nhs-desktop:shell-network-set',
+  shellNetworkChanged: 'nhs-desktop:shell-network-changed',
   localeBootstrap: 'nhs-desktop:locale-bootstrap',
   localeChanged: 'nhs-desktop:locale-changed',
   updatesChannelGet: 'nhs-desktop:updates-channel-get',
@@ -107,6 +115,10 @@ export interface DshDesktopProductApi {
     status(): Promise<DesktopUpdatePresentation>
     open(): Promise<void>
     subscribe(listener: (state: DesktopUpdatePresentation) => void): () => void
+  }
+  readonly shell: {
+    readonly tray: DesktopShellPreferenceBridge
+    readonly network: DesktopNetworkExposureBridge
   }
 }
 

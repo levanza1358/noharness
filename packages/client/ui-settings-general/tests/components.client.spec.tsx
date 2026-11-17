@@ -13,6 +13,8 @@ import { DesktopChannelRow, DesktopChannelToast } from '../src/client/DesktopCha
 import { DesktopChannelSource } from '../src/client/desktop-channel-source.ts'
 import type { DesktopChannelChangeResult, DesktopChannelState } from '../src/types.ts'
 import { DeveloperToolsRow } from '../src/client/DeveloperToolsRow.tsx'
+import { NetworkRow } from '../src/client/NetworkRow.tsx'
+import type { DesktopNetworkExposureView } from '../src/types.ts'
 import { createSnapshotStore } from '@noharness/client-store'
 import { SettingsDescribeMirror } from '@noharness/client-ui-settings/src/client/settings-mirror.ts'
 import { SettingsDocumentStore } from '../src/client/settings-document-store.ts'
@@ -102,6 +104,47 @@ it('toggles developer tools using the accepted setting and disables duplicate wr
   finish()
   await waitFor(() => { expect(toggle.getAttribute('aria-checked')).toBe('true') })
   expect(toggle.hasAttribute('disabled')).toBe(false)
+})
+
+it('renders the LAN address, the failure, and disables duplicate writes', async () => {
+  const state = createSnapshotStore<DesktopNetworkExposureView>({ enabled: false, failed: false, pending: false })
+  let finish!: () => void
+  const setEnabled = vi.fn((enabled: boolean) => {
+    state.set({ enabled: false, failed: false, pending: true })
+    return new Promise<void>((resolve) => {
+      finish = () => {
+        state.set({ enabled, url: 'http://192.168.1.20:4100/?token=abc', failed: false, pending: false })
+        resolve()
+      }
+    })
+  })
+  render(<NetworkRow {...kit} t={t} useNetwork={bindSnapshotSelector(state)} setEnabled={setEnabled} />)
+  expect(screen.queryByText(en['network.address'])).toBeNull()
+  const toggle = screen.getByRole('switch', { name: 'Share on the local network' })
+  expect(toggle.getAttribute('aria-checked')).toBe('false')
+  fireEvent.click(toggle)
+  expect(setEnabled).toHaveBeenCalledWith(true)
+  expect(toggle.hasAttribute('disabled')).toBe(true)
+  finish()
+  await waitFor(() => { expect(screen.getByText(en['network.address'])).toBeTruthy() })
+  state.set({ enabled: false, failed: true, pending: false })
+  await waitFor(() => { expect(screen.getByRole('alert').textContent).toBe(en['network.error']) })
+  expect(screen.queryByText(en['network.address'])).toBeNull()
+})
+
+it('reports a failed LAN write and allows retry', async () => {
+  const state = createSnapshotStore<DesktopNetworkExposureView>({ enabled: false, failed: false, pending: false })
+  const setEnabled = vi.fn()
+    .mockImplementationOnce(async () => { state.set({ enabled: false, failed: true, pending: false }) })
+    .mockImplementation(async (enabled: boolean) => {
+      state.set({ enabled, url: 'http://192.168.1.20:4100/?token=abc', failed: false, pending: false })
+    })
+  render(<NetworkRow {...kit} t={t} useNetwork={bindSnapshotSelector(state)} setEnabled={setEnabled} />)
+  fireEvent.click(screen.getByRole('switch', { name: 'Share on the local network' }))
+  expect((await screen.findByRole('alert')).textContent).toBe(en['network.error'])
+  fireEvent.click(screen.getByRole('switch', { name: 'Share on the local network' }))
+  await waitFor(() => { expect(screen.queryByRole('alert')).toBeNull() })
+  expect(screen.getByText(en['network.address'])).toBeTruthy()
 })
 
 describe('chrome content', () => {

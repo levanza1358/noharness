@@ -25,25 +25,30 @@ function injectedOf(c: TestClient): SettingsRootInjected {
   return (entry.inject as () => SettingsRootInjected)()
 }
 
-/** The shell's child declarations (chrome, actions, sections, and onboarding overlays). */
+/** The shell's child declarations (chrome and the onboarding overlays). */
 const CHILD_SPECS = {
   'settings.launcher': { kind: 'single', scope: 'root' },
   'settings.trigger': { kind: 'single', scope: 'root' },
+  'settings.onboarding': { kind: 'list', scope: 'root' },
+} as const
+const CHILD_NAMES = Object.keys(CHILD_SPECS) as Array<keyof typeof CHILD_SPECS>
+
+/** The center-column page declares the seats it renders, under its own `main` key. */
+const PAGE_CHILD_SPECS = {
   'settings.header': { kind: 'single', scope: 'root' },
   'settings.action': { kind: 'list', scope: 'root' },
   'settings.close': { kind: 'single', scope: 'root' },
   'settings.section': { kind: 'list', scope: 'root' },
   'settings.section.icon': { kind: 'list', scope: 'root', inline: true },
-  'settings.onboarding': { kind: 'list', scope: 'root' },
 } as const
-const CHILD_NAMES = Object.keys(CHILD_SPECS) as Array<keyof typeof CHILD_SPECS>
+const PAGE_CHILD_NAMES = Object.keys(PAGE_CHILD_SPECS) as Array<keyof typeof PAGE_CHILD_SPECS>
 
 /**
  * Section ids the web-app roster registers, in nav order: this package, then
  * ui-settings-models, ui-settings-plugins, and ui-agent-preset. A plugin
  * adding a section changes this list.
  */
-const PRODUCT_SECTIONS: readonly string[] = ['general', 'models', 'plugins', 'agent-presets']
+const PRODUCT_SECTIONS: readonly string[] = ['general', 'providers', 'models', 'plugins', 'agent-presets']
 /** Onboarding steps the web-app roster registers, in coordinator order; both come from ui-settings-models. */
 const PRODUCT_ONBOARDING: readonly { id: string; order: number }[] = [
   { id: 'welcome-notice', order: -100 },
@@ -79,18 +84,21 @@ describe('ui-settings-general shell', () => {
   }, COLD_BOOT_TIMEOUT_MS)
 
   it('declares its services', () => {
-    expect(inject).toEqual(['slots', 'locale', 'connection', 'remote', 'remote.settings', 'configForms', 'shortcuts', 'modules', 'remoteAccess'])
+    expect(inject).toEqual(['slots', 'locale', 'connection', 'remote', 'remote.settings', 'configForms', 'shortcuts', 'modules', 'remoteAccess', 'layout'])
   })
 
-  it('occupies sidebar.settings, declared by ui-sidebar, and declares every child slot', async ({ start }) => {
+  it('occupies sidebar.settings and the settings main panel, declaring every child slot', async ({ start }) => {
     const c = await start()
     expect(c.ctx.slots.entries('sidebar.settings').map(entry => entry.component)).toEqual([SettingsRoot])
+    expect(c.ctx.slots.entries('main').some(entry => entry.options.key === 'settings')).toBe(true)
     for (const name of CHILD_NAMES) expect(c.ctx.slots.spec(name)).toEqual(CHILD_SPECS[name])
+    for (const name of PAGE_CHILD_NAMES) expect(c.ctx.slots.spec(name)).toEqual(PAGE_CHILD_SPECS[name])
   }, COLD_BOOT_TIMEOUT_MS)
 
   withoutSettingsAccess('leaves sidebar.settings unoccupied while the current Peer may not read the settings description', async ({ start }) => {
     const c = await start()
     expect(c.ctx.slots.entries('sidebar.settings')).toEqual([])
+    expect(c.ctx.slots.entries('main').some(entry => entry.options.key === 'settings')).toBe(false)
   }, COLD_BOOT_TIMEOUT_MS)
 
   it('projects the section ledger: product sections in order, defaults for bare rows, stable snapshots', async ({ start }) => {
@@ -172,6 +180,7 @@ describe('ui-settings-general shell', () => {
     expect(c.ctx.slots.entries('sidebar.settings').map(entry => entry.component)).toEqual([SettingsRoot])
     expect(c.ctx.slots.entries('sidebar.settings')[0]).not.toBe(before)
     for (const name of CHILD_NAMES) expect(c.ctx.slots.spec(name)).toEqual(CHILD_SPECS[name])
+    for (const name of PAGE_CHILD_NAMES) expect(c.ctx.slots.spec(name)).toEqual(PAGE_CHILD_SPECS[name])
   })
 
   it('unregisters the shell and collapses every child slot when its row unloads', async ({ start }) => {
@@ -179,6 +188,7 @@ describe('ui-settings-general shell', () => {
     await c.unload(SELF)
     await c.flush()
     expect(c.ctx.slots.entries('sidebar.settings')).toHaveLength(0)
-    for (const name of CHILD_NAMES) expect(c.ctx.slots.spec(name)).toBeUndefined()
+    expect(c.ctx.slots.entries('main').some(entry => entry.options.key === 'settings')).toBe(false)
+    for (const name of [...CHILD_NAMES, ...PAGE_CHILD_NAMES]) expect(c.ctx.slots.spec(name)).toBeUndefined()
   })
 })

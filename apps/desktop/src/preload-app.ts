@@ -1,7 +1,9 @@
 import type { FileSaveResult } from '@noharness/client-ui-file-actions/types'
 /** Origin-scoped boot, native directory selection, host paths of picked files, and update presentation with native confirmation actions. */
 
-import type { DesktopChannelState, DesktopChannelChangeResult } from '@noharness/client-ui-settings-general/types'
+import type {
+  DesktopChannelChangeResult, DesktopChannelState, DesktopNetworkExposureView,
+} from '@noharness/client-ui-settings-general/types'
 import type { DesktopShortcutInput, ShortcutConfigSnapshot, ShortcutSaveResult } from '@noharness/client-shortcuts/protocol'
 import { contextBridge, ipcRenderer, webUtils } from 'electron'
 import { DESKTOP_IPC, SCHEME, type DshDesktopProductApi, type DesktopUpdatePresentation } from './ipc.ts'
@@ -81,6 +83,26 @@ function createProductApi(): DshDesktopProductApi {
         const handle = (_event: Electron.IpcRendererEvent, state: DesktopUpdatePresentation): void => { listener(state) }
         ipcRenderer.on(DESKTOP_IPC.updatesPresentation, handle)
         return () => { ipcRenderer.off(DESKTOP_IPC.updatesPresentation, handle) }
+      },
+    },
+    shell: {
+      tray: {
+        get: () => ipcRenderer.invoke(DESKTOP_IPC.shellTrayGet) as Promise<boolean>,
+        set: enabled => ipcRenderer.invoke(DESKTOP_IPC.shellTraySet, enabled) as Promise<void>,
+        subscribe(listener) {
+          const handle = (_event: Electron.IpcRendererEvent, enabled: boolean): void => { listener(enabled) }
+          ipcRenderer.on(DESKTOP_IPC.shellTrayChanged, handle)
+          return () => { ipcRenderer.off(DESKTOP_IPC.shellTrayChanged, handle) }
+        },
+      },
+      network: {
+        get: () => ipcRenderer.invoke(DESKTOP_IPC.shellNetworkGet) as Promise<DesktopNetworkExposureView>,
+        set: enabled => ipcRenderer.invoke(DESKTOP_IPC.shellNetworkSet, enabled) as Promise<DesktopNetworkExposureView>,
+        subscribe(listener) {
+          const handle = (_event: Electron.IpcRendererEvent, state: DesktopNetworkExposureView): void => { listener(state) }
+          ipcRenderer.on(DESKTOP_IPC.shellNetworkChanged, handle)
+          return () => { ipcRenderer.off(DESKTOP_IPC.shellNetworkChanged, handle) }
+        },
       },
     },
   }

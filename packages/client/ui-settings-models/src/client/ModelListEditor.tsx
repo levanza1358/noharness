@@ -169,8 +169,9 @@ export function ModelListEditor(props: ModelListEditorProps): ReactNode {
     let current = true
     void operations.discoverModels(probe.settingsNs, { provider: catalogProvider }).then((answer) => {
       if (!current) return
+      // A route the adapter does not ship has no catalog to read; that is its
+      // normal state, so only the fetch button reports a failed read.
       setInheritedCatalog({ provider: catalogProvider, models: answer.kind === 'found' ? answer.models : [] })
-      setFailure(answer.kind === 'refused' ? answer.message : undefined)
     })
     return () => { current = false }
   }, [catalogProvider, operations, probe.settingsNs])

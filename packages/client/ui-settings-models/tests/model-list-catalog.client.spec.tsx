@@ -90,7 +90,9 @@ render(<ModelListEditor
   probe={{ settingsNs: 'llm-pi-ai', provider: 'openai' }} disabled={false} t={key => en[key]} onBusyChange={() => {}}
   operations={operations(discover)}
 />)
-await screen.findByText('Catalog unavailable')
+// A route with no shipped catalog is an ordinary state: the opening read
+// reports nothing, and only the fetch button answers for itself.
+expect(screen.queryByText('Catalog unavailable')).toBeNull()
 fireEvent.click(screen.getByRole('button', { name: `${en.modelAdvanced} 1` }))
 const image = screen.getByRole<HTMLInputElement>('checkbox', { name: en.modelInputImage })
 expect(image.checked).toBe(false)

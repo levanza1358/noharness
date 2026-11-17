@@ -5,6 +5,20 @@ description: Use before pushing, force-pushing, marking ready for review, or cla
 
 # NHS Pre-Push Checks
 
+## Fast lane
+
+Three checks, once, after the edit is finished. Nothing before.
+
+1. The owning test file, unfiltered: `pnpm exec vitest run <paths>`.
+2. `pnpm run typecheck`.
+3. A GUI diff opens the page and looks at it.
+
+Stop there. `doc-sync`, `build:check`, `test:web`, `test:e2e`, and the full suite belong to CI unless the diff touches documentation, build output, a shipped profile, a provider, or the user asked. Report what ran; never re-run a passing check because a commit or push follows.
+
+Read the rest of this skill only when the change is cross-cutting, a check fails, or a push needs a history rewrite. Each rule below is a reason to widen the run, not a default.
+
+## Reference
+
 Use this skill to run relevant local evidence once before a `noharness` push. The sole ordering exception is `gh stack sync`, which may publish a cascading rebase before the rewritten layers can be validated; validate them immediately afterward and do not merge until the evidence passes. Git hooks are intentionally narrow: pre-commit fixes staged lint, checks staged whitespace, and guards vendored-source metadata; pre-push runs only the incremental repository typecheck. CI owns exhaustive coverage and the platform matrix.
 
 ## Inspect the outgoing change

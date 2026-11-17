@@ -47,7 +47,7 @@ The declaration row’s `id` addresses Loader edits; `config.id` is the preset i
 
 The package also ships the `skills/` directory that creator mode mounts through `skill-filesystem`. It holds one skill, `nhs-doc`: a short `SKILL.md` that sets the order for finding NHS facts (runtime inspection when its tools are available, then the installed documentation and package sources) and states that loading the skill authorizes no file or profile change, plus `references/` read on demand and copyable `templates/` bundles. The references cover locating documentation, plugin development, bundle display metadata and detail documents, Web UI plugins, MCP bundles, extension practices, user actions, verification and user experience review, icon and feature-image drawing, agent presets, the Loader patch dialect, tool design, upgrades across NHS releases, and `references/packages.md`, which `scripts/gen-plugin-packages.ts` generates and `doc-sync` checks for freshness. The rendered `SKILL.md` and every reference except `packages.md`, read with line numbers, stay under the 8192-character threshold above which the standard preset's tool-result pruner trims results.
 
-Edit tool design rules in [skills/nhs-doc/references/tool-design.md](skills/nhs-doc/references/tool-design.md). The repository skill `.agents/skills/agent-experience/SKILL.md` only links to that file.
+Edit tool design rules in [skills/nhs-doc/references/tool-design.md](skills/nhs-doc/references/tool-design.md).
 
 <a id="understand-the-implementation"></a>
 ## Understand the implementation

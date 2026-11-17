@@ -5,6 +5,14 @@ description: Find evidence-backed simplifications in NoHarness code, APIs, confi
 
 # Finding NoHarness Simplifications
 
+## Fast lane
+
+New code takes the smallest route that meets the spec: reuse an existing helper, node builtin, or dependency before writing one; add no Config key, option, abstraction, or seam that the current caller does not use; delete what the change orphans. Ask of each new module "what disappears if I delete this?" before adding it.
+
+Survey work stops here. The rest of this skill is a reference for an explicitly requested simplification audit, not a step before writing code.
+
+## Reference
+
 Find changes that remove maintained obligations: APIs, representations, lifecycle states, configuration paths, dependencies, tests, or documentation. Prefer a few well-supported candidates over a count of deletions. This is guidance, not a checklist; keep the user's scope and distinguish a survey from permission to implement its proposals.
 
 ## Establish scope and constraints

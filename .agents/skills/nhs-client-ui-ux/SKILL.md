@@ -35,7 +35,7 @@ When a before/after comparison is needed, preserve the actual starting implement
 
 Before handoff, review or push, check only new cumulative interactions, missing required checks and invalidated evidence; do not repeat completed verification at each stage. Report results and material gaps accurately. Do not claim full coverage or visual acceptance when required scenes or checks are missing.
 
-These effort levels change only the additional design-review procedure. Existing [client test requirements](../../../packages/client/AGENTS.md), [GUI PR GIF requirements](../record-browser-gif/SKILL.md#every-gui-pull-request-includes-a-gif), and [designer/product approval](#design-review-escalation) still apply, including to local changes when their original triggers are met.
+These effort levels change only the additional design-review procedure. Client test requirements and GUI PR GIF requirements still apply, including to local changes when their original triggers are met. Ordinary local edits run the owning test and open the page; they do not produce a review report.
 
 ## Select the rule owners
 

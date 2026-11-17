@@ -4,9 +4,9 @@
  * bans reading NHS sources. The Web preset e2e measures whole-reference reads.
  */
 import { execFileSync, spawnSync } from 'node:child_process'
-import { cpSync, lstatSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { dirname, join, resolve, sep } from 'node:path'
+import { join, resolve, sep } from 'node:path'
 import { Context } from '@noharness/cordis'
 import { fileURLToPath } from 'node:url'
 import { parseEntryYaml } from '@noharness/cordis-plugin-include'
@@ -60,15 +60,11 @@ describe('the shipped nhs-doc skill', () => {
     expect((await ctx.skills.get('nhs-doc'))?.content).toBe(body('nhs-doc').trim())
   })
 
-  it('leaves repository skills without a second nhs-doc and wraps the packaged tool-design reference', async (test) => {
+  it('leaves repository skills without a second nhs-doc', async (test) => {
     const ctx = await loadRoot(repositorySkills, test)
     const repository = (await ctx.skills.list()).map(entry => entry.name)
     expect(repository).not.toContain('nhs-doc')
-    expect(repository).toEqual(expect.arrayContaining(['nhs-doc-writing', 'agent-experience']))
-    const wrapper = join(repositorySkills, 'agent-experience', 'SKILL.md')
-    expect(lstatSync(wrapper).isFile()).toBe(true)
-    const link = /\]\(([^)]+tool-design\.md)\)/u.exec(readFileSync(wrapper, 'utf8'))?.[1]
-    expect(link && resolve(dirname(wrapper), link)).toBe(join(skill, 'references', 'tool-design.md'))
+    expect(repository).toEqual(expect.arrayContaining(['nhs-doc-writing']))
   })
 
   it('renders below the pruner threshold and lists exactly the files it ships', () => {

@@ -118,7 +118,7 @@ Prefix-stable while the plugin scope and guidance text are unchanged; activation
 
 #### What the model sees
 
-The model sees the generated [`lsp` schema](../../../docs/tool-catalog.md#noharnessnhs-tool-lsp).
+The model sees the generated [`lsp` schema](../../../docs/tool-catalog.md#noharnesstool-lsp).
 
 #### Token effect
 

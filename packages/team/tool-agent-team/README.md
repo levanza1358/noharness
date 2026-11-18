@@ -105,7 +105,7 @@ Read these pages when the package-level contract is not enough. They move from t
 - [agent-team package](../agent-team/README.md) — the `ctx.agentTeams` domain service behind these tools.
 - [Agent Teams subsystem](../../../docs/subsystems/agent-team.md) — durable Team types and service API.
 - [Subagent control tools](../../subagent/tool-subagent-control/README.md) — messaging, listing, interruption, and inbox waiting.
-- [Generated tool catalog](../../../docs/tool-catalog.md#noharnessnhs-tool-agent-team) — every tool schema the model receives.
+- [Generated tool catalog](../../../docs/tool-catalog.md#noharnesstool-agent-team) — every tool schema the model receives.
 - [Subagent teammates Agent Note](../../../.agents/notes/implemented/architecture/2026-10-15-agent-teams-as-subagents.md) — model-facing, scoping, and tool-family decisions.
 
 -----
@@ -143,7 +143,7 @@ The text is identical for the Lead and every descendant and does not change whil
 
 #### What the model sees
 
-Every member receives the same four task schemas in the [generated tool catalog](../../../docs/tool-catalog.md#noharnessnhs-tool-agent-team). Results are compact JSON task views or pages. Root-only reassignment is enforced at execution, not through different schemas.
+Every member receives the same four task schemas in the [generated tool catalog](../../../docs/tool-catalog.md#noharnesstool-agent-team). Results are compact JSON task views or pages. Root-only reassignment is enforced at execution, not through different schemas.
 
 #### Token effect
 

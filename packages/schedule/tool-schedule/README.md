@@ -75,7 +75,7 @@ The plugin registers four `defineTool` definitions and one `tool:schedule` syste
 
 - [Schedule service](../schedule/README.md) — the Host task store, runtime, and delivery behavior these tools manage.
 - [Schedule group map](../README.md) — the sibling packages in this group.
-- [Generated tool catalog](../../../docs/tool-catalog.md#noharnessnhs-tool-schedule) — the exact four schemas the model receives.
+- [Generated tool catalog](../../../docs/tool-catalog.md#noharnesstool-schedule) — the exact four schemas the model receives.
 - [Schedule subsystem](../../../docs/subsystems/schedule.md) — the `ctx.schedule` Cordis surface and stored types.
 - [Schedule user guide](../../../docs/user/guide/schedule.md) — the user-facing scheduled task workflow.
 
@@ -108,7 +108,7 @@ Prefix-stable while the section text and mutation-tool visibility are unchanged.
 
 #### What the model sees
 
-The generated [`schedule_create`, `schedule_list`, `schedule_view`, and `schedule_edit` schemas](../../../docs/tool-catalog.md#noharnessnhs-tool-schedule) whenever this package is visible in the calling Agent's scope. The catalog shows the default configuration; the `target` description of `schedule_create` adds the configured spacing of `new` deliveries when it exceeds one minute.
+The generated [`schedule_create`, `schedule_list`, `schedule_view`, and `schedule_edit` schemas](../../../docs/tool-catalog.md#noharnesstool-schedule) whenever this package is visible in the calling Agent's scope. The catalog shows the default configuration; the `target` description of `schedule_create` adds the configured spacing of `new` deliveries when it exceeds one minute.
 
 #### Token effect
 

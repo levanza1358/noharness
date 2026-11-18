@@ -53,7 +53,7 @@ This table connects model-visible tool names to the plugin package and service s
 | `@noharness/tool-workspace-dependencies` | `load_workspace_dependencies` | `ctx.tools` | `tool/call`, `tool/result` | - | - |
 | `@noharness/tool-web` | `web_fetch`, `web_search` | `ctx.tools`, `ctx.web`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps. |
 
-<a id="noharnessnhs-plugin-manager"></a>
+<a id="noharnessplugin-manager"></a>
 
 ## `@noharness/plugin-manager`
 
@@ -123,7 +123,7 @@ List plugins or bundles in the current profile, enable or disable them, install 
 
 Source: [`packages/boot/plugin-manager/src/tools.ts`](../packages/boot/plugin-manager/src/tools.ts)
 
-<a id="noharnessnhs-plugin-market"></a>
+<a id="noharnessplugin-market"></a>
 
 ## `@noharness/plugin-market`
 
@@ -173,7 +173,7 @@ List the plugin market indexes the user configured, the installable bundles one 
 
 Source: [`packages/boot/plugin-market/src/tools.ts`](../packages/boot/plugin-market/src/tools.ts)
 
-<a id="noharnessnhs-mcp-resources"></a>
+<a id="noharnessmcp-resources"></a>
 
 ## `@noharness/mcp-resources`
 
@@ -253,7 +253,7 @@ Read an MCP resource by URI from the named server. Use a listed URI or an expand
 
 Source: [`packages/mcp/mcp-resources/src/tools.ts`](../packages/mcp/mcp-resources/src/tools.ts)
 
-<a id="noharnessnhs-experimental-browser-use-stagehand-native"></a>
+<a id="noharnessexperimental-browser-use-stagehand-native"></a>
 
 ## `@noharness/experimental-browser-use-stagehand-native`
 
@@ -500,7 +500,7 @@ List, create, select, or close a Stagehand browser tab.
 
 Source: [`packages/experimental/browser-use-stagehand-native/src/index.ts`](../packages/experimental/browser-use-stagehand-native/src/index.ts)
 
-<a id="noharnessnhs-action-cards"></a>
+<a id="noharnessaction-cards"></a>
 
 ## `@noharness/action-cards`
 
@@ -543,7 +543,7 @@ Source: [`packages/experimental/action-cards/src/index.ts`](../packages/experime
 
 Declared only to an Agent that loaded the skill of a registered card kind; the kind packages register their actions, and the Personalized recommendations bundle supplies the shipped kinds.
 
-<a id="noharnessnhs-tool-ask-user"></a>
+<a id="noharnesstool-ask-user"></a>
 
 ## `@noharness/tool-ask-user`
 
@@ -617,7 +617,7 @@ Source: [`packages/interaction/tool-ask-user/src/index.ts`](../packages/interact
 
 ask_user_question keeps the original blocking behavior by default; set `mode: timed` to opt into a foreground timeout and pending result while the question remains answerable. In timed mode, `timeout: -1` keeps that call blocking indefinitely.
 
-<a id="noharnessnhs-tool-executor-ptc"></a>
+<a id="noharnesstool-executor-ptc"></a>
 
 ## `@noharness/tool-executor-ptc`
 
@@ -665,7 +665,7 @@ Source: [`packages/core/tool-executor-ptc/src/ptc.ts`](../packages/core/tool-exe
 
 The PTC executor exposes only run_code to the model and declares other visible capabilities in a generated TypeScript SDK. Program bindings enter the shared guarded tool pipeline in submission order; concurrency-safe bodies overlap up to maxParallelSubCalls, and nested results remain linked to the outer program. The resolved timeout and maxSubCallsPerMinute set the total call allowance; exceeding it terminates the program.
 
-<a id="noharnessnhs-plan-mode"></a>
+<a id="noharnessplan-mode"></a>
 
 ## `@noharness/plan-mode`
 
@@ -692,7 +692,7 @@ Source: [`packages/plan/plan-mode/src/index.ts`](../packages/plan/plan-mode/src/
 
 exit_plan_mode stays in the model-facing schema while planning is inactive so transitions add no tool-catalog churn on top of the plan-policy change. Its execute path rejects calls outside plan mode; in plan mode it presents the plan over the user-questions seam (approve / keep planning with feedback), and approval logs plan mode inactive at the step boundary.
 
-<a id="noharnessnhs-tool-bash"></a>
+<a id="noharnesstool-bash"></a>
 
 ## `@noharness/tool-bash`
 
@@ -736,7 +736,7 @@ Source: [`packages/shell/tool-bash/src/index.ts`](../packages/shell/tool-bash/sr
 
 The bash tool is the model-facing consumer of the bash executor seam. With a job registry composed every call registers with the generic `ctx.jobs` runtime as it starts, collected/stopped through the `job_*` tools from `@noharness/tool-jobs`; without one, or with `enableRunInBackground: false`, the tool registers a foreground-only schema without the `run_in_background` parameter.
 
-<a id="noharnessnhs-tool-office"></a>
+<a id="noharnesstool-office"></a>
 
 ## `@noharness/tool-office`
 
@@ -853,7 +853,7 @@ Source: [`packages/document/tool-office/src/index.ts`](../packages/document/tool
 
 Declared to an Agent from the step after it successfully loads an Office skill, and kept while the previous request header declares an Office tool. Admitted calls fail with the Office service's unavailable error when LibreOffice Kit is not installed.
 
-<a id="noharnessnhs-tool-present"></a>
+<a id="noharnesstool-present"></a>
 
 ## `@noharness/tool-present`
 
@@ -897,7 +897,7 @@ Source: [`packages/deliverables/tool-present/src/index.ts`](../packages/delivera
 
 Deliveries belong to the calling Session; Web ui-deliverables supplies source-file opening and cards.
 
-<a id="noharnessnhs-tool-pwsh"></a>
+<a id="noharnesstool-pwsh"></a>
 
 ## `@noharness/tool-pwsh`
 
@@ -941,7 +941,7 @@ Source: [`packages/shell/tool-pwsh/src/index.ts`](../packages/shell/tool-pwsh/sr
 
 The pwsh tool is the PowerShell-dialect consumer of the bash executor seam for Windows compositions (a PowerShell executor such as `@noharness/pwsh-local` backs `ctx.shell`); it mirrors the bash tool call-for-call minus sandbox controls — `run_in_background` runs register with the generic `ctx.jobs` runtime and are collected/stopped through the `job_*` tools, and the managed `NHS_*` environment comes from `@noharness/shell-env`. Each call runs in a fresh process (no persistent PTY session), with native `C:\...` paths and `$env:NAME` variables.
 
-<a id="noharnessnhs-tool-cordis"></a>
+<a id="noharnesstool-cordis"></a>
 
 ## `@noharness/tool-cordis`
 
@@ -998,7 +998,7 @@ Source: [`packages/extensions/tool-cordis/src/index.ts`](../packages/extensions/
 
 Creator mode provides two read-only runtime inspection tools. The Cordis host runner supplies the inspection registry; Client queries require a connected page. Author persistent changes as bundles and install them with plugin_manager.
 
-<a id="noharnessnhs-tool-bash-persistent"></a>
+<a id="noharnesstool-bash-persistent"></a>
 
 ## `@noharness/tool-bash-persistent`
 
@@ -1025,7 +1025,7 @@ Source: [`packages/shell/tool-bash-persistent/src/index.ts`](../packages/shell/t
 
 One owner-isolated persistent bash tool; deployment composition supplies the PTY backend and may override the model-facing environment description.
 
-<a id="noharnessnhs-tool-pwsh-persistent"></a>
+<a id="noharnesstool-pwsh-persistent"></a>
 
 ## `@noharness/tool-pwsh-persistent`
 
@@ -1052,7 +1052,7 @@ Source: [`packages/shell/tool-pwsh-persistent/src/index.ts`](../packages/shell/t
 
 One owner-isolated persistent pwsh tool, the Windows counterpart of the persistent bash tool; deployment composition supplies a pwsh-dialect PTY backend and may override the model-facing environment description.
 
-<a id="noharnessnhs-tool-str-replace-editor"></a>
+<a id="noharnesstool-str-replace-editor"></a>
 
 ## `@noharness/tool-str-replace-editor`
 
@@ -1158,7 +1158,7 @@ Source: [`packages/fs/tool-str-replace-editor/src/index.ts`](../packages/fs/tool
 
 Standalone view/create/unique literal replace/line insert tool over the filesystem seam; it composes with any shell or terminal API.
 
-<a id="noharnessnhs-tool-fs"></a>
+<a id="noharnesstool-fs"></a>
 
 ## `@noharness/tool-fs`
 
@@ -1296,7 +1296,7 @@ Source: [`packages/fs/tool-fs/src/index.ts`](../packages/fs/tool-fs/src/index.ts
 
 The read-before-write/edit policy is added by `@noharness/fs-observation-policy` (an `fs/*` event-gate plugin, no schema change); the shipped compositions leave its row disabled, so mutations are unconditional unless a deployment enables it. The image tool is not registered without `ctx.attachments`; its schema is route-independent, and execution refuses unless the exact routed model declares image input. `apply_patch` registers only with `applyPatch: true`; the catalog sets it so the schema is documented. `nhs-base` and the Web `standard` preset enable it; the Web `ptc` and `cordis` presets and the PTC overlay state `applyPatch: false`.
 
-<a id="noharnessnhs-tool-fs-search"></a>
+<a id="noharnesstool-fs-search"></a>
 
 ## `@noharness/tool-fs-search`
 
@@ -1356,7 +1356,7 @@ Source: [`packages/fs/tool-fs-search/src/index.ts`](../packages/fs/tool-fs-searc
 
 glob and grep are unconditional discovery tools that spawn the packaged ripgrep binary (`@vscode/ripgrep`) through ctx.subprocess as ordinary foreground calls (never background jobs) — no host `rg` install and no shell layer. The catalog uses `sampleOverCapGlobResults: true`; deployments must choose that behavior explicitly. Capped results save the complete formatted list through the optional ctx.spillStore backend; returned locators are follow-up-readable/searchable when the backend exposes local paths in co-located deployments.
 
-<a id="noharnessnhs-tool-terminal"></a>
+<a id="noharnesstool-terminal"></a>
 
 ## `@noharness/tool-terminal`
 
@@ -1521,7 +1521,7 @@ Source: [`packages/experimental/tool-terminal/src/index.ts`](../packages/experim
 
 The six terminal tools are opt-in and complement one-shot shell/filesystem tools. `terminal_send(run_in_background: true)` registers with `ctx.jobs`; TUI, named key sequences, BEL, resize, auto-start, and cross-agent sharing are absent from the schema.
 
-<a id="noharnessnhs-terminal-panel"></a>
+<a id="noharnessterminal-panel"></a>
 
 ## `@noharness/terminal-panel`
 
@@ -1565,7 +1565,7 @@ Source: [`packages/experimental/terminal-panel/src/tools.ts`](../packages/experi
 
 The package also serves the six `terminal_*` tools from Web sidebar terminals. `user_terminal_list` and `user_terminal_read` only read terminals the user controls; `readUserTerminals: false` removes both.
 
-<a id="noharnessnhs-tool-goal"></a>
+<a id="noharnesstool-goal"></a>
 
 ## `@noharness/tool-goal`
 
@@ -1659,7 +1659,7 @@ Source: [`packages/goal/tool-goal/src/index.ts`](../packages/goal/tool-goal/src/
 
 create, edit, pause, and resume require direct-human root authority; complete and blocked also accept the exact current goal round. The default blocked lower bound is three admitted rounds.
 
-<a id="noharnessnhs-tool-schedule"></a>
+<a id="noharnesstool-schedule"></a>
 
 ## `@noharness/tool-schedule`
 
@@ -1812,7 +1812,7 @@ Source: [`packages/schedule/tool-schedule/src/index.ts`](../packages/schedule/to
 
 A preset or Agent scope mounts this package and decides which agents receive its tools. Management reads and writes Host tasks by id across Sessions. Tasks store an RFC 5545 recurrence and an existing, first-created-and-reused, or per-run-new Session target. Delegated subagents cannot call these tools.
 
-<a id="noharnessnhs-tool-lsp"></a>
+<a id="noharnesstool-lsp"></a>
 
 ## `@noharness/tool-lsp`
 
@@ -1860,7 +1860,7 @@ Source: [`packages/lsp/tool-lsp/src/index.ts`](../packages/lsp/tool-lsp/src/inde
 
 The lsp tool keeps provider selection and language-server subprocesses behind ctx.lsp, so its model-visible schema stays stable across providers. Requires a registered provider (e.g. `@noharness/lsp-stdio`) at runtime; without one, a query returns the structured `LSP_UNAVAILABLE` error rather than changing the schema.
 
-<a id="noharnessnhs-tool-ralph"></a>
+<a id="noharnesstool-ralph"></a>
 
 ## `@noharness/tool-ralph`
 
@@ -1891,7 +1891,7 @@ Source: [`packages/experimental/tool-ralph/src/index.ts`](../packages/experiment
 
 A fixed foreground workflow starts one fresh structured child per round; the model selects only the immutable objective and an optional round cap.
 
-<a id="noharnessnhs-tool-skill"></a>
+<a id="noharnesstool-skill"></a>
 
 ## `@noharness/tool-skill`
 
@@ -1916,7 +1916,7 @@ Load the full instructions for a skill. Call it before acting on a task that nam
 
 Source: [`packages/skill/tool-skill/src/index.ts`](../packages/skill/tool-skill/src/index.ts)
 
-<a id="noharnessnhs-tool-session-query"></a>
+<a id="noharnesstool-session-query"></a>
 
 ## `@noharness/tool-session-query`
 
@@ -2151,7 +2151,7 @@ Source: [`packages/experimental/tool-session-query/src/index.ts`](../packages/ex
 
 The five read-only tools hide provider cursors and authorize every result from the immutable calling agent session. The package is opt-in; compositions that need enforced deadlines or bounded inline output also mount the generic timeout or spill policies.
 
-<a id="noharnessnhs-experimental-tool-subagent-oar"></a>
+<a id="noharnessexperimental-tool-subagent-oar"></a>
 
 ## `@noharness/experimental-tool-subagent-oar`
 
@@ -2200,7 +2200,7 @@ Source: [`packages/experimental/tool-subagent-oar/src/index.ts`](../packages/exp
 
 The subagent_oar tool selects among configured aliases for external providers. This catalog shows Codex and Claude Code aliases; each deployment chooses its providers. Native model and permission settings belong to the selected provider configuration.
 
-<a id="noharnessnhs-tool-subagent"></a>
+<a id="noharnesstool-subagent"></a>
 
 ## `@noharness/tool-subagent`
 
@@ -2262,7 +2262,7 @@ Source: [`packages/subagent/tool-subagent/src/index.ts`](../packages/subagent/to
 
 The load-time `toolName` selects the delegation name (default `subagent`); `modelSelection` adds optional route fields. `modelDiscovery` defaults off and registers shared discovery on one instance per scope. Web and Desktop presets enable spawn discovery and route fields and leave `subagent_fork` route fields disabled. The Host settings service records authorization for each new top-level Session; child Sessions inherit it. Without a recorded policy, discovery and explicit selection permit only the current parent route. Every delegation returns the child's name promptly; local children accept follow-ups, while external backends report their single execution automatically.
 
-<a id="noharnessnhs-tool-subagent-control"></a>
+<a id="noharnesstool-subagent-control"></a>
 
 ## `@noharness/tool-subagent-control`
 
@@ -2346,7 +2346,7 @@ Source: [`packages/subagent/tool-subagent-control/src/wait-agent.ts`](../package
 
 The shared control tools discover and contact agents in the subagent tree, interrupt owned descendants, and wait for input in the caller’s inbox. Provider-bound `tool-subagent` instances supply delegation tools.
 
-<a id="noharnessnhs-tool-jobs"></a>
+<a id="noharnesstool-jobs"></a>
 
 ## `@noharness/tool-jobs`
 
@@ -2419,7 +2419,7 @@ Source: [`packages/jobs/tool-jobs/src/index.ts`](../packages/jobs/tool-jobs/src/
 
 The kind-agnostic background-job controller: background bash commands and PTY sends are read, listed, and killed through the same three tools. Loading the plugin attaches the controller that arms producers' `ctx.jobs.start()`.
 
-<a id="noharnessnhs-tool-agent-team"></a>
+<a id="noharnesstool-agent-team"></a>
 
 ## `@noharness/tool-agent-team`
 
@@ -2596,7 +2596,7 @@ Source: [`packages/team/tool-agent-team/src/index.ts`](../packages/team/tool-age
 
 Four task-board tools share the subagent tree’s root Session. Enabling Team mode on the root Session adds task-board guidance alongside standard subagent delegation and control tools. Standard subagent controls provide required identity independently of Team mode.
 
-<a id="noharnessnhs-tool-todo"></a>
+<a id="noharnesstool-todo"></a>
 
 ## `@noharness/tool-todo`
 
@@ -2646,7 +2646,7 @@ Source: [`packages/todo/tool-todo/src/index.ts`](../packages/todo/tool-todo/src/
 
 todo_write is session-owned state; UIs render the latest todo/write event as a checklist. `allowParallelInProgress` is required with no default, so the catalog states its choice: `true`, whose description invites several `in_progress` items. A deployment choosing `false` receives the same tool with a description asking for exactly one active task.
 
-<a id="noharnessnhs-tool-working-directory"></a>
+<a id="noharnesstool-working-directory"></a>
 
 ## `@noharness/tool-working-directory`
 
@@ -2670,7 +2670,7 @@ Source: [`packages/session/tool-working-directory/src/index.ts`](../packages/ses
 
 Reads or changes the calling Session directory. Existing shells and processes retain their own directories; origin metadata and permission roots stay fixed.
 
-<a id="noharnessnhs-experimental-tool-worktree"></a>
+<a id="noharnessexperimental-tool-worktree"></a>
 
 ## `@noharness/experimental-tool-worktree`
 
@@ -2698,7 +2698,7 @@ Source: [`packages/experimental/tool-worktree/src/index.ts`](../packages/experim
 
 Enabled through the Change requests & worktrees bundle on Web and Desktop; other profiles can select the standalone bundle. Creates a new branch and checkout from a pinned local commit under existing write permissions, then changes the Session directory. Leaving retains the branch and checkout.
 
-<a id="noharnessnhs-tool-workflow"></a>
+<a id="noharnesstool-workflow"></a>
 
 ## `@noharness/tool-workflow`
 
@@ -2793,7 +2793,7 @@ Misused hooks (bad arguments, unknown options, unsupported schemas, tripped caps
 
 Source: [`packages/workflow/tool-workflow/src/index.ts`](../packages/workflow/tool-workflow/src/index.ts)
 
-<a id="noharnessnhs-tool-workspace-dependencies"></a>
+<a id="noharnesstool-workspace-dependencies"></a>
 
 ## `@noharness/tool-workspace-dependencies`
 
@@ -2810,7 +2810,7 @@ Get absolute paths to bundled Python and library directories, plus bundled Pytho
 
 Source: [`packages/skill/tool-workspace-dependencies/src/index.ts`](../packages/skill/tool-workspace-dependencies/src/index.ts)
 
-<a id="noharnessnhs-tool-web"></a>
+<a id="noharnesstool-web"></a>
 
 ## `@noharness/tool-web`
 

@@ -196,7 +196,7 @@ History stays with the task and is pruned only on append. Missing old history ke
 
 #### What the model sees
 
-The [generated tool catalog](../../../docs/tool-catalog.md#noharnessnhs-tool-schedule) contains the descriptions and schemas for `schedule_create`, `schedule_list`, `schedule_view`, and `schedule_edit`, which [`@noharness/tool-schedule`](../tool-schedule/README.md) contributes to the presets that mount it.
+The [generated tool catalog](../../../docs/tool-catalog.md#noharnesstool-schedule) contains the descriptions and schemas for `schedule_create`, `schedule_list`, `schedule_view`, and `schedule_edit`, which [`@noharness/tool-schedule`](../tool-schedule/README.md) contributes to the presets that mount it.
 
 #### Token effect
 

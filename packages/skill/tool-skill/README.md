@@ -97,7 +97,7 @@ Read these pages when the package-level contract is not enough. They move from t
 
 - [Skill subsystem reference](../../../docs/subsystems/skills.md) — the registry and provider vocabulary behind the catalog.
 - [skill package](../skill/README.md) — the registry and the shared `renderSkillContent` rendering.
-- [Generated tool catalog](../../../docs/tool-catalog.md#noharnessnhs-tool-skill) — the exact `skill` schema the model receives.
+- [Generated tool catalog](../../../docs/tool-catalog.md#noharnesstool-skill) — the exact `skill` schema the model receives.
 - [User-explicit skill invocation Agent Note](../../../.agents/notes/archived/feature/2026-08-08-user-explicit-skill-invocation.md) — the `/name` gesture design.
 
 -----
@@ -157,7 +157,7 @@ The initial durable catalog is appended after the existing reusable prefix. Dyna
 
 #### What the model sees
 
-The model sees the generated [`skill` schema](../../../docs/tool-catalog.md#noharnessnhs-tool-skill).
+The model sees the generated [`skill` schema](../../../docs/tool-catalog.md#noharnesstool-skill).
 
 #### Token effect
 

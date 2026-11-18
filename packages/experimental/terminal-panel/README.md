@@ -132,7 +132,7 @@ Prefix-stable while the plugin stays loaded; loading or unloading it changes the
 
 #### What the model sees
 
-The two schemas are listed in the [`nhs-terminal-panel` catalog section](../../../docs/tool-catalog.md#noharnessnhs-terminal-panel). The six terminal tools keep the schemas of [`nhs-tool-terminal`](../../../docs/tool-catalog.md#noharnessnhs-tool-terminal).
+The two schemas are listed in the [`nhs-terminal-panel` catalog section](../../../docs/tool-catalog.md#noharnessterminal-panel). The six terminal tools keep the schemas of [`nhs-tool-terminal`](../../../docs/tool-catalog.md#noharnesstool-terminal).
 
 #### Token effect
 

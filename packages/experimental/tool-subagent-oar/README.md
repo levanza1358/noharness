@@ -78,7 +78,7 @@ The [configuration catalog](../../../docs/config-catalog.md#noharnessnhs-experim
 
 #### What the model sees
 
-The [tool catalog](../../../docs/tool-catalog.md#noharnessnhs-experimental-tool-subagent-oar) owns the description and argument schema. The `runtime` enum contains the configured aliases. After acceptance, the tool returns `started subagent <name>`, where `<name>` is the child's full name from the root, such as `reviewer`. The shared subagent service later supplies the child's answer or failure notice.
+The [tool catalog](../../../docs/tool-catalog.md#noharnessexperimental-tool-subagent-oar) owns the description and argument schema. The `runtime` enum contains the configured aliases. After acceptance, the tool returns `started subagent <name>`, where `<name>` is the child's full name from the root, such as `reviewer`. The shared subagent service later supplies the child's answer or failure notice.
 
 #### Token effect
 

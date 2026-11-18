@@ -61,7 +61,7 @@ No runtime invariant companion is published because the tool delegates all direc
 
 #### What the model sees
 
-The [tool catalog](../../../docs/tool-catalog.md#noharnessnhs-tool-working-directory) defines the optional `cd` argument and canonical `cwd` result. Directory notices are owned by `nhs-working-directory`.
+The [tool catalog](../../../docs/tool-catalog.md#noharnesstool-working-directory) defines the optional `cd` argument and canonical `cwd` result. Directory notices are owned by `nhs-working-directory`.
 
 #### Token effect
 

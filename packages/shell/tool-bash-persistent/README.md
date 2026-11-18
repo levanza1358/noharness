@@ -99,7 +99,7 @@ Read these pages when the package-level contract is not enough. They move from t
 - [terminal-bash backend](../../terminal/terminal-bash/README.md) — the default `shell` backend.
 - [tool-terminal](../../experimental/tool-terminal/README.md) — six model-facing terminal tools for interactive work.
 - [Persistent PTY sessions Agent Note](../../../.agents/notes/implemented/feature/2026-07-16-persistent-pty-sessions.md) — the owner-scoped session design and its rationale.
-- [Generated tool catalog](../../../docs/tool-catalog.md#noharnessnhs-tool-bash-persistent) — the exact `bash` argument schema.
+- [Generated tool catalog](../../../docs/tool-catalog.md#noharnesstool-bash-persistent) — the exact `bash` argument schema.
 - [Generated configuration catalog](../../../docs/config-catalog.md#noharnessnhs-tool-bash-persistent) — every accepted config field and its source declaration.
 
 -----
@@ -111,7 +111,7 @@ Read these pages when the package-level contract is not enough. They move from t
 
 #### What the model sees
 
-The generated [`bash` schema](../../../docs/tool-catalog.md#noharnessnhs-tool-bash-persistent), including the configured `description`. The plugin contributes no standalone system-prompt section; the deployment owns persona and environment guidance.
+The generated [`bash` schema](../../../docs/tool-catalog.md#noharnesstool-bash-persistent), including the configured `description`. The plugin contributes no standalone system-prompt section; the deployment owns persona and environment guidance.
 
 #### Token effect
 

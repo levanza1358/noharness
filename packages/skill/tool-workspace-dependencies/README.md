@@ -85,7 +85,7 @@ A container can copy that directory into an immutable image layer and set `NHS_P
 
 #### What the model sees
 
-The model sees the generated [`load_workspace_dependencies` schema](../../../docs/tool-catalog.md#noharnessnhs-tool-workspace-dependencies).
+The model sees the generated [`load_workspace_dependencies` schema](../../../docs/tool-catalog.md#noharnesstool-workspace-dependencies).
 
 #### Token effect
 

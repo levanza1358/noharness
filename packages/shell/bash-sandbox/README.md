@@ -120,7 +120,7 @@ Read these pages when the executor contract is not enough. They move from the se
 
 #### What the model sees
 
-The generated [`nhs-tool-bash` schemas](../../../docs/tool-catalog.md#noharnessnhs-tool-bash) are the baseline. By advertising a confining `sandboxMode`, this backend augments `bash` with `sandbox_permissions` (enum `workspace-write` | `danger-full-access`) and `justification`. The policy owner separately contributes the current capability-neutral `sandbox:policy` context.
+The generated [`nhs-tool-bash` schemas](../../../docs/tool-catalog.md#noharnesstool-bash) are the baseline. By advertising a confining `sandboxMode`, this backend augments `bash` with `sandbox_permissions` (enum `workspace-write` | `danger-full-access`) and `justification`. The policy owner separately contributes the current capability-neutral `sandbox:policy` context.
 
 #### Token effect
 

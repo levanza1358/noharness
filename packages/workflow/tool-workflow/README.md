@@ -134,7 +134,7 @@ Prefix-stable while the plugin scope and guidance text are unchanged. Activation
 
 #### What the model sees
 
-When visible, the generated default [`workflow` schema](../../../docs/tool-catalog.md#noharnessnhs-tool-workflow) carries the complete JavaScript hook and metadata contract; `toolName` can rename the definition, and the model submits script, metadata, and optional args.
+When visible, the generated default [`workflow` schema](../../../docs/tool-catalog.md#noharnesstool-workflow) carries the complete JavaScript hook and metadata contract; `toolName` can rename the definition, and the model submits script, metadata, and optional args.
 
 #### Token effect
 

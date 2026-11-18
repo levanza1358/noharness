@@ -124,7 +124,7 @@ Read these pages when the package-level contract is not enough; they move from t
 
 - [Subagent subsystem](../../../docs/subsystems/subagent.md) — providers, activations, results, and continuation.
 - [nhs-tool-subagent-control](../tool-subagent-control/README.md) — messaging, interrupt, and listing tools for continuable children.
-- [Generated tool catalog](../../../docs/tool-catalog.md#noharnessnhs-tool-subagent) — the default schema and backend-specific wording.
+- [Generated tool catalog](../../../docs/tool-catalog.md#noharnesstool-subagent) — the default schema and backend-specific wording.
 - [Generated configuration catalog](../../../docs/config-catalog.md#noharnessnhs-tool-subagent) — every accepted config field.
 - [Historical model-selected subagent routes](../../../.agents/notes/archived/feature/2026-08-18-model-selected-subagent-routes.md) — selection policy, inheritance, discovery, and the fork restriction.
 
@@ -137,7 +137,7 @@ Read these pages when the package-level contract is not enough; they move from t
 
 #### What the model sees
 
-The generated default [`subagent` schema](../../../docs/tool-catalog.md#noharnessnhs-tool-subagent) appears under the configured tool name while its provider exists. An instance with `modelSelection` adds `provider`, `model`, and `reasoning_effort` plus route guidance in every Session. `allowedAgentPresets` adds the `agent_preset` enum and guidance for the default or inherited selection. Context inheritance and continuation support determine task and follow-up descriptions. Agent restrictions apply to inherited preset delegation tools in schemas, execution, and guidance, including when historical `toolFilter` overrides are restored; sibling Agents remain unaffected. Preset-selection guidance depends only on the tool configuration, so it does not depend on other presets’ declaration order.
+The generated default [`subagent` schema](../../../docs/tool-catalog.md#noharnesstool-subagent) appears under the configured tool name while its provider exists. An instance with `modelSelection` adds `provider`, `model`, and `reasoning_effort` plus route guidance in every Session. `allowedAgentPresets` adds the `agent_preset` enum and guidance for the default or inherited selection. Context inheritance and continuation support determine task and follow-up descriptions. Agent restrictions apply to inherited preset delegation tools in schemas, execution, and guidance, including when historical `toolFilter` overrides are restored; sibling Agents remain unaffected. Preset-selection guidance depends only on the tool configuration, so it does not depend on other presets’ declaration order.
 
 #### Token effect
 

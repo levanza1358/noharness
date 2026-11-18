@@ -1,7 +1,7 @@
 {
   "name": "@noharness/agent",
   "description": "Agent interface, registry, initiator scope, and event vocabulary for the NoHarness",
-  "version": "0.2.2-rc.3",
+  "version": "0.2.2-rc.4",
   "publishConfig": {
     "access": "public"
   },

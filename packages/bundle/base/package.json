@@ -1,7 +1,7 @@
 {
   "name": "@noharness/base",
   "description": "The shared nhs core as a profile bundle: the first patch layer of base-backed profiles, inserting core rows over the empty profile root",
-  "version": "0.2.2-rc.3",
+  "version": "0.2.2-rc.4",
   "publishConfig": {
     "access": "public"
   },

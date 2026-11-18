@@ -1,7 +1,7 @@
 {
   "name": "@noharness/shell-env",
   "description": "Tool-independent managed NHS_* shell environment registry",
-  "version": "0.2.2-rc.3",
+  "version": "0.2.2-rc.4",
   "publishConfig": {
     "access": "public"
   },

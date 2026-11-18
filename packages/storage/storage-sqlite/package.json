@@ -1,7 +1,7 @@
 {
   "name": "@noharness/storage-sqlite",
   "description": "SQLite storage backend (kv facet) for the NoHarness storage hub",
-  "version": "0.2.2-rc.3",
+  "version": "0.2.2-rc.4",
   "publishConfig": {
     "access": "public"
   },

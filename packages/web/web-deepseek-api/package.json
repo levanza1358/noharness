@@ -1,7 +1,7 @@
 {
   "name": "@noharness/web-deepseek-api",
   "description": "DeepSeek Search and Fetch API providers for the NoHarness web capability seam (ctx.web)",
-  "version": "0.2.2-rc.3",
+  "version": "0.2.2-rc.4",
   "publishConfig": {
     "access": "public"
   },

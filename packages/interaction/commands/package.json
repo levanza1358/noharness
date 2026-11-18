@@ -1,7 +1,7 @@
 {
   "name": "@noharness/commands",
   "description": "Plugin-owned human command registry for NoHarness UIs",
-  "version": "0.2.2-rc.3",
+  "version": "0.2.2-rc.4",
   "publishConfig": {
     "access": "public"
   },

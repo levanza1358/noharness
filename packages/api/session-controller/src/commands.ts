@@ -53,6 +53,7 @@ import type {
   SessionUpdateQueueRequest,
   SessionUpdateQueueValue,
   SessionRequestId,
+  ModelSelection as WireModelSelection,
 } from './types.ts'
 
 type PromptContentCandidate =
@@ -410,6 +411,42 @@ export class SessionCommandController {
       receipts.offset = session.seq
     }
     return receipts.requests.has(requestId)
+  }
+
+  /**
+   * Validate and store the deployment default model later Agents start from.
+   *
+   * Selection is checked against the live catalog and resolved once, so a
+   * stored default names a route this deployment can serve. Persistence goes
+   * through the default-model service, which serializes profile writes.
+   * @param request - provider, model, and optional reasoning effort to store.
+   * @returns the selection recorded as the deployment default.
+   */
+  async setDefaultModel(request: WireModelSelection): Promise<WireModelSelection> {
+    const selected: AgentModelSelection = {
+      provider: request.provider,
+      model: request.model,
+      ...(request.reasoningEffort === undefined
+        ? {}
+        : { reasoningEffort: brandString<ReasoningEffortId>(request.reasoningEffort) }),
+    }
+    try {
+      await this.requireModel(selected)
+      await this.ctx.llm.resolveCallConfig(selected)
+    } catch (error) {
+      if (remoteErrorOf(error) !== undefined) throw error
+      throw new RemoteError(
+        'session/model-unavailable',
+        error instanceof Error ? error.message : String(error),
+        { provider: selected.provider, model: selected.model },
+      )
+    }
+    await this.ctx.agentDefaultModel.saveSelection(selected)
+    return {
+      provider: selected.provider,
+      model: selected.model,
+      ...(selected.reasoningEffort === undefined ? {} : { reasoningEffort: String(selected.reasoningEffort) }),
+    }
   }
 
   private async requireModel(selection: Pick<AgentModelSelection, 'provider' | 'model'>): Promise<void> {

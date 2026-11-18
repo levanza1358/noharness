@@ -181,6 +181,8 @@ export const en = {
   settingsPathUnresolvable: 'unresolvable settings path',
   create: 'Create provider',
   creating: 'Creating\u2026',
+  defaultModelLabel: 'Set as default provider',
+  defaultModelUnset: 'No default',
   keyRequired: 'Enter an API key to continue.',
 }
 
@@ -372,6 +374,8 @@ export const ja = {
   'settingsPathUnresolvable': 'unresolvable settings path',
   'create': 'Create provider',
   'creating': 'Creating\\u2026',
+  'defaultModelLabel': '既定のプロバイダーを設定',
+  'defaultModelUnset': '既定なし',
   'keyRequired': 'Enter an API key to continue.',
 } as const
 
@@ -556,6 +560,8 @@ export const es = {
   settingsPathUnresolvable: 'ruta de configuración irresoluble',
   create: 'Crear proveedor',
   creating: 'Creando…',
+  defaultModelLabel: 'Establecer como proveedor predeterminado',
+  defaultModelUnset: 'Sin predeterminado',
   keyRequired: 'Ingrese una clave API para continuar.',
 } as const
 
@@ -740,6 +746,8 @@ export const fr = {
   settingsPathUnresolvable: 'chemin des paramètres insolubles',
   create: 'Créer un fournisseur',
   creating: 'Création…',
+  defaultModelLabel: 'Définir comme fournisseur par défaut',
+  defaultModelUnset: 'Aucun par défaut',
   keyRequired: 'Entrez une clé API pour continuer.',
 } as const
 
@@ -924,6 +932,8 @@ export const de = {
   settingsPathUnresolvable: 'Unauflösbarer Einstellungspfad',
   create: 'Anbieter erstellen',
   creating: 'Erstellen…',
+  defaultModelLabel: 'Als Standardanbieter festlegen',
+  defaultModelUnset: 'Kein Standard',
   keyRequired: 'Geben Sie einen API-Schlüssel ein, um fortzufahren.',
 } as const
 
@@ -1108,6 +1118,8 @@ export const ru = {
   settingsPathUnresolvable: 'неразрешимый путь настроек',
   create: 'Создать поставщика',
   creating: 'Создание…',
+  defaultModelLabel: 'Сделать провайдером по умолчанию',
+  defaultModelUnset: 'По умолчанию нет',
   keyRequired: 'Введите ключ API, чтобы продолжить.',
 } as const
 
@@ -1292,5 +1304,7 @@ export const pt = {
   settingsPathUnresolvable: 'caminho de configurações insolúveis',
   create: 'Criar provedor',
   creating: 'Criando…',
+  defaultModelLabel: 'Definir como provedor padrão',
+  defaultModelUnset: 'Nenhum padrão',
   keyRequired: 'Insira uma chave de API para continuar.',
 } as const

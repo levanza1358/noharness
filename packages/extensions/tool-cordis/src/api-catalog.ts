@@ -2988,6 +2988,12 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
         returns: 'the normalized selection installed for the Session, without waiting for default persistence.',
       },
       {
+        signature: '@Remote(\'setDefaultModel\') setDefaultModel(selection: ModelSelection): Promise<ModelSelection>',
+        description: 'Record the deployment default model that later Agents start from.',
+        parameters: [{ name: 'selection', description: 'provider, model, and optional reasoning effort to store.' }],
+        returns: 'the stored deployment-default selection.',
+      },
+      {
         signature: '@Remote async initializeDefaultModel(): Promise<void>',
         description: 'Select the first available account model after login when no provider API key is configured.',
         parameters: [],
@@ -4658,6 +4664,12 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
         description: 'Whether the provider `search()` would select can authenticate a search made for a model request on the `llmProvider` chat route. Asks only that provider\'s `ready()`; one without `ready()` counts as ready. Makes no network calls. A selection failure answers true, because `search()` reports that failure as a structured `WebError`.',
         parameters: [{ name: 'llmProvider', description: 'the provider route id of the model request, when known.' }],
         returns: 'false only when the selected provider reports that it cannot authenticate.',
+      },
+      {
+        signature: '@Remote async probe(capability: \'search\' | \'fetch\'): Promise<WebProbeResult>',
+        description: 'Run one small connectivity probe through the same provider selection that `search()` and `fetch()` use. The call reaches the network on the user\'s click; a provider or selection failure is reported in the result rather than thrown.',
+        parameters: [{ name: 'capability', description: 'which provider to exercise.' }],
+        returns: 'the selected provider and the technical outcome.',
       },
       {
         signature: 'async fetch(request: WebFetchRequest, signal?: AbortSignal): Promise<WebFetchResult>',
@@ -10777,6 +10789,10 @@ export const TYPE_API: readonly TypeApiEntry[] = [
   {
     name: 'WebhookSourceId',
     declaration: 'export type WebhookSourceId = Branded<\'WebhookSourceId\'>;',
+  },
+  {
+    name: 'WebProbeResult',
+    declaration: 'export interface WebProbeResult {\n    readonly capability: \'search\' | \'fetch\';\n    readonly provider: string;\n    readonly ok: boolean;\n    readonly detail: string;\n}',
   },
   {
     name: 'WebProviderInfo',

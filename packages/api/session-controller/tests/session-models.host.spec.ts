@@ -924,8 +924,27 @@ it('initializes the account model without reasoning metadata and rejects an empt
   })
 })
 
-it.each([new Error('catalog disconnected'), 'catalog disconnected'])('reports catalog rejection as an unavailable selection: %s', async (failure) => {
-  const { ctx } = await harness()
+it('stores a catalog-backed deployment default and refuses an unavailable one', async () => {
+  const { configurationFixture } = await import('../../../settings/settings/tests/configuration-fixture.ts')
+  const configured = await configurationFixture({ hmr: false })
+  const { ctx } = await harness(undefined, configured.ctx)
+  const controller = await createSessionTestController(ctx, {
+    defaultModelSelection: () => ctx.agentDefaultModel.currentSelection(), cwd: '/tmp',
+  })
+  await expect(controller.setDefaultModel({ provider: 'deepseek-official', model: 'deepseek-chat' }))
+    .resolves.toEqual({ provider: 'deepseek-official', model: 'deepseek-chat' })
+  expect(ctx.agentDefaultModel.currentSelection()).toEqual({ provider: 'deepseek-official', model: 'deepseek-chat' })
+  // A stored default names a route this deployment can serve, so an unavailable
+  // model is refused and leaves the earlier selection in place.
+  await expect(controller.setDefaultModel({ provider: 'deepseek-official', model: 'missing' }))
+    .rejects.toMatchObject({ code: 'session/model-unavailable' })
+  await expect(controller.setDefaultModel({ provider: 'broken', model: 'any' }))
+    .rejects.toMatchObject({ code: 'session/model-unavailable', message: 'catalog offline' })
+  expect(ctx.agentDefaultModel.currentSelection()).toEqual({ provider: 'deepseek-official', model: 'deepseek-chat' })
+  await ctx.fiber.dispose()
+})
+
+it.each([new Error('catalog disconnected'), 'catalog disconnected'])('reports catalog rejection as an unavailable selection: %s', async (failure) => {  const { ctx } = await harness()
   const { modelAvailable } = await import('../src/catalog.ts')
   const read = vi.spyOn(ctx.llm, 'listModels').mockRejectedValueOnce(failure)
   try {

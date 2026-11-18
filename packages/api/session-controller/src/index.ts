@@ -34,6 +34,7 @@ import { SessionMediaReferences } from './media-references.ts'
 import { ArchivedSessionGate } from './archived-session-gate.ts'
 import type {
   ModelCatalog,
+  ModelSelection,
   SessionWorkspacePathApplication,
   SessionAddress,
   SessionAttachmentRequest,
@@ -320,10 +321,19 @@ export class SessionController extends TypertRemoteService {
   }
 
   /**
+   * Record the deployment default model that later Agents start from.
+   * @param selection - provider, model, and optional reasoning effort to store.
+   * @returns the stored deployment-default selection.
+   */
+  @Remote('setDefaultModel')
+  setDefaultModel(selection: ModelSelection): Promise<ModelSelection> {
+    return this.commands.setDefaultModel(selection)
+  }
+
+  /**
    * Select the first available account model after login when no provider API key is configured.
    * @returns after saving the first available model or retaining the existing default.
-   */
-  @Remote
+   */  @Remote
   async initializeDefaultModel(): Promise<void> {
     const provider = 'deepseek-account'
     if (await hasProviderApiKey(this.ctx)) return

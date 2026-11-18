@@ -10,6 +10,7 @@ afterEach(cleanup)
 
 function operations(discoverModels: ModelsOperations['discoverModels']): ModelsOperations {
   return {
+    setDefaultModel: vi.fn(),
     discoverModels,
     storeCredential: vi.fn(),
     removeCredential: vi.fn(),

@@ -9,7 +9,7 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import type { InjectFace, PropsRenderSlots } from '@noharness/client-ui-slots'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
-import { declaredHere } from './store.ts'
+import { declaredHere, defaultModelChoices } from './store.ts'
 import { providerCopy, targetOf } from './provider-identity.ts'
 import type { ProviderIdentity } from './provider-identity.ts'
 import { ProviderEditor } from './ProviderEditor.tsx'
@@ -54,6 +54,9 @@ function Loaded(
   if (state.status === 'error' && hasReadySnapshot) setHasReadySnapshot(false)
   const [picked, setPicked] = useState<string | undefined>(undefined)
   const [saved, setSaved] = useState<ProviderIdentity | undefined>(undefined)
+  /** Latest default-model write refusal; cleared by the next attempt. */
+  const [defaultError, setDefaultError] = useState<string | undefined>(undefined)
+  const [savingDefault, setSavingDefault] = useState(false)
   if (state.status === 'idle') void controller.load()
   if (state.status === 'error') {
     /* v8 ignore next -- an error status always carries text; the fallback satisfies the nullable type */
@@ -83,6 +86,24 @@ function Loaded(
   const row = configured.find(candidate => candidate.entry.provider === picked) ?? configured[0]
   const namespace = row === undefined ? undefined : state.namespaces.get(row.entry.settingsNs)
   const target = row === undefined ? undefined : targetOf(row)
+  const choices = state.catalog === undefined ? [] : defaultModelChoices(state.catalog.groups)
+  const storedDefault = state.catalog?.default
+  const storedValue = storedDefault === undefined ? '' : `${storedDefault.provider}\u0000${storedDefault.model}`
+  const saveDefault = (value: string): void => {
+    const separator = value.indexOf('\u0000')
+    if (separator < 0) return
+    const selection = { provider: value.slice(0, separator), model: value.slice(separator + 1) }
+    setDefaultError(undefined)
+    setSavingDefault(true)
+    void operations.setDefaultModel(selection).then(async (refusal) => {
+      if (refusal !== undefined) { setDefaultError(refusal); setSavingDefault(false); return }
+      await controller.load()
+      setSavingDefault(false)
+    }, (error: unknown) => {
+      setDefaultError(error instanceof Error ? error.message : String(error))
+      setSavingDefault(false)
+    })
+  }
   return (
     <div className={styles['section']}>
       <h2 className={styles['title']}>{t('title')}</h2>
@@ -93,6 +114,32 @@ function Loaded(
           <p className={styles['savedNotice']} role="status" aria-live="polite">
             {providerCopy(t('savedProvider'), saved)}
           </p>
+        )}
+      {choices.length === 0
+        ? null
+        : (
+          <div className={styles['picker']}>
+            <span className={styles['fieldLabel']}>{t('defaultModelLabel')}</span>
+            <select
+              className={`${styles['input']} ${styles['selectInput']}`}
+              value={storedValue}
+              aria-label={t('defaultModelLabel')}
+              disabled={!state.writable || savingDefault}
+              onChange={(event) => { saveDefault(event.target.value) }}
+            >
+              {choices.some(choice => `${choice.provider}\u0000${choice.model}` === storedValue)
+                ? null
+                : <option value="">{t('defaultModelUnset')}</option>}
+              {choices.map(choice => (
+                <option key={`${choice.provider}\u0000${choice.model}`} value={`${choice.provider}\u0000${choice.model}`}>
+                  {`${choice.providerName} — ${choice.modelName}`}
+                </option>
+              ))}
+            </select>
+            {defaultError === undefined
+              ? null
+              : <p className={styles['error']} role="alert">{defaultError}</p>}
+          </div>
         )}
       {row === undefined
         ? <p className={styles['advancedHint']}>{t('noModelsProvider')}</p>

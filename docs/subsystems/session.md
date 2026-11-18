@@ -916,6 +916,13 @@ resolveAgent(sessionId: SessionId): Promise<ApiSessionAgentResult>
 @Remote('selectModel') selectModel(request: SessionSelectModelRequest): Promise<SessionSelectModelValue>
 
 /**
+ * Record the deployment default model that later Agents start from.
+ * @param selection - provider, model, and optional reasoning effort to store.
+ * @returns the stored deployment-default selection.
+ */
+@Remote('setDefaultModel') setDefaultModel(selection: ModelSelection): Promise<ModelSelection>
+
+/**
  * Select the first available account model after login when no provider API key is configured.
  * @returns after saving the first available model or retaining the existing default.
  */
@@ -1075,7 +1082,7 @@ workspaceDesktop(): { name: string; available: boolean; fileManager: 'finder' | 
 @Remote({ mode: 'stream' }) async *control(signal: AbortSignal): AsyncIterable<SessionControlFrame>
 ```
 
-Types: [SessionId](core.md) · [SessionSearchRequest](session-query.md)
+Types: [ModelSelection](core.md) · [SessionId](core.md) · [SessionSearchRequest](session-query.md)
 
 Source: [`packages/api/session-controller/src/index.ts`](../../packages/api/session-controller/src/index.ts)
 

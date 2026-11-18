@@ -214,6 +214,16 @@ async search(request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearch
 async searchReady(llmProvider?: string): Promise<boolean>
 
 /**
+ * Run one small connectivity probe through the same provider selection that
+ * `search()` and `fetch()` use. The call reaches the network on the user's
+ * click; a provider or selection failure is reported in the result rather
+ * than thrown.
+ * @param capability - which provider to exercise.
+ * @returns the selected provider and the technical outcome.
+ */
+@Remote async probe(capability: 'search' | 'fetch'): Promise<WebProbeResult>
+
+/**
  * Retrieve one URL through the selected provider. Resolves the provider at
  * call time with the selection rules above; throws {@link WebError} when the
  * capability cannot run. A non-2xx response is a result, not a throw.

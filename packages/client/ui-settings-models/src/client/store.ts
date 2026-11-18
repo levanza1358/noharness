@@ -9,7 +9,8 @@
 
 import type { Context as ClientContext } from '@noharness/cordis'
 import type {
-  CredentialInfo, LlmConfigurableProvider, LlmNativeAuth, LlmProviderInfo, SettingsNamespaceView,
+  CredentialInfo, LlmConfigurableProvider, LlmNativeAuth, LlmProviderInfo, ModelCatalog, ModelProviderGroup,
+  SettingsNamespaceView,
 } from '@noharness/api-remotes/client'
 import type { SnapshotStore } from '@noharness/client-store'
 import { createSnapshotStore } from '@noharness/client-store'
@@ -113,6 +114,22 @@ export interface ModelsSettingsState {
   rows: readonly ProviderRow[]
   /** Namespace views by ns, for the editor's schema/layers/secrets. */
   namespaces: ReadonlyMap<string, SettingsNamespaceView>
+  /**
+   * Every model the deployment can currently route, grouped by provider, and
+   * the selection new Sessions start from. Absent when the catalog read failed;
+   * the provider page still renders from `rows`.
+   */
+  catalog: ModelCatalog | undefined
+  /** Catalog read failure; models stay unselectable rather than failing the page. */
+  catalogError: string | null
+}
+
+/** One selectable model under its provider, as the default-model picker lists it. */
+export interface DefaultModelChoice {
+  readonly provider: string
+  readonly providerName: string
+  readonly model: string
+  readonly modelName: string
 }
 
 /**
@@ -186,6 +203,7 @@ export class ModelsSettingsStore {
   /** The snapshot the section renders from (uSES-safe store). */
   readonly store: SnapshotStore<ModelsSettingsState> = createSnapshotStore<ModelsSettingsState>({
     status: 'idle', error: null, credentialError: null, writable: false, rows: [], namespaces: new Map(),
+    catalog: undefined, catalogError: null,
   })
 
   /** Latest load wins; an older response never overwrites a newer one. */
@@ -229,9 +247,10 @@ export class ModelsSettingsStore {
   /** Publish one joined answer; stale answers leave the current refresh in charge. */
   private async read(generation: number): Promise<void> {
     this.store.update((s) => { s.status = 'loading'; s.error = null })
-    const [registered, declared] = await Promise.all([
+    const [registered, declared, catalogResponse] = await Promise.all([
       this.ctx.remote.llm.listProviders(),
       this.ctx.remote.llm.listConfigurableProviders(),
+      this.ctx.remote.session.modelCatalog(),
       this.describeFace.ensure(),
     ])
     if (generation !== this.generation) return
@@ -265,10 +284,9 @@ export class ModelsSettingsStore {
       }
     })
     if (rows.some(row => row.entry.provider === 'deepseek-account')) {
-      const catalog = await this.ctx.remote.session.modelCatalog()
       for (const row of rows) {
-        if (row.entry.provider === 'deepseek-account') row.accountAvailable = catalog.ok
-          && catalog.value.groups.some(group => group.id === 'deepseek-account' && group.models.length > 0)
+        if (row.entry.provider === 'deepseek-account') row.accountAvailable = catalogResponse.ok
+          && catalogResponse.value.groups.some(group => group.id === 'deepseek-account' && group.models.length > 0)
       }
     }
     const refs = [...new Set(rows.filter(row => row.entry.provider !== 'deepseek-account').flatMap(row =>
@@ -308,6 +326,8 @@ export class ModelsSettingsStore {
         }
       })
       s.namespaces = namespaces
+      s.catalog = catalogResponse.ok ? catalogResponse.value : undefined
+      s.catalogError = catalogResponse.ok ? null : catalogResponse.error.message
     })
   }
 
@@ -354,4 +374,19 @@ export function providerUsable(row: ProviderRow): boolean {
  */
 export function declaredHere(row: ProviderRow): boolean {
   return row.removable || row.entry.declared === true
+}
+
+/**
+ * Flatten the catalog's provider groups into the picker's option list: every
+ * routable model of every provider, provider order preserved.
+ * @param groups - provider groups from the Host catalog.
+ * @returns one choice per model, carrying its provider's display name.
+ */
+export function defaultModelChoices(groups: readonly ModelProviderGroup[]): DefaultModelChoice[] {
+  return groups.flatMap(group => group.models.map(model => ({
+    provider: group.id,
+    providerName: group.name,
+    model: model.id,
+    modelName: model.name,
+  })))
 }

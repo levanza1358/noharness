@@ -66,6 +66,7 @@ function setup(namespace: SettingsNamespaceView, settingsPath: string[] = []) {
     removeCredential: vi.fn(() => Promise.resolve(undefined)),
     writeSettings,
     discoverModels: vi.fn<ModelsOperations['discoverModels']>(() => Promise.resolve({ kind: 'found', models: [] })),
+    setDefaultModel: vi.fn(),
   }
   const onClose = vi.fn()
   render(<ProviderEditor provider="route" displayName="Route" namespace={namespace} schema={settingsSchema}

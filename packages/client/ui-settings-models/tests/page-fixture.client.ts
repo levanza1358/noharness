@@ -210,19 +210,34 @@ type PageContext = ConstructorParameters<typeof ModelsSettingsStore>[0]
  * would otherwise re-probe on every render.
  */
 const contexts = new WeakMap<object, PageContext>()
+/** The scripted `remote.session` face behind each context, for call assertions. */
+const sessions = new WeakMap<object, Record<string, unknown>>()
 export function ctxWith(face: object): PageContext {
   const existing = contexts.get(face)
   if (existing !== undefined) return existing
-  const ctx = Object.assign(new Context(), { remote: { ...face,
-    session: {
-      initializeDefaultModel: async () => ({ ok: true, value: undefined }),
-      modelCatalog: async () => ({ ok: true, value: { groups: [
-        { id: 'deepseek-account', models: [{ id: 'deepseek-v4-flash' }] },
-      ] } }),
-    },
-  } })
+  const session = {
+    initializeDefaultModel: async () => ({ ok: true, value: undefined }),
+    setDefaultModel: vi.fn(async (selection: { provider: string; model: string }) => ({ ok: true, value: selection })),
+    modelCatalog: vi.fn(async () => ({ ok: true as const, value: {
+      default: { provider: 'openai', model: 'gpt-4o' },
+      routableProviders: ['openai', 'deepseek-account'],
+      groups: [
+        { id: 'openai', name: 'OpenAI', models: [{ id: 'gpt-4o', name: 'GPT-4o' }] },
+        { id: 'deepseek-account', name: 'DeepSeek Account', models: [{ id: 'deepseek-v4-flash', name: 'DeepSeek V4 Flash' }] },
+      ],
+      failures: [],
+    } })),
+  }
+  sessions.set(face, session)
+  const ctx = Object.assign(new Context(), { remote: { ...face, session } })
   contexts.set(face, ctx)
   return ctx
+}
+
+/** The `remote.session` mock the page's default-model calls land on. */
+export function sessionWith(face: object): Record<string, unknown> {
+  ctxWith(face)
+  return sessions.get(face) as Record<string, unknown>
 }
 
 /**

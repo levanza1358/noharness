@@ -160,7 +160,16 @@ function ctxWith(face: object): PageContext {
   const existing = contexts.get(face)
   if (existing !== undefined) return existing
   const ctx = Object.assign(new Context(), { remote: { ...face,
-    session: { initializeDefaultModel: async () => ({ ok: true, value: undefined }) },
+    session: {
+      initializeDefaultModel: async () => ({ ok: true, value: undefined }),
+      setDefaultModel: async (selection: { provider: string; model: string }) => ({ ok: true, value: selection }),
+      modelCatalog: async () => ({ ok: true as const, value: {
+        default: { provider: 'openai', model: 'gpt-4o' },
+        routableProviders: ['openai'],
+        groups: [{ id: 'openai', name: 'OpenAI', models: [{ id: 'gpt-4o', name: 'GPT-4o' }] }],
+        failures: [],
+      } }),
+    },
   } })
   contexts.set(face, ctx)
   return ctx

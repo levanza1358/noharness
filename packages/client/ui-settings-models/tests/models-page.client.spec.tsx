@@ -7,7 +7,7 @@ import { SettingsDescribeMirror } from '@noharness/client-ui-settings/src/client
 import { ModelsPage } from '../src/client/ModelsPage.tsx'
 import { ModelsSettingsStore } from '../src/client/store.ts'
 import { en } from '../src/client/locales.ts'
-import { ctxWith, operationsWith, remoteFail, remoteOk, scriptedFace, wireNamespaces } from './page-fixture.client.ts'
+import { ctxWith, operationsWith, remoteFail, remoteOk, scriptedFace, sessionWith, wireNamespaces } from './page-fixture.client.ts'
 import { settingsSchema } from './settings-schema.client.ts'
 
 afterEach(cleanup)
@@ -112,6 +112,49 @@ describe('ModelsPage', () => {
     await mountPage(scriptedFace())
     const picker = screen.getByLabelText(en.providerSelect) as HTMLSelectElement
     expect([...picker.options].map(option => option.value)).toEqual(['openai', 'zombie'])
+  })
+
+  it('offers every routable model as the default, on its stored selection', async () => {
+    await mountPage(scriptedFace())
+    const picker = screen.getByLabelText<HTMLSelectElement>(en.defaultModelLabel)
+    expect(picker.value).toBe('openai\u0000gpt-4o')
+    expect([...picker.options].map(option => option.textContent)).toEqual([
+      'OpenAI — GPT-4o',
+      'DeepSeek Account — DeepSeek V4 Flash',
+    ])
+    // It sits above the provider picker the page already had.
+    const provider = screen.getByLabelText(en.providerSelect)
+    expect(picker.compareDocumentPosition(provider) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('stores a newly chosen default model from any provider', async () => {
+    const scripted = scriptedFace()
+    const { controller } = await mountPage(scripted)
+    const picker = screen.getByLabelText(en.defaultModelLabel) as HTMLSelectElement
+    await act(async () => { fireEvent.change(picker, { target: { value: 'deepseek-account\u0000deepseek-v4-flash' } }) })
+    const session = sessionWith(scripted.face) as { setDefaultModel: ReturnType<typeof vi.fn> }
+    expect(session.setDefaultModel).toHaveBeenCalledWith({ provider: 'deepseek-account', model: 'deepseek-v4-flash' })
+    expect(controller.store.getSnapshot().status).toBe('ready')
+  })
+
+  it('reports a refused default-model write beside the picker', async () => {
+    const scripted = scriptedFace()
+    const session = sessionWith(scripted.face) as { setDefaultModel: ReturnType<typeof vi.fn> }
+    session.setDefaultModel.mockResolvedValueOnce({ ok: false, error: { message: 'model gone' } })
+    await mountPage(scripted)
+    const picker = screen.getByLabelText(en.defaultModelLabel)
+    await act(async () => { fireEvent.change(picker, { target: { value: 'openai\u0000gpt-4o' } }) })
+    await waitFor(() => { expect(screen.getByRole('alert').textContent).toContain('model gone') })
+  })
+
+  it('hides the default picker when no model is routable', async () => {
+    const scripted = scriptedFace()
+    const session = sessionWith(scripted.face) as { modelCatalog: ReturnType<typeof vi.fn> }
+    session.modelCatalog.mockResolvedValue({ ok: true, value: {
+      default: { provider: 'openai', model: 'gpt-4o' }, routableProviders: [], groups: [], failures: [],
+    } })
+    await mountPage(scripted)
+    expect(screen.queryByLabelText(en.defaultModelLabel)).toBeNull()
   })
 
   it('starts over after a failed refresh of a loaded page', async () => {

@@ -7,7 +7,7 @@
 
 import type { Context as ClientContext } from '@noharness/cordis'
 import type {
-  LlmDiscoveredModel, LlmModelDiscoveryRequest,
+  LlmDiscoveredModel, LlmModelDiscoveryRequest, ModelSelection,
   SettingsNamespaceView, SettingsPathOpView,
 } from '@noharness/api-remotes/client'
 
@@ -65,6 +65,12 @@ export interface ModelsOperations {
    * @returns the candidates, or the refusal.
    */
   discoverModels(settingsNs: string, request: LlmModelDiscoveryRequest): Promise<ModelDiscoveryOutcome>
+  /**
+   * Store the deployment default model later Sessions start from.
+   * @param selection - provider and model to record.
+   * @returns the refusal message, or undefined once stored.
+   */
+  setDefaultModel(selection: ModelSelection): Promise<string | undefined>
 }
 
 /**
@@ -94,6 +100,10 @@ export function createModelsOperations(ctx: ClientContext): ModelsOperations {
       return response.ok
         ? { kind: 'found', models: response.value }
         : { kind: 'refused', message: response.error.message }
+    },
+    setDefaultModel: async (selection) => {
+      const response = await ctx.remote.session.setDefaultModel(selection)
+      return response.ok ? undefined : response.error.message
     },
   }
 }

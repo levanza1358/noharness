@@ -1,7 +1,7 @@
 {
   "name": "@noharness/scope",
   "description": "Scoped-context registration primitive (scope tags, scope-filtered event dispatch) for the NoHarness",
-  "version": "0.2.2-rc.4",
+  "version": "0.2.2-rc.5",
   "publishConfig": {
     "access": "public"
   },

@@ -1,7 +1,7 @@
 {
   "name": "@noharness/webhook",
   "description": "Fire-and-forget webhook rule runtime that creates Workspace-backed NoHarness Sessions",
-  "version": "0.2.2-rc.4",
+  "version": "0.2.2-rc.5",
   "publishConfig": {
     "access": "public"
   },

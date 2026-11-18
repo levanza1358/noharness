@@ -1,7 +1,7 @@
 {
   "name": "@noharness/cli",
   "description": "nhs CLI: profile launch, plugin management, and configuration inspection",
-  "version": "0.2.2-rc.4",
+  "version": "0.2.2-rc.5",
   "publishConfig": {
     "access": "public"
   },

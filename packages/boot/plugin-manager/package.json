@@ -1,7 +1,7 @@
 {
   "name": "@noharness/plugin-manager",
   "description": "Current-profile plugin and bundle management shared by nhs CLI, Web and agent tools",
-  "version": "0.2.2-rc.4",
+  "version": "0.2.2-rc.5",
   "publishConfig": {
     "access": "public"
   },

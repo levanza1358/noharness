@@ -1,7 +1,7 @@
 {
   "name": "@noharness/tool-todo",
   "description": "Model-facing todo_write tool over the NoHarness event-sourced session log",
-  "version": "0.2.2-rc.4",
+  "version": "0.2.2-rc.5",
   "publishConfig": {
     "access": "public"
   },

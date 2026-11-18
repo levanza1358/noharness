@@ -1,7 +1,7 @@
 {
   "name": "@noharness/util-values",
   "description": "Duplicate-install-safe value primitives for the NoHarness",
-  "version": "0.2.2-rc.4",
+  "version": "0.2.2-rc.5",
   "publishConfig": {
     "access": "public"
   },

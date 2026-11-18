@@ -1,7 +1,7 @@
 {
   "name": "@noharness/skill",
   "description": "Agent skill provider registry for the NoHarness",
-  "version": "0.2.2-rc.4",
+  "version": "0.2.2-rc.5",
   "publishConfig": {
     "access": "public"
   },

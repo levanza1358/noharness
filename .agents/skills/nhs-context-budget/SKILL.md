@@ -5,7 +5,7 @@ description: Use when reading files, exploring a package, or assembling a subage
 
 # Context budget
 
-Context is the scarcest resource in a NoHarness task: the repository is 1.5M lines across 391 packages, and no single task needs more than a few thousand of them. The failure mode is not running out of window — it is filling the window with content that displaces the thing you were reasoning about.
+Context is the scarcest resource in a NoHarness task: the repository holds thousands of source files across hundreds of packages, and no single task needs more than a few thousand lines of them. The failure mode is not running out of window — it is filling the window with content that displaces the thing you were reasoning about.
 
 ## Read in this order
 
@@ -21,8 +21,8 @@ Context is the scarcest resource in a NoHarness task: the repository is 1.5M lin
 Before every read, state what fact you are looking for. If you cannot name it in one sentence, the read is exploration, and exploration belongs behind a `grep` that names a symbol.
 
 ```
-Bad:   read packages/session/session/src/index.ts (2000 lines)
-Good:  grep "export function .*Turn" in that file, then read lines 140-190
+Bad:   read packages/session/session/src/index.ts end to end
+Good:  grep "export function .*Turn" in that file, then read the matched range
 ```
 
 ## What not to load
@@ -37,7 +37,7 @@ Good:  grep "export function .*Turn" in that file, then read lines 140-190
 
 When a file matters beyond one use, keep the fact, not the text:
 
-> `SkillProvider.discover(cwd)` returns `SkillCandidate[]` ranked; registry dedupes by name, highest rank wins. (`packages/skill/skill/src/index.ts`)
+> `ctx.skills` merges provider catalogs into one ranked list; a duplicate skill name resolves to the lower `rank` value. (`packages/skill/skill/src/index.ts`)
 
 One line that survives compaction beats twenty lines that do not.
 

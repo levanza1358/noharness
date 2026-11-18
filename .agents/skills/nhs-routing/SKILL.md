@@ -24,6 +24,8 @@ Most wasted turns happen before the first edit: exploring the wrong subtree beca
 | Review a diff | [nhs-code-review](../nhs-code-review/SKILL.md) → [cordis-styling-nitpicking](../cordis-styling-nitpicking/SKILL.md) |
 | Change a plugin's config surface | `docs/config-catalog.md` + `pnpm run verify-config-catalog` |
 | Add a test | [nhs-tdd](../nhs-tdd/SKILL.md) → [nhs-ci-test-reliability](../nhs-ci-test-reliability/SKILL.md) if it touches processes, ports, clocks, or teardown |
+| Add a Remote API method or settings card | `docs/cookbook/adding-a-remote-api.md` or `docs/cookbook/adding-a-settings-card.md` |
+| Add or change an LLM provider | `docs/cookbook/adding-an-llm-adapter.md` |
 
 Two rows apply → load both, in the order listed. Three or more → stop and split the task; a change crossing three surfaces is usually two changes.
 
@@ -33,16 +35,16 @@ Before reading any file, locate the seam:
 
 ```sh
 # Which package owns this concept?
-grep -r "<concept>" packages/*/*/src --files-with-matches
+grep -rl "<concept>" packages/*/*/src
 
 # Who imports it?
-grep -r "<exported-symbol>" packages apps --files-with-matches
+grep -rl "<exported-symbol>" packages apps
 
 # Is it already documented?
-grep -r "<concept>" docs — and check docs/subsystems/
+grep -rl "<concept>" docs/subsystems
 ```
 
-The owning package is where the concept is *defined*, not where it is *used*. Start there.
+Use the repository's grep tooling; the equivalent commands above are the shell form. The owning package is where the concept is *defined*, not where it is *used*. Start there.
 
 ## Escalation
 

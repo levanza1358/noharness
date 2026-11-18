@@ -23,7 +23,7 @@ Load [nhs-client-ui-ux](../nhs-client-ui-ux/SKILL.md) for the design system rule
 | Empty state that only says "empty" | Nothing to do next | Say what belongs here and the one action that adds it. |
 | Loading spinner on everything | Hides what is known | Placeholder that resolves into the real layout. |
 | Fake data density | Fills space, teaches nothing | Show fewer, real things. |
-| Copy written by the component | inconsistent with product voice | Route through the locale dictionary. |
+| Copy written by the component | Inconsistent with product voice | Route through the typed locale dictionary; `verify-client-ui-i18n` rejects hardcoded copy. |
 | A dialog for one field | Costs a context switch | Inline where possible. |
 
 ## Judging density

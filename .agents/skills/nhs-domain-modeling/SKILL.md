@@ -55,11 +55,17 @@ Derived values are the highest-risk fields in a persisted model: they are correc
 
 A type usually crosses a package boundary because the concept does. Ask which package owns the concept — not which package first needed it.
 
-- Owned by one consumer → keep it private; do not export it.
-- Owned by a seam → the Service Definition owns the type; providers and consumers import it.
-- Owned by nobody → the concept is not yet real; do not create a shared package for it ([capability seams](../../../docs/glossary.md#capability-seam)).
+- **Owned by one consumer** → keep it private; do not export it.
+- **Owned by a seam** → the Service Definition owns the type; providers and consumers import it.
+- **Owned by nobody** → the concept is not yet real; do not create a shared package for it ([capability seam](../../../docs/glossary.md#capability-seam)).
 
 A model that lives in the wrong package is duplicated within a month.
+
+| Ownership question | Owner |
+|---|---|
+| Which package owns the identifier type? | [packages/util/brand](../../../packages/util/brand/README.md) |
+| Does this change a durable or wire type? | [docs/cookbook/reviewing-persistence-type-changes.md](../../../docs/cookbook/reviewing-persistence-type-changes.md) |
+| Does this change a session event? | [docs/session-format-status.md](../../../docs/session-format-status.md) |
 
 ## Branded identifiers
 

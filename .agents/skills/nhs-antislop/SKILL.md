@@ -41,11 +41,23 @@ Slop is unneeded work. Those are needed work that happens to be inconvenient.
 ## NoHarness-specific slop traps
 
 - **`ctx.<service>` for an optional service.** Use `ctx.get(name)`; the proxy is topology-sensitive. Reach for the declaration first.
-- **A new global or module-level cache** to avoid threading a parameter. Shared state needs an owner ([packages/AGENTS.md](../../../packages/AGENTS.md)).
-- **A `@ts-expect-error` or assertion to `unknown`** where a typed value or validation belongs.
+- **A module-level cache, `globalThis` handoff, or new `current` singleton** to avoid threading a parameter. Shared state needs an owner ([packages/AGENTS.md](../../../packages/AGENTS.md#instructions-applying-to-work-under-packages)).
+- **An invalid `@ts-expect-error`, or a new `as unknown` cast**, where a typed value or validation belongs.
 - **A package made to hold three functions** that could live in an existing owner.
 - **A snapshot updated without reading it.** Updating the expected output to match broken behavior is the highest-cost slop in this repo.
 - **A second helper next to an existing one** because the first took a parameter you did not want to thread.
+
+## Tells that are authoritative elsewhere
+
+Some patterns are enforced by a gate or owned by another skill. This skill only flags them; follow the owner rather than improvising a fix:
+
+| Pattern | Owner |
+|---|---|
+| Empty `catch` without a named error | `pnpm run verify-empty-catch` |
+| Hedge or change-narration prose in comments, JSDoc, notes | [nhs-trim-cot-leakage](../nhs-trim-cot-leakage/SKILL.md) |
+| Overlong or restated prose | [nhs-prose-standard](../nhs-prose-standard/SKILL.md) |
+| Dead or duplicated surface at package scale | [nhs-find-simplifications](../nhs-find-simplifications/SKILL.md) |
+
 
 ## Reporting
 

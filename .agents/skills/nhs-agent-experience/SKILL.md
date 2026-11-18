@@ -17,12 +17,14 @@ All three are expensive. (1) and (3) cost turns; (2) costs every turn forever.
 
 ## Writing a tool
 
-- **Name for the action the model wants**, not the implementation. `present`, not `emit_turn_deliverables`.
+- **Name for the action the model wants**, not the implementation. `present` is a good name; `emit_turn_deliverables` is not.
 - **The description answers three questions**: when to use it, when not to, and what comes back. If "when not to" is empty, the tool probably overlaps another one — fix the overlap, do not write a ban.
 - **Schema carries the constraints, prose carries the judgment.** `enum` for fixed choices; description for "prefer this when…". Never describe in prose what the schema can enforce.
 - **Required means required.** An optional field the implementation always needs is a lie that surfaces as a runtime error three layers down.
 - **One obvious call shape.** If two parameter sets both work, the model will find the worse one under pressure.
 - **Results lead with the outcome.** First line says what happened; detail follows. Errors say what was rejected, why, and the one thing to change.
+- **Pin the model-visible text.** Stable tool text is asserted verbatim in a snapshot, and dynamic behavior through end-to-end coverage; a contract no test pins drifts silently.
+- **Write from the model's perspective only.** No UI, transport, or implementation vocabulary in prompts, schemas, results, or diagnostics.
 
 ## Error messages the model can act on
 

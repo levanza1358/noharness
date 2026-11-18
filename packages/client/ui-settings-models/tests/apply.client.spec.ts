@@ -1,6 +1,4 @@
 /** Models section registration: slot declaration injection, the locale-following label thunk, and HMR recovery. */
-import type { JsonValue } from '@noharness/util-values'
-import Schema from '@noharness/schemastery'
 import { Context } from '@noharness/cordis'
 import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { resolveSlotLabel } from '@noharness/client-ui-slots'
@@ -11,12 +9,8 @@ import { remoteDefaultResponses } from '@noharness/client-test-runtime/src/assem
 import { ok, RemoteMock } from '@noharness/remote-mock'
 import { apply as settingsApply, inject as settingsInject } from '@noharness/client-ui-settings/client'
 import { apply, inject, refreshIfLoaded } from '@noharness/client-ui-settings-models/client'
-import {
-  WELCOME_NOTICE_ACK_FIELD, WELCOME_NOTICE_SETTINGS_NAMESPACE, WELCOME_NOTICE_VERSION,
-} from '../src/onboarding-copy.ts'
 import { ModelsPage } from '../src/client/ModelsPage.tsx'
 import { ProvidersSection } from '../src/client/ProvidersSection.tsx'
-import { WelcomeNotice } from '../src/client/WelcomeNotice.tsx'
 
 afterEach(() => { vi.unstubAllGlobals() })
 
@@ -55,7 +49,6 @@ function declare(slots: SlotRegistry): () => void {
       name: 'root',
       children: {
         'settings.section': { kind: 'list', scope: 'root' },
-        'settings.onboarding': { kind: 'list', scope: 'root' },
       },
     } as never,
     () => null,
@@ -89,21 +82,13 @@ describe('ui-settings-models apply', () => {
     expect(typeof injected.controller.load).toBe('function')
     expect(injected.hooks.snapshot).toBe(injected.controller.store)
     expect(typeof injected.operations.writeSettings).toBe('function')
-    const onboarding = before.slots.entries('settings.onboarding')
-    expect(onboarding).toHaveLength(1)
-    expect(onboarding[0]).toMatchObject({
-      component: WelcomeNotice,
-      options: { id: 'welcome-notice', order: -100 },
-    })
 
     const after = await bench()
     await after.ctx.plugin({ inject: [...inject], apply }).await()
     expect(after.slots.entries('settings.section')).toHaveLength(0)
-    expect(after.slots.entries('settings.onboarding')).toHaveLength(0)
     declare(after.slots)
     await Promise.resolve()
     expect(after.slots.entries('settings.section').map(entry => entry.component)).toEqual([ProvidersSection, ModelsPage])
-    expect(after.slots.entries('settings.onboarding')).toHaveLength(1)
     // The self-inflicted ledger notifications hit the duplicate guard.
     expect(after.slots.entries('settings.section')).toHaveLength(2)
   })
@@ -138,11 +123,9 @@ describe('ui-settings-models apply', () => {
     // disposer variable goes stale.
     redeclare()
     expect(b.slots.entries('settings.section')).toHaveLength(0)
-    expect(b.slots.entries('settings.onboarding')).toHaveLength(0)
     declare(b.slots)
     await Promise.resolve()
     expect(b.slots.entries('settings.section')[1]!.component).toBe(ModelsPage)
-    expect(b.slots.entries('settings.onboarding')).toHaveLength(1)
     // The locale path also recovers through the same ledger re-check.
     b.locale.setLocale('en')
     expect(b.slots.entries('settings.section').map(entry => resolveSlotLabel(entry.options.label))).toEqual(['Providers', 'Models'])
@@ -179,7 +162,6 @@ describe('ui-settings-models apply', () => {
     expect(b.locale.bind('settings.models')('nav')).toBe('Models')
     await fiber.dispose()
     expect(b.slots.entries('settings.section')).toHaveLength(0)
-    expect(b.slots.entries('settings.onboarding')).toHaveLength(0)
     // The (ns, locale) seats are free again — the dictionary disposers ran.
     expect(() => b.locale.register('settings.models', 'en', {})).not.toThrow()
   })
@@ -227,43 +209,6 @@ describe('pushed invalidations', () => {
     const load = vi.spyOn(injected.controller, 'load').mockResolvedValue()
     b.remote.emit('credentials/reference-updated', ['DEEPSEEK_API_KEY'])
     expect(load).toHaveBeenCalledTimes(1)
-  })
-
-  it('welcome state follows the shared mirror across document commits', async () => {
-    // The welcome notice derives from its settings scope: a document commit
-    // reaches it through the mirror's one refresh, with no routing here.
-    const mock = RemoteMock.create().load(remoteDefaultResponses)
-    const namespace = {
-      ns: WELCOME_NOTICE_SETTINGS_NAMESPACE,
-      schema: JSON.parse(JSON.stringify(Schema.object({ [WELCOME_NOTICE_ACK_FIELD]: Schema.string() }).toJSON())) as JsonValue,
-      value: {},
-      autoGenerate: true, applies: 'live' as const,
-      secrets: [],
-      revision: 0,
-    }
-    const document = { writable: true, hasDocument: false, namespaces: [namespace] }
-    mock.remote.settings.describe.mockResolvedValue(ok(document))
-    const b = await bench(mock)
-    declare(b.slots)
-    await b.ctx.plugin({ inject: [...inject], apply }).await()
-    const entry = b.slots.entries('settings.onboarding')
-      .find(candidate => candidate.options.id === 'welcome-notice')!
-    const injected = (
-      entry.inject as unknown as
-      () => import('../src/client/WelcomeNotice.tsx').WelcomeNoticeInjected
-    )()
-    await injected.controller.load()
-    await vi.waitFor(() => {
-      expect(injected.hooks.welcome.getSnapshot()).toMatchObject({ status: 'ready', acknowledged: false })
-    })
-    mock.remote.settings.describe.mockResolvedValue(ok({
-      ...document,
-      namespaces: [{ ...namespace, value: { [WELCOME_NOTICE_ACK_FIELD]: WELCOME_NOTICE_VERSION }, revision: 1 }],
-    }))
-    b.remote.emit('settings/document-updated', ['ui-settings-general', 1])
-    await vi.waitFor(() => {
-      expect(injected.hooks.welcome.getSnapshot()).toMatchObject({ status: 'ready', acknowledged: true })
-    })
   })
 
   it('joins the refreshed mirror view on a settings invalidation', async () => {

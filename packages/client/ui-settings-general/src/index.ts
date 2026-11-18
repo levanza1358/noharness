@@ -5,7 +5,12 @@ import type { Volatile, Context } from '@noharness/cordis'
 
 import z from '@noharness/schemastery'
 
-/** Runtime preferences projected to the browser. */
+/**
+ * Runtime preferences projected to the browser.
+ *
+ * The field keeps profile patches that recorded a welcome-notice
+ * acknowledgement loadable; the notice itself was removed.
+ */
 export interface Config {
   /** Last acknowledged welcome notice version. */
   welcomeNoticeVersion: Volatile<string | undefined>

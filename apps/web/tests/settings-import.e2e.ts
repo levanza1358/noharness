@@ -6,18 +6,21 @@ import { join } from 'node:path'
 import { chromium } from 'playwright'
 import { expect, it } from 'vitest'
 import { parseEntryYaml } from '@noharness/cordis-plugin-include'
-import { WELCOME_NOTICE_VERSION, launchWebScaffold, watchConsole } from './scaffold.ts'
+import { launchWebScaffold, watchConsole } from './scaffold.ts'
 import { ZH_BROWSER_LOCALE } from './support.ts'
+
+/** A legacy acknowledgement value, imported into the successor entry's config. */
+const LEGACY_ACK = '2026-09-28.1'
 
 it('imports settings.yaml into the profile once and applies the imported values', async () => {
   const harnessHome = mkdtempSync(join(tmpdir(), 'nhs-settings-import-'))
   writeFileSync(join(harnessHome, 'settings.yaml'), [
     'ui-theme:', '  fontSize: 16',
     'ui-developer-tools:', '  enabled: false',
-    'ui-onboarding:', `  welcomeNoticeVersion: '${WELCOME_NOTICE_VERSION}'`,
+    'ui-onboarding:', `  welcomeNoticeVersion: '${LEGACY_ACK}'`,
     '',
   ].join('\n'))
-  const scaffold = await launchWebScaffold({ harnessHome, welcomeNoticePending: true })
+  const scaffold = await launchWebScaffold({ harnessHome })
   const browser = await chromium.launch()
   try {
     const patchPath = join(harnessHome, 'profiles', 'scaffold', 'cordis.patch.yml')
@@ -26,7 +29,7 @@ it('imports settings.yaml into the profile once and applies the imported values'
       (parseEntryYaml(readFileSync(patchPath, 'utf8')) as Row[]).find(row => row.id === id)?.config
     await expect.poll(() => config('ui-theme')?.['fontSize'], { timeout: 10_000 }).toBe(16)
     expect(config('ui-settings')?.['enabled']).toBe(false)
-    expect(config('ui-settings-general')?.['welcomeNoticeVersion']).toBe(WELCOME_NOTICE_VERSION)
+    expect(config('ui-settings-general')?.['welcomeNoticeVersion']).toBe(LEGACY_ACK)
     expect(existsSync(join(harnessHome, 'settings.yaml'))).toBe(false)
     expect(readFileSync(join(harnessHome, 'settings.yaml.imported'), 'utf8')).toContain('fontSize: 16')
 

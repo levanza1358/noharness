@@ -51,10 +51,6 @@ const PAGE_CHILD_NAMES = Object.keys(PAGE_CHILD_SPECS) as Array<keyof typeof PAG
 const PRODUCT_SECTIONS: readonly string[] = [
   'general', 'providers', 'models', 'plugins', 'plugin-manager', 'agent-presets', 'about',
 ]
-/** Onboarding steps the web-app roster registers, in coordinator order; the welcome notice comes from ui-settings-models. */
-const PRODUCT_ONBOARDING: readonly { id: string; order: number }[] = [
-  { id: 'welcome-notice', order: -100 },
-]
 
 describe('ui-settings-general shell', () => {
   it('shares one carrier subscription between both update locations and releases it on unload', async ({ start }) => {
@@ -153,12 +149,13 @@ describe('ui-settings-general shell', () => {
   it('projects onboarding entries into stable coordinator order', async ({ start }) => {
     const c = await start()
     const { onboardingSteps } = injectedOf(c).hooks
-    expect(onboardingSteps.getSnapshot()).toEqual(PRODUCT_ONBOARDING)
+    // The shipped web-app roster contributes no onboarding step.
+    expect(onboardingSteps.getSnapshot()).toEqual([])
     c.ctx.slots.register({ name: 'settings.onboarding', id: 'credential', order: 0 } as never, () => null)
     c.ctx.slots.register({ name: 'settings.onboarding', id: 'welcome', order: -100 } as never, () => null)
     c.ctx.slots.register({ name: 'settings.onboarding', id: 'default-order' } as never, () => null)
     const steps = onboardingSteps.getSnapshot()
-    expect(steps.filter(step => !PRODUCT_ONBOARDING.some(known => known.id === step.id))).toEqual([
+    expect(steps).toEqual([
       { id: 'welcome', order: -100 },
       { id: 'credential', order: 0 },
       { id: 'default-order', order: 0 },

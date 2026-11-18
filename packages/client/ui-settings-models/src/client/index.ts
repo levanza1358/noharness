@@ -1,9 +1,7 @@
 /**
  * Models settings plugin, browser half. It registers the Providers and Models
- * pages plus the versioned preview notice, whose UI shares this package's
- * modal wrapper. The Host settings and credential contracts stay behind their
- * existing wire APIs. Export discipline:
- * packages/client/AGENTS.md.
+ * pages. The Host settings and credential contracts stay behind their existing
+ * wire APIs. Export discipline: packages/client/AGENTS.md.
  */
 import type {} from '@noharness/client-product-analytics/client'
 import type { Context as ClientContext } from '@noharness/cordis'
@@ -18,14 +16,10 @@ import type {} from '@noharness/api-remotes/client'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
 import { ProvidersSection } from './ProvidersSection.tsx'
 import { ModelsPage } from './ModelsPage.tsx'
-import { WelcomeNotice } from './WelcomeNotice.tsx'
-import type { WelcomeNoticeInjected } from './WelcomeNotice.tsx'
-import { WelcomeNoticeStore } from './welcome-store.ts'
 import { ModelsSettingsStore } from './store.ts'
 import { createModelsOperations } from './operations.ts'
 import { createSettingsSchemaOperations } from './schema-operations.ts'
 import { en, ja, es, fr, de, ru, pt, type ModelsKey } from './locales.ts'
-import { WELCOME_NOTICE_SETTINGS_NAMESPACE } from '../onboarding-copy.ts'
 
 export type { ModelsSectionInjected } from './ModelsSection.tsx'
 export type { ModelsPageProps } from './ModelsPage.tsx'
@@ -92,18 +86,11 @@ export function apply(ctx: ClientContext): void {
     schema,
     t,
   })
-  const welcomeController = new WelcomeNoticeStore(ctx.configForms.get<Record<string, unknown>>(WELCOME_NOTICE_SETTINGS_NAMESPACE))
-  const welcomeInjected = (): WelcomeNoticeInjected => ({
-    controller: welcomeController,
-    hooks: { welcome: welcomeController.store },
-    t,
-  })
 
   // Pushed invalidations converge every open surface without polling. The
   // configForms injection makes ui-settings activate first, and remote
   // dispatch preserves listener order; its listener therefore starts the
-  // mirror refresh before this store joins that refresh. The welcome notice
-  // follows its settings scope, so it needs no subscription here.
+  // mirror refresh before this store joins that refresh.
   ctx.effect(() => {
     const refreshModels = (): void => { refreshIfLoaded(controller) }
     const disposers = [
@@ -114,7 +101,6 @@ export function apply(ctx: ClientContext): void {
       ctx.on('connection/reset', refreshModels),
     ]
     return () => {
-      welcomeController.dispose()
       for (const dispose of disposers) dispose()
     }
   }, 'ui-settings-models: pushed invalidations')
@@ -137,10 +123,4 @@ export function apply(ctx: ClientContext): void {
       'settings.models.footer': { kind: 'list', scope: 'root' },
     },
   }, ModelsPage))
-  if (!('nhsDesktop' in globalThis)) ctx.slots.inject('settings.onboarding', () => ctx.slots.register({
-    name: 'settings.onboarding',
-    id: 'welcome-notice',
-    order: -100,
-    inject: welcomeInjected,
-  }, WelcomeNotice))
 }

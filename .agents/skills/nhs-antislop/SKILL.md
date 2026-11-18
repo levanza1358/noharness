@@ -41,7 +41,7 @@ Slop is unneeded work. Those are needed work that happens to be inconvenient.
 ## NoHarness-specific slop traps
 
 - **`ctx.<service>` for an optional service.** Use `ctx.get(name)`; the proxy is topology-sensitive. Reach for the declaration first.
-- **A module-level cache, `globalThis` handoff, or new `current` singleton** to avoid threading a parameter. Shared state needs an owner ([packages/AGENTS.md](../../../packages/AGENTS.md#instructions-applying-to-work-under-packages)).
+- **A module-level cache, `globalThis` handoff, or new `current` singleton** to avoid threading a parameter. Shared state needs an owner ([packages/AGENTS.md](../../../packages/AGENTS.md)).
 - **An invalid `@ts-expect-error`, or a new `as unknown` cast**, where a typed value or validation belongs.
 - **A package made to hold three functions** that could live in an existing owner.
 - **A snapshot updated without reading it.** Updating the expected output to match broken behavior is the highest-cost slop in this repo.

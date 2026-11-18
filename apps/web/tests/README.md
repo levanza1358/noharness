@@ -42,7 +42,7 @@ A new scenario joins both program lists in the same change: its file in the root
 
 Importing a Client package — a value or a type — pulls its TypeScript project and referenced projects into the Host build graph. Generated Remote declarations are available before package compilation, but this does not make the Host and Client Cordis `Context` declarations compatible. Keep these tests on the Host face and use only the explicit built-client harness exception below.
 
-When a scenario needs a Client-owned constant or pure function, mirror it here instead, next to the commented-out import that names the source module. A drift then surfaces as a missed selector or a stale mirrored value — a loud failure, never a silent pass. `scaffold.ts` follows this rule for the welcome-notice namespace, acknowledgement field, version, and asserted Chinese copy.
+When a scenario needs a Client-owned constant or pure function, mirror it here instead, next to the commented-out import that names the source module. A drift then surfaces as a missed selector or a stale mirrored value — a loud failure, never a silent pass.
 
 The built-client harness is the exception. `assembled-boot.ts` imports `AppWebEntry`, the boot-manifest type, and `RemoteMock`; `assembled-remote.ts` imports the Client test runtime's default responses and `RemoteMock`. These packages are explicit project references for booting the real shell against a test-owned carrier. The chat scenarios mirror `conversationContextKey` in `support.ts` instead of importing its Client owner.
 

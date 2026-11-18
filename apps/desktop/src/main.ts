@@ -910,7 +910,7 @@ async function main(): Promise<void> {
     }
   })
   let channelRequests = 0
-  // LAN access runs through a token-gated proxy in front of the loopback Host;
+  // LAN access runs through a forwarding proxy in front of the loopback Host;
   // the preference is shell state, saved only after the proxy reflects it.
   let networkExposure: DesktopNetworkExposure | undefined
   let networkUrl: string | undefined

@@ -114,7 +114,7 @@ it('renders the LAN address, the failure, and disables duplicate writes', async 
     return new Promise<void>((resolve) => {
       finish = () => {
         state.set({
-          enabled: options.enabled, url: 'http://192.168.1.20:4100/?token=abc',
+          enabled: options.enabled, url: 'http://192.168.1.20:4100/',
           failed: false, pending: false, port: 4100,
         })
         resolve()
@@ -139,7 +139,7 @@ it('renders the LAN address, the failure, and disables duplicate writes', async 
 })
 
 it('lists every other LAN address the shell bound', () => {
-  const urls = ['http://192.168.1.20:4100/?token=abc', 'http://10.0.0.5:4100/?token=abc']
+  const urls = ['http://192.168.1.20:4100/', 'http://10.0.0.5:4100/']
   const state = createSnapshotStore<DesktopNetworkExposureView>({
     enabled: true, url: urls[0]!, urls, failed: false, pending: false, port: 4100,
   })
@@ -151,7 +151,7 @@ it('lists every other LAN address the shell bound', () => {
 })
 
 it('hides the other-address list while only one interface answered', () => {
-  const url = 'http://192.168.1.20:4100/?token=abc'
+  const url = 'http://192.168.1.20:4100/'
   const state = createSnapshotStore<DesktopNetworkExposureView>({
     enabled: true, url, urls: [url], failed: false, pending: false, port: 4100,
   })
@@ -187,7 +187,7 @@ it('reports a failed LAN write and allows retry', async () => {
     })
     .mockImplementation(async (options: DesktopNetworkExposureOptions) => {
       state.set({
-        enabled: options.enabled, url: 'http://192.168.1.20:4100/?token=abc',
+        enabled: options.enabled, url: 'http://192.168.1.20:4100/',
         failed: false, pending: false, port: 4100,
       })
     })

@@ -4,7 +4,7 @@ import { DesktopNetworkSource } from '../src/client/desktop-network-source.ts'
 
 const off: DesktopNetworkExposureView = { enabled: false, failed: false, pending: false, port: 0 }
 const on: DesktopNetworkExposureView = {
-  enabled: true, url: 'http://192.168.1.20:4100/?token=abc', failed: false, pending: false, port: 4100,
+  enabled: true, url: 'http://192.168.1.20:4100/', failed: false, pending: false, port: 4100,
 }
 
 function fixture() {

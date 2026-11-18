@@ -1,33 +1,35 @@
 /**
- * Opt-in LAN access to the owned Host through a token-gated reverse proxy.
+ * Opt-in LAN access to the owned Host through a forwarding proxy.
  * The Host keeps its loopback bind and its private cookie; this proxy injects
- * that cookie, so the per-run token is the only remote credential.
+ * that cookie, so a browser on another machine reaches the same Host process.
+ *
+ * The proxy forwards identity-encoded bodies unchanged, so it is transparent:
+ * it neither re-encodes a response nor rewrites the headers that describe one.
+ *
+ * It authenticates no caller. Enabling exposure is the whole decision: any peer
+ * that can reach the bound port drives the Host with its owner's full access,
+ * so enable it only on a network whose peers are trusted.
  */
-import { randomBytes, timingSafeEqual } from 'node:crypto'
 import type { IncomingHttpHeaders, IncomingMessage, OutgoingHttpHeaders, Server, ServerResponse } from 'node:http'
 import { createServer, request as createRequest } from 'node:http'
 import type { Duplex } from 'node:stream'
 import net from 'node:net'
 import { networkInterfaces } from 'node:os'
 
-/** Query and cookie name carrying the proxy's per-run token. */
-const TOKEN_PARAM = 'token'
-const COOKIE_NAME = 'nhs-exposed-network'
-
 /** Headers the proxy owns: trust and transport facts belong to it, not the client. */
 const STRIPPED_REQUEST_HEADERS = [
   'host', 'origin', 'cookie', 'connection', 'upgrade', 'sec-fetch-site', 'sec-fetch-mode', 'sec-fetch-dest',
-  'transfer-encoding', 'content-length',
+  'transfer-encoding', 'content-length', 'accept-encoding',
 ]
 
-/** Response headers withheld from a remote browser. */
-const WITHHELD_RESPONSE_HEADERS = ['set-cookie', 'content-encoding', 'content-length']
+/** Response headers withheld from a remote browser: the Host's private session cookie. */
+const WITHHELD_RESPONSE_HEADERS = ['set-cookie']
 
 /** Enabled exposure and the address remote browsers open. */
 export interface DesktopNetworkExposureState {
-  /** Tokenized URL on the first non-internal IPv4 address. */
+  /** Address on the first non-internal IPv4 address. */
   readonly url: string
-  /** Tokenized URL on every non-internal IPv4 address, in interface order. */
+  /** Address on every non-internal IPv4 address, in interface order. */
   readonly urls: readonly string[]
 }
 
@@ -56,44 +58,22 @@ function lanAddresses(): string[] {
     .map(entry => entry.address))
 }
 
-/** @returns whether `value` names the expected token without leaking its prefix. */
-function tokenMatches(value: string, token: string): boolean {
-  const actual = Buffer.from(value)
-  const expected = Buffer.from(token)
-  return actual.length === expected.length && timingSafeEqual(actual, expected)
-}
-
-/** @returns the proxy token carried by the request's cookie header, if any. */
-function cookieToken(headers: IncomingHttpHeaders): string | undefined {
-  const raw = headers.cookie
-  if (typeof raw !== 'string') return undefined
-  let found: string | undefined
-  for (const part of raw.split(';')) {
-    const equals = part.indexOf('=')
-    if (equals < 0 || part.slice(0, equals).trim() !== COOKIE_NAME) continue
-    if (found !== undefined) return undefined
-    found = part.slice(equals + 1).trim()
-  }
-  return found
-}
-
 /** @returns the Host socket address a proxy request dials. */
 function dial(target: DesktopNetworkExposureTarget): { host: string; port: number } {
   const url = new URL(target.url)
   return { host: url.hostname.replace(/^\[|\]$/gu, ''), port: url.port === '' ? 80 : Number(url.port) }
 }
 
-/** Server and token of one enabled exposure. */
+/** Server of one enabled exposure. */
 export class DesktopNetworkExposure {
   private server: Server | undefined
   private readonly sockets = new Set<Duplex>()
-  private token = ''
 
   /** @param options - Host reader and bind choices. */
   constructor(private readonly options: DesktopNetworkExposureOptions) {}
 
   /**
-   * Bind on every interface and answer with the tokenized address.
+   * Bind on every interface and answer with the address to open.
    * @returns the enabled state; rejects when no LAN address or port is available.
    */
   async start(): Promise<DesktopNetworkExposureState> {
@@ -101,7 +81,6 @@ export class DesktopNetworkExposure {
     const addresses = (this.options.addresses ?? lanAddresses)()
     const address = addresses[0]
     if (address === undefined) throw new Error('desktop network exposure: this machine has no local network address')
-    this.token = randomBytes(32).toString('base64url')
     const server = createServer((request, response) => { this.handle(request, response) })
     server.on('upgrade', (request, socket, head) => { this.upgrade(request, socket, head) })
     this.server = server
@@ -118,7 +97,7 @@ export class DesktopNetworkExposure {
       throw error
     }
     const port = (server.address() as net.AddressInfo).port
-    const urls = addresses.map(candidate => `http://${candidate}:${String(port)}/?${TOKEN_PARAM}=${this.token}`)
+    const urls = addresses.map(candidate => `http://${candidate}:${String(port)}/`)
     return { url: urls[0] as string, urls }
   }
 
@@ -126,7 +105,6 @@ export class DesktopNetworkExposure {
   async stop(): Promise<void> {
     const server = this.server
     this.server = undefined
-    this.token = ''
     for (const socket of this.sockets) socket.destroy()
     this.sockets.clear()
     if (server === undefined) return
@@ -135,22 +113,6 @@ export class DesktopNetworkExposure {
 
   private handle(request: IncomingMessage, response: ServerResponse): void {
     const url = new URL(request.url ?? '/', 'http://proxy.invalid')
-    if (this.token !== '' && url.searchParams.get(TOKEN_PARAM) === this.token) {
-      response.writeHead(303, {
-        'cache-control': 'no-store',
-        'location': './',
-        'referrer-policy': 'no-referrer',
-        'set-cookie': `${COOKIE_NAME}=${this.token}; Path=/; HttpOnly; SameSite=Lax`,
-      })
-      response.end()
-      return
-    }
-    const cookie = cookieToken(request.headers)
-    if (this.token === '' || cookie === undefined || !tokenMatches(cookie, this.token)) {
-      response.writeHead(401, { 'cache-control': 'no-store', 'content-type': 'text/plain; charset=utf-8' })
-      response.end('NoHarness: reopen the address with its token.\n')
-      return
-    }
     const target = this.options.upstream()
     if (target === undefined) {
       response.writeHead(503, { 'cache-control': 'no-store', 'content-type': 'text/plain; charset=utf-8' })
@@ -199,16 +161,19 @@ export class DesktopNetworkExposure {
     }
     headers['host'] = new URL(target.url).host
     headers['cookie'] = target.cookie
+    // The body is piped verbatim, so the Host must answer unencoded: a
+    // forwarded `content-encoding` the proxy never decodes would reach the
+    // remote browser as bytes it cannot interpret.
+    headers['accept-encoding'] = 'identity'
     return headers
   }
 
   /** Pipe one WebSocket upgrade to the Host with the same injected credential. */
   private upgrade(request: IncomingMessage, socket: Duplex, head: Buffer): void {
     const url = new URL(request.url ?? '/', 'http://proxy.invalid')
-    const cookie = cookieToken(request.headers)
     const target = this.options.upstream()
-    if (target === undefined || this.token === '' || cookie === undefined || !tokenMatches(cookie, this.token)) {
-      socket.end('HTTP/1.1 401 Unauthorized\r\nConnection: close\r\nContent-Length: 0\r\n\r\n')
+    if (target === undefined) {
+      socket.end('HTTP/1.1 503 Service Unavailable\r\nConnection: close\r\nContent-Length: 0\r\n\r\n')
       return
     }
     const upstream = net.connect(dial(target))

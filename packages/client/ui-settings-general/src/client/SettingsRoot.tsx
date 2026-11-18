@@ -36,7 +36,7 @@ const CONNECTING_MIN_VISIBLE_MS = 800
 export function SettingsRoot(props: SettingsRootComponentProps) {
   const {
     wide, reconnect, useConnectionState, useSections, useOnboardingSteps, useSessions, renderSlot, t,
-    useDesktopUpdate, openDesktopUpdate, useShortcuts, usePanelInfo, openSettings, showSettingsPage,
+    useDesktopUpdate, openDesktopUpdate, useShortcuts, usePanelInfo, openSettings, showSettingsPage, closeSettings,
   } = props
   const shortcut = useShortcuts(rows => rows.find(row => row.id === 'settings.open'))
   // The page is a center-column panel, so the sidebar entry the trigger sits in
@@ -139,7 +139,7 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
     <>
       <div className={clsx(css.triggerRow, !wide && css.railRow)}>
         {renderSlot('settings.launcher', {
-          wide, settingsOpen: pageOpen, openSettings: (sectionId) => {
+          wide, settingsOpen: pageOpen, closeSettings, openSettings: (sectionId) => {
             if (sectionId === undefined) showSettingsPage()
             else openSettings(sectionId)
           },

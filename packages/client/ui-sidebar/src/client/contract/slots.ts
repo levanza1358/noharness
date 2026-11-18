@@ -63,6 +63,14 @@ declare module '@noharness/client-ui-slots' {
       inject: SidebarSectionInjected
     }
     /**
+     * Settings navigation shown in the browsing region while the Settings page
+     * holds the center column. Declared by this package's 'sidebar' entry;
+     * ui-settings registers the section list and the row that returns to the
+     * Workspace. The region keeps its `sidebar.workspaces` registrant and swaps
+     * occupants, so closing Settings restores the session list unchanged.
+     */
+    'sidebar.settings.navigation': { kind: 'single'; scope: 'root'; owner: SidebarSettingsNavigationOwnerProps }
+    /**
      * The settings seat at the sidebar foot. Declared by this package's
      * 'sidebar' entry; ui-settings registers its trigger row + modal panel.
      * The sidebar passes only its column state — it holds no settings state.
@@ -194,6 +202,12 @@ export interface SidebarSettingsOwnerProps {
   wide: boolean
 }
 
+/** Owner share of the settings navigation that replaces the session list while Settings is open. */
+export interface SidebarSettingsNavigationOwnerProps {
+  /** Whether the sidebar renders wide content (false = 56px rail). */
+  wide: boolean
+}
+
 /** Owner share of an action rendered beside Settings at the sidebar foot. */
 export interface SidebarFooterActionOwnerProps {
   /** Whether the sidebar renders wide content (false = 56px rail). */
@@ -219,8 +233,8 @@ export type SidebarRootInjected = {
   startSession: (workspaceId?: WorkspaceId) => void
   /** Toggle the sidebar column through the layout service. */
   toggleSidebar: () => void
-  /** Select the global panel addressed by a sidebar row. */
-  selectPanel: (id: MainPanelId) => void
+  /** Select the global panel addressed by a sidebar row, or none to show the Conversation. */
+  selectPanel: (id: MainPanelId | null) => void
   /**
    * Show or unpin one panel launcher; Plugins is ignored.
    * @param id - Panel id.
@@ -253,6 +267,7 @@ export type SidebarRootComponentProps =
     | 'sidebar.toggle.badge'
     | 'sidebar.panellist.actions'
     | 'sidebar.workspaces'
+    | 'sidebar.settings.navigation'
     | 'sidebar.settings'
     | 'sidebar.footer.action'
     | 'sidebar.session.action'

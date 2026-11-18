@@ -63,17 +63,11 @@ it('boots the built plugin graph and renders a fixture session end to end', asyn
   const tree = await screen.findByRole('tree', { name: 'Sessions' }, { timeout: 10_000 })
   if (clientBuildValue('NHS_CLIENT_BUILD_PROFILE') === 'official') {
     expect(document.querySelector('svg[viewBox="26 0 156 24"]')).not.toBeNull()
-    expect(screen.queryByText('NHS Local Build')).toBeNull()
+    expect(screen.queryByText('NoHarness')).toBeNull()
   } else {
     expect(document.querySelector('svg[viewBox="0 0 23.16 17.04"]')).not.toBeNull()
-    const version = clientBuildValue('NHS_CLIENT_VERSION')
-    if (version === undefined) throw new Error('default client build record must carry NHS_CLIENT_VERSION')
-    const commit = clientBuildValue('NHS_CLIENT_COMMIT_HASH')
-    const buildVersion = version
-      + (commit === undefined ? '' : `-${commit}`)
-      + (clientBuildValue('NHS_CLIENT_GIT_DIRTY') === 'true' ? '-dirty' : '')
-    screen.getByText('NHS Local Build')
-    screen.getByText(buildVersion)
+    // Build metadata moved to Settings → About; the brand carries the name only.
+    screen.getByText('NoHarness')
   }
   // The compact layout dropped group session counts; the fixture workspace
   // group row renders immediately with its sessions beneath it.

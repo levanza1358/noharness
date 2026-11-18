@@ -14,7 +14,7 @@ import type {} from '@noharness/client-ui-settings/client'
 import type {} from '@noharness/client-ui-plugin-manager/client'
 import type {} from '@noharness/client-ui-renderer/client'
 import type { Context as ClientContext } from '@noharness/cordis'
-import { AgentLoopCard } from './AgentLoopCard.tsx'
+import { AgentLoopCard, AgentLoopSettingsSection } from './AgentLoopCard.tsx'
 import { AGENT_LOOP_NS, AgentLoopCardController } from './agent-loop-card-controller.ts'
 import { en, ja, es, fr, de, ru, pt, type AgentLoopSettingsLocaleKey } from './locales.ts'
 
@@ -47,4 +47,8 @@ export function apply(ctx: ClientContext): void {
   ctx.effect(() => ctx.configForms.whileServed([AGENT_LOOP_NS], () => ctx.slots.inject('plugins.item', () => ctx.slots.register({
     name: 'plugins.item', id: 'agent-loop', order: 30, label: () => t('title'), locale: NS, inject: () => card.inject(),
   }, AgentLoopCard))), 'ui-settings-agent-loop: page')
+  // The settings page is the direct entry; the Plugins manager opens it through Settings.
+  ctx.effect(() => ctx.configForms.whileServed([AGENT_LOOP_NS], () => ctx.slots.inject('settings.section', () => ctx.slots.register({
+    name: 'settings.section', id: 'agent-loop', order: 44, label: () => t('title'), locale: NS, inject: () => card.inject(),
+  }, AgentLoopSettingsSection))), 'ui-settings-agent-loop: section')
 }

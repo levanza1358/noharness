@@ -7,7 +7,8 @@ export type ShellSettingsLocaleKey =
   | 'title' | 'description'
   | 'timeoutMs' | 'timeoutMsHint' | 'maxOutputBytes' | 'maxOutputBytesHint'
   | 'overridden' | 'reset' | 'readOnly' | 'unavailable'
-  | 'save' | 'saving' | 'saveFailed' | 'invalidNumber'
+  | 'save' | 'saving' | 'saveFailed' | 'unsaved' | 'invalidNumber'
+  | 'timeoutPresets' | 'presetSeconds' | 'outputPresets' | 'presetKb' | 'presetMb'
 
 /** English copy. */
 export const en: Record<ShellSettingsLocaleKey, string> = {
@@ -22,6 +23,12 @@ export const en: Record<ShellSettingsLocaleKey, string> = {
   readOnly: 'This deployment stores settings read-only.',
   unavailable: 'This plugin is not loaded, so it cannot be configured right now.',
   save: 'Save',
+  unsaved: 'Unsaved changes',
+  timeoutPresets: 'Timeout presets',
+  presetSeconds: '{seconds} s',
+  outputPresets: 'Output presets',
+  presetKb: '{kilobytes} kB',
+  presetMb: '{megabytes} MB',
   saving: 'Saving…',
   saveFailed: 'The deployment did not accept these values; they were left for you to correct.',
   invalidNumber: 'Enter a number, or leave blank to use the default.',
@@ -37,7 +44,10 @@ export type SettingsShellKey = keyof typeof en
  * @returns the labels the shared settings form renders.
  */
 export function formLabels(t: (key: ShellSettingsLocaleKey) => string): SettingsFormLabels {
-  return { unavailable: t('unavailable'), readOnly: t('readOnly'), saveFailed: t('saveFailed'), save: t('save'), saving: t('saving') }
+  return {
+    unavailable: t('unavailable'), readOnly: t('readOnly'), saveFailed: t('saveFailed'),
+    save: t('save'), saving: t('saving'), unsaved: t('unsaved'),
+  }
 }
 
 /** Japanese copy, checked against the English keys. */
@@ -53,6 +63,12 @@ export const ja = {
   'readOnly': 'This deployment stores settings read-only.',
   'unavailable': 'This plugin is not loaded, so it cannot be configured right now.',
   'save': 'Save',
+  'unsaved': '未保存の変更',
+  'timeoutPresets': 'タイムアウトのプリセット',
+  'presetSeconds': '{seconds} 秒',
+  'outputPresets': '出力上限のプリセット',
+  'presetKb': '{kilobytes} kB',
+  'presetMb': '{megabytes} MB',
   'saving': 'Saving…',
   'saveFailed': 'The deployment did not accept these values; they were left for you to correct.',
   'invalidNumber': 'Enter a number, or leave blank to use the default.',
@@ -71,6 +87,12 @@ export const es = {
   readOnly: 'Esta implementación almacena configuraciones de solo lectura.',
   unavailable: 'Este complemento no está cargado, por lo que no se puede configurar en este momento.',
   save: 'Guardar',
+  unsaved: 'Cambios sin guardar',
+  timeoutPresets: 'Valores de tiempo de espera',
+  presetSeconds: '{seconds} s',
+  outputPresets: 'Valores de salida',
+  presetKb: '{kilobytes} kB',
+  presetMb: '{megabytes} MB',
   saving: 'Guardando…',
   saveFailed: 'El despliegue no aceptó estos valores; quedaron para que usted los corrigiera.',
   invalidNumber: 'Ingrese un número o déjelo en blanco para usar el valor predeterminado.',
@@ -89,6 +111,12 @@ export const fr = {
   readOnly: 'Ce déploiement stocke les paramètres en lecture seule.',
   unavailable: "Ce plugin n'est pas chargé, il ne peut donc pas être configuré pour le moment.",
   save: 'Enregistrer',
+  unsaved: 'Modifications non enregistrées',
+  timeoutPresets: 'Délais prédéfinis',
+  presetSeconds: '{seconds} s',
+  outputPresets: 'Limites de sortie prédéfinies',
+  presetKb: '{kilobytes} kB',
+  presetMb: '{megabytes} MB',
   saving: 'Sauvegarde…',
   saveFailed: "Le déploiement n'a pas accepté ces valeurs ; ils vous ont été laissés à corriger.",
   invalidNumber: 'Entrez un numéro ou laissez ce champ vide pour utiliser la valeur par défaut.',
@@ -107,6 +135,12 @@ export const de = {
   readOnly: 'Diese Bereitstellung speichert Einstellungen schreibgeschützt.',
   unavailable: 'Dieses Plugin ist nicht geladen und kann daher derzeit nicht konfiguriert werden.',
   save: 'Speichern',
+  unsaved: 'Nicht gespeicherte Änderungen',
+  timeoutPresets: 'Zeitlimit-Voreinstellungen',
+  presetSeconds: '{seconds} s',
+  outputPresets: 'Ausgabe-Voreinstellungen',
+  presetKb: '{kilobytes} kB',
+  presetMb: '{megabytes} MB',
   saving: 'Speichern…',
   saveFailed: 'Die Bereitstellung hat diese Werte nicht akzeptiert. Sie mussten sie korrigieren.',
   invalidNumber: 'Geben Sie eine Zahl ein oder lassen Sie das Feld leer, um den Standardwert zu verwenden.',
@@ -125,6 +159,12 @@ export const ru = {
   readOnly: 'В этом развертывании параметры сохраняются только для чтения.',
   unavailable: 'Этот плагин не загружен, поэтому его невозможно настроить прямо сейчас.',
   save: 'Сохранить',
+  unsaved: 'Несохранённые изменения',
+  timeoutPresets: 'Готовые значения тайм-аута',
+  presetSeconds: '{seconds} с',
+  outputPresets: 'Готовые значения вывода',
+  presetKb: '{kilobytes} КБ',
+  presetMb: '{megabytes} МБ',
   saving: 'Сохранение…',
   saveFailed: 'Развертывание не приняло эти значения; их оставили вам на исправление.',
   invalidNumber: 'Введите число или оставьте поле пустым, чтобы использовать значение по умолчанию.',
@@ -143,6 +183,12 @@ export const pt = {
   readOnly: 'Esta implantação armazena configurações somente leitura.',
   unavailable: 'Este plugin não está carregado, portanto não pode ser configurado agora.',
   save: 'Salvar',
+  unsaved: 'Alterações não guardadas',
+  timeoutPresets: 'Valores de tempo limite',
+  presetSeconds: '{seconds} s',
+  outputPresets: 'Valores de saída',
+  presetKb: '{kilobytes} kB',
+  presetMb: '{megabytes} MB',
   saving: 'Salvando…',
   saveFailed: 'A implantação não aceitou esses valores; eles foram deixados para você corrigir.',
   invalidNumber: 'Insira um número ou deixe em branco para usar o padrão.',

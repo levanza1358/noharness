@@ -19,7 +19,7 @@ import type {} from '@noharness/client-ui-renderer/client'
 // Type-only: the ctx.remote Context merge and the forwarded-event key face.
 import type {} from '@noharness/api-remotes/client'
 import type { Context as ClientContext } from '@noharness/cordis'
-import { WebSearchCard } from './WebSearchCard.tsx'
+import { WebSearchCard, WebSearchSettingsSection } from './WebSearchCard.tsx'
 import { WEB_API_NS, WEB_NS, WEB_SEARCH_NS, WebSearchCardController } from './web-search-card-controller.ts'
 import { en, ja, es, fr, de, ru, pt, type WebSearchSettingsLocaleKey } from './locales.ts'
 
@@ -72,4 +72,8 @@ export function apply(ctx: ClientContext): void {
   ctx.effect(() => ctx.configForms.whileServed([WEB_NS], () => ctx.slots.inject('plugins.item', () => ctx.slots.register({
     name: 'plugins.item', id: 'web-search', order: 20, label: () => t('title'), locale: NS, inject: () => card.inject(),
   }, WebSearchCard))), 'ui-settings-web-search: page')
+  // The settings page is the direct entry; the Plugins manager opens it through Settings.
+  ctx.effect(() => ctx.configForms.whileServed([WEB_NS], () => ctx.slots.inject('settings.section', () => ctx.slots.register({
+    name: 'settings.section', id: 'web-search', order: 42, label: () => t('title'), locale: NS, inject: () => card.inject(),
+  }, WebSearchSettingsSection))), 'ui-settings-web-search: section')
 }

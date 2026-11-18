@@ -327,6 +327,50 @@ describe('WebRuntime fetch capability', () => {
   })
 })
 
+describe('WebRuntime probe', () => {
+  it('runs one search through the selected provider and reports its result count', async () => {
+    const { web } = await mountWeb({ searchProvider: 'exa' })
+    const requests: WebSearchRequest[] = []
+    web.registerSearchProvider(makeSearchProvider('exa', available, (request) => {
+      requests.push(request)
+      return Promise.resolve(searchResult('probe', { sources: [{ url: 'https://example.com' }] }))
+    }))
+    await expect(web.probe('search')).resolves.toEqual({
+      capability: 'search', provider: 'exa', ok: true, detail: '1 result',
+    })
+    expect(requests).toEqual([{ query: 'NoHarness connectivity test', maxResults: 1 }])
+  })
+
+  it('fetches the probe URL through the selected fetch provider and reports its status', async () => {
+    const { web } = await mountWeb({ fetchProvider: 'http' })
+    const urls: string[] = []
+    web.registerFetchProvider({
+      id: 'http', available: () => true,
+      fetch: (request) => {
+        urls.push(request.url)
+        return Promise.resolve(fetchResult('probe'))
+      },
+    })
+    await expect(web.probe('fetch')).resolves.toEqual({
+      capability: 'fetch', provider: 'http', ok: true, detail: 'HTTP 200',
+    })
+    expect(urls).toEqual(['https://example.com/'])
+  })
+
+  it('reports a missing provider as a failed result instead of throwing', async () => {
+    const { web } = await mountWeb()
+    const result = await web.probe('search')
+    expect(result).toMatchObject({ capability: 'search', provider: '', ok: false })
+    expect(result.detail.length).toBeGreaterThan(0)
+  })
+
+  it('reports a provider rejection as a failed result', async () => {
+    const { web } = await mountWeb({ searchProvider: 'broken' })
+    web.registerSearchProvider(makeSearchProvider('broken', available, () => Promise.reject(new Error('upstream refused'))))
+    await expect(web.probe('search')).resolves.toMatchObject({ ok: false, provider: '', detail: 'upstream refused' })
+  })
+})
+
 describe('WebRuntime fetch readiness', () => {
   /** A fetch provider whose readiness answer is scripted and whose calls are recorded. */
   function readyFetchProvider(id: string, isAvailable: boolean, ready: boolean, asked: (string | undefined)[] = []): WebFetchProvider {

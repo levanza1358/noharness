@@ -1,5 +1,5 @@
 ---
-description: "The agent loop's settings page on the nhs web client's Plugins page: the parallel tool-call cap of the agent-loop namespace."
+description: "The agent loop's settings page as its own Settings section in the nhs web client: the parallel tool-call cap of the agent-loop namespace."
 kind: "package-reference"
 ---
 
@@ -7,7 +7,7 @@ kind: "package-reference"
 
 ## Summary
 
-Open **Plugins** in the sidebar and select **Agent loop** in the Official group to set how many parallel-safe tool calls one step may run at once. The page stages what is typed and writes it only on save, marks a value the user overrode, and offers to reset it to the deployment's default. The page exists while the Host serves the `agent-loop` namespace.
+Open **Settings → Agent loop** to set how many parallel-safe tool calls one step may run at once. The page stages what is typed and writes it only on save, marks a value the user overrode, and offers to reset it to the deployment's default. A preset row stages 1, 4, or 8 beside the field. The page exists while the Host serves the `agent-loop` namespace.
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ Open **Plugins** in the sidebar and select **Agent loop** in the Official group 
 <a id="use-this-package"></a>
 ## Use this package
 
-The **Agent loop** card in the Official group opens the page. **Parallel tool calls** bounds the calls the loop runs at once within one step; the field renders the effective value, and once overridden carries an **Overridden** badge with **Reset to default** beside it. Nothing is written until **Save**; leaving the page drops the draft, an empty field saves as a reset, and text that is not a number blocks the save and says so under the field.
+**Settings → Agent loop** opens the page. **Parallel tool calls** bounds the calls the loop runs at once within one step; the field renders the effective value, and once overridden carries an **Overridden** badge with **Reset to default** beside it. Nothing is written until **Save**; leaving the page drops the draft, an empty field saves as a reset, and text that is not a number blocks the save and says so under the field.
 
 -----
 
@@ -33,7 +33,7 @@ The **Agent loop** card in the Official group opens the page. **Parallel tool ca
 <details>
 <summary>Implementation internals — click to expand</summary>
 
-The Host half is an empty `apply`, present only so the package holds a Loader row the client module system serves the browser half for. The browser half binds the `agent-loop` namespace through `ctx.configForms.get`, keeps the staged form in `AgentLoopCardController` over the shared `SettingsFormModel` of `ui-primitives`, and registers `AgentLoopCard` into the Plugins page's `plugins.item` slot through `ctx.configForms.whileServed`. The page's copy lives in this package's `settings.agentLoop` dictionary.
+The Host half is an empty `apply`, present only so the package holds a Loader row the client module system serves the browser half for. The browser half binds the `agent-loop` namespace through `ctx.configForms.get`, keeps the staged form in `AgentLoopCardController` over the shared `SettingsFormModel` of `ui-primitives`, and registers the page as a Settings section through `ctx.configForms.whileServed`. The page's copy lives in this package's `settings.agentLoop` dictionary.
 
 </details>
 

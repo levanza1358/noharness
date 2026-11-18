@@ -13,7 +13,7 @@ import { en } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
-const t = (key: keyof typeof en) => en[key]
+const t = ((key: keyof typeof en) => en[key]) as SubagentCardProps['t']
 
 const settled: SettingsFormShell = {
   available: true,
@@ -35,6 +35,7 @@ function renderSubagent(
   limitState: Partial<SubagentLimitsCardState> = {},
   modelState: Partial<SubagentModelSelectionCardState> = {},
   view: ConfigView = 'page',
+  translation: SubagentCardProps['t'] = t,
 ) {
   const limits = createSnapshotStore<SubagentLimitsCardState>({
     ...settled,
@@ -63,7 +64,7 @@ function renderSubagent(
   const props = {
     ...actions,
     view,
-    t,
+    t: translation,
     useSubagentLimitsCard: bindSnapshotSelector(limits),
     useSubagentModelSelectionCard: bindSnapshotSelector(models),
   } as SubagentCardProps
@@ -189,6 +190,13 @@ describe('SubagentCard', () => {
     renderSubagent({}, { available: false })
     expect(screen.getByLabelText(en.subagentMaxDepth)).toBeTruthy()
     expect(screen.queryByRole('switch')).toBeNull()
+  })
+
+  it('states the staged depth and active-child limit above the form', () => {
+    const substitute = ((key: keyof typeof en, params?: Record<string, unknown>) =>
+      en[key].replace(/\{(\w+)\}/g, (match, name: string) => params !== undefined && name in params ? String(params[name]) : match)) as SubagentCardProps['t']
+    renderSubagent({ maxDepth: field('2'), maxActiveSubagents: field('6') }, {}, 'page', substitute)
+    expect(screen.getByText('Depth 2 · up to 6 subagents at once')).toBeTruthy()
   })
 
   it('shows both sections on one page with one save footer', () => {

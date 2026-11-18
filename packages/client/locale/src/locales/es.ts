@@ -33,7 +33,7 @@ export const es = {
   'collapse': 'Contraer',
   'expand': 'Expandir',
   'back': 'Atrás',
-  'brand.localBuild': 'Compilación local de NHS',
+  'brand.localBuild': 'NoHarness',
   'workspace.defaultName': 'Espacio de trabajo predeterminado',
   'unknown': 'Desconocido',
   'none': 'Ninguno',

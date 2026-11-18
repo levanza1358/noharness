@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 /** The agent-loop page as the Plugins page renders it: its one-liner and its one field. */
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { bindSnapshotSelector } from '@noharness/client-test-runtime'
 import { createSnapshotStore } from '@noharness/client-store'
@@ -52,6 +52,16 @@ describe('AgentLoopCard', () => {
     fireEvent.click(screen.getByRole('button', { name: en.reset }))
 
     expect(actions.resetField).toHaveBeenCalledWith('maxParallelToolCalls')
+  })
+
+  it('stages a preset and marks the matching one', () => {
+    const actions = renderCard({ maxParallelToolCalls: field('4') })
+    const group = screen.getByRole('group', { name: en.presets })
+    expect(group.querySelector('[data-active="true"]')?.textContent).toBe('4')
+
+    fireEvent.click(within(group).getByRole('button', { name: '8' }))
+
+    expect(actions.edit).toHaveBeenCalledWith('maxParallelToolCalls', '8')
   })
 
   it('says the plugin is not loaded while its namespace is unavailable, and disables the field while the document is read-only', () => {

@@ -26,6 +26,10 @@ export function SubagentCard(props: SubagentCardProps) {
   const headingId = useId()
   if (props.view === 'summary') return t('subagentDescription')
   const state = subagentCardShell(limits, models)
+  const summary = t('summary', {
+    depth: limits.maxDepth.text === '' ? '—' : limits.maxDepth.text,
+    active: limits.maxActiveSubagents.text === '' ? '—' : limits.maxActiveSubagents.text,
+  })
   return (
     <SettingsForm labels={formLabels(t)}
       state={state} onSave={props.save} onDiscard={props.discard}>
@@ -47,6 +51,13 @@ export function SubagentCard(props: SubagentCardProps) {
           </section>
         )
         : null}
+      {limits.available ? <p className={css.summary} role="status">{summary}</p> : null}
     </SettingsForm>
   )
+}
+
+/** Settings section for Subagent: the card's full form page. */
+export function SubagentSettingsSection(props:
+PropsRuntime<'settings.section'> & PropsLocale<'settings.subagent'> & InjectFace<SubagentCardFace>) {
+  return <SubagentCard {...props} view="page" />
 }

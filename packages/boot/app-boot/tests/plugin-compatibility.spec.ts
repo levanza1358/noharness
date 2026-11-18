@@ -1,10 +1,15 @@
 /** Plugin nhs requirement checks prefer engines.nhs, retain exact mismatches, and never inherit exemption entries. */
 
 import fs from 'node:fs'
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import semver from 'semver'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { evaluatePluginCompatibility, getDshRuntimeVersion, pluginCompatibilityWarning } from '../src/plugin-compatibility.ts'
+import {
+  evaluatePluginCompatibility, getDshRuntimeVersion, installedPeerVersions, pluginCompatibilityWarning,
+} from '../src/plugin-compatibility.ts'
 
 const runtime = '0.1.7-alpha.1'
 const identity = { name: '@example/plugin', version: '2.0.0' }
@@ -60,6 +65,30 @@ describe('plugin compatibility', () => {
 
   it.each(['workspace:^', 'workspace:~', 'workspace:*'])('uses the source runtime for %s', (range) => {
     expect(check({ '@noharness/session': range })).toBeUndefined()
+  })
+
+  it('compares a non-workspace peer with the version installed beside the plugin', () => {
+    const peers = { '@noharness/cordis': '~4.1.0' }
+    const resolve = (version: string) => (name: string) => name === '@noharness/cordis' ? version : undefined
+    expect(evaluatePluginCompatibility({ ...identity, peerDependencies: peers }, {}, runtime, resolve('4.1.2')))
+      .toBeUndefined()
+    expect(evaluatePluginCompatibility({ ...identity, peerDependencies: peers }, {}, runtime, resolve('4.2.0')))
+      .toMatchObject({ requirements: peers })
+  })
+
+  it('falls back to the runtime version when a peer cannot be located', () => {
+    const peers = { '@noharness/cordis': '~4.1.0' }
+    expect(evaluatePluginCompatibility({ ...identity, peerDependencies: peers }, {}, runtime, () => undefined))
+      .toMatchObject({ requirements: peers })
+    expect(evaluatePluginCompatibility({ ...identity, peerDependencies: peers }, {}, '4.1.3'))
+      .toBeUndefined()
+  })
+
+  it('never resolves a peer whose range already names the runtime', () => {
+    const resolve = vi.fn(() => '9.9.9')
+    expect(evaluatePluginCompatibility(
+      { ...identity, peerDependencies: { '@noharness/session': 'workspace:~' } }, {}, runtime, resolve)).toBeUndefined()
+    expect(resolve).not.toHaveBeenCalled()
   })
 
   it('checks the intersection of nhs requirements and returns only mismatches', () => {
@@ -224,5 +253,29 @@ describe('compatibility warning', () => {
       + 'with `nhs plugin allow-version` or the plugin manager, then retry the installation or restart nhs. '
       + `Exact-version exemption: ${exempted ? 'active' : 'not active'}.`,
     )
+  })
+})
+
+describe('installed peer versions', () => {
+  it('reads versions installed beside the plugin and ignores unusable manifests', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'nhs-peer-versions-'))
+    try {
+      const installed = (name: string, contents: string): void => {
+        mkdirSync(join(directory, 'node_modules', name), { recursive: true })
+        writeFileSync(join(directory, 'node_modules', name, 'package.json'), contents)
+      }
+      installed('versioned', JSON.stringify({ name: 'versioned', version: '4.1.0' }))
+      installed('unversioned', JSON.stringify({ name: 'unversioned', version: 7 }))
+      installed('null-manifest', 'null')
+      const resolve = installedPeerVersions(join(directory, 'package.json'))
+      expect(resolve('versioned')).toBe('4.1.0')
+      expect(resolve('unversioned')).toBeUndefined()
+      expect(resolve('null-manifest')).toBeUndefined()
+      expect(resolve('absent')).toBeUndefined()
+    } finally { rmSync(directory, { recursive: true, force: true }) }
+  })
+
+  it('returns a resolver that finds nothing when the base is not resolvable', () => {
+    expect(installedPeerVersions('relative/package.json')('anything')).toBeUndefined()
   })
 })

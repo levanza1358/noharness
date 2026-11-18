@@ -1636,6 +1636,9 @@ function normalizeAria(snapshot: string, workspaceCwd: string, age: boolean): st
       duration => duration.startsWith('约') ? duration : '{{duration}}',
     )
     .replace(/\d+(?:\.\d+)?(?= tok\/s(?!\w))/g, '{{throughput}}')
+    // The hero headline pairs a clock-derived greeting with a random closing
+    // line, so the row after the right-sidebar banner control is normalized.
+    .replace(/(- banner:\n  - button "[^"]*"\n)- text: .+$/gmu, '$1- text: {{greeting}}')
     // Seeded compaction prices realized file paths, whose length differs
     // between local worktrees and CI scratch directories.
     .replace(/(Compacted \d+ history items \(~)\d+( tokens\))/g, '$1{{tokens}}$2')

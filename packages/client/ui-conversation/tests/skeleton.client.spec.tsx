@@ -423,9 +423,12 @@ function mount(
 describe('Hero chrome', () => {
   it('renders the English preview badge through the hero locale seat', () => {
     const renderSlot = vi.fn<(key: string, owner: object, opts?: { fallback?: ReactNode }) => ReactNode>(() => null)
+    // The greeting follows the local clock and one random closing line; pin both.
+    vi.spyOn(Date.prototype, 'getHours').mockReturnValue(8)
+    vi.spyOn(Math, 'random').mockReturnValue(0)
     const view = render(<HeroShell t={makeTranslate(en, commonEn)} renderSlot={renderSlot as never} />)
-    expect(view.getByText('Into the Unknown')).toBeTruthy()
-    expect(view.getByText('Preview')).toBeTruthy()
+    expect(view.getByTestId('hero-headline').textContent)
+      .toBe('Good morning. Pick a workspace and tell me what to build.')
     expect(renderSlot).toHaveBeenCalledOnce()
     expect(renderSlot.mock.calls[0]?.[0]).toBe('conversation.hero.brand.mark')
     const brandMarkOwner = renderSlot.mock.calls[0]?.[1]
@@ -577,6 +580,8 @@ describe('ConversationRoot resident composer', () => {
   })
 
   it('hero phase: keeps sidebar controls accessible while hiding conversation chrome', () => {
+    vi.spyOn(Date.prototype, 'getHours').mockReturnValue(20)
+    vi.spyOn(Math, 'random').mockReturnValue(0.99)
     const b = mount(
       sessionSnapshotOf({ blank: true }),
       [
@@ -594,8 +599,8 @@ describe('ConversationRoot resident composer', () => {
     expect(b.slotCalls).not.toContain('conversation.session.header.utilities')
     expect(b.headerFactory).not.toHaveBeenCalled()
     expect(b.slotCalls).not.toContain('conversation.session.header.actions')
-    expect(b.view.getByText('Into the Unknown')).toBeTruthy()
-    expect(b.view.getByText('Preview')).toBeTruthy()
+    expect(b.view.getByTestId('hero-headline').textContent)
+      .toBe('Good evening. Bring the messy version — we can clean it up later.')
     expect(b.view.queryByTestId('view-chat')).toBeNull()
     // The same machine-backed textarea is live in the hero, and the
     // persistence mirror stays bound (ConversationSession mounts chrome-hidden
@@ -628,7 +633,7 @@ describe('ConversationRoot resident composer', () => {
     expect(conversationPhase(failed, EMPTY_CONVERSATION_SNAPSHOT)).toBe('engaging')
     const b = mount(failed, undefined, undefined, { summaryBlank: true })
     expect(b.view.container.querySelector('[data-phase]')?.getAttribute('data-phase')).toBe('active')
-    expect(b.view.queryByText('Into the Unknown')).toBeNull()
+    expect(b.view.queryByTestId('hero-headline')).toBeNull()
   })
 
   it('settling phase: a summary that does not prove the session blank hides the composer while it opens', () => {
@@ -660,7 +665,7 @@ describe('ConversationRoot resident composer', () => {
     // blank the column for the history round-trip.
     const root = b.view.container.querySelector('[data-phase]')
     expect(root?.getAttribute('data-phase')).toBe('hero')
-    expect(b.view.getByText('Into the Unknown')).toBeTruthy()
+    expect(b.view.getByTestId('hero-headline').textContent).not.toBe('')
     expect(b.view.getByRole('textbox')).toBeTruthy()
   })
 

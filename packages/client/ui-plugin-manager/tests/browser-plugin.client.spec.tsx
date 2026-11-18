@@ -1,20 +1,18 @@
 // @vitest-environment jsdom
-import { contextMenuHook } from '@noharness/client-test-runtime'
 import assert from 'node:assert/strict'
 import { Context, Service } from '@noharness/cordis'
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
-import { cleanup, render } from '@testing-library/react'
+import { cleanup } from '@testing-library/react'
 import { LocaleRuntime } from '@noharness/client-locale/client'
 import { createSnapshotStore } from '@noharness/client-store'
 import type { ILayout, PanelInfo } from '@noharness/client-ui-layout/client'
 import { SlotRegistry } from '@noharness/client-ui-renderer/client'
 import { resolveSlotLabel } from '@noharness/client-ui-slots'
-import { allowAllAccess, StaticRemoteAccess, TestRemote, usePinnedBrowserLanguages } from '@noharness/client-test-runtime'
+import { StaticRemoteAccess, TestRemote, usePinnedBrowserLanguages } from '@noharness/client-test-runtime'
 import * as settings from '@noharness/client-ui-settings/client'
-import { apply, inject, NS, PANEL_ID } from '../src/client/index.ts'
+import { apply, inject, NS, SECTION_ID } from '../src/client/index.ts'
 import { PluginManagerPage } from '../src/client/PluginManagerPage.tsx'
 import { PluginRefreshToast, type PluginRefreshToastFace } from '../src/client/PluginRefreshToast.tsx'
-import { PluginsPanelIcon } from '../src/client/PluginsPanelIcon.tsx'
 import type { PluginManagerFace } from '../src/client/manager-store.ts'
 import type { createNavigationStore } from '../src/client/navigation-store.ts'
 
@@ -94,16 +92,17 @@ async function bench(allows: ((action: string) => boolean) | 'switchable' = () =
   ctx.provide('layout', { panelInfo, selectPanel, beginNavigation: () => new AbortController().signal,
     toggleSidebar: vi.fn(), openRightbar: vi.fn(), closeRightbar: vi.fn() })
   await ctx.plugin(settings).await()
-  return { ctx, slots: ctx.get('slots') as SlotRegistry, locale, list, remote, selectPanel, panelInfo, access }
+  const openSettings = vi.fn((_sectionId: string) => { selectPanel('settings' as never) })
+  ctx.provide('settingsNavigation', { open: openSettings, close: () => { selectPanel(null) } })
+  return { ctx, slots: ctx.get('slots') as SlotRegistry, locale, list, remote, selectPanel, panelInfo, access, openSettings }
 }
 
 function declare(slots: SlotRegistry): () => void {
   return slots.register({
     name: 'root',
     children: {
-      'main': { kind: 'keyed', scope: 'root' },
+      'settings.section': { kind: 'single', scope: 'root' },
       'shell.overlay': { kind: 'list', scope: 'root' },
-      'sidebar.panellist': { kind: 'list', scope: 'root' },
     },
   } as never, () => null)
 }
@@ -113,16 +112,16 @@ describe('ui-plugin-manager browser plugin', () => {
     const b = await bench()
     const removeRoot = declare(b.slots)
     await b.ctx.plugin({ inject: [...inject], apply }).await()
-    const entry = b.slots.entries('main')[0]!
+    const entry = b.slots.entries('settings.section')[0]!
     assert(entry.store && 'create' in entry.store)
     const navigation = entry.store.create()
     expect(navigation.getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'list' } })
     b.ctx.pluginNavigation.openBundle('nhs-navigation-test')
-    expect(b.panelInfo.getSnapshot().activePanelId).toBe(PANEL_ID)
+    expect(b.panelInfo.getSnapshot().activePanelId).toBe('settings')
     expect(navigation.getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'package', name: 'nhs-navigation-test' } })
     b.selectPanel(null)
     expect(navigation.getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'list' } })
-    b.selectPanel(PANEL_ID)
+    b.selectPanel('settings' as never)
     expect(navigation.getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'list' } })
     assert(navigation.actions.setView)
     navigation.actions.setView({ kind: 'more' })
@@ -138,7 +137,7 @@ describe('ui-plugin-manager browser plugin', () => {
     const b = await bench()
     declare(b.slots)
     await b.ctx.plugin({ inject: [...inject], apply }).await()
-    const entry = b.slots.entries('main')[0]!
+    const entry = b.slots.entries('settings.section')[0]!
     assert(entry.store && 'create' in entry.store)
     const navigation = entry.store.create() as ReturnType<ReturnType<typeof createNavigationStore>['create']>
     const injected: object = entry.inject!()
@@ -146,7 +145,7 @@ describe('ui-plugin-manager browser plugin', () => {
     expect(face.hooks.pluginManager.getSnapshot().install.open).toBe(false)
 
     b.ctx.pluginNavigation.openList()
-    expect(b.panelInfo.getSnapshot().activePanelId).toBe(PANEL_ID)
+    expect(b.panelInfo.getSnapshot().activePanelId).toBe('settings')
     expect(navigation.getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'list' } })
     expect(face.hooks.pluginManager.getSnapshot().install.open).toBe(false)
 
@@ -154,7 +153,7 @@ describe('ui-plugin-manager browser plugin', () => {
     expect(navigation.getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'package', name: 'nhs-navigation-test' } })
     navigation.actions.setTab('fixture-discover')
     b.ctx.pluginNavigation.openList()
-    expect(b.panelInfo.getSnapshot().activePanelId).toBe(PANEL_ID)
+    expect(b.panelInfo.getSnapshot().activePanelId).toBe('settings')
     expect(navigation.getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'list' } })
     expect(face.hooks.pluginManager.getSnapshot().install.open).toBe(false)
     expect(b.list).not.toHaveBeenCalled()
@@ -166,7 +165,7 @@ describe('ui-plugin-manager browser plugin', () => {
     await fiber.await()
     expect(b.slots.entries('shell.overlay')).toHaveLength(0)
     const removeRoot = declare(b.slots)
-    const mainInjected: object = b.slots.entries('main')[0]!.inject!()
+    const mainInjected: object = b.slots.entries('settings.section')[0]!.inject!()
     const face = mainInjected as PluginManagerFace
     expect(b.ctx.pluginChanges.bundle('unlisted').getSnapshot()).toBe(false)
     const overlayInjected: object = b.slots.entries('shell.overlay')[0]!.inject!()
@@ -174,7 +173,7 @@ describe('ui-plugin-manager browser plugin', () => {
     expect(overlay.hooks.pluginManager).toBe(face.hooks.pluginManager)
     face.ensure()
     await vi.waitFor(() => { expect(face.hooks.pluginManager.getSnapshot().status).toBe('ready') })
-    b.selectPanel(PANEL_ID)
+    b.selectPanel('settings' as never)
     b.list.mockRejectedValueOnce(new Error('offline'))
     face.refresh()
     b.selectPanel(null)
@@ -183,13 +182,13 @@ describe('ui-plugin-manager browser plugin', () => {
     expect(face.hooks.pluginManager.getSnapshot().notice).toBeNull()
     removeRoot()
     expect(b.slots.entries('shell.overlay')).toHaveLength(0)
-    expect(b.slots.entries('main')).toHaveLength(0)
+    expect(b.slots.entries('settings.section')).toHaveLength(0)
     declare(b.slots)
     const remountedInjected: object = b.slots.entries('shell.overlay')[0]!.inject!()
     expect((remountedInjected as PluginRefreshToastFace).hooks.pluginManager).toBe(face.hooks.pluginManager)
     await fiber.dispose()
     expect(b.slots.entries('shell.overlay')).toHaveLength(0)
-    expect(b.slots.entries('main')).toHaveLength(0)
+    expect(b.slots.entries('settings.section')).toHaveLength(0)
     await b.ctx.plugin({ inject: [...inject], apply }).await()
     const reloadedInjected: object = b.slots.entries('shell.overlay')[0]!.inject!()
     expect((reloadedInjected as PluginRefreshToastFace).hooks.pluginManager).not.toBe(face.hooks.pluginManager)
@@ -204,20 +203,20 @@ describe('ui-plugin-manager browser plugin', () => {
     const b = await bench('switchable')
     declare(b.slots)
     await b.ctx.plugin({ inject: [...inject], apply }).await()
-    const injected: object = b.slots.entries('main')[0]!.inject!()
+    const injected: object = b.slots.entries('settings.section')[0]!.inject!()
     const face = injected as PluginManagerFace
     face.ensure()
     await vi.waitFor(() => { expect(face.hooks.pluginManager.getSnapshot().status).toBe('ready') })
     expect(b.list).toHaveBeenCalledTimes(1)
 
     b.access!.set(false)
-    expect(b.slots.entries('main')).toEqual([])
+    expect(b.slots.entries('settings.section')).toEqual([])
     b.remote.emit('plugin-manager/changed', [{ reason: 'install' }])
     await Promise.resolve()
     expect(b.list).toHaveBeenCalledTimes(1)
 
     b.access!.set(true)
-    expect(b.slots.entries('main')).toHaveLength(1)
+    expect(b.slots.entries('settings.section')).toHaveLength(1)
     await vi.waitFor(() => { expect(b.list).toHaveBeenCalledTimes(2) })
   })
 
@@ -228,7 +227,7 @@ describe('ui-plugin-manager browser plugin', () => {
     const fiber = b.ctx.plugin({ inject: [...inject], apply })
     await fiber.await()
     expect(allows).toHaveBeenCalledWith('pluginManager/listBundles')
-    for (const name of ['main', 'shell.overlay', 'sidebar.panellist'] as const) expect(b.slots.entries(name)).toEqual([])
+    for (const name of ['settings.section', 'shell.overlay'] as const) expect(b.slots.entries(name)).toEqual([])
     expect(b.ctx.get('pluginNavigation')).toBeUndefined()
     expect(b.ctx.get('pluginChanges')?.bundle('nhs-any').getSnapshot()).toBe(false)
     await fiber.dispose()
@@ -241,24 +240,16 @@ describe('ui-plugin-manager browser plugin', () => {
     await fiber.await()
 
     b.ctx.pluginNavigation.openBundle('nhs-navigation-test')
-    expect(b.selectPanel).toHaveBeenCalledWith(PANEL_ID)
-    const entry = b.slots.entries('main')[0]!
+    expect(b.openSettings).toHaveBeenCalledWith(SECTION_ID)
+    const entry = b.slots.entries('settings.section')[0]!
     assert(entry.store && 'create' in entry.store)
     expect(entry.store.create().getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'package', name: 'nhs-navigation-test' } })
     expect(entry.component).toBe(PluginManagerPage)
-    expect(entry.options).toMatchObject({ key: PANEL_ID })
+    expect(entry.options).toMatchObject({ id: SECTION_ID })
     expect(entry.locale).toBe(NS)
-    // The sidebar entry addresses the page by the same id and speaks the dictionary.
-    const icon = b.slots.entries('sidebar.panellist')[0]!
-    expect(icon.component).toBe(PluginsPanelIcon)
-    const unread = () => { throw new Error('The sidebar icon must not read application state') }
-    const glyph = render(<PluginsPanelIcon size={18} active={false}
-      usePanelInfo={unread} useSessions={unread} useSessionStatus={unread} useSessionRetainInfo={unread}
-      useWorkspaces={unread} useContextMenu={contextMenuHook()} useResource={unread} {...allowAllAccess} />)
-    expect(glyph.container.querySelector('svg')?.getAttribute('width')).toBe('18')
-    expect(icon.options).toMatchObject({ id: PANEL_ID, order: 0 })
-    expect(icon.locale).toBe(NS)
-    expect(resolveSlotLabel(icon.options.label)).toBe('Plugins')
+    // The section is the page's only entry: no sidebar panel row remains.
+    expect(b.slots.entries('sidebar.panellist')).toEqual([])
+    expect(resolveSlotLabel(entry.options.label)).toBe('Plugins')
     // The page declares the slots a plugin's configuration arrives through, and binds their projection beside its state.
     expect(b.slots.spec('plugins.add.actions')).toMatchObject({ kind: 'list', scope: 'root' })
     expect(b.slots.spec('plugins.item')).toMatchObject({ kind: 'list', scope: 'root' })
@@ -321,7 +312,7 @@ describe('ui-plugin-manager browser plugin', () => {
     await fiber.dispose()
     expect(b.ctx.get('pluginNavigation')).toBeUndefined()
     expect(b.ctx.get('pluginChanges')).toBeUndefined()
-    expect(b.slots.entries('main')).toHaveLength(0)
+    expect(b.slots.entries('settings.section')).toHaveLength(0)
     expect(b.slots.entries('shell.overlay')).toHaveLength(0)
     expect(b.slots.entries('sidebar.panellist')).toHaveLength(0)
     b.remote.emit('plugin-manager/changed', [{ reason: 'install' }])

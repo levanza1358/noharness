@@ -48,6 +48,8 @@ export type SettingsRootInjected = {
   openSettings: (sectionId?: string) => void
   /** Select the settings page without naming a section: the trigger's own path. */
   showSettingsPage: () => void
+  /** Return the center column to the Conversation. */
+  closeSettings: () => void
   /** Request a fresh logical generation and physical WebSocket immediately. */
   reconnect: () => void
   hooks: {

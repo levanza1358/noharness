@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { contextMenuHook } from '@noharness/client-test-runtime'
 import type { ConfigPageForm } from '../src/client/slot-contract.ts'
-import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { Context } from '@noharness/cordis'
 import { LocaleRuntime } from '@noharness/client-locale/client'
@@ -166,6 +166,7 @@ function renderTab(
   const navigation = createNavigationStore().create()
   const props: PluginManagerPageProps = {
     createHeaderRef: vi.fn(() => vi.fn()),
+    close: vi.fn(),
     useStore: bindSnapshotSelector(navigation), actions: navigation.actions,
     ...standard,
     t,
@@ -655,11 +656,8 @@ describe('PluginManagerPage', () => {
   })
 
   it.each(['list', 'configuration detail'] as const)('keeps an uncached refresh failure inline in %s and hides it during retry', (view) => {
-    const { actions, set, setLanguage } = renderTab(
-      { status: 'error', refreshStatus: 'failed' },
-      { items: [{ id: 'bash', label: 'Shell' }] },
-    )
-    if (view === 'configuration detail') fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'Shell') }))
+    const { actions, set, setLanguage } = renderTab({ packages: [pkg()] })
+    if (view === 'configuration detail') fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'nhs-better-sidebar') }))
     for (const dict of [en, ja]) {
       setLanguage(dict)
       set({ status: 'error', refreshStatus: 'failed' })
@@ -1251,7 +1249,7 @@ describe('PluginManagerPage', () => {
       'plugins.row.config:nhs-better-sidebar#sidebar': view => view === 'summary' ? 'The sidebar row.' : <form aria-label="row form" />,
     }
 
-    it('keeps configuration and installed plugins on the main list and shows eligible official plugins on the secondary page', () => {
+    it('keeps installed plugins on the main list and shows eligible official plugins on the secondary page', () => {
       const team = '@noharness/experimental-voice-input-bundle'
       renderTab(
         { packages: [
@@ -1265,22 +1263,21 @@ describe('PluginManagerPage', () => {
           pkg({ name: '@acme/new-official', official: true }),
           pkg(),
         ] },
-        { items: [{ id: 'bash', label: 'Shell' }] },
+        {},
         bodies,
       )
-      const basic = document.querySelector('[data-plugin-group="basic"]') as HTMLElement
       const extensions = document.querySelector('[data-plugin-group="extensions"]') as HTMLElement
       expect(document.querySelector('[data-plugin-group="more"]')).toBeNull()
+      // Official plugin settings live in their own Settings sections, so the
+      // manager renders no built-in card group.
       expect([...document.querySelectorAll('[data-plugin-group]')].map(group => group.getAttribute('data-plugin-group')))
-        .toEqual(['basic', 'extensions', 'bundles'])
-      expect(within(basic).getAllByRole('listitem').map(card => card.getAttribute('data-plugin-item'))).toEqual(['bash'])
+        .toEqual(['extensions', 'bundles'])
+      expect(document.querySelector('[data-plugin-group="basic"]')).toBeNull()
       expect(within(extensions).getByRole('heading', { name: en.extensionsTitle })).toBeTruthy()
       expect(within(extensions).getByRole('button', { name: en.moreAction }).textContent).toBe(en.moreAction)
       expect(within(extensions).getAllByRole('listitem').map(card => card.getAttribute('data-plugin-package')))
         .toEqual(['@noharness/experimental-voice-input-bundle', '@acme/new-official'])
       expect(document.querySelector('[data-plugin-count]')).toBeNull()
-      expect(within(basic).getByText('Limits every command.')).toBeTruthy()
-      expect(within(basic).queryByRole('switch', { name: en.enableToggle.replace('{name}', 'Shell') })).toBeNull()
       fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', team) }))
       fireEvent.click(screen.getByRole('button', { name: en.backToList }))
       expect(screen.getByRole('heading', { name: en.title, level: 1 })).toBeTruthy()
@@ -1299,14 +1296,6 @@ describe('PluginManagerPage', () => {
       fireEvent.click(screen.getByRole('button', { name: en.backToList }))
       expect(document.querySelector('[data-plugin-group="more"]')).toBeNull()
       expect(document.querySelector('[data-plugin-package="nhs-better-sidebar"]')).not.toBeNull()
-      fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'Shell') }))
-      const detail = document.querySelector('[data-plugin-item-detail="bash"]') as HTMLElement
-      expect(within(detail).getByRole('heading', { level: 3 }).textContent).toBe('Shell')
-      expect(within(detail).getByText('Limits every command.')).toBeTruthy()
-      expect(within(detail).getByRole('form', { name: 'bash form' })).toBeTruthy()
-      fireEvent.click(within(detail).getByRole('button', { name: en.backToList }))
-      expect(document.querySelector('[data-plugin-item-detail]')).toBeNull()
-      expect(screen.getByRole('heading', { name: en.basicTitle })).toBeTruthy()
     })
 
     it.each([false, true])('shows one forge card and hides the standalone worktree card when enabled is %s', (enabled) => {
@@ -1475,17 +1464,11 @@ describe('PluginManagerPage', () => {
       expect(createNavigationStore().create().getSnapshot()).toEqual({ tab: 'installed', view: { kind: 'list' } })
     })
 
-    it('counts an official plugin as content: the empty line waits for a page with nothing at all', () => {
+    it('renders no official plugin cards, so the empty line follows the package list alone', () => {
       renderTab({ packages: [] }, { items: [{ id: 'bash', label: 'Shell' }] }, bodies)
-      expect(screen.queryByText(en.empty)).toBeNull()
-      expect(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'Shell') })).toBeTruthy()
-    })
-
-    it('gives an official plugin without artwork of its own the default artwork', () => {
-      renderTab({ packages: [] }, { items: [{ id: 'custom-tool', label: 'Custom' }] })
-      const card = document.querySelector('[data-plugin-item="custom-tool"]') as HTMLElement
-      const stops = [...card.querySelectorAll('stop')].map(stop => stop.getAttribute('stop-color'))
-      expect(stops).toEqual(['#54ECE7', '#658EFF'])
+      expect(screen.getByText(en.empty)).toBeTruthy()
+      expect(document.querySelector('[data-plugin-item]')).toBeNull()
+      expect(document.querySelector('[data-plugin-group="basic"]')).toBeNull()
     })
 
     it('renders a bundle\'s own configuration on its page, and no configure control on a row without one', () => {
@@ -1568,13 +1551,17 @@ describe('PluginManagerPage', () => {
       expect(subjects.at(-1)).toMatchObject({ kind: 'row', row: { rowId: 'sidebar', moduleName: 'nhs-better-sidebar', enabled: true } })
       fireEvent.click(within(page).getByRole('button', { name: en.backToPackage.replace('{name}', 'nhs-better-sidebar') }))
       fireEvent.click(screen.getByRole('button', { name: en.backToList }))
+    })
 
-      fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'Shell') }))
-      const item = document.querySelector('[data-plugin-item-detail="bash"]') as HTMLElement
-      expect(within(item).getByRole('button', { name: 'act item bash' })).toBeTruthy()
-      expect(within(item).getByText('badge item bash')).toBeTruthy()
-      expect(within(item).getByRole('region', { name: 'section item bash' })).toBeTruthy()
-      expect(within(item).getByRole('form', { name: 'bash form' })).toBeTruthy()
+    it('copies the package name from its detail page', async () => {
+      const writeText = vi.fn(async () => undefined)
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } })
+      onTestFinished(() => { Reflect.deleteProperty(navigator, 'clipboard') })
+      renderTab({ packages: [pkg()] })
+      fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'nhs-better-sidebar') }))
+      fireEvent.click(screen.getByRole('button', { name: en.copyNameLabel.replace('{name}', 'nhs-better-sidebar') }))
+      await waitFor(() => { expect(writeText).toHaveBeenCalledWith('nhs-better-sidebar') })
+      expect((await screen.findByRole('alert')).textContent).toBe(en.nameCopied)
     })
 
     it('leaves the version out of a bundle the Host reports none for', () => {
@@ -1583,6 +1570,24 @@ describe('PluginManagerPage', () => {
       fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'nhs-better-sidebar') }))
       expect(subjects.at(-1)).toEqual({ kind: 'bundle', pkg: { name: 'nhs-better-sidebar', installed: true, official: false, availability: 'profile', enabled: true, rows: [] } })
     })
+  })
+
+  it('filters and orders the installed list without touching the Host', () => {
+    const { actions } = renderTab({ packages: [
+      pkg({ name: 'nhs-zeta', meta: { title: 'Zeta tools' } }),
+      pkg({ name: 'nhs-alpha', meta: { title: 'Alpha tools' } }),
+    ] })
+    const names = (): Array<string | null> =>
+      [...document.querySelectorAll('[data-plugin-package]')].map(card => card.getAttribute('data-plugin-package'))
+    const search = screen.getByRole('searchbox', { name: en.filterLabel })
+    fireEvent.change(search, { target: { value: 'zeta' } })
+    expect(names()).toEqual(['nhs-zeta'])
+    fireEvent.change(search, { target: { value: '' } })
+    fireEvent.click(screen.getByRole('button', { name: en.sortDefault }))
+    expect(names()).toEqual(['nhs-alpha', 'nhs-zeta'])
+    fireEvent.change(search, { target: { value: 'nothing matches' } })
+    expect(screen.getByText(en.filterEmpty)).toBeTruthy()
+    expect(actions.refresh).not.toHaveBeenCalled()
   })
 
   it('preserves the full package name and description for a third-party scope', () => {
@@ -2734,11 +2739,14 @@ it('supplies the accepted entry values and atomic mutation action to a custom pl
   const form: ConfigPageForm = {
     state: { status: 'ready', value: { count: 2 }, base: {}, user: {}, revision: 7, writable: true }, mutate,
   }
-  renderTab({}, { items: [{ id: 'custom', label: 'Custom' }] }, {
-    'plugins.item:custom': (view, _owner, supplied) => view === 'summary' ? 'Custom summary'
+  // Row configuration pages receive the same form; official plugin settings
+  // moved to their own Settings sections with the card group.
+  renderTab({ packages: [pkg({ rows: [row()] })] }, { rows: new Set(['nhs-better-sidebar#sidebar']) }, {
+    'plugins.row.config:nhs-better-sidebar#sidebar': (view, _owner, supplied) => view === 'summary' ? 'Custom summary'
       : <button onClick={() => { void supplied!.mutate([{ op: 'set', path: ['count'], value: 3 }], supplied!.state.revision) }}>Save custom</button>,
-  }, { custom: form })
-  fireEvent.click(screen.getByText('Custom'))
+  }, { sidebar: form })
+  fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'nhs-better-sidebar') }))
+  fireEvent.click(screen.getByRole('button', { name: en.configureRow.replace('{name}', 'nhs-better-sidebar') }))
   fireEvent.click(screen.getByText('Save custom'))
   expect(mutate).toHaveBeenCalledWith([{ op: 'set', path: ['count'], value: 3 }], 7)
 })
@@ -2978,6 +2986,30 @@ describe('registry versions and updates', () => {
     expect(within(section()).getByText(en.versionsPrimaryTag)).toBeTruthy()
     fireEvent.click(within(section()).getByRole('button', { name: en.retry }))
     expect(actions.checkVersions).toHaveBeenCalledWith('nhs-better-sidebar')
+  })
+
+  it('narrows the list to bundles with a newer version without updating them', () => {
+    const other = pkg({ name: 'nhs-other', update: 'registry', version: '1.0.0', source: 'nhs-other@1.0.0' })
+    const check = listed([v('0.17.0')])
+    const otherCheck: VersionCheck = {
+      phase: 'done', checkedAt: 0,
+      list: {
+        status: 'listed', installed: '1.0.0', registry: null, attempts: [{ registry: null }],
+        versions: [v('1.1.0')], omitted: 0,
+      },
+    }
+    const { actions } = renderTab({ packages: [updatable(), other, pkg({ name: 'nhs-settled' })], versions: {
+      'nhs-better-sidebar': check, 'nhs-other': otherCheck,
+    } })
+    const shown = (): string[] =>
+      [...document.querySelectorAll('[data-plugin-package]')].map(card => card.getAttribute('data-plugin-package') ?? '')
+    expect(shown()).toContain('nhs-settled')
+    const toggle = screen.getByRole('button', { name: en.updatesOnly.replace('{count}', '2') })
+    fireEvent.click(toggle)
+    expect(shown()).toEqual(['nhs-better-sidebar', 'nhs-other'])
+    expect(actions.update).not.toHaveBeenCalled()
+    fireEvent.click(toggle)
+    expect(shown()).toContain('nhs-settled')
   })
 
   it('reports a check the transport lost by its words, and lists a single registry\'s answer without a fallback mark', () => {

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { contextMenuHook } from '@noharness/client-test-runtime'
 import type { GlobalStandardProps } from '@noharness/client-ui-slots'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { allowAllAccess, bindSnapshotSelector, RemoteError } from '@noharness/client-test-runtime'
 import type { GeneralSectionComponentProps } from '../src/client/GeneralSection.tsx'
@@ -13,8 +13,8 @@ import { DesktopChannelRow, DesktopChannelToast } from '../src/client/DesktopCha
 import { DesktopChannelSource } from '../src/client/desktop-channel-source.ts'
 import type { DesktopChannelChangeResult, DesktopChannelState } from '../src/types.ts'
 import { DeveloperToolsRow } from '../src/client/DeveloperToolsRow.tsx'
-import { NetworkRow } from '../src/client/NetworkRow.tsx'
-import type { DesktopNetworkExposureView } from '../src/types.ts'
+import { NetworkSection } from '../src/client/NetworkSection.tsx'
+import type { DesktopNetworkExposureOptions, DesktopNetworkExposureView } from '../src/types.ts'
 import { createSnapshotStore } from '@noharness/client-store'
 import { SettingsDescribeMirror } from '@noharness/client-ui-settings/src/client/settings-mirror.ts'
 import { SettingsDocumentStore } from '../src/client/settings-document-store.ts'
@@ -29,7 +29,7 @@ function derivedDocumentStore(remote: object) {
   return new SettingsDocumentStore(ctx, new SettingsDescribeMirror(ctx))
 }
 import { en, ja } from '../src/client/locales.ts'
-import { CurrentVersionRow } from '../src/client/CurrentVersionRow.tsx'
+import { AboutSection } from '../src/client/AboutSection.tsx'
 import { DesktopUpdateBadge } from '../src/client/DesktopUpdateIndicator.tsx'
 import { HostReleasePrompt, type HostReleasePromptProps } from '../src/client/HostReleasePrompt.tsx'
 import type { DesktopUpdateView } from '../src/types.ts'
@@ -107,39 +107,91 @@ it('toggles developer tools using the accepted setting and disables duplicate wr
 })
 
 it('renders the LAN address, the failure, and disables duplicate writes', async () => {
-  const state = createSnapshotStore<DesktopNetworkExposureView>({ enabled: false, failed: false, pending: false })
+  const state = createSnapshotStore<DesktopNetworkExposureView>({ enabled: false, failed: false, pending: false, port: 0 })
   let finish!: () => void
-  const setEnabled = vi.fn((enabled: boolean) => {
-    state.set({ enabled: false, failed: false, pending: true })
+  const set = vi.fn((options: DesktopNetworkExposureOptions) => {
+    state.set({ enabled: false, failed: false, pending: true, port: options.port ?? 0 })
     return new Promise<void>((resolve) => {
       finish = () => {
-        state.set({ enabled, url: 'http://192.168.1.20:4100/?token=abc', failed: false, pending: false })
+        state.set({
+          enabled: options.enabled, url: 'http://192.168.1.20:4100/?token=abc',
+          failed: false, pending: false, port: 4100,
+        })
         resolve()
       }
     })
   })
-  render(<NetworkRow {...kit} t={t} useNetwork={bindSnapshotSelector(state)} setEnabled={setEnabled} />)
+  render(<NetworkSection {...kit} t={t} close={vi.fn()} useNetwork={bindSnapshotSelector(state)} set={set} />)
   expect(screen.queryByText(en['network.address'])).toBeNull()
   const toggle = screen.getByRole('switch', { name: 'Share on the local network' })
   expect(toggle.getAttribute('aria-checked')).toBe('false')
   fireEvent.click(toggle)
-  expect(setEnabled).toHaveBeenCalledWith(true)
+  // An empty port field asks the shell for an automatic port.
+  expect(set).toHaveBeenCalledWith({ enabled: true, port: 0 })
   expect(toggle.hasAttribute('disabled')).toBe(true)
   finish()
   await waitFor(() => { expect(screen.getByText(en['network.address'])).toBeTruthy() })
-  state.set({ enabled: false, failed: true, pending: false })
+  // The shell's bound port reaches the field once the write lands.
+  await waitFor(() => { expect(screen.getByRole('spinbutton').getAttribute('value')).toBe('4100') })
+  state.set({ enabled: false, failed: true, pending: false, port: 0 })
   await waitFor(() => { expect(screen.getByRole('alert').textContent).toBe(en['network.error']) })
   expect(screen.queryByText(en['network.address'])).toBeNull()
 })
 
+it('lists every other LAN address the shell bound', () => {
+  const urls = ['http://192.168.1.20:4100/?token=abc', 'http://10.0.0.5:4100/?token=abc']
+  const state = createSnapshotStore<DesktopNetworkExposureView>({
+    enabled: true, url: urls[0]!, urls, failed: false, pending: false, port: 4100,
+  })
+  render(<NetworkSection {...kit} t={t} close={vi.fn()} useNetwork={bindSnapshotSelector(state)} set={async () => {}} />)
+  expect(screen.getByText(en['network.otherAddresses'])).toBeTruthy()
+  expect(screen.getByText(urls[1]!)).toBeTruthy()
+  // The primary address stays in its own row instead of repeating here.
+  expect(screen.getAllByText(en['network.address'])).toHaveLength(1)
+})
+
+it('hides the other-address list while only one interface answered', () => {
+  const url = 'http://192.168.1.20:4100/?token=abc'
+  const state = createSnapshotStore<DesktopNetworkExposureView>({
+    enabled: true, url, urls: [url], failed: false, pending: false, port: 4100,
+  })
+  render(<NetworkSection {...kit} t={t} close={vi.fn()} useNetwork={bindSnapshotSelector(state)} set={async () => {}} />)
+  expect(screen.queryByText(en['network.otherAddresses'])).toBeNull()
+})
+
+it('applies a chosen port and rejects text outside the accepted range', async () => {  const state = createSnapshotStore<DesktopNetworkExposureView>({ enabled: false, failed: false, pending: false, port: 0 })
+  const set = vi.fn(async (options: DesktopNetworkExposureOptions) => {
+    state.set({ enabled: options.enabled, failed: false, pending: false, port: options.port ?? 0 })
+  })
+  render(<NetworkSection {...kit} t={t} close={vi.fn()} useNetwork={bindSnapshotSelector(state)} set={set} />)
+  const input = screen.getByRole('spinbutton')
+  const apply = screen.getByRole('button', { name: 'Apply' })
+  expect(apply.hasAttribute('disabled')).toBe(true)
+  fireEvent.change(input, { target: { value: '4321' } })
+  expect(input.getAttribute('aria-invalid')).toBe('false')
+  fireEvent.click(apply)
+  expect(set).toHaveBeenCalledWith({ enabled: false, port: 4321 })
+  await waitFor(() => { expect(state.getSnapshot().port).toBe(4321) })
+  fireEvent.change(input, { target: { value: '80' } })
+  expect(input.getAttribute('aria-invalid')).toBe('true')
+  expect(screen.getByRole('alert').textContent).toBe(en['network.portInvalid'])
+  expect(apply.hasAttribute('disabled')).toBe(true)
+  expect(set).toHaveBeenCalledOnce()
+})
+
 it('reports a failed LAN write and allows retry', async () => {
-  const state = createSnapshotStore<DesktopNetworkExposureView>({ enabled: false, failed: false, pending: false })
-  const setEnabled = vi.fn()
-    .mockImplementationOnce(async () => { state.set({ enabled: false, failed: true, pending: false }) })
-    .mockImplementation(async (enabled: boolean) => {
-      state.set({ enabled, url: 'http://192.168.1.20:4100/?token=abc', failed: false, pending: false })
+  const state = createSnapshotStore<DesktopNetworkExposureView>({ enabled: false, failed: false, pending: false, port: 0 })
+  const set = vi.fn()
+    .mockImplementationOnce(async () => {
+      state.set({ enabled: false, failed: true, pending: false, port: 0 })
     })
-  render(<NetworkRow {...kit} t={t} useNetwork={bindSnapshotSelector(state)} setEnabled={setEnabled} />)
+    .mockImplementation(async (options: DesktopNetworkExposureOptions) => {
+      state.set({
+        enabled: options.enabled, url: 'http://192.168.1.20:4100/?token=abc',
+        failed: false, pending: false, port: 4100,
+      })
+    })
+  render(<NetworkSection {...kit} t={t} close={vi.fn()} useNetwork={bindSnapshotSelector(state)} set={set} />)
   fireEvent.click(screen.getByRole('switch', { name: 'Share on the local network' }))
   expect((await screen.findByRole('alert')).textContent).toBe(en['network.error'])
   fireEvent.click(screen.getByRole('switch', { name: 'Share on the local network' }))
@@ -280,26 +332,28 @@ it('reports a failed developer-tool write and allows retry', async () => {
   expect(screen.queryByRole('alert')).toBeNull()
 })
 
-describe('current version', () => {
-  it.each([
-    ['Current version: 1.2.3-rc.4', en],
-    ['Current version: 1.2.3-rc.4', ja],
-  ])('renders the localized release label %s', (expected, dictionary) => {
+describe('about', () => {
+  it('renders the complete build label and copies it', async () => {
     vi.stubEnv('NHS_CLIENT_VERSION', '1.2.3-rc.4')
-    const translate: TriggerContentProps['t'] = (key, params) => {
-      let text = (dictionary as Record<string, string>)[key] ?? key
-      for (const [name, value] of Object.entries(params ?? {})) text = text.replace(`{${name}}`, String(value))
-      return text
-    }
-    render(<CurrentVersionRow {...kit} t={translate} />)
-    expect(screen.getByText(expected)).toBeTruthy()
-    expect(screen.queryByRole('button')).toBeNull()
+    vi.stubEnv('NHS_CLIENT_COMMIT_HASH', 'abc1234')
+    vi.stubEnv('NHS_CLIENT_GIT_DIRTY', 'true')
+    const writeText = vi.fn(async () => undefined)
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } })
+    onTestFinished(() => { Reflect.deleteProperty(navigator, 'clipboard') })
+    render(<AboutSection {...kit} t={t} close={vi.fn()} />)
+    expect(screen.getByRole('region', { name: 'About' })).toBeTruthy()
+    expect(screen.getByText('Version')).toBeTruthy()
+    expect(screen.getByText('1.2.3-rc.4-abc1234-dirty')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Copy version' }))
+    await waitFor(() => { expect(writeText).toHaveBeenCalledWith('1.2.3-rc.4-abc1234-dirty') })
+    expect((await screen.findByRole('alert')).textContent).toBe('Version copied')
   })
 
-  it('omits the row when a partial build has no version metadata', () => {
+  it('reports an unavailable build without a copy control when metadata is partial', () => {
     vi.stubEnv('NHS_CLIENT_VERSION', undefined)
-    const view = render(<CurrentVersionRow {...kit} t={t} />)
-    expect(view.container.textContent).toBe('')
+    render(<AboutSection {...kit} t={t} close={vi.fn()} />)
+    expect(screen.getByText('Version unavailable')).toBeTruthy()
+    expect(screen.queryByRole('button')).toBeNull()
   })
 })
 

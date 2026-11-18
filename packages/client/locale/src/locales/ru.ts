@@ -33,7 +33,7 @@ export const ru = {
   'collapse': 'Свернуть',
   'expand': 'Развернуть',
   'back': 'Назад',
-  'brand.localBuild': 'Локальная сборка NHS',
+  'brand.localBuild': 'NoHarness',
   'workspace.defaultName': 'Рабочая область по умолчанию',
   'unknown': 'Неизвестно',
   'none': 'Нет',

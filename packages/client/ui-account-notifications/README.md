@@ -7,7 +7,7 @@ kind: "package-reference"
 
 ## Summary
 
-Show server-authored account notifications beside the account menu. Displayed cards survive later list omissions and refresh their content when the interface language changes.
+Show server-authored account notifications beside the account launcher. Displayed cards survive later list omissions and refresh their content when the interface language changes.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ Show server-authored account notifications beside the account menu. Displayed ca
 <a id="use-this-package"></a>
 ## Use this package
 
-The Web bundle includes this plugin with [account settings](../ui-settings-account/README.md). It contributes to `settings.launcher.notifications`; the account menu supplies visibility and the action that opens Account settings. The notification plugin owns cards, polling, localized content, and interaction reports.
+The Web bundle includes this plugin with [account settings](../ui-settings-account/README.md). It contributes to `settings.launcher.notifications`; the sidebar launcher supplies visibility and the action that opens Account settings. The notification plugin owns cards, polling, localized content, and interaction reports.
 
 Startup with a stored account, sign-in, and each Settings entry start a new polling cycle with an immediate request. `notificationPollIntervalMs` on the `ui-account-notifications` row supplies the initial delay, defaulting to 600,000 ms. A successful list response replaces it with `next_poll_after` seconds, including empty lists. The delay starts after the request settles; failures retain the latest delay, and restarting restores the configured initial value. Polling continues in the background.
 
@@ -52,4 +52,4 @@ No model request prefix changes.
 <a id="dev-note"></a>
 ### Dev Note
 
-The package tests cover lifecycle ownership; the Web notification scenario checks the assembled account menu.
+The package tests cover lifecycle ownership; the Web notification scenario checks the assembled sidebar launcher.

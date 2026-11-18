@@ -663,7 +663,7 @@ async function main(): Promise<void> {
       })
       if (backend.host !== undefined) await openInitialWindow()
       if (backend.host !== undefined && desktopSettings.shell.network) {
-        await applyNetwork(true)
+        await applyNetwork(true, desktopSettings.shell.networkPort)
         publishNetwork()
       }
       if (backend.host !== undefined) updateJournal?.action('workspace-ready')
@@ -914,11 +914,15 @@ async function main(): Promise<void> {
   // the preference is shell state, saved only after the proxy reflects it.
   let networkExposure: DesktopNetworkExposure | undefined
   let networkUrl: string | undefined
+  let networkUrls: readonly string[] | undefined
   let networkEnabled = false
   let networkPending = false
+  // Requested bind port; zero leaves the choice to the OS for each start.
+  let networkPort = desktopSettings.shell.networkPort
   const networkView = (failed = false): DesktopNetworkExposureView => ({
-    enabled: networkEnabled, failed, pending: networkPending,
+    enabled: networkEnabled, failed, pending: networkPending, port: networkPort,
     ...(networkUrl === undefined ? {} : { url: networkUrl }),
+    ...(networkUrls === undefined ? {} : { urls: networkUrls }),
   })
   const publishNetwork = (failed = false): DesktopNetworkExposureView => {
     const state = networkView(failed)
@@ -927,25 +931,37 @@ async function main(): Promise<void> {
     }
     return state
   }
-  const applyNetwork = async (enabled: boolean): Promise<boolean> => {
+  const applyNetwork = async (enabled: boolean, port: number): Promise<boolean> => {
     networkPending = true
     try {
       if (enabled) {
+        // A changed port rebinds the proxy; the previous listener releases the address first.
+        if (networkExposure !== undefined && port !== networkPort) {
+          await networkExposure.stop()
+          networkExposure = undefined
+          networkUrl = undefined
+          networkUrls = undefined
+        }
         if (networkExposure === undefined) {
           const exposure = new DesktopNetworkExposure({
             upstream: () => hostUrl === undefined || hostCookie === undefined
               ? undefined : { url: hostUrl, cookie: hostCookie },
+            ...(port === 0 ? {} : { port }),
           })
           const started = await exposure.start()
           networkExposure = exposure
           networkUrl = started.url
+          networkUrls = started.urls
         }
+        networkPort = port
         networkEnabled = true
       } else {
         const running = networkExposure
         networkExposure = undefined
         networkUrl = undefined
+        networkUrls = undefined
         networkEnabled = false
+        networkPort = port
         await running?.stop()
       }
       return true
@@ -960,15 +976,21 @@ async function main(): Promise<void> {
     assertProductSender(event)
     return networkView()
   })
-  ipcMain.handle(DESKTOP_IPC.shellNetworkSet, async (event, enabled: unknown): Promise<DesktopNetworkExposureView> => {
+  ipcMain.handle(DESKTOP_IPC.shellNetworkSet, async (event, choice: unknown): Promise<DesktopNetworkExposureView> => {
     assertProductSender(event)
-    if (typeof enabled !== 'boolean') throw new Error('desktop shell: unsupported network preference')
-    if (!await applyNetwork(enabled)) return publishNetwork(true)
+    if (typeof choice !== 'object' || choice === null || !('enabled' in choice)
+      || typeof choice.enabled !== 'boolean') throw new Error('desktop shell: unsupported network preference')
+    const port = 'port' in choice && choice.port !== undefined ? choice.port : networkPort
+    if (typeof port !== 'number' || !Number.isInteger(port) || port < 0 || port > 65535) {
+      throw new Error('desktop shell: unsupported network port')
+    }
+    const previous = { enabled: networkEnabled, port: networkPort }
+    if (!await applyNetwork(choice.enabled, port)) return publishNetwork(true)
     try {
-      await saveShellExposure(app.getPath('userData'), enabled)
+      await saveShellExposure(app.getPath('userData'), choice.enabled, port)
     } catch (error) {
       console.error('desktop network exposure: could not save the preference', error)
-      await applyNetwork(!enabled)
+      await applyNetwork(previous.enabled, previous.port)
       return publishNetwork(true)
     }
     return publishNetwork(false)

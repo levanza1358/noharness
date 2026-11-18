@@ -215,8 +215,12 @@
   line-height: calc(18px + var(--nhs-content-font-delta-secondary, 0px));
 }
 
+/* The status stays in view while the reader scrolls older turns: it pins to the
+   transcript's bottom edge, and its mask hides the rows passing beneath it. */
 .running {
-  position: relative;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -225,6 +229,17 @@
   color: var(--dsw-alias-label-deep-diving);
   font-size: calc(var(--nhs-content-font-size, 14px) - 2px);
   line-height: calc(22px + var(--nhs-content-font-delta, 0px));
+}
+
+/* Opaque fill behind the pinned row, extended over the flow gap above it. It
+   sits below the row's own content so the divider and label stay on top. */
+.running::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--nhs-chat-flow-gap, 12px)) 0 -4px;
+  background: var(--dsw-alias-bg-base);
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* After the Session stops running and before the Turn's actions row arrives, the status keeps its slot

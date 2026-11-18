@@ -10,3 +10,11 @@
   line-height: 1.5;
   color: var(--dsw-alias-label-primary);
 }
+
+/* Effective bounds the page stages, restated under the fields. */
+.summary {
+  margin: 0 0 8px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}

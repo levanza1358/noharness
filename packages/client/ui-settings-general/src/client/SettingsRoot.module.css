@@ -63,17 +63,16 @@
 }
 
 /* The page fills the frame's center column: one surface for the whole column,
-   scrolling only inside the options area. The four shell seats are direct
-   children placed by area: the rail's title and the content header share the
-   first row, the rail's cells and the active section the second. Narrow
-   browser windows rearrange these areas into a horizontal layout. */
+   scrolling only inside the options area. The title and header share the first
+   row and the active section takes the second; the section rail renders only in
+   narrow browsers, since the sidebar carries it otherwise. */
 .panel {
   display: grid;
-  grid-template-columns: 188px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
     'title header'
-    'nav options';
+    'options options';
   width: 100%;
   height: 100%;
   min-width: 0;
@@ -91,13 +90,13 @@
   outline: none;
 }
 
-/* Nav rail (figma .Setting-nav 501:29958): the 188px track's cells, pad
-   (12,0), no own fill — the page surface shows through. */
+/* Nav rail: only the narrow-browser layout mounts it; the sidebar owns the
+   section navigation everywhere else. */
 .nav {
+  display: none;
   grid-area: nav;
   min-width: 0;
   min-height: 0;
-  display: flex;
   flex-direction: column;
   padding: 10px 12px 0;
   box-sizing: border-box;
@@ -248,6 +247,7 @@
   }
 
   :global(html:not([data-windows-titlebar]):not([data-platform='darwin'])) .nav {
+    display: flex;
     padding: 0;
   }
 

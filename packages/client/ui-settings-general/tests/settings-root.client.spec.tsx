@@ -183,6 +183,7 @@ function mount({
     renderSlot: renderSlot as never,
     openSettings,
     showSettingsPage: () => { selectPage() },
+    closeSettings: close,
   }
 
   // The page reads the shared seats; neither slot function nor the shell's

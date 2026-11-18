@@ -1,11 +1,15 @@
 /** Shell-owned LAN exposure held by the Desktop process. */
 import { createSnapshotStore } from '@noharness/client-store'
-import type { DesktopNetworkExposureBridge, DesktopNetworkExposureView } from '../types.ts'
+import type {
+  DesktopNetworkExposureBridge, DesktopNetworkExposureOptions, DesktopNetworkExposureView,
+} from '../types.ts'
 
 /** Client observation; the proxy itself is reached only through the bridge. */
 export class DesktopNetworkSource {
   /** Stable observation shared by every mounted General view. */
-  readonly store = createSnapshotStore<DesktopNetworkExposureView>({ enabled: false, failed: false, pending: false })
+  readonly store = createSnapshotStore<DesktopNetworkExposureView>({
+    enabled: false, failed: false, pending: false, port: 0,
+  })
   private live = true
   /** Set by {@link dispose}; lets a late IPC response stop without touching the store. */
   private disposed = false
@@ -27,17 +31,17 @@ export class DesktopNetworkSource {
   }
 
   /**
-   * Ask the shell to start or stop the LAN proxy.
-   * @param enabled - Whether other machines should reach this Host.
+   * Ask the shell to start, stop, or rebind the LAN proxy.
+   * @param options - Explicit exposure choice, including the port.
    * @returns After the shell reports the outcome; failure keeps the previous state.
    */
-  async set(enabled: boolean): Promise<void> {
+  async set(options: DesktopNetworkExposureOptions): Promise<void> {
     if (!this.live) return
     const revision = this.revision
     this.store.set({ ...this.store.getSnapshot(), pending: true, failed: false })
     let next: DesktopNetworkExposureView | undefined
     try {
-      next = await this.bridge.set(enabled)
+      next = await this.bridge.set(options)
     } catch (_error) {
       // The shell may have failed after the document was replaced; no
       // confirmed state exists, so the previous choice stands.

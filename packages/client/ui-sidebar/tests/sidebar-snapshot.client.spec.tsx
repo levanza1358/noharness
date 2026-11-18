@@ -9,7 +9,7 @@ import { createSnapshotStore } from '@noharness/client-store'
  * holes (sidebar.workspaces / sidebar.settings) have no registrant here, so
  * the snapshots pin the shell chrome itself.
  */
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, waitFor } from '@testing-library/react'
 import { SlotTestRuntime, usePinnedBrowserLanguages } from '@noharness/client-test-runtime'
 import { LocaleRuntime } from '@noharness/client-locale/client'
@@ -20,15 +20,8 @@ import { apply, inject } from '@noharness/client-ui-sidebar/client'
 // the shipped English copy, so they state the browser they assume.
 usePinnedBrowserLanguages('en-US')
 
-beforeEach(() => {
-  vi.stubEnv('NHS_CLIENT_COMMIT_HASH', 'abc1234')
-  vi.stubEnv('NHS_CLIENT_GIT_DIRTY', 'true')
-  vi.stubEnv('NHS_CLIENT_VERSION', '1.2.3-rc.4')
-})
-
 afterEach(() => {
   cleanup()
-  vi.unstubAllEnvs()
 })
 
 /**

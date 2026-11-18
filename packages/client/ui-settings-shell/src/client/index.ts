@@ -15,7 +15,7 @@ import type {} from '@noharness/client-ui-settings/client'
 import type {} from '@noharness/client-ui-plugin-manager/client'
 import type {} from '@noharness/client-ui-renderer/client'
 import type { Context as ClientContext } from '@noharness/cordis'
-import { ShellCard } from './ShellCard.tsx'
+import { ShellCard, ShellSettingsSection } from './ShellCard.tsx'
 import { BASH_NS, PWSH_NS, ShellCardController } from './shell-card-controller.ts'
 import { en, ja, es, fr, de, ru, pt, type ShellSettingsLocaleKey } from './locales.ts'
 
@@ -50,4 +50,8 @@ export function apply(ctx: ClientContext): void {
   ctx.effect(() => ctx.configForms.whileServed([BASH_NS, PWSH_NS], served => ctx.slots.inject('plugins.item', () => ctx.slots.register({
     name: 'plugins.item', id: 'shell', order: 40, label: () => t('title'), locale: NS, inject: () => (served.has(PWSH_NS) ? pwsh : bash).inject(),
   }, ShellCard))), 'ui-settings-shell: page')
+  // The settings page is the direct entry; the Plugins manager opens it through Settings.
+  ctx.effect(() => ctx.configForms.whileServed([BASH_NS, PWSH_NS], served => ctx.slots.inject('settings.section', () => ctx.slots.register({
+    name: 'settings.section', id: 'shell', order: 46, label: () => t('title'), locale: NS, inject: () => (served.has(PWSH_NS) ? pwsh : bash).inject(),
+  }, ShellSettingsSection))), 'ui-settings-shell: section')
 }

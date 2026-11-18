@@ -10,7 +10,6 @@ export const en = {
   'panels.label': 'Global panels',
   'navigation.label': 'Navigation',
   'panels.more': 'More',
-  'version.copied': 'Version copied',
 } as const
 
 export type SidebarKey = keyof typeof en
@@ -27,7 +26,6 @@ export const ja = {
   'panels.label': 'グローバルパネル',
   'navigation.label': 'ナビゲーション',
   'panels.more': 'More',
-  'version.copied': 'バージョンをコピーしました',
 } as const
 
 /** Spanish dictionary, checked against the English keys. */
@@ -41,7 +39,6 @@ export const es = {
   'panels.label': 'Paneles globales',
   'navigation.label': 'Navegación',
   'panels.more': 'Más',
-  'version.copied': 'Versión copiada',
 } as const
 
 /** French dictionary, checked against the English keys. */
@@ -55,7 +52,6 @@ export const fr = {
   'panels.label': 'Panneaux globaux',
   'navigation.label': 'Navigation',
   'panels.more': 'Plus',
-  'version.copied': 'Version copiée',
 } as const
 
 /** German dictionary, checked against the English keys. */
@@ -69,7 +65,6 @@ export const de = {
   'panels.label': 'Globale Bereiche',
   'navigation.label': 'Navigation',
   'panels.more': 'Mehr',
-  'version.copied': 'Version kopiert',
 } as const
 
 /** Russian dictionary, checked against the English keys. */
@@ -83,7 +78,6 @@ export const ru = {
   'panels.label': 'Глобальные панели',
   'navigation.label': 'Навигация',
   'panels.more': 'Ещё',
-  'version.copied': 'Версия скопирована',
 } as const
 
 /** Portuguese dictionary, checked against the English keys. */
@@ -97,5 +91,4 @@ export const pt = {
   'panels.label': 'Painéis globais',
   'navigation.label': 'Navegação',
   'panels.more': 'Mais',
-  'version.copied': 'Versão copiada',
 } as const

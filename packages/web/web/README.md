@@ -117,6 +117,15 @@ const searchOffered = await ctx.web.searchReady('deepseek-official')
 const fetchOffered = await ctx.web.fetchReady('deepseek-official')
 ```
 
+### Connectivity probe
+
+`probe(capability)` runs one minimal operation through the provider `search()` or `fetch()` would select — a one-result search for `NoHarness connectivity test`, or a fetch of `https://example.com/` — and returns `{ capability, provider, ok, detail }`. It reaches the network, so it serves a user-clicked test control rather than a readiness check. A selection or provider failure resolves with `ok: false` and the failure's message in `detail` instead of throwing, because the caller displays the outcome either way. The settings page reaches it as `ctx.remote.web.probe()`.
+
+```text
+// Remote: web/probe
+const outcome = await ctx.remote.web.probe('search')
+```
+
 ### Failures and recovery
 
 Failures throw `WebError` with a stable, machine-routable code; the message adds detail such as the missing provider id or the ambiguous candidate set. Callers route on the code and decide how to degrade. To change which backend a call uses, reconfigure the pinned id, mount or unmount providers, or fix the provider's configuration so its availability check passes.
@@ -143,7 +152,7 @@ The package is built on one deliberate separation:
 
 | File | Role |
 |---|---|
-| [`src/index.ts`](src/index.ts) | Plugin entry: the `WebRuntime` service, both provider registries, the `web/listProviders` Remote method and `web/providers-changed` event, execution-time selection, and per-route readiness |
+| [`src/index.ts`](src/index.ts) | Plugin entry: the `WebRuntime` service, both provider registries, the `web/listProviders` and `web/probe` Remote methods, the `web/providers-changed` event, execution-time selection, and per-route readiness |
 | [`src/types.ts`](src/types.ts) | Vocabulary: request/result types, provider list entries, the `web/providers-changed` event declaration, the closed `WebFetchBody` union, and the `WebError` taxonomy |
 
 ### Data model

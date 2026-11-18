@@ -8,6 +8,7 @@ import {
 } from '@noharness/client-ui-primitives'
 import { workspaceTitleOf } from '@noharness/util-workspace-path'
 import type { ConversationContentProps } from '../contract/slots.ts'
+import { GREETING_PERIOD_KEYS, greetingPeriod, pickGreetingLine } from './hero-greeting.ts'
 import css from './HeroShell.module.css'
 
 /** The owner's locale seat type, passed to hero chrome as a plain prop. */
@@ -131,6 +132,14 @@ function HeroFish({ hovering }: { hovering: boolean }) {
  */
 export function HeroShell({ t, renderSlot, children }: HeroShellProps) {
   const [hovering, setHovering] = useState(false)
+  // One greeting per mount: the period follows the local clock and the closing
+  // line is a random variant, so a re-render never rewrites what the user read.
+  const [greeting] = useState(() => ({
+    period: greetingPeriod(new Date().getHours()),
+    lineKey: pickGreetingLine(Math.random()),
+  }))
+  const headline = t(GREETING_PERIOD_KEYS[greeting.period])
+    + t('hero.greeting.separator') + t(greeting.lineKey)
   return (
     <div className={css.root}>
       <div className={css.stack}>
@@ -151,9 +160,7 @@ export function HeroShell({ t, renderSlot, children }: HeroShellProps) {
             })}
           </span>
           <span className={css.titleGroup}>
-            {/* Own element: keeps the headline text addressable apart from the badge. */}
-            <span>{t('hero.headline')}</span>
-            <span className={css.previewBadge}>{t('hero.preview')}</span>
+            <span data-testid="hero-headline">{headline}</span>
           </span>
         </div>
         <div className={css.body}>

@@ -24,9 +24,9 @@ it('creates a discoverable default file on first launch without touching other p
   rmSync(join(userData, 'desktop'), { recursive: true })
   writeFileSync(join(userData, 'keybindings.json'), 'existing shortcuts\n')
   expect(await readDesktopSettings(userData)).toEqual({
-    updates: { allowTestAuthPopupWindow: false }, shell: { tray: true, network: false },
+    updates: { allowTestAuthPopupWindow: false }, shell: { tray: true, network: false, networkPort: 0 },
   })
-  expect(readFileSync(path, 'utf8')).toBe('{\n  "updates": {\n    "allowTestAuthPopupWindow": false,\n    "trayEnabled": true,\n    "exposedNetwork": false\n  }\n}\n')
+  expect(readFileSync(path, 'utf8')).toBe('{\n  "updates": {\n    "allowTestAuthPopupWindow": false,\n    "trayEnabled": true,\n    "exposedNetwork": false,\n    "exposedNetworkPort": 0\n  }\n}\n')
   expect(readFileSync(join(userData, 'keybindings.json'), 'utf8')).toBe('existing shortcuts\n')
 })
 
@@ -85,11 +85,14 @@ it('continues with defaults even when warning output fails', async () => {
   expect(readFileSync(path, 'utf8')).toBe('{')
 })
 
-it('resolves and saves the LAN exposure preference independently of the tray', async () => {
+it('resolves and saves the LAN exposure preference and port independently of the tray', async () => {
   const { userData } = fixture()
-  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: true, network: false })
-  await saveShellExposure(userData, true)
-  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: true, network: true })
+  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: true, network: false, networkPort: 0 })
+  await saveShellExposure(userData, true, 5678)
+  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: true, network: true, networkPort: 5678 })
   await saveShellTray(userData, false)
-  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: false, network: true })
+  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: false, network: true, networkPort: 5678 })
+  // Disabling keeps the chosen port for the next enable.
+  await saveShellExposure(userData, false, 5678)
+  expect((await readDesktopSettings(userData)).shell).toEqual({ tray: false, network: false, networkPort: 5678 })
 })

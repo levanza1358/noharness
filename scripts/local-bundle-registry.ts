@@ -405,18 +405,26 @@ export function readPackedArtifacts(options: {
   readonly release: ReadonlyMap<string, ReleaseEntry>
 }): BundleArtifact[] {
   const { destination, members, release } = options
+  const familyNames = new Map<ReleaseFamily, Set<string>>()
+  for (const [name, entry] of release) {
+    const names = familyNames.get(entry.family)
+    if (names === undefined) familyNames.set(entry.family, new Set([name]))
+    else names.add(name)
+  }
   const packed = members.map((member) => {
     const entry = release.get(member.name)
     if (entry === undefined) {
       throw new Error(`${member.name}: not a public release member; the local registry does not republish a private or unreleased package`)
     }
+    const names = familyNames.get(entry.family)
+    if (names === undefined) throw new Error(`${member.name}: release family ${entry.family.id} publishes no members`)
     const file = tarballName(entry.member)
     const archive = join(destination, file)
     if (!existsSync(archive)) throw new Error(`${member.name} produced no tarball at ${archive}`)
     const contained = tarballFiles(archive)
     entry.family.validatePayload(entry.member, contained)
     const manifest = packedManifest(archive)
-    entry.family.validatePackedManifest(entry.member, manifest)
+    entry.family.validatePackedManifest(entry.member, manifest, names)
     const main = manifest.main
     if (typeof main === 'string' && main !== '' && !contained.includes(`package/${payloadPath(main)}`)) {
       throw new Error(`${entry.member.name}: packed archive lacks its declared main ${main}; rebuild before serving`)

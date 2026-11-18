@@ -97,7 +97,7 @@ function createProductApi(): DshDesktopProductApi {
       },
       network: {
         get: () => ipcRenderer.invoke(DESKTOP_IPC.shellNetworkGet) as Promise<DesktopNetworkExposureView>,
-        set: enabled => ipcRenderer.invoke(DESKTOP_IPC.shellNetworkSet, enabled) as Promise<DesktopNetworkExposureView>,
+        set: options => ipcRenderer.invoke(DESKTOP_IPC.shellNetworkSet, options) as Promise<DesktopNetworkExposureView>,
         subscribe(listener) {
           const handle = (_event: Electron.IpcRendererEvent, state: DesktopNetworkExposureView): void => { listener(state) }
           ipcRenderer.on(DESKTOP_IPC.shellNetworkChanged, handle)

@@ -216,7 +216,14 @@ export interface WebSearchCardFace extends Pick<SettingsFormActions, 'save' | 'd
   retryProviders: () => void
   /** Resolve a provider description to the active language. */
   resolveText: (text: NonNullable<WebProviderOption['description']>) => string
+  /** Run one connectivity probe through the provider the Host would select. */
+  probe: (capability: 'search' | 'fetch') => Promise<WebProbeOutcome>
 }
+
+/** What one connectivity probe reported. */
+export type WebProbeOutcome =
+  | { readonly ok: true; readonly provider: string; readonly detail: string }
+  | { readonly ok: false; readonly detail: string }
 
 /** A capability whose DeepSeek API has a billing menu. */
 type WebBillingCapability = 'search' | 'fetch'
@@ -590,6 +597,13 @@ export class WebSearchCardController {
       selectProvider: (field, id) => { this.select(field, id) },
       selectBilling: (capability, billing) => { this.selectBilling(capability, billing) },
       retryProviders: () => { this.refreshProviders() },
+      probe: async (capability) => {
+        const response = await this.ctx.remote.web.probe(capability)
+        if (!response.ok) return { ok: false, detail: response.error.message }
+        return response.value.ok
+          ? { ok: true, provider: response.value.provider, detail: response.value.detail }
+          : { ok: false, detail: response.value.detail }
+      },
       resolveText: text => this.ctx.locale.resolveText(text),
       save: () => { void this.save() },
       discard: () => {

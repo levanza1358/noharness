@@ -82,7 +82,10 @@ describe('ShellCard', () => {
   it('keeps the save inert until something is staged, offers no discard, and writes the staged edits when saved', () => {
     renderCard()
     expect(screen.getByRole('button', { name: en.save })).toHaveProperty('disabled', true)
-    expect(screen.getAllByRole('button')).toHaveLength(1)
+    // Save plus the timeout and output presets.
+    expect(screen.getByRole('group', { name: en.timeoutPresets })).toBeTruthy()
+    expect(screen.getByRole('group', { name: en.outputPresets })).toBeTruthy()
+    expect(screen.getAllByRole('button').filter(button => button.textContent === en.save)).toHaveLength(1)
     cleanup()
 
     const actions = renderCard({ dirty: true, timeoutMs: field('9000', { overridden: true }) })

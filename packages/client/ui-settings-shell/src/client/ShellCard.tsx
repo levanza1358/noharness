@@ -1,7 +1,7 @@
 /** The shell executor's settings page: the limits every command the agent runs is bound by. */
 
 import type {} from '@noharness/client-ui-plugin-manager/client'
-import { SettingsForm, SettingsValueField } from '@noharness/client-ui-primitives'
+import { SettingsForm, SettingsPresetRow, SettingsValueField } from '@noharness/client-ui-primitives'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@noharness/client-ui-slots'
 import { formLabels } from './locales.ts'
 import type { ShellCardFace } from './shell-card-controller.ts'
@@ -37,6 +37,16 @@ export function ShellCard(props: ShellCardProps) {
         onEdit={(text) => { props.edit('timeoutMs', text) }}
         onReset={() => { props.resetField('timeoutMs') }}
       />
+      <SettingsPresetRow
+        label={t('timeoutPresets')}
+        options={[60, 120, 300].map(seconds => ({
+          label: t('presetSeconds', { seconds: String(seconds) }),
+          value: String(seconds * 1000),
+        }))}
+        active={state.timeoutMs.text}
+        disabled={disabled}
+        onPick={(value) => { props.edit('timeoutMs', value) }}
+      />
       <SettingsValueField
         id="plugin-config-shell-output"
         label={t('maxOutputBytes')}
@@ -50,6 +60,23 @@ export function ShellCard(props: ShellCardProps) {
         onEdit={(text) => { props.edit('maxOutputBytes', text) }}
         onReset={() => { props.resetField('maxOutputBytes') }}
       />
+      <SettingsPresetRow
+        label={t('outputPresets')}
+        options={[
+          { label: t('presetKb', { kilobytes: '30' }), value: '30000' },
+          { label: t('presetKb', { kilobytes: '100' }), value: '100000' },
+          { label: t('presetMb', { megabytes: '1' }), value: '1000000' },
+        ]}
+        active={state.maxOutputBytes.text}
+        disabled={disabled}
+        onPick={(value) => { props.edit('maxOutputBytes', value) }}
+      />
     </SettingsForm>
   )
+}
+
+/** Settings section for this page: the card's full form view. */
+export function ShellSettingsSection(props:
+PropsRuntime<'settings.section'> & PropsLocale<'settings.shell'> & InjectFace<ShellCardFace>) {
+  return <ShellCard {...props} view="page" />
 }

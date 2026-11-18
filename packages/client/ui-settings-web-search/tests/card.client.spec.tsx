@@ -7,7 +7,7 @@ import { bindSnapshotSelector } from '@noharness/client-test-runtime'
 import { createSnapshotStore } from '@noharness/client-store'
 import type { SettingsFieldState, SettingsFormShell } from '@noharness/client-ui-primitives'
 import { WebSearchCard, type WebSearchCardProps } from '../src/client/WebSearchCard.tsx'
-import type { WebProviderOption, WebSearchCardState } from '../src/client/web-search-card-controller.ts'
+import type { WebProbeOutcome, WebProviderOption, WebSearchCardState } from '../src/client/web-search-card-controller.ts'
 import { en, ja } from '../src/client/locales.ts'
 
 afterEach(cleanup)
@@ -94,8 +94,8 @@ function plugins(): WebSearchCardState {
 
 function cardActions() {
   return {
-    edit: vi.fn(), resetField: vi.fn(), selectProvider: vi.fn(), selectBilling: vi.fn(), retryProviders: vi.fn(), save: vi.fn(),
-    discard: vi.fn(),
+    edit: vi.fn(), resetField: vi.fn(), selectProvider: vi.fn(), selectBilling: vi.fn(), retryProviders: vi.fn(),
+    probe: vi.fn(), save: vi.fn(), discard: vi.fn(),
   }
 }
 
@@ -272,8 +272,8 @@ describe('WebSearchCard', () => {
       'plugin-config-web-search-provider', 'plugin-config-web-search-billing',
       'plugin-config-web-fetch-provider', 'plugin-config-web-fetch-billing',
     ])
-    // The Fetch section holds its title, its provider menu block, and the billing panel.
-    expect(screen.getByRole('region', { name: en.fetchSection }).children).toHaveLength(3)
+    // The Fetch section holds its title, its provider menu block, its probe row, and the billing panel.
+    expect(screen.getByRole('region', { name: en.fetchSection }).children).toHaveLength(4)
     expect(region(en.fetchSection).queryByRole('textbox')).toBeNull()
   })
 
@@ -324,7 +324,9 @@ describe('WebSearchCard', () => {
   it('shows each selected provider’s registered description as plain text, with no action of its own', () => {
     renderPage()
     expect(region(en.fetchSection).getByText(DESCRIPTIONS.http!.ja).tagName).toBe('P')
-    expect(region(en.fetchSection).queryAllByRole('button').map(button => button.id)).toEqual(['plugin-config-web-fetch-provider'])
+    // The description adds no action; the section's only other button is the probe.
+    expect(region(en.fetchSection).queryAllByRole('button').map(button => button.id).filter(Boolean))
+      .toEqual(['plugin-config-web-fetch-provider'])
     expect(resolveText).toHaveBeenCalledWith(DESCRIPTIONS.http)
   })
 
@@ -461,5 +463,45 @@ describe('WebSearchCard', () => {
     expect(screen.getByText(en.invalidCount)).toBeTruthy()
     expect(screen.getByLabelText(en.count).getAttribute('aria-invalid')).toBe('true')
     expect(screen.getByRole('button', { name: en.save })).toHaveProperty('disabled', true)
+  })
+})
+
+describe('WebSearchCard probe', () => {
+  it('probes the selected search provider and reports its name with the result', async () => {
+    const { actions } = renderPage()
+    actions.probe.mockResolvedValue({ ok: true, provider: 'DeepSeek Search API', detail: '1 result' })
+    await act(async () => {
+      fireEvent.click(region(en.searchSection).getByRole('button', { name: en.probeSearch }))
+    })
+    expect(actions.probe).toHaveBeenCalledWith('search')
+    expect(region(en.searchSection).getByRole('status').textContent).toBe('DeepSeek Search API · 1 result')
+  })
+
+  it('shows the probe running and blocks a second try until it settles', async () => {
+    const { actions } = renderPage()
+    let settle: (outcome: WebProbeOutcome) => void = () => {}
+    actions.probe.mockImplementation(() => new Promise<WebProbeOutcome>((resolve) => { settle = resolve }))
+    fireEvent.click(region(en.searchSection).getByRole('button', { name: en.probeSearch }))
+    expect(region(en.searchSection).getByRole('button', { name: en.probeRunning })).toHaveProperty('disabled', true)
+    await act(async () => { settle({ ok: true, provider: 'Local fetch', detail: 'HTTP 200' }) })
+    expect(region(en.searchSection).getByRole('button', { name: en.probeSearch })).toBeTruthy()
+    expect(region(en.searchSection).getByRole('status').textContent).toBe('Local fetch · HTTP 200')
+  })
+
+  it('probes fetch independently and reports a failure as an alert', async () => {
+    const { actions } = renderPage()
+    actions.probe.mockResolvedValue({ ok: false, detail: 'No fetch provider is configured' })
+    await act(async () => {
+      fireEvent.click(region(en.fetchSection).getByRole('button', { name: en.probeFetch }))
+    })
+    expect(actions.probe).toHaveBeenCalledWith('fetch')
+    expect(region(en.fetchSection).getByRole('alert').textContent).toBe('No fetch provider is configured')
+    expect(region(en.searchSection).queryByRole('alert')).toBeNull()
+  })
+
+  it('disables both probes while the provider selection is locked', () => {
+    renderPage({ ...shipped(), selectionBlocked: true })
+    expect(region(en.searchSection).getByRole('button', { name: en.probeSearch })).toHaveProperty('disabled', true)
+    expect(region(en.fetchSection).getByRole('button', { name: en.probeFetch })).toHaveProperty('disabled', true)
   })
 })

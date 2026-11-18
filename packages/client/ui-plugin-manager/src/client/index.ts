@@ -9,11 +9,9 @@
 import type {} from '@noharness/client-product-analytics/client'
 import type {} from '@noharness/client-locale/client'
 import type { Context as ClientContext } from '@noharness/cordis'
-// Type-only: the root `main` keyed slot the page registers into, declared by
-// ui-layout with the panel id brand, and the `sidebar.panellist` list the
-// entry registers into, declared by ui-sidebar.
+// Type-only: the settings section slot the page registers into, declared by
+// ui-settings, and the sidebar contract the page's icons reuse.
 import type { HostObservable } from '@noharness/client-ui-slots'
-import type { MainPanelId } from '@noharness/client-ui-layout/client'
 import type {} from '@noharness/client-ui-sidebar/client'
 import type {} from '@noharness/client-ui-renderer/client'
 // Type-only: the ctx.remoteAccess Context merge.
@@ -26,7 +24,6 @@ import type {} from '@noharness/plugin-manager/types'
 import { PluginManagerPage } from './PluginManagerPage.tsx'
 import { createPluginHeaderRef } from './header-scroll.ts'
 import { PluginRefreshToast, type PluginRefreshToastFace } from './PluginRefreshToast.tsx'
-import { PluginsPanelIcon } from './PluginsPanelIcon.tsx'
 import { configLedgerSource } from './config-ledger.ts'
 import { tabLedgerSource } from './tab-ledger.ts'
 import { PluginManagerController } from './manager-store.ts'
@@ -80,7 +77,8 @@ declare module '@noharness/client-ui-slots' {
 export const NS = 'pluginManager'
 
 /** The id shared by the sidebar entry and the main panel it opens. */
-export const PANEL_ID = 'plugins' as MainPanelId
+/** Settings section this page occupies; the section is its only entry. */
+export const SECTION_ID = 'plugin-manager'
 
 /** Services required by the sidebar registration, the Remote methods, and access; the inventory says whether the Host manages a profile. */
 export const inject = ['slots', 'locale', 'remote', 'remote.pluginManager', 'remote.pluginInventory', 'remote.pluginRegistryProbe', 'configForms', 'layout', 'remoteAccess']
@@ -126,12 +124,14 @@ export function apply(ctx: ClientContext): void {
         dismissNotice: face.dismissNotice,
       }),
     }, PluginRefreshToast))
-    yield ctx.slots.inject('main', function* () {
+    yield ctx.slots.inject('settings.section', function* () {
       const handle = createNavigationStore(), instance = handle.create()
       const store: typeof handle = { ...handle, create: () => instance }
       yield ctx.slots.register({
-        name: 'main',
-        key: PANEL_ID,
+        name: 'settings.section',
+        id: SECTION_ID,
+        order: 18,
+        label: () => t('panel'),
         locale: NS,
         store,
         inject: () => ({ ...face, createHeaderRef: createPluginHeaderRef }),
@@ -147,29 +147,26 @@ export function apply(ctx: ClientContext): void {
           'plugins.detail.section': { kind: 'list', scope: 'root' },
         },
       }, PluginManagerPage)
+      // Leaving Settings resets the section to its list; a section switch keeps
+      // the view the reader chose.
       yield ctx.layout.panelInfo.subscribe(() => {
-        if (ctx.layout.panelInfo.getSnapshot().activePanelId !== PANEL_ID) instance.actions.setView({ kind: 'list' })
+        if (String(ctx.layout.panelInfo.getSnapshot().activePanelId ?? '') !== 'settings') {
+          instance.actions.setView({ kind: 'list' })
+        }
       })
       const disposeNavigation = ctx.reflect.provide('pluginNavigation', {
         openList: () => {
-          ctx.layout.selectPanel(PANEL_ID)
+          ctx.get('settingsNavigation')?.open(SECTION_ID)
           instance.actions.setTab('installed')
           instance.actions.setView({ kind: 'list' })
         },
         openBundle: (packageName: string) => {
-          ctx.layout.selectPanel(PANEL_ID)
+          ctx.get('settingsNavigation')?.open(SECTION_ID)
           instance.actions.setTab('installed')
           instance.actions.setView({ kind: 'package', name: packageName })
         },
       })
       yield () => { void disposeNavigation() }
     })
-    yield ctx.slots.inject('sidebar.panellist', () => ctx.slots.register({
-      name: 'sidebar.panellist',
-      id: PANEL_ID,
-      order: 0,
-      label: () => t('panel'),
-      locale: NS,
-    }, PluginsPanelIcon))
   })
 }

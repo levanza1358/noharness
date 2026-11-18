@@ -26,6 +26,8 @@ export interface SettingsFormLabels {
   save: string
   /** The save control while a save is crossing the wire. */
   saving: string
+  /** Shown beside the save while staged edits wait to be written; omitted forms show no notice. */
+  unsaved?: string
 }
 
 /** Form chrome shared by every settings page. */
@@ -42,6 +44,59 @@ export interface SettingsFormProps {
   children: ReactNode
 }
 
+/** Dirty forms currently mounted; Ctrl/Cmd+S saves every one of them. */
+const dirtyForms = new Set<() => void>()
+
+/** @param event - document keydown while at least one dirty form is mounted. */
+function saveOnShortcut(event: KeyboardEvent): void {
+  if (!(event.ctrlKey || event.metaKey) || event.altKey || event.shiftKey) return
+  if (event.key.toLowerCase() !== 's') return
+  event.preventDefault()
+  for (const save of [...dirtyForms]) save()
+}
+
+/**
+ * Keep staged edits from disappearing without a trace on reload or close.
+ * @param event - the browser's unload confirmation.
+ */
+function warnOnUnload(event: BeforeUnloadEvent): void {
+  event.preventDefault()
+}
+
+/** One preset a settings field offers beside its input. */
+export interface SettingsPresetOption {
+  /** Visible label. */
+  readonly label: string
+  /** Draft text the option stages. */
+  readonly value: string
+}
+
+/**
+ * Render quick choices that stage one field's draft.
+ * @param props - the group label, its options, the current draft, and the pick handler.
+ * @returns the preset row.
+ */
+export function SettingsPresetRow({ label, options, active, disabled, onPick }: {
+  readonly label: string
+  readonly options: readonly SettingsPresetOption[]
+  readonly active: string
+  readonly disabled: boolean
+  readonly onPick: (value: string) => void
+}) {
+  return (
+    <div className={css.presets} role="group" aria-label={label}>
+      {options.map(option => (
+        <button key={option.value} type="button" className={css.preset}
+          data-active={option.value === active ? 'true' : undefined}
+          disabled={disabled}
+          onClick={() => { onPick(option.value) }}>
+          {option.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 /**
  * Render one plugin's settings form.
  * @param props - the form's copy and state, its controls, and the save and discard actions.
@@ -52,6 +107,24 @@ export function SettingsForm(props: SettingsFormProps) {
   const discard = useRef(props.onDiscard)
   discard.current = props.onDiscard
   useEffect(() => () => { discard.current() }, [])
+  const save = useRef(props.onSave)
+  save.current = props.onSave
+  const savable = state.available && state.writable && state.dirty && !state.invalid && !state.saving
+  useEffect(() => {
+    if (!savable) return
+    const shortcut = (): void => { save.current() }
+    dirtyForms.add(shortcut)
+    if (dirtyForms.size === 1) document.addEventListener('keydown', saveOnShortcut)
+    return () => {
+      dirtyForms.delete(shortcut)
+      if (dirtyForms.size === 0) document.removeEventListener('keydown', saveOnShortcut)
+    }
+  }, [savable])
+  useEffect(() => {
+    if (!state.dirty) return
+    window.addEventListener('beforeunload', warnOnUnload)
+    return () => { window.removeEventListener('beforeunload', warnOnUnload) }
+  }, [state.dirty])
   if (!state.available) return <p className={css.unavailable} role="status">{labels.unavailable}</p>
   const blocked = !state.dirty || state.invalid || state.saving
   return (
@@ -60,10 +133,14 @@ export function SettingsForm(props: SettingsFormProps) {
       {props.children}
       <div className={css.footer}>
         {state.failed ? <p className={css.failed} role="status">{labels.saveFailed}</p> : null}
+        {state.dirty && !state.saving && labels.unsaved !== undefined
+          ? <p className={css.unsaved} role="status">{labels.unsaved}</p>
+          : null}
         <button
           type="button"
           className={css.save}
           disabled={blocked}
+          aria-keyshortcuts="Control+S Meta+S"
           onClick={props.onSave}
         >
           {state.saving ? labels.saving : labels.save}

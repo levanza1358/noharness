@@ -2316,3 +2316,34 @@ button.versionSummary:focus-visible {
   align-self: safe start;
   justify-self: safe start;
 }
+
+/* List tools: filter, order, and the bulk update above the groups. */
+.listTools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 960px;
+}
+
+.listFilter {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: var(--dsw-radius-md);
+  background: transparent;
+  color: var(--dsw-alias-label-primary);
+  font: inherit;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.listFilter:focus-visible {
+  outline: 2px solid var(--dsw-alias-label-primary-bluish);
+  outline-offset: 1px;
+}
+
+.sortButton {
+  flex: none;
+}

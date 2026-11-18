@@ -1,5 +1,5 @@
 ---
-description: "The shell executor's settings page on the nhs web client's Plugins page: the command timeout and the per-stream output cap of the shell namespace."
+description: "The shell executor's settings page as its own Settings section in the nhs web client: the command timeout and the per-stream output cap of the shell namespace."
 kind: "package-reference"
 ---
 
@@ -7,7 +7,7 @@ kind: "package-reference"
 
 ## Summary
 
-Open **Plugins** in the sidebar and select **Shell** in the Official group to set how long one command may run and how much of each output stream stays in memory. The page stages what is typed and writes it only on save, marks the values the user overrode, and offers to reset each back to the deployment's default. The page exists while the Host serves the `shell` namespace, so a deployment without a local shell executor shows no trace of it.
+Open **Settings → Shell** to set how long one command may run and how much of each output stream stays in memory. The page stages what is typed and writes it only on save, marks the values the user overrode, and offers to reset each back to the deployment's default. The page exists while the Host serves the `shell` namespace, so a deployment without a local shell executor shows no trace of it.
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ Open **Plugins** in the sidebar and select **Shell** in the Official group to se
 <a id="use-this-package"></a>
 ## Use this package
 
-The **Shell** card in the Official group opens the page. **Command timeout (ms)** ends a command that runs longer; **Output cap per stream (bytes)** spills output beyond it to a temporary file. Both render the effective value — the user's override over the composed default — and a field the user overrode carries an **Overridden** badge with **Reset to default** beside it. Nothing is written until **Save**; leaving the page drops the drafts, an empty field saves as a reset, and text that is not a number blocks the save and says so under the field.
+**Settings → Shell** opens the page. **Command timeout (ms)** ends a command that runs longer; **Output cap per stream (bytes)** spills output beyond it to a temporary file. Both render the effective value — the user's override over the composed default — and a field the user overrode carries an **Overridden** badge with **Reset to default** beside it. Preset rows stage common values: 60, 120, or 300 seconds for the timeout, and 30 KB, 100 KB, or 1 MB for the cap. Nothing is written until **Save**; leaving the page drops the drafts, an empty field saves as a reset, and text that is not a number blocks the save and says so under the field.
 
 -----
 
@@ -33,7 +33,7 @@ The **Shell** card in the Official group opens the page. **Command timeout (ms)*
 <details>
 <summary>Implementation internals — click to expand</summary>
 
-The Host half is an empty `apply`, present only so the package holds a Loader row the client module system serves the browser half for. The browser half binds the composed shell executor entry (`bash-sandbox` off Windows, `pwsh-sandbox` on it) through `ctx.configForms.get`, keeps the staged form in `ShellCardController` over the shared `SettingsFormModel` of `ui-primitives`, and registers `ShellCard` into the Plugins page's `plugins.item` slot through `ctx.configForms.whileServed`, which registers while the Host serves either entry and withdraws when it stops. The page's copy lives in this package's `settings.shell` dictionary; the `SettingsForm` frame takes its copy as props.
+The Host half is an empty `apply`, present only so the package holds a Loader row the client module system serves the browser half for. The browser half binds the composed shell executor entry (`bash-sandbox` off Windows, `pwsh-sandbox` on it) through `ctx.configForms.get`, keeps the staged form in `ShellCardController` over the shared `SettingsFormModel` of `ui-primitives`, and registers the page as a Settings section through `ctx.configForms.whileServed`, which registers while the Host serves either entry and withdraws when it stops. The page's copy lives in this package's `settings.shell` dictionary; the `SettingsForm` frame takes its copy as props.
 
 </details>
 

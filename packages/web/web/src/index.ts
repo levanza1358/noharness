@@ -13,6 +13,7 @@ import type {
   WebFetchProvider,
   WebFetchRequest,
   WebFetchResult,
+  WebProbeResult,
   WebProviderInfo,
   WebProviderList,
   WebSearchProvider,
@@ -25,6 +26,7 @@ export {
   WebError,
 } from './types.ts'
 export type {
+  WebProbeResult,
   WebFetchBody,
   WebFetchProvider,
   WebFetchRequest,
@@ -197,6 +199,34 @@ export class WebRuntime extends TypertRemoteService {
    */
   async searchReady(llmProvider?: string): Promise<boolean> {
     return await selectedProviderReady(() => this.selectSearchProvider(), llmProvider)
+  }
+
+  /**
+   * Run one small connectivity probe through the same provider selection that
+   * `search()` and `fetch()` use. The call reaches the network on the user's
+   * click; a provider or selection failure is reported in the result rather
+   * than thrown.
+   * @param capability - which provider to exercise.
+   * @returns the selected provider and the technical outcome.
+   */
+  @Remote
+  async probe(capability: 'search' | 'fetch'): Promise<WebProbeResult> {
+    try {
+      if (capability === 'search') {
+        const provider = this.selectSearchProvider()
+        const result = await provider.search({ query: 'NoHarness connectivity test', maxResults: 1 })
+        const count = result.sources.length
+        return { capability, provider: provider.id, ok: true, detail: `${String(count)} ${count === 1 ? 'result' : 'results'}` }
+      }
+      const provider = this.selectFetchProvider()
+      const result = await provider.fetch({ url: 'https://example.com/' })
+      return { capability, provider: provider.id, ok: true, detail: `HTTP ${String(result.statusCode)}` }
+    } catch (error) {
+      return {
+        capability, provider: '', ok: false,
+        detail: error instanceof Error ? error.message : String(error),
+      }
+    }
   }
 
   /** Select the search provider with the rules above, throwing the matching {@link WebError}. */

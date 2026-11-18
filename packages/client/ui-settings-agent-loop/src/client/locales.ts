@@ -6,7 +6,7 @@ import type { SettingsFormLabels } from '@noharness/client-ui-primitives'
 export type AgentLoopSettingsLocaleKey =
   | 'title' | 'description' | 'maxParallel' | 'maxParallelHint'
   | 'overridden' | 'reset' | 'readOnly' | 'unavailable'
-  | 'save' | 'saving' | 'saveFailed' | 'invalidNumber'
+  | 'save' | 'saving' | 'saveFailed' | 'unsaved' | 'invalidNumber' | 'presets'
 
 /** English copy. */
 export const en: Record<AgentLoopSettingsLocaleKey, string> = {
@@ -19,6 +19,8 @@ export const en: Record<AgentLoopSettingsLocaleKey, string> = {
   readOnly: 'This deployment stores settings read-only.',
   unavailable: 'This plugin is not loaded, so it cannot be configured right now.',
   save: 'Save',
+  unsaved: 'Unsaved changes',
+  presets: 'Preset parallel calls',
   saving: 'Saving…',
   saveFailed: 'The deployment did not accept these values; they were left for you to correct.',
   invalidNumber: 'Enter a number, or leave blank to use the default.',
@@ -34,7 +36,10 @@ export type SettingsAgentLoopKey = keyof typeof en
  * @returns the labels the shared settings form renders.
  */
 export function formLabels(t: (key: AgentLoopSettingsLocaleKey) => string): SettingsFormLabels {
-  return { unavailable: t('unavailable'), readOnly: t('readOnly'), saveFailed: t('saveFailed'), save: t('save'), saving: t('saving') }
+  return {
+    unavailable: t('unavailable'), readOnly: t('readOnly'), saveFailed: t('saveFailed'),
+    save: t('save'), saving: t('saving'), unsaved: t('unsaved'),
+  }
 }
 
 /** Japanese copy, checked against the English keys. */
@@ -48,6 +53,8 @@ export const ja = {
   'readOnly': 'This deployment stores settings read-only.',
   'unavailable': 'This plugin is not loaded, so it cannot be configured right now.',
   'save': 'Save',
+  'unsaved': '未保存の変更',
+  'presets': '同時呼び出しのプリセット',
   'saving': 'Saving…',
   'saveFailed': 'The deployment did not accept these values; they were left for you to correct.',
   'invalidNumber': 'Enter a number, or leave blank to use the default.',
@@ -64,6 +71,8 @@ export const es = {
   readOnly: 'Esta implementación almacena configuraciones de solo lectura.',
   unavailable: 'Este complemento no está cargado, por lo que no se puede configurar en este momento.',
   save: 'Guardar',
+  unsaved: 'Cambios sin guardar',
+  presets: 'Valores de llamadas paralelas',
   saving: 'Guardando…',
   saveFailed: 'El despliegue no aceptó estos valores; quedaron para que usted los corrigiera.',
   invalidNumber: 'Ingrese un número o déjelo en blanco para usar el valor predeterminado.',
@@ -80,6 +89,8 @@ export const fr = {
   readOnly: 'Ce déploiement stocke les paramètres en lecture seule.',
   unavailable: "Ce plugin n'est pas chargé, il ne peut donc pas être configuré pour le moment.",
   save: 'Enregistrer',
+  unsaved: 'Modifications non enregistrées',
+  presets: 'Appels parallèles prédéfinis',
   saving: 'Sauvegarde…',
   saveFailed: "Le déploiement n'a pas accepté ces valeurs ; ils vous ont été laissés à corriger.",
   invalidNumber: 'Entrez un numéro ou laissez ce champ vide pour utiliser la valeur par défaut.',
@@ -96,6 +107,8 @@ export const de = {
   readOnly: 'Diese Bereitstellung speichert Einstellungen schreibgeschützt.',
   unavailable: 'Dieses Plugin ist nicht geladen und kann daher derzeit nicht konfiguriert werden.',
   save: 'Speichern',
+  unsaved: 'Nicht gespeicherte Änderungen',
+  presets: 'Voreinstellungen für parallele Aufrufe',
   saving: 'Speichern…',
   saveFailed: 'Die Bereitstellung hat diese Werte nicht akzeptiert. Sie mussten sie korrigieren.',
   invalidNumber: 'Geben Sie eine Zahl ein oder lassen Sie das Feld leer, um den Standardwert zu verwenden.',
@@ -112,6 +125,8 @@ export const ru = {
   readOnly: 'В этом развертывании параметры сохраняются только для чтения.',
   unavailable: 'Этот плагин не загружен, поэтому его невозможно настроить прямо сейчас.',
   save: 'Сохранить',
+  unsaved: 'Несохранённые изменения',
+  presets: 'Готовые значения параллельных вызовов',
   saving: 'Сохранение…',
   saveFailed: 'Развертывание не приняло эти значения; их оставили вам на исправление.',
   invalidNumber: 'Введите число или оставьте поле пустым, чтобы использовать значение по умолчанию.',
@@ -128,6 +143,8 @@ export const pt = {
   readOnly: 'Esta implantação armazena configurações somente leitura.',
   unavailable: 'Este plugin não está carregado, portanto não pode ser configurado agora.',
   save: 'Salvar',
+  unsaved: 'Alterações não guardadas',
+  presets: 'Valores de chamadas paralelas',
   saving: 'Salvando…',
   saveFailed: 'A implantação não aceitou esses valores; eles foram deixados para você corrigir.',
   invalidNumber: 'Insira um número ou deixe em branco para usar o padrão.',

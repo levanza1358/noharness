@@ -14,6 +14,7 @@ const labels = {
   saveFailed: 'Not accepted.',
   save: 'Save',
   saving: 'Saving…',
+  unsaved: 'Unsaved changes',
 }
 
 const settled: SettingsFormShell = { available: true, writable: true, dirty: false, invalid: false, saving: false, failed: false }
@@ -57,7 +58,8 @@ it('blocks the save while a draft is invalid or one is in flight, and reports a 
   cleanup()
 
   renderForm({ dirty: true, failed: true })
-  expect(screen.getByRole('status').textContent).toBe(labels.saveFailed)
+  // The unsaved notice and the failure share the footer.
+  expect(screen.getByText(labels.saveFailed)).toBeTruthy()
 })
 
 it('says the document is read-only over the controls', () => {
@@ -79,4 +81,32 @@ it('discards when it leaves the page, calling the latest discard it was given', 
 
   expect(first).not.toHaveBeenCalled()
   expect(second).toHaveBeenCalledOnce()
+})
+
+it('says staged edits are unsaved and saves them on Ctrl/Cmd+S', () => {
+  const { onSave } = renderForm({ dirty: true })
+  expect(screen.getByRole('status').textContent).toBe(labels.unsaved)
+  fireEvent.keyDown(document, { key: 's', ctrlKey: true })
+  expect(onSave).toHaveBeenCalledOnce()
+  fireEvent.keyDown(document, { key: 's', metaKey: true })
+  expect(onSave).toHaveBeenCalledTimes(2)
+  // An unrelated chord is left to the browser.
+  fireEvent.keyDown(document, { key: 's', ctrlKey: true, shiftKey: true })
+  expect(onSave).toHaveBeenCalledTimes(2)
+})
+
+it('ignores the shortcut while the form cannot save', () => {
+  const { onSave } = renderForm({ dirty: false })
+  fireEvent.keyDown(document, { key: 's', ctrlKey: true })
+  expect(onSave).not.toHaveBeenCalled()
+})
+
+it('asks before a reload or close drops staged edits', () => {
+  const listener = vi.fn((event: Event) => { event.preventDefault() })
+  window.addEventListener('beforeunload', listener, { once: true })
+  renderForm({ dirty: true })
+  const event = new Event('beforeunload', { cancelable: true })
+  window.dispatchEvent(event)
+  expect(listener).toHaveBeenCalledOnce()
+  expect(event.defaultPrevented).toBe(true)
 })

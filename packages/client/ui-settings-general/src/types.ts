@@ -77,8 +77,20 @@ export interface DesktopNetworkExposureView {
   readonly enabled: boolean
   /** Tokenized address remote browsers open; present only while enabled. */
   readonly url?: string
+  /** Tokenized address for every local network interface; present only while enabled. */
+  readonly urls?: readonly string[]
   readonly failed: boolean
   readonly pending: boolean
+  /** Requested proxy port; zero means the OS assigns one for this run. */
+  readonly port: number
+}
+
+/** One explicit LAN exposure choice. */
+export interface DesktopNetworkExposureOptions {
+  /** Whether other machines should reach this Host. */
+  readonly enabled: boolean
+  /** Port to bind; zero or omitted asks the OS for one. */
+  readonly port?: number
 }
 
 /** Desktop shell control over the LAN proxy in front of the owned Host. */
@@ -86,10 +98,10 @@ export interface DesktopNetworkExposureBridge {
   /** @returns Current exposure state, including the address other machines open. */
   get(): Promise<DesktopNetworkExposureView>
   /**
-   * @param enabled - Explicit user choice, applied immediately.
-   * @returns State after the proxy started or stopped; `failed` when it could not.
+   * @param options - Explicit user choice, applied immediately.
+   * @returns State after the proxy started, stopped, or rebound; `failed` when it could not.
    */
-  set(enabled: boolean): Promise<DesktopNetworkExposureView>
+  set(options: DesktopNetworkExposureOptions): Promise<DesktopNetworkExposureView>
   /**
    * @param listener - Receives changes made from any Desktop window.
    * @returns Removes this window's subscription.

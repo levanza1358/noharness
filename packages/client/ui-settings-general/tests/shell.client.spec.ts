@@ -48,7 +48,9 @@ const PAGE_CHILD_NAMES = Object.keys(PAGE_CHILD_SPECS) as Array<keyof typeof PAG
  * ui-settings-models, ui-settings-plugins, and ui-agent-preset. A plugin
  * adding a section changes this list.
  */
-const PRODUCT_SECTIONS: readonly string[] = ['general', 'providers', 'models', 'plugins', 'agent-presets']
+const PRODUCT_SECTIONS: readonly string[] = [
+  'general', 'providers', 'models', 'plugins', 'plugin-manager', 'agent-presets', 'about',
+]
 /** Onboarding steps the web-app roster registers, in coordinator order; the welcome notice comes from ui-settings-models. */
 const PRODUCT_ONBOARDING: readonly { id: string; order: number }[] = [
   { id: 'welcome-notice', order: -100 },

@@ -329,10 +329,18 @@ export abstract class ReleaseFamily {
    * Check the identity in the packed manifest before publishing its bytes.
    * @param member - Source member selected for this release.
    * @param manifest - Manifest read from its packed tarball.
+   * @param familyNames - Every package name this family publishes.
    */
-  validatePackedManifest(member: ReleaseMember, manifest: Readonly<Record<string, unknown>>): void {
+  validatePackedManifest(
+    member: ReleaseMember,
+    manifest: Readonly<Record<string, unknown>>,
+    familyNames: ReadonlySet<string>,
+  ): void {
     if (manifest.name !== member.name || manifest.version !== member.version) {
       throw new Error(`${member.name}: packed identity must match ${member.name}@${member.version}`)
+    }
+    if (!familyNames.has(member.name)) {
+      throw new Error(`${member.name}: packed member is not part of the ${this.id} release family`)
     }
   }
 
@@ -411,14 +419,23 @@ class DshFamily extends ReleaseFamily {
     return member.name === '@noharness/cli' ? ON_DEMAND_BUNDLES : []
   }
 
-  /** Require the packed NHS runtime graph to stay on the shared exact release version. */
-  override validatePackedManifest(member: ReleaseMember, manifest: Readonly<Record<string, unknown>>): void {
-    super.validatePackedManifest(member, manifest)
+  /**
+   * Require the packed NHS runtime graph to stay on the shared exact release version.
+   * @param member - Source member selected for this release.
+   * @param manifest - Manifest read from its packed tarball.
+   * @param familyNames - Every package name this family publishes; a dependency outside it keeps its own version line.
+   */
+  override validatePackedManifest(
+    member: ReleaseMember,
+    manifest: Readonly<Record<string, unknown>>,
+    familyNames: ReadonlySet<string>,
+  ): void {
+    super.validatePackedManifest(member, manifest, familyNames)
     for (const section of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
       const dependencies = manifest[section]
       if (dependencies === null || typeof dependencies !== 'object' || Array.isArray(dependencies)) continue
       for (const [name, range] of Object.entries(dependencies)) {
-        if (name !== '@noharness/cli' && !name.startsWith('@noharness/')) continue
+        if (!familyNames.has(name)) continue
         if (range !== member.version) {
           throw new Error(`${member.name}: packed ${section}.${name} must equal ${member.version}, got ${String(range)}`)
         }

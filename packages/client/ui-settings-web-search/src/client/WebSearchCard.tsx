@@ -17,7 +17,7 @@ import { formLabels, type WebSearchSettingsLocaleKey } from './locales.ts'
 import styles from './WebSearchCard.module.css'
 import {
   PROVIDER_IDS, type WebBilling, type WebBillingState, type WebProviderOption, type WebProviderSelection,
-  type WebSearchCardFace, type WebSearchCardState,
+  type WebProbeOutcome, type WebSearchCardFace, type WebSearchCardState,
 } from './web-search-card-controller.ts'
 
 /** Props the renderer binds for the web search and fetch page. */
@@ -27,6 +27,31 @@ export type WebSearchCardProps =
   & InjectFace<WebSearchCardFace>
 
 type T = WebSearchCardProps['t']
+
+/**
+ * One capability's connectivity probe: a test button and the last outcome.
+ * @param props - capability copy, running state, and the last outcome.
+ * @returns the probe row.
+ */
+function ProbeRow({ label, running, outcome, disabled, onProbe, t }: {
+  readonly label: string
+  readonly running: boolean
+  readonly outcome: WebProbeOutcome | undefined
+  readonly disabled: boolean
+  readonly onProbe: () => void
+  readonly t: T
+}) {
+  return (
+    <div className={styles.probeRow}>
+      <button type="button" className={styles.probeButton} disabled={disabled || running} onClick={onProbe}>
+        {running ? t('probeRunning') : label}
+      </button>
+      {outcome === undefined ? null : outcome.ok
+        ? <span className={styles.probeResult} role="status">{t('probeProvider', { provider: outcome.provider, detail: outcome.detail })}</span>
+        : <span className={styles.probeResult} role="alert">{outcome.detail}</span>}
+    </div>
+  )
+}
 
 /** Dictionary names of the official providers; any other provider shows its registered title or id. */
 const PROVIDER_LABELS: Record<string, WebSearchSettingsLocaleKey> = {
@@ -59,6 +84,18 @@ export function WebSearchCard(props: WebSearchCardProps) {
   if (props.view === 'summary') return t('description')
   const disabled = !state.writable || state.saving
   const menuDisabled = disabled || state.selectionBlocked
+  const [probes, setProbes] = useState<Readonly<Record<'search' | 'fetch', { running: boolean; outcome?: WebProbeOutcome }>>>({
+    search: { running: false }, fetch: { running: false },
+  })
+  const runProbe = (capability: 'search' | 'fetch'): void => {
+    setProbes(current => ({
+      ...current,
+      [capability]: { running: true, ...(current[capability].outcome === undefined ? {} : { outcome: current[capability].outcome }) },
+    }))
+    void props.probe(capability).then((outcome) => {
+      setProbes(current => ({ ...current, [capability]: { running: false, outcome } }))
+    })
+  }
   const { search, fetch } = state
   // The selected provider's own description, in the active language; an empty translation shows nothing.
   const describe = (section: WebSearchCardState['search' | 'fetch']): string | undefined => {
@@ -76,6 +113,8 @@ export function WebSearchCard(props: WebSearchCardProps) {
           hint={search.kind === 'deepseek'
             ? <a className={styles.link} href={t('searchGuideUrl')} target="_blank" rel="noopener noreferrer">{t('searchGuide')}</a>
             : search.kind === 'plugin' ? t('pluginProviderHint') : undefined} />
+        <ProbeRow label={t('probeSearch')} running={probes.search.running} outcome={probes.search.outcome}
+          disabled={menuDisabled} onProbe={() => { runProbe('search') }} t={t} />
         {search.kind === 'deepseek' && (
           <div className={styles.panel}>
             <SettingsValueField id="plugin-config-web-search-count" label={t('count')} hint={t('countHint')} numeric
@@ -119,6 +158,8 @@ export function WebSearchCard(props: WebSearchCardProps) {
           section={fetch} disabled={menuDisabled} field="fetchProvider" onSelect={props.selectProvider}
           providersFailed={state.providersFailed} onRetry={props.retryProviders}
           description={describe(fetch)} hint={fetch.kind === 'plugin' ? t('pluginProviderHint') : undefined} />
+        <ProbeRow label={t('probeFetch')} running={probes.fetch.running} outcome={probes.fetch.outcome}
+          disabled={menuDisabled} onProbe={() => { runProbe('fetch') }} t={t} />
         {state.fetchBilling !== undefined && (
           <div className={styles.panel}>
             <BillingField capability="fetch" t={t} billing={state.fetchBilling} disabled={disabled}
@@ -291,4 +332,10 @@ function ProviderSelect(props: {
       {props.providersFailed && <ReadFailure message={t('providersFailed')} retry={t('retry')} onRetry={props.onRetry} />}
     </div>
   )
+}
+
+/** Settings section for this page: the card's full form view. */
+export function WebSearchSettingsSection(props:
+PropsRuntime<'settings.section'> & PropsLocale<'settings.webSearch'> & InjectFace<WebSearchCardFace>) {
+  return <WebSearchCard {...props} view="page" />
 }

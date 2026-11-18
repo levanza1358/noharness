@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { connectDesktopWelcome } from '../../desktop/src/welcome-backend.ts'
+import { connectDesktopWorkspace } from '../../desktop/src/workspace-backend.ts'
 import { chromium, type Browser, type Page } from 'playwright'
 import { afterEach, beforeEach, describe, expect, it, onTestFailed } from 'vitest'
 import { credentialKey, credentialRef } from '@noharness/credentials'
@@ -108,11 +108,11 @@ describe.skipIf(MODE === 'record')('web e2e: App-only desktop onboarding', () =>
 
   async function desktopPage(locale = ZH_BROWSER_LOCALE): Promise<Page> {
     const opened = await browser.newPage({ viewport: { width: 1280, height: 840 }, locale, reducedMotion: 'reduce' })
-    const welcome = connectDesktopWelcome(scaffold.baseUrl, '', (input, init) => {
+    const workspace = connectDesktopWorkspace(scaffold.baseUrl, '', (input, init) => {
       const target = new URL(input)
       return scaffold.hostFetch(`${target.pathname}${target.search}`, init)
     })
-    await opened.exposeFunction('__onboardingHasApiKey', async () => (await welcome.read()).hasApiKey)
+    await opened.exposeFunction('__onboardingHasApiKey', async () => (await workspace.readStartupState()).hasApiKey)
     await opened.addInitScript(() => {
       Object.defineProperty(globalThis, 'nhsOnboarding', { value: {
         hasApiKey: () => (globalThis as typeof globalThis & { __onboardingHasApiKey(): Promise<boolean> }).__onboardingHasApiKey(),

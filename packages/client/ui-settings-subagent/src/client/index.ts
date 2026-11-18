@@ -17,7 +17,7 @@ import type {} from '@noharness/client-ui-renderer/client'
 // Type-only: the ctx.remote Context merge and the forwarded-event key face.
 import type {} from '@noharness/api-remotes/client'
 import type { Context as ClientContext } from '@noharness/cordis'
-import { SubagentCard } from './SubagentCard.tsx'
+import { SubagentCard, SubagentSettingsSection } from './SubagentCard.tsx'
 import { subagentCardFace } from './subagent-card-controller.ts'
 import { SubagentLimitsCardController } from './subagent-limits-card-controller.ts'
 import {
@@ -90,4 +90,13 @@ export function apply(ctx: ClientContext): void {
     locale: NS,
     inject: () => subagentCardFace(limitsFace, modelsFace),
   }, SubagentCard))), 'ui-settings-subagent: page')
+  // The settings page is the direct entry; the Plugins manager opens it through Settings.
+  ctx.effect(() => ctx.configForms.whileServed([SUBAGENT_NS, SUBAGENT_MODEL_SELECTION_NS], () => ctx.slots.inject('settings.section', () => ctx.slots.register({
+    name: 'settings.section',
+    id: 'subagent',
+    order: 40,
+    label: () => t('subagentTitle'),
+    locale: NS,
+    inject: () => subagentCardFace(limitsFace, modelsFace),
+  }, SubagentSettingsSection))), 'ui-settings-subagent: section')
 }

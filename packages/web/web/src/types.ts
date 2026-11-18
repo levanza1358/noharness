@@ -169,6 +169,18 @@ export interface WebFetchProvider {
   fetch(request: WebFetchRequest, signal?: AbortSignal): Promise<WebFetchResult>
 }
 
+/** One connectivity probe through the provider the seam would select. */
+export interface WebProbeResult {
+  /** The capability that was exercised. */
+  readonly capability: 'search' | 'fetch'
+  /** The selected provider's id, empty when selection itself failed. */
+  readonly provider: string
+  /** Whether the provider completed the call. */
+  readonly ok: boolean
+  /** Technical outcome: source count, HTTP status, or the failure message. */
+  readonly detail: string
+}
+
 /** One registered provider as listed by {@link WebProviderList}. */
 export interface WebProviderInfo {
   /** The provider's registry id, the value `searchProvider` / `fetchProvider` select. */

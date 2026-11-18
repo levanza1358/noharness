@@ -22,8 +22,8 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import clsx from 'clsx'
 import {
   FishLogo, IconAppsAddOutlineRegular, IconNewChatOutlineMedium, IconNewChatOutlineRegular,
-  IconPanelLeftOutlineRegular, IconPinFillRegular, focusWithoutRing, isBehindModal, isDarwinDesktop, Menu, ShortcutKeys, Toast,
-  Tooltip, useModalLayer, writeClipboard,
+  IconPanelLeftOutlineRegular, IconPinFillRegular, focusWithoutRing, isBehindModal, isDarwinDesktop, Menu, ShortcutKeys,
+  Tooltip, useModalLayer,
 } from '@noharness/client-ui-primitives'
 import type { InjectFace, PropsRenderFactories, PropsRenderSlots, PropsRuntime } from '@noharness/client-ui-slots'
 import type {
@@ -37,6 +37,9 @@ import css from './SidebarRoot.module.css'
 /** Wide-content unmount delay; matches the 150ms wide-content fade-out. */
 const COLLAPSE_SETTLE_MS = 150
 
+/** Center-column key the settings page occupies; the sidebar shows its navigation in place of the session list. */
+const SETTINGS_PANEL_ID = 'settings'
+
 /**
  * How long the column's scrollbars stay drawn after the pointer leaves it.
  * The bar is a pointer affordance here, and hiding it on the leave event
@@ -44,16 +47,6 @@ const COLLAPSE_SETTLE_MS = 150
  * edge — on the way to the conversation, or around a portalled menu.
  */
 const SCROLLBAR_LINGER_MS = 2000
-
-/** Format complete-build metadata for the local brand badge. */
-function localBuildVersion(): string | undefined {
-  const version = process.env.NHS_CLIENT_VERSION
-  if (version === undefined) return undefined
-  const commit = process.env.NHS_CLIENT_COMMIT_HASH
-  return version
-    + (commit === undefined ? '' : `-${commit}`)
-    + (process.env.NHS_CLIENT_GIT_DIRTY === 'true' ? '-dirty' : '')
-}
 
 type PanelRowProps =
   Pick<SidebarPanelMetadata, 'id' | 'label'>
@@ -170,6 +163,9 @@ export function SidebarRoot({
   const panels = usePanels(snapshot => snapshot)
   const unpinned = useEntryPins(ids => ids)
   const activePanelId = usePanelInfo(info => info.activePanelId)
+  // The settings page owns the column: its navigation replaces the session
+  // browser, and starting or switching to another surface would leave it.
+  const settingsOpen = activePanelId === SETTINGS_PANEL_ID
   const hasEntryActions = useEntryActions(registered => registered)
   const shortcut = useShortcuts(rows => rows.find(row => row.id === 'sidebar.left.toggle'))
   const newShortcut = useShortcuts(rows => rows.find(row => row.id === 'session.new'))
@@ -265,17 +261,6 @@ export function SidebarRoot({
     }
   }, [pointerInside])
 
-  const buildVersion = localBuildVersion()
-  // The local-build fallbacks copy the badge text; the brand button below
-  // skips New Session for clicks inside them. The click still bubbles, so
-  // document-level outside-click listeners see it.
-  // Each successful copy bumps the key so a repeated copy replays the toast.
-  const [copiedToast, setCopiedToast] = useState<number | null>(null)
-  const copyVersion = (version: string) => (): void => {
-    void writeClipboard(version).then((ok) => {
-      if (ok) setCopiedToast(seq => (seq ?? 0) + 1)
-    })
-  }
 
   const darwinDesktop = isDarwinDesktop()
   // Rail resting state is the whale mark; hovering swaps in the panel icon
@@ -333,32 +318,22 @@ export function SidebarRoot({
             macOS, where it stays part of the logo row's window-drag surface
             (the drag-row controls rule would subtract a button);
             the collapsed rail's logo is the expand toggle below instead.
-            Mouse clicks on the local-build fallbacks copy the version instead. */}
+            Build metadata is not part of the brand; Settings → About owns it. */}
         {wide && (() => {
           const identity = (
             <span className={css.brandIdentity} aria-hidden="true">
               <span className={css.brandMark}>
-                {renderSlot('sidebar.brand.mark', { size: 24 }, {
-                  fallback: buildVersion === undefined
-                    ? <FishLogo size={24} />
-                    : <span className={css.copyVersion} data-copy-version onClick={copyVersion(buildVersion)}><FishLogo size={24} /></span>,
-                })}
+                {renderSlot('sidebar.brand.mark', { size: 24 }, { fallback: <FishLogo size={24} /> })}
               </span>
               <span className={css.brandName}>
                 {renderSlot('sidebar.brand.name', {}, {
-                  fallback: buildVersion === undefined
-                    ? <span className={css.fallbackBrandName}>{t('brand.localBuild')}</span>
-                    : (
-                      <span className={clsx(css.localBuildBrand, css.copyVersion)} data-copy-version onClick={copyVersion(buildVersion)}>
-                        <span className={css.localBuildTitle}>{t('brand.localBuild')}</span>
-                        <span className={css.buildVersion}>{buildVersion}</span>
-                      </span>
-                    ),
+                  fallback: <span className={css.fallbackBrandName}>{t('brand.localBuild')}</span>,
                 })}
               </span>
             </span>
           )
-          return darwinDesktop || !canStartSession
+          // The row doubles as a New Session control, so settings keeps it inert.
+          return darwinDesktop || !canStartSession || settingsOpen
             ? <span className={clsx(css.brand, css.wide)}>{identity}</span>
             : (
               <button
@@ -366,10 +341,7 @@ export function SidebarRoot({
                 className={clsx(css.brand, css.wide)}
                 aria-label={t('session.new.label')}
                 aria-keyshortcuts={newShortcut?.aria}
-                onClick={(event) => {
-                  if ((event.target as Element).closest('[data-copy-version]') !== null) return
-                  openNewSession()
-                }}
+                onClick={() => { openNewSession() }}
               >
                 {identity}
               </button>
@@ -379,7 +351,7 @@ export function SidebarRoot({
       </div>
 
       {/* The label fades before the hover/focus shortcut, including on translucent backgrounds. */}
-      {canStartSession && (
+      {canStartSession && !settingsOpen && (
         <div className={css.newSessionRow}>
           {renderSlot('sidebar.session.action', { wide }, {
             children: (
@@ -413,7 +385,7 @@ export function SidebarRoot({
           className={css.scrollArea}
           data-sidebar-scrollport={wide ? '' : undefined}
         >
-          {panels.length > 0 && (
+          {panels.length > 0 && !settingsOpen && (
             <nav className={css.panelList} aria-label={t('panels.label')}>
               {panels.filter(({ id }) => id === FIXED_PANEL_ID || !hasEntryActions || !unpinned.includes(id)).map(({ id, label }) => (
                 <PanelRow
@@ -451,18 +423,16 @@ export function SidebarRoot({
             </nav>
           )}
           <div className={css.regionArea}>
-            {renderSlot('sidebar.workspaces', {
-              wide,
-              expandSidebar: () => { if (collapsed) toggleSidebar() },
-            }, { hookContext: sectionHookContext })}
+            {settingsOpen
+              ? renderSlot('sidebar.settings.navigation', { wide }, { fallback: null })
+              : renderSlot('sidebar.workspaces', {
+                wide,
+                expandSidebar: () => { if (collapsed) toggleSidebar() },
+              }, { hookContext: sectionHookContext })}
           </div>
         </div>
         <span className={css.scrollFade} aria-hidden="true" />
       </div>
-
-      {copiedToast !== null && (
-        <Toast key={copiedToast} tone="success" text={t('version.copied')} onDone={() => { setCopiedToast(null) }} />
-      )}
 
       {/* Footer actions stack above Settings in both sidebar widths. */}
       <div className={css.footArea}>

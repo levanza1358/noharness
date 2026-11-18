@@ -8,18 +8,16 @@
  */
 import { useEffect, useId, useRef } from 'react'
 import clsx from 'clsx'
-import {
-  IconAgentPresetOutlineMedium, IconArchiveOutlineMedium, IconCloseOutlineRegular, IconDataOutlineMedium,
-  IconPersonalizationOutlineMedium, IconSettingsOutlineMedium, IconUserOutlineMedium,
-} from '@noharness/client-ui-primitives'
+import { IconCloseOutlineRegular } from '@noharness/client-ui-primitives'
 import type {} from '@noharness/client-ui-layout/client'
 import type { MainPanelId } from '@noharness/client-ui-layout/client'
 import type {} from '@noharness/client-ui-renderer/client'
 // Type-only: pulls the settings shell slot declarations.
 import type {} from '@noharness/client-ui-settings/client'
-import type { InjectFace, PropsRenderSlots, PropsRuntime, PropsStore } from '@noharness/client-ui-slots'
+import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore } from '@noharness/client-ui-slots'
 import type { SettingsPageInjected } from './shell-contract.ts'
 import type { createSettingsShellStore } from './shell-store.ts'
+import { sectionIcon } from './section-icon.tsx'
 import css from './SettingsRoot.module.css'
 
 /** Center-column key this page occupies; every other key shows the Conversation. */
@@ -39,17 +37,8 @@ export type SettingsPageComponentProps =
     | 'settings.section.icon'
   >
   & PropsStore<ReturnType<typeof createSettingsShellStore>>
+  & PropsLocale<'settings'>
   & InjectFace<SettingsPageInjected>
-
-/** Nav glyph by section id; unknown ids fall back to the settings gear. */
-function navIcon(id: string) {
-  if (id === 'account') return <IconUserOutlineMedium size={16} />
-  if (id === 'models') return <IconDataOutlineMedium size={16} />
-  if (id === 'agent-presets') return <IconAgentPresetOutlineMedium size={16} />
-  if (id === 'plugins') return <IconPersonalizationOutlineMedium size={16} />
-  if (id === 'archived-sessions') return <IconArchiveOutlineMedium size={16} />
-  return <IconSettingsOutlineMedium size={16} />
-}
 
 /**
  * Render the settings page that occupies the frame's center column: heading,
@@ -59,7 +48,7 @@ function navIcon(id: string) {
  * @param props - the shell shares plus the page's select and close callbacks.
  * @returns the page element tree.
  */
-export function SettingsPage({ useSections, renderSlot, useStore, select, close }: SettingsPageComponentProps) {
+export function SettingsPage({ useSections, renderSlot, useStore, select, close, t }: SettingsPageComponentProps) {
   const { activeId } = useStore(state => state)
   const rows = useSections(s => s)
   // Entries can unmount underneath the requested id, so the render-time
@@ -82,7 +71,7 @@ export function SettingsPage({ useSections, renderSlot, useStore, select, close 
           places from its grid: title and header share the first row, the
           navigation and the active section the second. */}
       <div className={css.navTitle} id={titleId} tabIndex={-1} data-modal-autofocus="">{renderSlot('settings.header', {})}</div>
-      <nav className={css.nav}>
+      <nav className={css.nav} aria-label={t('trigger')}>
         <div className={css.navList}>
           {rows.map(row => (
             <button
@@ -96,7 +85,7 @@ export function SettingsPage({ useSections, renderSlot, useStore, select, close 
             >
               <span className={css.navIcon} aria-hidden="true">
                 {renderSlot('settings.section.icon', { size: 16, active: row.id === active }, {
-                  only: row.id, fallback: navIcon(row.id),
+                  only: row.id, fallback: sectionIcon(row.id),
                 })}
               </span>
               <span className={css.navLabel}>{row.label}</span>

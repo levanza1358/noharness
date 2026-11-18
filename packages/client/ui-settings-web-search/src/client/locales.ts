@@ -7,13 +7,13 @@ export type WebSearchSettingsLocaleKey =
   | 'title' | 'description' | 'searchSection' | 'fetchSection'
   | 'providerDeepSeek' | 'providerLocal' | 'providerDeepSeekFetch' | 'providerMissing' | 'providerAuto'
   | 'providerLegacy' | 'legacyKeyHint' | 'maxUses' | 'maxUsesHint' | 'invalidMaxUses'
-  | 'providersFailed' | 'retry'
+  | 'providersFailed' | 'retry' | 'probeSearch' | 'probeFetch' | 'probeRunning' | 'probeProvider'
   | 'pluginProviderHint' | 'searchGuide' | 'searchGuideUrl'
   | 'credential' | 'apiKeySet' | 'apiKeyUnsetApi'
   | 'baseUrl' | 'baseUrlHint'
   | 'count' | 'countHint'
   | 'overridden' | 'reset' | 'readOnly' | 'unavailable'
-  | 'save' | 'saving' | 'saveFailed' | 'invalidNumber' | 'invalidCount'
+  | 'save' | 'saving' | 'saveFailed' | 'unsaved' | 'invalidNumber' | 'invalidCount'
   | 'billing' | 'billingAuto' | 'billingAutoHint' | 'billingAccount' | 'billingAccountHint' | 'billingApiKey' | 'billingApiKeyHint'
   | 'billingAdvancedOverride'
 
@@ -34,6 +34,10 @@ export const en: Record<WebSearchSettingsLocaleKey, string> = {
   providerMissing: '{id} (not loaded)',
   providerAuto: 'Automatic',
   providersFailed: "Couldn't load the provider list, so this menu may be incomplete.",
+  probeSearch: 'Test search',
+  probeFetch: 'Test fetch',
+  probeRunning: 'Testing…',
+  probeProvider: '{provider} · {detail}',
   retry: 'Retry',
   pluginProviderHint: 'Configure this provider in its own plugin settings.',
   credential: 'API key',
@@ -50,6 +54,7 @@ export const en: Record<WebSearchSettingsLocaleKey, string> = {
   readOnly: 'This deployment stores settings read-only.',
   unavailable: 'This plugin is not loaded, so it cannot be configured right now.',
   save: 'Save',
+  unsaved: 'Unsaved changes',
   saving: 'Saving…',
   saveFailed: 'The deployment did not accept these values; they were left for you to correct.',
   invalidNumber: 'Enter a number, or leave blank to use the default.',
@@ -74,7 +79,10 @@ export type SettingsWebSearchKey = keyof typeof en
  * @returns the labels the shared settings form renders.
  */
 export function formLabels(t: (key: WebSearchSettingsLocaleKey) => string): SettingsFormLabels {
-  return { unavailable: t('unavailable'), readOnly: t('readOnly'), saveFailed: t('saveFailed'), save: t('save'), saving: t('saving') }
+  return {
+    unavailable: t('unavailable'), readOnly: t('readOnly'), saveFailed: t('saveFailed'),
+    save: t('save'), saving: t('saving'), unsaved: t('unsaved'),
+  }
 }
 
 /** Japanese copy, checked against the English keys. */
@@ -94,6 +102,10 @@ export const ja = {
   'providerMissing': '{id} (not loaded)',
   'providerAuto': 'Automatic',
   'providersFailed': 'プロバイダー一覧を読み込めなかったため、このメニューは不完全な可能性があります。',
+  'probeSearch': '検索をテスト',
+  'probeFetch': '取得をテスト',
+  'probeRunning': 'テスト中…',
+  'probeProvider': '{provider} · {detail}',
   'retry': 'Retry',
   'pluginProviderHint': 'Configure this provider in its own plugin settings.',
   'credential': 'API キー',
@@ -110,6 +122,7 @@ export const ja = {
   'readOnly': 'This deployment stores settings read-only.',
   'unavailable': 'This plugin is not loaded, so it cannot be configured right now.',
   'save': 'Save',
+  'unsaved': '未保存の変更',
   'saving': 'Saving…',
   'saveFailed': 'The deployment did not accept these values; they were left for you to correct.',
   'invalidNumber': 'Enter a number, or leave blank to use the default.',
@@ -141,6 +154,10 @@ export const es = {
   providerMissing: '{id} (no cargado)',
   providerAuto: 'Automático',
   providersFailed: 'No se pudo cargar la lista de proveedores, por lo que este menú puede estar incompleto.',
+  probeSearch: 'Probar búsqueda',
+  probeFetch: 'Probar descarga',
+  probeRunning: 'Probando…',
+  probeProvider: '{provider} · {detail}',
   retry: 'Reintentar',
   pluginProviderHint: 'Configure este proveedor en la configuración de su propio complemento.',
   credential: 'Clave de API',
@@ -157,6 +174,7 @@ export const es = {
   readOnly: 'Esta implementación almacena configuraciones de solo lectura.',
   unavailable: 'Este complemento no está cargado, por lo que no se puede configurar en este momento.',
   save: 'Guardar',
+  unsaved: 'Cambios sin guardar',
   saving: 'Guardando…',
   saveFailed: 'El despliegue no aceptó estos valores; quedaron para que usted los corrigiera.',
   invalidNumber: 'Ingrese un número o déjelo en blanco para usar el valor predeterminado.',
@@ -188,6 +206,10 @@ export const fr = {
   providerMissing: '{id} (non chargé)',
   providerAuto: 'Automatique',
   providersFailed: 'Impossible de charger la liste des fournisseurs ; ce menu peut être incomplet.',
+  probeSearch: 'Tester la recherche',
+  probeFetch: 'Tester la récupération',
+  probeRunning: 'Test en cours…',
+  probeProvider: '{provider} · {detail}',
   retry: 'Réessayer',
   pluginProviderHint: 'Configurez ce fournisseur dans les paramètres de son propre plugin.',
   credential: 'Clé API',
@@ -204,6 +226,7 @@ export const fr = {
   readOnly: 'Ce déploiement stocke les paramètres en lecture seule.',
   unavailable: "Ce plugin n'est pas chargé, il ne peut donc pas être configuré pour le moment.",
   save: 'Enregistrer',
+  unsaved: 'Modifications non enregistrées',
   saving: 'Sauvegarde…',
   saveFailed: "Le déploiement n'a pas accepté ces valeurs ; ils vous ont été laissés à corriger.",
   invalidNumber: 'Entrez un numéro ou laissez ce champ vide pour utiliser la valeur par défaut.',
@@ -235,6 +258,10 @@ export const de = {
   providerMissing: '{id} (nicht geladen)',
   providerAuto: 'Automatisch',
   providersFailed: 'Die Anbieterliste konnte nicht geladen werden, daher ist dieses Menü möglicherweise unvollständig.',
+  probeSearch: 'Suche testen',
+  probeFetch: 'Abruf testen',
+  probeRunning: 'Wird getestet…',
+  probeProvider: '{provider} · {detail}',
   retry: 'Erneut versuchen',
   pluginProviderHint: 'Konfigurieren Sie diesen Anbieter in den Einstellungen seines eigenen Plugins.',
   credential: 'API-Schlüssel',
@@ -251,6 +278,7 @@ export const de = {
   readOnly: 'Diese Bereitstellung speichert Einstellungen schreibgeschützt.',
   unavailable: 'Dieses Plugin ist nicht geladen und kann daher derzeit nicht konfiguriert werden.',
   save: 'Speichern',
+  unsaved: 'Nicht gespeicherte Änderungen',
   saving: 'Speichern…',
   saveFailed: 'Die Bereitstellung hat diese Werte nicht akzeptiert. Sie mussten sie korrigieren.',
   invalidNumber: 'Geben Sie eine Zahl ein oder lassen Sie das Feld leer, um den Standardwert zu verwenden.',
@@ -282,6 +310,10 @@ export const ru = {
   providerMissing: '{id} (не загружен)',
   providerAuto: 'Автоматически',
   providersFailed: 'Не удалось загрузить список поставщиков, поэтому это меню может быть неполным.',
+  probeSearch: 'Проверить поиск',
+  probeFetch: 'Проверить загрузку',
+  probeRunning: 'Проверка…',
+  probeProvider: '{provider} · {detail}',
   retry: 'Повторить',
   pluginProviderHint: 'Настройте этого поставщика в настройках его собственного плагина.',
   credential: 'Ключ API',
@@ -298,6 +330,7 @@ export const ru = {
   readOnly: 'В этом развертывании параметры сохраняются только для чтения.',
   unavailable: 'Этот плагин не загружен, поэтому его невозможно настроить прямо сейчас.',
   save: 'Сохранить',
+  unsaved: 'Несохранённые изменения',
   saving: 'Сохранение…',
   saveFailed: 'Развертывание не приняло эти значения; их оставили вам на исправление.',
   invalidNumber: 'Введите число или оставьте поле пустым, чтобы использовать значение по умолчанию.',
@@ -329,6 +362,10 @@ export const pt = {
   providerMissing: '{id} (não carregado)',
   providerAuto: 'Automático',
   providersFailed: 'Não foi possível carregar a lista de provedores, por isso este menu pode estar incompleto.',
+  probeSearch: 'Testar pesquisa',
+  probeFetch: 'Testar obtenção',
+  probeRunning: 'A testar…',
+  probeProvider: '{provider} · {detail}',
   retry: 'Tentar novamente',
   pluginProviderHint: 'Configure este provedor nas configurações do próprio plugin.',
   credential: 'Chave de API',
@@ -345,6 +382,7 @@ export const pt = {
   readOnly: 'Esta implantação armazena configurações somente leitura.',
   unavailable: 'Este plugin não está carregado, portanto não pode ser configurado agora.',
   save: 'Salvar',
+  unsaved: 'Alterações não guardadas',
   saving: 'Salvando…',
   saveFailed: 'A implantação não aceitou esses valores; eles foram deixados para você corrigir.',
   invalidNumber: 'Insira um número ou deixe em branco para usar o padrão.',

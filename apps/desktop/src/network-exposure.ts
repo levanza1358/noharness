@@ -27,6 +27,8 @@ const WITHHELD_RESPONSE_HEADERS = ['set-cookie', 'content-encoding', 'content-le
 export interface DesktopNetworkExposureState {
   /** Tokenized URL on the first non-internal IPv4 address. */
   readonly url: string
+  /** Tokenized URL on every non-internal IPv4 address, in interface order. */
+  readonly urls: readonly string[]
 }
 
 /** One owned Host the proxy reaches. */
@@ -96,7 +98,8 @@ export class DesktopNetworkExposure {
    */
   async start(): Promise<DesktopNetworkExposureState> {
     if (this.server !== undefined) throw new Error('desktop network exposure: already listening')
-    const address = (this.options.addresses ?? lanAddresses)()[0]
+    const addresses = (this.options.addresses ?? lanAddresses)()
+    const address = addresses[0]
     if (address === undefined) throw new Error('desktop network exposure: this machine has no local network address')
     this.token = randomBytes(32).toString('base64url')
     const server = createServer((request, response) => { this.handle(request, response) })
@@ -115,7 +118,8 @@ export class DesktopNetworkExposure {
       throw error
     }
     const port = (server.address() as net.AddressInfo).port
-    return { url: `http://${address}:${String(port)}/?${TOKEN_PARAM}=${this.token}` }
+    const urls = addresses.map(candidate => `http://${candidate}:${String(port)}/?${TOKEN_PARAM}=${this.token}`)
+    return { url: urls[0] as string, urls }
   }
 
   /** Stop listening and drop every proxied socket. */

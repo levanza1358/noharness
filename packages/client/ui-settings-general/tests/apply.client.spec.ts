@@ -6,7 +6,7 @@
  * across Loader rebuilds of the declaring chain.
  */
 import { describe, expect, onTestFinished, vi } from 'vitest'
-import type {} from '@noharness/client-ui-renderer/client'
+import type { SlotRegistry } from '@noharness/client-ui-renderer/client'
 import { ok, type RemoteMock } from '@noharness/remote-mock'
 import type { SettingsNamespaceView } from '@noharness/settings/types'
 import { createClientTest, type TestClient, webApp } from '@noharness/client-test-runtime/src/assembly/index.ts'
@@ -19,7 +19,9 @@ import { HostReleasePrompt, type HostReleasePromptInjected } from '../src/client
 import { CloseLabel, HeaderContent, TriggerContent } from '../src/client/chrome.tsx'
 import type { DesktopChannelRowInjected, DesktopChannelToastInjected } from '../src/client/DesktopChannelRow.tsx'
 import type { DesktopChannelBridge } from '../src/types.ts'
+import { AboutSection } from '../src/client/AboutSection.tsx'
 import { GeneralSection } from '../src/client/GeneralSection.tsx'
+import { SettingsNavigation } from '../src/client/SettingsNavigation.tsx'
 import { SettingsDocumentAction } from '../src/client/SettingsDocumentAction.tsx'
 import type { SettingsDocumentActionInjected } from '../src/client/SettingsDocumentAction.tsx'
 
@@ -31,14 +33,18 @@ const COLD_BOOT_TIMEOUT_MS = 60_000
 /** Dictionary namespace this plugin owns; every seat it fills declares it. */
 const NS = 'settings'
 
-/** The seats this plugin fills for a loopback browser (slot name → expected component). */
-const SEATS = [
-  ['settings.trigger', TriggerContent],
-  ['settings.header', HeaderContent],
-  ['settings.action', SettingsDocumentAction],
-  ['settings.close', CloseLabel],
-  ['settings.section', GeneralSection],
-] as const
+/** Slot key as the registry types it. */
+type SeatName = Parameters<SlotRegistry['entries']>[0]
+
+/** The seats this plugin fills for a loopback browser (slot name → expected components). */
+const SEATS: ReadonlyArray<readonly [SeatName, readonly unknown[]]> = [
+  ['settings.trigger', [TriggerContent]],
+  ['settings.header', [HeaderContent]],
+  ['settings.action', [SettingsDocumentAction]],
+  ['settings.close', [CloseLabel]],
+  // General carries the core preferences; About owns the build label.
+  ['settings.section', [GeneralSection, AboutSection]],
+]
 
 /** One Host view of the locale preference, including its revision fence. */
 function localeView(preference: string, revision = 0): SettingsNamespaceView {
@@ -63,7 +69,7 @@ async function client(mock: RemoteMock, start: () => Promise<TestClient>, hasDoc
 }
 
 /** This plugin's rows in a seat: the list seats also carry feature-owned rows (the product's other sections and actions). */
-function ownEntries(c: TestClient, name: (typeof SEATS)[number][0]) {
+function ownEntries(c: TestClient, name: SeatName) {
   return c.ctx.slots.entries(name).filter(entry => entry.locale === NS)
 }
 
@@ -86,8 +92,8 @@ function actionInjectedOf(c: TestClient): SettingsDocumentActionInjected {
 }
 
 function expectSeated(c: TestClient): void {
-  for (const [name, component] of SEATS) {
-    expect(ownEntries(c, name).map(entry => entry.component)).toEqual([component])
+  for (const [name, components] of SEATS) {
+    expect(ownEntries(c, name).map(entry => entry.component)).toEqual(components)
   }
 }
 
@@ -111,8 +117,14 @@ describe('ui-settings-general apply', () => {
     expect(generalLabel(c)).toBe('General')
     expect(c.ctx.slots.spec('settings.general.item')).toEqual({ kind: 'list', scope: 'root' })
     // The shared developer-tool control belongs to General; onboarding remains feature-owned.
-    expect(c.ctx.slots.entries('settings.general.item').filter(row => row.locale === NS).map(row => row.options.id)).toEqual(['developer-tools', 'current-version'])
+    expect(c.ctx.slots.entries('settings.general.item').filter(row => row.locale === NS).map(row => row.options.id)).toEqual(['developer-tools'])
+    // Build metadata moved out of General into its own section.
+    expect(c.ctx.slots.entries('settings.section').filter(row => row.locale === NS).map(row => row.options.id))
+      .toContain('about')
     expect(c.ctx.slots.entries('settings.onboarding').filter(row => row.locale === NS)).toEqual([])
+    // The sidebar swaps its browsing region to this navigation while Settings is open.
+    const navigation = c.ctx.slots.entries('sidebar.settings.navigation')
+    expect(navigation.map(row => row.component)).toEqual([SettingsNavigation])
     const developer = developerToolsRowOf(c)
     expect(developer.hooks.developerTools).toBe(c.ctx.configForms.developerTools.enabled)
     expect(developer.hooks.developerTools.getSnapshot()).toBe(false)
@@ -123,8 +135,10 @@ describe('ui-settings-general apply', () => {
     expect(controller.store.getSnapshot().status).toBe('idle')
     expect(hooks.snapshot).toBe(controller.store)
     // Copy rides the standard locale seat: every row this plugin seats declares the namespace.
-    for (const [name, component] of SEATS) {
-      expect(c.ctx.slots.entries(name).find(row => row.component === component)!.locale).toBe(NS)
+    for (const [name, components] of SEATS) {
+      for (const component of components) {
+        expect(c.ctx.slots.entries(name).find(row => row.component === component)!.locale).toBe(NS)
+      }
     }
   }, COLD_BOOT_TIMEOUT_MS)
 
@@ -251,9 +265,9 @@ describe('ui-settings-general apply', () => {
     c.ctx.locale.setLocale('en')
     // No ledger churn: freshness rides the thunk (and the renderer's locale
     // subscription), not re-registration.
-    SEATS.forEach(([name], i) => {
+    SEATS.forEach(([name, components], i) => {
       expect(c.ctx.slots.getVersion(name)).toBe(baselineVersions[i]!)
-      expect(ownEntries(c, name)).toHaveLength(1)
+      expect(ownEntries(c, name)).toHaveLength(components.length)
     })
     expect(generalLabel(c)).toBe('General')
     await vi.waitFor(() => {
@@ -347,7 +361,7 @@ describe('ui-settings-general apply', () => {
       expect(ownEntries(c, name)[0]).not.toBe(before[index])
     })
     expect(c.ctx.slots.spec('settings.general.item')).toEqual({ kind: 'list', scope: 'root' })
-    expect(c.ctx.slots.entries('settings.general.item').filter(row => row.locale === NS).map(row => row.options.id)).toEqual(['developer-tools', 'current-version'])
+    expect(c.ctx.slots.entries('settings.general.item').filter(row => row.locale === NS).map(row => row.options.id)).toEqual(['developer-tools'])
     // The recovered registrations still ride the locale path.
     const english = localeView('en', 1)
     const chinese = localeView('en', 2)

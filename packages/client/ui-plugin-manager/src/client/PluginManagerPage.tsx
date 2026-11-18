@@ -12,12 +12,12 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'rea
 import { createPortal } from 'react-dom'
 import type { PluginInstallFailureKind, Registry } from '@noharness/api-remotes/client'
 import {
-  Button, IconCheckCircleFillRegular, IconChevronDownOutlineRegular, IconChevronLeftOutlineMedium,
+  Button, IconCheckCircleFillRegular, IconChevronDownOutlineRegular, IconChevronLeftOutlineMedium, IconCopyOutlineRegular,
   IconChevronRightOutlineRegular, IconCloseOutlineMedium,
   IconDownloadOutlineRegular, IconInfoOutlineRegular, IconPlusOutlineRegular, IconRefreshOutlineRegular, IconTrashOutlineRegular,
   IconWarningOutlineRegular, Input, Menu, MenuItemButton, Modal, pointerModality,
   PluginArtworkDefault, PluginArtworkLoop, PluginArtworkSearch, PluginArtworkSubagent, PluginArtworkTerminal,
-  SegmentedTabs, StateDot, Switch, Tag, TerminalBlock, Toast, Tooltip, useDismissOnOutsidePointer,
+  SegmentedTabs, StateDot, Switch, Tag, TerminalBlock, Toast, Tooltip, useDismissOnOutsidePointer, writeClipboard,
   type IconProps, type StateDotState, type TerminalBlockLabels,
 } from '@noharness/client-ui-primitives'
 import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore } from '@noharness/client-ui-slots'
@@ -39,9 +39,9 @@ import { UpdateDialog, VersionSection } from './versions.tsx'
 import { BundleDetailSection } from './BundleDetailSection.tsx'
 import css from './PluginManagerPage.module.css'
 
-/** Full component props assembled by the main slot renderer. */
+/** Full component props assembled by the settings section renderer. */
 export type PluginManagerPageProps =
-  PropsRuntime<'main'>
+  PropsRuntime<'settings.section'>
   & PropsLocale<'pluginManager'>
   & PropsRenderSlots<
     | 'plugins.item' | 'plugins.bundle.config' | 'plugins.row.config' | 'plugins.bundle.activation'
@@ -599,23 +599,6 @@ function PackageCard({ pkg, t, resolveText, busy, highlighted, newer, onOpen, on
   )
 }
 
-/**
- * One official plugin as a card that opens its page: its icon, its title from
- * the registration, and the one-liner the entry renders in its summary view.
- */
-function ItemCard({ item, t, onOpen, renderSlot }: {
-  readonly item: OfficialItem
-  readonly t: Translate
-  readonly onOpen: () => void
-  readonly renderSlot: RenderConfig
-}): ReactNode {
-  return (
-    <li className={`${css.card} ${css.cardLink}`} data-plugin-item={item.id}>
-      <CardHead title={item.label} t={t} onOpen={onOpen} icon={itemArtwork(item.id)} description={renderSlot('plugins.item', { view: 'summary' }, { only: item.id })} />
-    </li>
-  )
-}
-
 /** One row as the detail slots see it. */
 function rowRef(row: PackageRow): PluginRowRef {
   return { rowId: row.rowId, moduleName: row.moduleName, enabled: row.enabled }
@@ -728,7 +711,7 @@ function RowDetail({ pkg, row, t, resolveText, onBack, renderSlot, form }: {
  */
 function PackageDetail({
   pkg, t, resolveText, busy, rowBusy, configured, configure, renderSlot, inMore, versions, detail,
-  onBack, onSetEnabled, onUninstall, onUpdate, onSetRowEnabled, onEnsureVersions, onCheckVersions, onUpdateVersion,
+  onBack, onSetEnabled, onUninstall, onUpdate, onSetRowEnabled, onEnsureVersions, onCheckVersions, onUpdateVersion, onCopyName,
 }: {
   readonly pkg: PackageView
   /** The package's version check, when one started. */
@@ -755,6 +738,8 @@ function PackageDetail({
   readonly onCheckVersions: () => void
   /** Ask before installing one listed newer version. */
   readonly onUpdateVersion: (version: string) => void
+  /** Copy the package name for pasting into a command. */
+  readonly onCopyName: () => void
 }): ReactNode {
   const { title, description, beta } = packageText(pkg, resolveText)
   const newer = versionUpdate(versions)
@@ -782,6 +767,11 @@ function PackageDetail({
                 {t('versionsUpdateLabel', { version: newer })}
               </Button>
             )}
+            <Button variant="outline" size="sm" icon={<IconCopyOutlineRegular size={13} />}
+              aria-label={t('copyNameLabel', { name: pkg.name })}
+              onClick={onCopyName}>
+              {t('copyName')}
+            </Button>
             {pkg.installed || pkg.removable
               ? (
                 <Button
@@ -1583,6 +1573,10 @@ export function PluginManagerPage(props: PluginManagerPageProps): ReactNode {
   useEffect(() => { if (tab !== selectedTab) setTab(tab) }, [tab, selectedTab, setTab])
   const tabsId = useId()
   const [activation, setActivation] = useState<string | null>(null)
+  const [filter, setFilter] = useState('')
+  const [sortByName, setSortByName] = useState(false)
+  const [updatesOnly, setUpdatesOnly] = useState(false)
+  const [copied, setCopied] = useState(0)
   const [headerRef] = useState(props.createHeaderRef)
   useEffect(() => { ensure() }, [ensure])
   // Installation highlights visible cards without changing the user's current page.
@@ -1608,8 +1602,25 @@ export function PluginManagerPage(props: PluginManagerPageProps): ReactNode {
   // to the main list without moving it among its neighbours there.
   const ordered = orderOptionalBundles(official)
   const pinned = new Set(official.filter(pinnedToMainList).map(pkg => pkg.name))
-  const extensions = ordered.filter(pkg => pinned.has(pkg.name))
   const more = ordered
+  const needle = filter.trim().toLowerCase()
+  const matchesFilter = (pkg: PackageView): boolean => needle === ''
+    || pkg.name.toLowerCase().includes(needle)
+    || packageText(pkg, resolveText).title.toLowerCase().includes(needle)
+  const byTitle = (a: PackageView, b: PackageView): number =>
+    packageText(a, resolveText).title.localeCompare(packageText(b, resolveText).title)
+  const packageBusy = (pkg: PackageView): boolean => bundleBusy(state, pkg.name)
+  // Bundles the Host reports a newer version for; the toolbar can narrow the list to them.
+  const updatable = listed.filter((pkg) => {
+    const check = state.versions[pkg.name]
+    return check?.phase === 'done' && updateCandidate(check.list) !== undefined && !packageBusy(pkg)
+  })
+  const arrange = (packages: readonly PackageView[]): PackageView[] => {
+    const sorted = sortByName ? [...packages].sort(byTitle) : [...packages]
+    return sorted.filter(pkg => matchesFilter(pkg) && (!updatesOnly || updatable.includes(pkg)))
+  }
+  const extensions = arrange(ordered.filter(pkg => pinned.has(pkg.name)))
+  const mineList = arrange(mine)
   const loaded = state.status === 'ready' || state.status === 'error'
   const refreshing = state.refreshStatus === 'refreshing'
   const openPkg = view.kind === 'package' || view.kind === 'row'
@@ -1647,7 +1658,6 @@ export function PluginManagerPage(props: PluginManagerPageProps): ReactNode {
   })
   const updates = updatesNote(mine, state.versions, t)
   const updatePkg = state.update === null ? undefined : state.packages.find(pkg => pkg.name === state.update?.packageName)
-  const packageBusy = (pkg: PackageView): boolean => bundleBusy(state, pkg.name)
   const packageCard = (pkg: PackageView): ReactNode => (
     <PackageCard
       key={pkg.name}
@@ -1661,10 +1671,7 @@ export function PluginManagerPage(props: PluginManagerPageProps): ReactNode {
       onSetEnabled={(enabled) => { setBundleEnabled(pkg.name, enabled) }}
     />
   )
-  const basicCards = ledger.items.map(item => (
-    <ItemCard key={`item:${item.id}`} item={item} t={t} renderSlot={renderSlot} onOpen={() => { setView({ kind: 'item', id: item.id }) }} />
-  ))
-  const renderGroup = (id: 'basic' | 'extensions' | 'bundles', heading: string, cards: readonly ReactNode[]): ReactNode => {
+  const renderGroup = (id: 'extensions' | 'bundles', heading: string, cards: readonly ReactNode[]): ReactNode => {
     const offersMore = id === 'extensions' && more.length > 0
     if (cards.length === 0 && !offersMore) return null
     return (
@@ -1833,6 +1840,9 @@ export function PluginManagerPage(props: PluginManagerPageProps): ReactNode {
               onSetEnabled={(enabled) => { setBundleEnabled(openPkg.name, enabled) }}
               onUninstall={() => { props.uninstall(openPkg.name) }}
               onUpdate={() => { props.update(openPkg.name) }}
+              onCopyName={() => {
+                void writeClipboard(openPkg.name).then((ok) => { if (ok) setCopied(sequence => sequence + 1) })
+              }}
               onSetRowEnabled={setRowEnabled}
               versions={state.versions[openPkg.name]}
               onEnsureVersions={props.ensureVersions}
@@ -1845,19 +1855,39 @@ export function PluginManagerPage(props: PluginManagerPageProps): ReactNode {
           ? <ItemDetail form={formFor(openItem.id)} item={openItem} t={t} renderSlot={renderSlot} onBack={() => { setView({ kind: 'list' }) }} />
           : null}
         {loaded && installedCards
-          ? basicCards.length === 0 && official.length === 0 && mine.length === 0 && state.status !== 'error'
+          ? needle === '' && official.length === 0 && mine.length === 0 && state.status !== 'error'
             ? <div className={css.installedPanel} {...installedPanel}><p className={css.empty}>{t('empty')}</p></div>
             : (
               <div className={css.installedPanel} {...installedPanel}>
+                {showsMoreList ? null : (
+                  <div className={css.listTools}>
+                    <input type="search" className={css.listFilter} value={filter}
+                      aria-label={t('filterLabel')} placeholder={t('filterPlaceholder')}
+                      onChange={(event) => { setFilter(event.currentTarget.value) }} />
+                    <Button variant="outline" size="sm" className={css.sortButton}
+                      aria-pressed={sortByName}
+                      onClick={() => { setSortByName(value => !value) }}>
+                      {t(sortByName ? 'sortName' : 'sortDefault')}
+                    </Button>
+                    {updatable.length > 0 ? (
+                      <Button variant="outline" size="sm" aria-pressed={updatesOnly}
+                        onClick={() => { setUpdatesOnly(value => !value) }}>
+                        {t('updatesOnly', { count: String(updatable.length) })}
+                      </Button>
+                    ) : null}
+                  </div>
+                )}
                 {showsMoreList ? (
                   <section className={css.group} data-plugin-scope="global" data-plugin-group="more">
                     <ul className={css.cards}>{more.map(packageCard)}</ul>
                   </section>
                 ) : (
                   <>
-                    {renderGroup('basic', t('basicTitle'), basicCards)}
                     {renderGroup('extensions', t('extensionsTitle'), extensions.map(packageCard))}
-                    {renderGroup('bundles', t('bundlesTitle'), mine.map(packageCard))}
+                    {renderGroup('bundles', t('bundlesTitle'), mineList.map(packageCard))}
+                    {needle !== '' && extensions.length === 0 && mineList.length === 0
+                      ? <p className={css.empty}>{t('filterEmpty')}</p>
+                      : null}
                   </>
                 )}
                 {/* A failed package read trails the groups it left incomplete: right under the groups on a
@@ -1924,6 +1954,7 @@ export function PluginManagerPage(props: PluginManagerPageProps): ReactNode {
             onCancel={props.cancelConfirm}
           />
         )}
+      {copied > 0 && <Toast key={copied} tone="success" text={t('nameCopied')} onDone={() => { setCopied(0) }} />}
     </section>
   )
 }

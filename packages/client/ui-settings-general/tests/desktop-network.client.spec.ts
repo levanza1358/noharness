@@ -2,8 +2,10 @@ import { expect, it, vi } from 'vitest'
 import type { DesktopNetworkExposureView } from '../src/types.ts'
 import { DesktopNetworkSource } from '../src/client/desktop-network-source.ts'
 
-const off: DesktopNetworkExposureView = { enabled: false, failed: false, pending: false }
-const on: DesktopNetworkExposureView = { enabled: true, url: 'http://192.168.1.20:4100/?token=abc', failed: false, pending: false }
+const off: DesktopNetworkExposureView = { enabled: false, failed: false, pending: false, port: 0 }
+const on: DesktopNetworkExposureView = {
+  enabled: true, url: 'http://192.168.1.20:4100/?token=abc', failed: false, pending: false, port: 4100,
+}
 
 function fixture() {
   const get = Promise.withResolvers<DesktopNetworkExposureView>()
@@ -48,8 +50,8 @@ it('applies the state the shell returns for an accepted write', async () => {
   const f = fixture()
   f.get.resolve(off)
   await f.get.promise
-  const pending = f.source.set(true)
-  expect(f.write).toHaveBeenCalledWith(true)
+  const pending = f.source.set({ enabled: true })
+  expect(f.write).toHaveBeenCalledWith({ enabled: true })
   expect(f.source.store.getSnapshot()).toMatchObject({ enabled: false, pending: true, failed: false })
   f.set.resolve(on)
   await pending
@@ -61,7 +63,7 @@ it('keeps the previous choice and reports a rejected write', async () => {
   const f = fixture()
   f.get.resolve(off)
   await f.get.promise
-  const pending = f.source.set(true)
+  const pending = f.source.set({ enabled: true })
   f.set.reject(new Error('proxy refused'))
   await pending
   expect(f.source.store.getSnapshot()).toEqual({ ...off, failed: true })
@@ -72,7 +74,7 @@ it('leaves a newer snapshot alone when the write answers late', async () => {
   const f = fixture()
   f.get.resolve(off)
   await f.get.promise
-  const pending = f.source.set(true)
+  const pending = f.source.set({ enabled: true })
   f.emit(on)
   f.set.resolve(on)
   await pending
@@ -84,11 +86,11 @@ it('ignores writes and answers after disposal', async () => {
   const f = fixture()
   f.get.resolve(off)
   await f.get.promise
-  const pending = f.source.set(true)
+  const pending = f.source.set({ enabled: true })
   f.source.dispose()
   f.set.resolve(on)
   await pending
   expect(f.source.store.getSnapshot().url).toBeUndefined()
-  await f.source.set(false)
+  await f.source.set({ enabled: false })
   expect(f.write).toHaveBeenCalledOnce()
 })

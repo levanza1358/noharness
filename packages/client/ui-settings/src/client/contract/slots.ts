@@ -164,4 +164,6 @@ export interface SettingsLauncherOwnerProps {
   settingsShortcut?: { readonly keys: readonly string[]; readonly aria?: string | undefined }
   /** @param sectionId - section to open; absent uses the shell's default section. */
   openSettings: (sectionId?: string) => void
+  /** Return the center column to the Conversation, closing the settings page. */
+  closeSettings: () => void
 }

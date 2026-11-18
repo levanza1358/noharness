@@ -288,22 +288,35 @@ describe('release families', () => {
     'requires exact packed NHS %s while preserving external ranges', (section) => {
       const pkg = member('packages/example/provider', '@noharness/provider')
       const family = releaseFamily('nhs')
+      const familyNames = new Set([pkg.name, '@noharness/tools'])
       const manifest = { name: pkg.name, version: pkg.version, [section]: { '@noharness/tools': pkg.version, external: '^4.0.0' } }
-      expect(() => { family.validatePackedManifest(pkg, manifest) }).not.toThrow()
+      expect(() => { family.validatePackedManifest(pkg, manifest, familyNames) }).not.toThrow()
       for (const range of ['workspace:*', '^0.0.1', '~0.0.1', '0.0.2', '*']) {
-        expect(() => { family.validatePackedManifest(pkg, { ...manifest, [section]: { '@noharness/tools': range } }) })
+        expect(() => { family.validatePackedManifest(pkg, { ...manifest, [section]: { '@noharness/tools': range } }, familyNames) })
           .toThrow(`packed ${section}.@noharness/tools must equal`)
       }
     },
   )
 
+  it('leaves a vendored dependency on its own version line', () => {
+    const pkg = member('packages/example/provider', '@noharness/provider')
+    const family = releaseFamily('nhs')
+    const familyNames = new Set([pkg.name])
+    expect(() => {
+      family.validatePackedManifest(pkg, {
+        name: pkg.name, version: pkg.version, peerDependencies: { '@noharness/cordis': '~4.1.0' },
+      }, familyNames)
+    }).not.toThrow()
+  })
+
   it('checks packed identities and preserves independent vendor versions', () => {
     const pkg = member('vendor/example', '@noharness/example')
     const family = releaseFamily('vendor')
-    expect(() => { family.validatePackedManifest(pkg, { name: pkg.name, version: pkg.version, dependencies: { '@noharness/tools': '^4.0.0' } }) })
+    const familyNames = new Set([pkg.name])
+    expect(() => { family.validatePackedManifest(pkg, { name: pkg.name, version: pkg.version, dependencies: { '@noharness/tools': '^4.0.0' } }, familyNames) })
       .not.toThrow()
-    expect(() => { family.validatePackedManifest(pkg, { name: '@noharness/other', version: pkg.version }) }).toThrow('packed identity')
-    expect(() => { family.validatePackedManifest(pkg, { name: pkg.name, version: '0.0.2' }) }).toThrow('packed identity')
+    expect(() => { family.validatePackedManifest(pkg, { name: '@noharness/other', version: pkg.version }, familyNames) }).toThrow('packed identity')
+    expect(() => { family.validatePackedManifest(pkg, { name: pkg.name, version: '0.0.2' }, familyNames) }).toThrow('packed identity')
   })
 
   it('reports a runtime dependency cycle instead of emitting an arbitrary order', () => {

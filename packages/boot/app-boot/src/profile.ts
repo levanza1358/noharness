@@ -30,7 +30,7 @@ import { resolveDshHome } from '@noharness/home-paths'
 import type { DshBundleManifest, DshPackageManifest } from '@noharness/package-manifest'
 import { INSTALLATION_OWNED_PROFILE_TUPLES, PROFILE_TEMPLATES, RETIRED_BUNDLES } from '@noharness/official-bundles'
 import { assertBundlePlatform } from './bundle-platform.ts'
-import { evaluatePluginCompatibility, pluginCompatibilityWarning } from './plugin-compatibility.ts'
+import { evaluatePluginCompatibility, installedPeerVersions, pluginCompatibilityWarning } from './plugin-compatibility.ts'
 import { readProfileVersionExemptions } from './profile-compatibility.ts'
 import { loadOverlayPatches } from './index.ts'
 import { realModuleDirectory } from './profile-resolution/legacy-links.ts'
@@ -696,7 +696,8 @@ export function loadProfileDirectory(
       }
       assertBundlePlatform(bundle.platforms, process.platform)
       // A bundle is not a plugin row, so row admission never reads its own nhs requirements.
-      const issue = evaluatePluginCompatibility(bundleManifest, exemptions)
+      const issue = evaluatePluginCompatibility(
+        bundleManifest, exemptions, undefined, installedPeerVersions(join(packageDir, 'package.json')))
       if (issue !== undefined && !issue.exempted) throw new Error(pluginCompatibilityWarning(issue))
       const patchPaths = bundlePatchPaths(packageDir, bundle)
       const patches = patchPaths.flatMap(patchPath => loadOverlayPatches(binName, patchPath))

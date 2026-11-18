@@ -2,7 +2,6 @@
 - button "Collapse sidebar"
 - button "New session": New Session
 - navigation "Global panels":
-  - button "Plugins"
   - button "Automation tasks"
   - button "Unpin Automation tasks from sidebar"
   - button "More"
@@ -17,7 +16,7 @@
 - button "Account menu": More
 - banner:
   - button "Open right sidebar"
-- text: Into the Unknown Preview
+- text: {{greeting}}
 - button "Choose workspace": workspace
 - button "Standard mode"
 - textbox "Describe what you want to build, / commands, @ files or sessions":

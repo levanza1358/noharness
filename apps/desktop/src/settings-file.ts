@@ -9,6 +9,8 @@ const preferencesSchema = z.object({
   channel: z.enum(['nightly', 'stable']),
   trayEnabled: z.boolean(),
   exposedNetwork: z.boolean(),
+  /** LAN proxy port; zero asks the OS for one. */
+  exposedNetworkPort: z.number().int().min(0).max(65535),
 })
 const documentSchema = z.looseObject({ updates: z.looseObject({}).optional() })
 
@@ -108,6 +110,8 @@ export class DesktopSettingsFile {
       channel: field(preferencesSchema.shape.channel, document.updates?.channel, 'channel', this.path),
       trayEnabled: field(preferencesSchema.shape.trayEnabled, document.updates?.trayEnabled, 'trayEnabled', this.path),
       exposedNetwork: field(preferencesSchema.shape.exposedNetwork, document.updates?.exposedNetwork, 'exposedNetwork', this.path),
+      exposedNetworkPort: field(preferencesSchema.shape.exposedNetworkPort,
+        document.updates?.exposedNetworkPort, 'exposedNetworkPort', this.path),
     } }
   }
 
@@ -147,7 +151,7 @@ export class DesktopSettingsFile {
         if (request.kind === 'initialize' && current.kind !== 'missing') return current
         const document = current.kind === 'ready' ? current.document : {}
         const updates = request.kind === 'initialize'
-          ? { allowTestAuthPopupWindow: false, trayEnabled: true, exposedNetwork: false }
+          ? { allowTestAuthPopupWindow: false, trayEnabled: true, exposedNetwork: false, exposedNetworkPort: 0 }
           : request.updates
         const next = { ...document, updates: { ...document.updates, ...updates } }
         const raw = `${JSON.stringify(next, null, 2)}\n`

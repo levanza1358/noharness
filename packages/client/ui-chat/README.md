@@ -137,7 +137,7 @@ Running group titles, reasoning previews, tool and command rows, the active retr
 
 The running status shows a whale whose APNG mask inherits the text color. CSS selects the static SVG when reduced motion or forced colors are active, or alpha masks are unsupported. The APNG is a [package asset](../AGENTS.md#dependency-declaration) referenced by the plugin stylesheet; React does not pass image data through DOM styles.
 
-The bottom running status pins to the transcript's bottom edge (`position: sticky`, `bottom: 0`), so scrolling into older Turns keeps the live clock in view; an opaque fill on a negative-`z-index` pseudo-element masks the rows passing beneath it, and the pinned row ranks above them.
+The bottom running status pins above the composer (`position: sticky`, `bottom: var(--nhs-composer-height, 0px)`), so scrolling into older Turns keeps the live clock in view; an opaque fill on a negative-`z-index` pseudo-element masks the rows passing beneath it, and the pinned row ranks above them. The composer seat owns the scrollport floor and paints over the flow, so the status stops at the seat's published height instead of the floor.
 
 Scroll-edge fades initialize when `ResizeObserver` reports the open group's layout; opening the group performs no immediate scroll-dimension read in a layout effect.
 

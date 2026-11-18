@@ -18,10 +18,12 @@ function declarationsFrom(source: string, selector: string): string[] {
 }
 
 describe('running turn status', () => {
-  it('pins to the transcript bottom while the reader scrolls older turns', () => {
+  it('pins above the composer while the reader scrolls older turns', () => {
     expect(declarationsFrom(read(), '.running')).toEqual(expect.arrayContaining([
       'position: sticky',
-      'bottom: 0',
+      // The composer seat is sticky at the scrollport floor and paints over the
+      // flow, so the status stops at the seat's height rather than at `0`.
+      'bottom: var(--nhs-composer-height, 0px)',
       'z-index: 1',
     ]))
   })

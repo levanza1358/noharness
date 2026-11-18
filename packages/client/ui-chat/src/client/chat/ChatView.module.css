@@ -215,11 +215,14 @@
   line-height: calc(18px + var(--nhs-content-font-delta-secondary, 0px));
 }
 
-/* The status stays in view while the reader scrolls older turns: it pins to the
-   transcript's bottom edge, and its mask hides the rows passing beneath it. */
+/* The status stays in view while the reader scrolls older turns: it pins above
+   the composer and its mask hides the rows passing beneath it. The scrollport
+   floor belongs to the sticky composer seat, which paints above the flow, so a
+   status pinned to `0` would ride underneath the input card instead of above
+   it; the seat's published height is the line both share. */
 .running {
   position: sticky;
-  bottom: 0;
+  bottom: var(--nhs-composer-height, 0px);
   z-index: 1;
   display: flex;
   flex-direction: column;

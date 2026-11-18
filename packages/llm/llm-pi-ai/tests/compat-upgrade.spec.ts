@@ -66,6 +66,9 @@ describe('pi-ai gateway compatibility declarations', () => {
   })
 
   it('keeps generic additions absent unless configured', () => {
-    expect(resolved({})).toBeUndefined()
+    // The one switch a hand-declared model carries without configuration is the
+    // system-prompt role: the endpoint is unknown, and `system` is what both
+    // kinds of endpoint accept.
+    expect(resolved({})).toEqual({ supportsDeveloperRole: false })
   })
 })

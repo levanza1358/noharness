@@ -793,9 +793,9 @@ describe('provider profile lifecycle', () => {
     expect(server.requests[1]).not.toHaveProperty('reasoning_effort')
   })
 
-  it('keeps the system role on a declared route whose gateway rejects the developer one', async () => {
+  it('keeps the system role on a declared route unless the route asks for the developer one', async () => {
     vi.stubEnv('PI_TEST_KEY', 'test-key')
-    const server = await mockServer([{ events: textEvents }, { events: textEvents }])
+    const server = await mockServer([{ events: textEvents }, { events: textEvents }, { events: textEvents }])
     const ctx = new Context()
     await ctx.plugin(LlmRuntime)
     await ctx.plugin(LlmPiAi, {
@@ -805,12 +805,13 @@ describe('provider profile lifecycle', () => {
           api: 'openai-completions',
           baseURL: `${server.url}/v1`,
           models: [
-            // pi-ai sends the system prompt as `developer` to a reasoning
-            // model whenever its URL detection says the endpoint is OpenAI —
-            // which is what an unrecognized private URL resolves to. Most
+            // pi-ai sends the system prompt as `developer` to a reasoning model
+            // whenever its URL detection says the endpoint is OpenAI — which is
+            // what an unrecognized private URL resolves to. Most
             // OpenAI-compatible gateways reject that role.
             { id: 'acme-think', reasoningEfforts: { off: null, high: 'high' }, compat: { supportsDeveloperRole: false } },
             { id: 'acme-guess', reasoningEfforts: { off: null, high: 'high' } },
+            { id: 'acme-openai', reasoningEfforts: { off: null, high: 'high' }, compat: { supportsDeveloperRole: true } },
           ],
         },
       },
@@ -828,9 +829,11 @@ describe('provider profile lifecycle', () => {
     }
 
     expect(await roles('acme-think')).toEqual(['system'])
-    // The switch is the only thing that changes it: the same route, same
-    // endpoint, same reasoning declaration still gets pi-ai's guess.
-    expect(await roles('acme-guess')).toEqual(['developer'])
+    // A model nobody configured the switch for starts on `system` too, rather
+    // than on pi-ai's guess about an endpoint it does not recognize.
+    expect(await roles('acme-guess')).toEqual(['system'])
+    // The route that does take the role still gets it.
+    expect(await roles('acme-openai')).toEqual(['developer'])
   })
 
   it('sends a declared off value as the effort parameter instead of omitting it', async () => {

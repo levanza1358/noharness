@@ -181,7 +181,7 @@ A built-in provider's model whose gateway does not reason loses its levels with 
 
 A gateway can hold a working key at a reachable address and still refuse every request. pi-ai decides the shape of a request — which role carries the system prompt, which field caps the output, how a thinking level travels — from the endpoint's URL, and an address it does not recognize is addressed as though it were OpenAI itself. Most OpenAI-compatible gateways refuse at least one thing OpenAI accepts.
 
-Two account for most of it. A model that declares reasoning has its system prompt sent as `role: "developer"`, which many gateways reject outright, and the output cap is sent as `max_completion_tokens`, which a server that only knows `max_tokens` refuses. The form has no field for either; correct them on the route in `$NHS_HOME/profiles/<profile>/cordis.patch.yml`:
+Two account for most of it. A model that declares reasoning has its system prompt sent as `role: "developer"`, which many gateways reject outright, and the output cap is sent as `max_completion_tokens`, which a server that only knows `max_tokens` refuses. A model you entered by hand already starts on `system`, the role both kinds of endpoint accept; correct the output cap on the route in `$NHS_HOME/profiles/<profile>/cordis.patch.yml`:
 
 ```yaml
 - id: llm-pi-ai
@@ -192,7 +192,6 @@ Two account for most of it. A model that declares reasoning has its system promp
         api: openai-completions
         baseURL: https://gateway.example/v1
         compat:
-          supportsDeveloperRole: false
           maxTokensField: max_tokens
         models:
           - id: my-model
@@ -208,7 +207,7 @@ A route's `compat` is the default for its models, and a model's own wins field b
               thinkingFormat: deepseek
 ```
 
-What neither sets keeps the installed catalog's value for that model, and what the catalog does not describe falls to pi-ai's detection. Give every switch you name a value: a key left empty (`supportsDeveloperRole:`) is refused rather than ignored, because an empty value would erase what the catalog knows while saying nothing in its place. A name no protocol accepts is refused too, and the message lists the ones that are available.
+What neither sets keeps the installed catalog's value for that model. A model the catalog does not describe starts on `system` and otherwise falls to pi-ai's detection; a route that really does take `developer` sets `compat.supportsDeveloperRole: true`. Give every switch you name a value: a key left empty (`supportsDeveloperRole:`) is refused rather than ignored, because an empty value would erase what the catalog knows while saying nothing in its place. A name no protocol accepts is refused too, and the message lists the ones that are available.
 
 Each switch belongs to the protocols that declare it, so a switch valid on one `api` may be refused on another — the message names what that protocol does offer. Like `input` above, a switch states a claim about your endpoint rather than checking it: setting one your gateway does not actually need simply sends a different request.
 
@@ -220,8 +219,8 @@ Every switch, its accepted values, and the protocols that take it are listed und
 - **`UNKNOWN_MODEL`** — Select a configured model or add the missing model to the custom provider.
 - **Fetching available models returns 401** — Check the key. Model discovery calls the OpenAI-compatible `GET /models` endpoint; enter models manually for endpoints that do not provide it.
 - **Fetching available models reports neither a `data` array nor a `models` object** — The endpoint's listing is in a format discovery does not read. Enter the models by hand.
-- **The gateway refuses every request although the key and URL are right** — Its request shape differs from OpenAI's. Start with `compat.supportsDeveloperRole: false` and `compat.maxTokensField: max_tokens` on the route.
-- **Only reasoning models fail** — pi-ai sends their system prompt as the `developer` role, which the gateway rejects. Set `compat.supportsDeveloperRole: false`.
+- **The gateway refuses every request although the key and URL are right** — Its request shape differs from OpenAI's. Start with `compat.maxTokensField: max_tokens` on the route.
+- **Only reasoning models fail, with the gateway's own error code** — Check the protocol it names in its message; a hand-entered model already sends the system prompt as `system`, so the cause is elsewhere, and `compat.supportsDeveloperRole: true` is only for an endpoint that insists on `developer`.
 - **The Effort menu does not appear for a model you entered by hand** — It declares no levels. On a custom model API provider, turn on **Reasoning levels** in the model's **Model options**; elsewhere, add `reasoningEfforts` to the model in `cordis.patch.yml`.
 - **`off` does not stop a DeepSeek model from thinking** — An empty `off` sends no reasoning field at all, and an endpoint that thinks by default keeps thinking. Set `compat.thinkingFormat: deepseek` on the model or the route.
 - **A compat switch is refused as having no value** — A key written with nothing after the colon. Give it a value, or remove the key to keep the installed catalog's.

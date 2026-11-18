@@ -5,12 +5,12 @@
 
 Every `config:` block a `cordis.yml` entry can set: for each loadable harness package, the verbatim config declaration (JSDoc included) its `apply` function or service constructor receives, with every referenced type pasted alongside (package-local types) or linked (everything else). The paste is the plugin's full declared config type — a field the runtime schema deliberately excludes is a runtime-only seam (its own JSDoc says so) and is not settable from `cordis.yml`. This is the **deployment**-axis reference — the wiring a plugin author works against is the generated Cordis API region on each [subsystem page](subsystems/core.md), the model-facing tool schemas are the [tool catalog](tool-catalog.md), and [subsystems/](subsystems/core.md) documents the types these declarations reference.
 
-Both language versions of this file are GENERATED from source (`scripts/gen-config-catalog.ts`) and verified fresh by `pnpm run verify-config-catalog` (part of `doc-sync`) — do not edit them by hand. Declaration blocks use a `ts config-catalog` fence (skipped by doc-typecheck, since a lone declaration referencing imports is not standalone-compilable). The generator also cross-checks the runtime schemastery schema against the pasted declaration — every schema-validated key, nested keys included, must be locatable on the declared config type — so the paste cannot hide a loader-accepted field.
+This file is GENERATED from source (`scripts/gen-config-catalog.ts`) and verified fresh by `pnpm run verify-config-catalog` (part of `doc-sync`) — do not edit it by hand. Declaration blocks use a `ts config-catalog` fence (skipped by doc-typecheck, since a lone declaration referencing imports is not standalone-compilable). The generator also cross-checks the runtime schemastery schema against the pasted declaration — every schema-validated key, nested keys included, must be locatable on the declared config type — so the paste cannot hide a loader-accepted field.
 
 Each package entry labels its data with three identifiers: `inject` lists the service keys the plugin injects, so its `cordis.yml` tree must also load providers for those services; `refs` lists the referenced types that are not pasted here; `source` links the file that declares the config. Scope is the harness tier (`packages/`); the vendored cordis plugins a config tree may also load (the console logger, …) are pinned upstream source ([vendoring policy](../vendor/README.md)) and not catalogued here.
 
 <!-- BEGIN GENERATED config-catalog:@noharness/acp -->
-<a id="noharnessnhs-acp"></a>
+<a id="noharnessacp"></a>
 
 ## `@noharness/acp`
 
@@ -34,7 +34,7 @@ export interface AcpConfig {
 <!-- END GENERATED config-catalog:@noharness/acp -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/action-cards -->
-<a id="noharnessnhs-action-cards"></a>
+<a id="noharnessaction-cards"></a>
 
 ## `@noharness/action-cards`
 
@@ -49,7 +49,7 @@ export type Config = z.infer<typeof Config>
 <!-- END GENERATED config-catalog:@noharness/action-cards -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/agent-default-model -->
-<a id="noharnessnhs-agent-default-model"></a>
+<a id="noharnessagent-default-model"></a>
 
 ## `@noharness/agent-default-model`
 
@@ -70,7 +70,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/agent-default-model -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/agent-instructions -->
-<a id="noharnessnhs-agent-instructions"></a>
+<a id="noharnessagent-instructions"></a>
 
 ## `@noharness/agent-instructions`
 
@@ -105,7 +105,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/agent-instructions -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/agent-loop -->
-<a id="noharnessnhs-agent-loop"></a>
+<a id="noharnessagent-loop"></a>
 
 ## `@noharness/agent-loop`
 
@@ -137,7 +137,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/agent-loop -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/agent-preset -->
-<a id="noharnessnhs-agent-preset"></a>
+<a id="noharnessagent-preset"></a>
 
 ## `@noharness/agent-preset`
 
@@ -152,7 +152,7 @@ export type Config = PresetDefinition
 <!-- END GENERATED config-catalog:@noharness/agent-preset -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/agent-preset-registry -->
-<a id="noharnessnhs-agent-preset-registry"></a>
+<a id="noharnessagent-preset-registry"></a>
 
 ## `@noharness/agent-preset-registry`
 
@@ -172,7 +172,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/agent-preset-registry -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/agent-team -->
-<a id="noharnessnhs-agent-team"></a>
+<a id="noharnessagent-team"></a>
 
 ## `@noharness/agent-team`
 
@@ -191,7 +191,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/agent-team -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/agent-tool-presentation -->
-<a id="noharnessnhs-agent-tool-presentation"></a>
+<a id="noharnessagent-tool-presentation"></a>
 
 ## `@noharness/agent-tool-presentation`
 
@@ -217,7 +217,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/agent-tool-presentation -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/api-gateway -->
-<a id="noharnessnhs-api-gateway"></a>
+<a id="noharnessapi-gateway"></a>
 
 ## `@noharness/api-gateway`
 
@@ -238,7 +238,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/api-gateway -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/api-job-controller -->
-<a id="noharnessnhs-api-job-controller"></a>
+<a id="noharnessapi-job-controller"></a>
 
 ## `@noharness/api-job-controller`
 
@@ -257,12 +257,12 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/api-job-controller -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/api-session-controller -->
-<a id="noharnessnhs-api-session-controller"></a>
+<a id="noharnessapi-session-controller"></a>
 
 ## `@noharness/api-session-controller`
 
 - `inject`: `agentDefaultModel` · `agents` · `attachments` · `fileUploads` · `fs` · `llm` · `remoteAccess` · `sessions` · `sessionProjections` · `sessionQuery` · `typert` · `typertGateway` · `workspaceRegistry`
-- `source`: [`packages/api/session-controller/src/index.ts:111`](../packages/api/session-controller/src/index.ts)
+- `source`: [`packages/api/session-controller/src/index.ts:112`](../packages/api/session-controller/src/index.ts)
 
 ```ts config-catalog
 /** Session Controller deployment policy. */
@@ -276,7 +276,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/api-session-controller -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/api-settings-controller -->
-<a id="noharnessnhs-api-settings-controller"></a>
+<a id="noharnessapi-settings-controller"></a>
 
 ## `@noharness/api-settings-controller`
 
@@ -292,7 +292,7 @@ export interface SettingsControllerInternals {
 <!-- END GENERATED config-catalog:@noharness/api-settings-controller -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/api-terminal-controller -->
-<a id="noharnessnhs-api-terminal-controller"></a>
+<a id="noharnessapi-terminal-controller"></a>
 
 ## `@noharness/api-terminal-controller`
 
@@ -343,7 +343,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/api-terminal-controller -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/api-workspace-controller -->
-<a id="noharnessnhs-api-workspace-controller"></a>
+<a id="noharnessapi-workspace-controller"></a>
 
 ## `@noharness/api-workspace-controller`
 
@@ -362,7 +362,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/api-workspace-controller -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/api-workspace-files -->
-<a id="noharnessnhs-api-workspace-files"></a>
+<a id="noharnessapi-workspace-files"></a>
 
 ## `@noharness/api-workspace-files`
 
@@ -407,7 +407,7 @@ export interface SearchLimits {
 <!-- END GENERATED config-catalog:@noharness/api-workspace-files -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/attachment-local -->
-<a id="noharnessnhs-attachment-local"></a>
+<a id="noharnessattachment-local"></a>
 
 ## `@noharness/attachment-local`
 
@@ -444,7 +444,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/attachment-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/bash-local -->
-<a id="noharnessnhs-bash-local"></a>
+<a id="noharnessbash-local"></a>
 
 ## `@noharness/bash-local`
 
@@ -472,12 +472,12 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/bash-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/bash-sandbox -->
-<a id="noharnessnhs-bash-sandbox"></a>
+<a id="noharnessbash-sandbox"></a>
 
 ## `@noharness/bash-sandbox`
 
 - `inject`: `subprocess` · `sandbox` · `sandboxPolicy`
-- `refs`: [`LocalConfig`](#noharnessnhs-bash-local)
+- `refs`: [`LocalConfig`](#noharnessbash-local)
 - `source`: [`packages/shell/bash-sandbox/src/index.ts:36`](../packages/shell/bash-sandbox/src/index.ts)
 
 ```ts config-catalog
@@ -493,7 +493,7 @@ export type Config = LocalConfig
 <!-- END GENERATED config-catalog:@noharness/bash-sandbox -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-connection -->
-<a id="noharnessnhs-client-connection"></a>
+<a id="noharnessclient-connection"></a>
 
 ## `@noharness/client-connection`
 
@@ -535,7 +535,7 @@ export interface ConnectionRecoveryConfig {
 <!-- END GENERATED config-catalog:@noharness/client-connection -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-hmr -->
-<a id="noharnessnhs-client-hmr"></a>
+<a id="noharnessclient-hmr"></a>
 
 ## `@noharness/client-hmr`
 
@@ -552,7 +552,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/client-hmr -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-product-analytics -->
-<a id="noharnessnhs-client-product-analytics"></a>
+<a id="noharnessclient-product-analytics"></a>
 
 ## `@noharness/client-product-analytics`
 
@@ -576,7 +576,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/client-product-analytics -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-shortcuts -->
-<a id="noharnessnhs-client-shortcuts"></a>
+<a id="noharnessclient-shortcuts"></a>
 
 ## `@noharness/client-shortcuts`
 
@@ -592,7 +592,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/client-shortcuts -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-ui-account-notifications -->
-<a id="noharnessnhs-client-ui-account-notifications"></a>
+<a id="noharnessclient-ui-account-notifications"></a>
 
 ## `@noharness/client-ui-account-notifications`
 
@@ -608,7 +608,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/client-ui-account-notifications -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-ui-plugin-manager -->
-<a id="noharnessnhs-client-ui-plugin-manager"></a>
+<a id="noharnessclient-ui-plugin-manager"></a>
 
 ## `@noharness/client-ui-plugin-manager`
 
@@ -628,7 +628,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/client-ui-plugin-manager -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-ui-settings-account -->
-<a id="noharnessnhs-client-ui-settings-account"></a>
+<a id="noharnessclient-ui-settings-account"></a>
 
 ## `@noharness/client-ui-settings-account`
 
@@ -674,7 +674,7 @@ export type OnboardingProcess = 'compact' | 'standard' | 'detailed'
 <!-- END GENERATED config-catalog:@noharness/client-ui-settings-account -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-ui-sidebar-documentpreview -->
-<a id="noharnessnhs-client-ui-sidebar-documentpreview"></a>
+<a id="noharnessclient-ui-sidebar-documentpreview"></a>
 
 ## `@noharness/client-ui-sidebar-documentpreview`
 
@@ -708,7 +708,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/client-ui-sidebar-documentpreview -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-ui-theme -->
-<a id="noharnessnhs-client-ui-theme"></a>
+<a id="noharnessclient-ui-theme"></a>
 
 ## `@noharness/client-ui-theme`
 
@@ -740,7 +740,7 @@ export type ThemePreference = typeof THEME_PREFERENCES[number]
 <!-- END GENERATED config-catalog:@noharness/client-ui-theme -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/client-ui-trajectory -->
-<a id="noharnessnhs-client-ui-trajectory"></a>
+<a id="noharnessclient-ui-trajectory"></a>
 
 ## `@noharness/client-ui-trajectory`
 
@@ -757,7 +757,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/client-ui-trajectory -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/compaction-basic -->
-<a id="noharnessnhs-compaction-basic"></a>
+<a id="noharnesscompaction-basic"></a>
 
 ## `@noharness/compaction-basic`
 
@@ -806,7 +806,7 @@ export interface ModelCompactPolicyConfig extends CompactionPolicyConfig {
 <!-- END GENERATED config-catalog:@noharness/compaction-basic -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/compaction-tool-result-pruner -->
-<a id="noharnessnhs-compaction-tool-result-pruner"></a>
+<a id="noharnesscompaction-tool-result-pruner"></a>
 
 ## `@noharness/compaction-tool-result-pruner`
 
@@ -827,7 +827,7 @@ export interface ToolResultPruneConfig {
 <!-- END GENERATED config-catalog:@noharness/compaction-tool-result-pruner -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/cordis-host-runner -->
-<a id="noharnessnhs-cordis-host-runner"></a>
+<a id="noharnesscordis-host-runner"></a>
 
 ## `@noharness/cordis-host-runner`
 
@@ -846,7 +846,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/cordis-host-runner -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/credentials-local -->
-<a id="noharnessnhs-credentials-local"></a>
+<a id="noharnesscredentials-local"></a>
 
 ## `@noharness/credentials-local`
 
@@ -868,7 +868,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/credentials-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/cua-macos -->
-<a id="noharnessnhs-cua-macos"></a>
+<a id="noharnesscua-macos"></a>
 
 ## `@noharness/cua-macos`
 
@@ -900,7 +900,7 @@ export type SourceSigning = 'ad-hoc' | {
 <!-- END GENERATED config-catalog:@noharness/cua-macos -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/cua-mcp -->
-<a id="noharnessnhs-cua-mcp"></a>
+<a id="noharnesscua-mcp"></a>
 
 ## `@noharness/cua-mcp`
 
@@ -929,7 +929,7 @@ export type ConsentMode = 'allow' | 'elicit'
 <!-- END GENERATED config-catalog:@noharness/cua-mcp -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/cua-windows -->
-<a id="noharnessnhs-cua-windows"></a>
+<a id="noharnesscua-windows"></a>
 
 ## `@noharness/cua-windows`
 
@@ -949,7 +949,7 @@ export interface Config extends CuaConfig {
 <!-- END GENERATED config-catalog:@noharness/cua-windows -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/deepseek-account -->
-<a id="noharnessnhs-deepseek-account"></a>
+<a id="noharnessdeepseek-account"></a>
 
 ## `@noharness/deepseek-account`
 
@@ -994,7 +994,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/deepseek-account -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/deepseek-chat-import -->
-<a id="noharnessnhs-deepseek-chat-import"></a>
+<a id="noharnessdeepseek-chat-import"></a>
 
 ## `@noharness/deepseek-chat-import`
 
@@ -1017,7 +1017,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/deepseek-chat-import -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-api-speech-to-text -->
-<a id="noharnessnhs-experimental-api-speech-to-text"></a>
+<a id="noharnessexperimental-api-speech-to-text"></a>
 
 ## `@noharness/experimental-api-speech-to-text`
 
@@ -1036,7 +1036,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-api-speech-to-text -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-browser-use-chrome-devtools-mcp -->
-<a id="noharnessnhs-experimental-browser-use-chrome-devtools-mcp"></a>
+<a id="noharnessexperimental-browser-use-chrome-devtools-mcp"></a>
 
 ## `@noharness/experimental-browser-use-chrome-devtools-mcp`
 
@@ -1051,7 +1051,7 @@ export type Config = BrowserMcpConfig
 <!-- END GENERATED config-catalog:@noharness/experimental-browser-use-chrome-devtools-mcp -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-browser-use-playwright-mcp -->
-<a id="noharnessnhs-experimental-browser-use-playwright-mcp"></a>
+<a id="noharnessexperimental-browser-use-playwright-mcp"></a>
 
 ## `@noharness/experimental-browser-use-playwright-mcp`
 
@@ -1066,7 +1066,7 @@ export type Config = BrowserMcpConfig
 <!-- END GENERATED config-catalog:@noharness/experimental-browser-use-playwright-mcp -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-browser-use-stagehand-native -->
-<a id="noharnessnhs-experimental-browser-use-stagehand-native"></a>
+<a id="noharnessexperimental-browser-use-stagehand-native"></a>
 
 ## `@noharness/experimental-browser-use-stagehand-native`
 
@@ -1106,7 +1106,7 @@ export interface StagehandModelConfig {
 <!-- END GENERATED config-catalog:@noharness/experimental-browser-use-stagehand-native -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-claude-code-mods -->
-<a id="noharnessnhs-experimental-claude-code-mods"></a>
+<a id="noharnessexperimental-claude-code-mods"></a>
 
 ## `@noharness/experimental-claude-code-mods`
 
@@ -1133,7 +1133,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-claude-code-mods -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-client-ui-cot-translation -->
-<a id="noharnessnhs-experimental-client-ui-cot-translation"></a>
+<a id="noharnessexperimental-client-ui-cot-translation"></a>
 
 ## `@noharness/experimental-client-ui-cot-translation`
 
@@ -1161,7 +1161,7 @@ export interface CotTranslationPreferences {
 <!-- END GENERATED config-catalog:@noharness/experimental-client-ui-cot-translation -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-client-ui-forge -->
-<a id="noharnessnhs-experimental-client-ui-forge"></a>
+<a id="noharnessexperimental-client-ui-forge"></a>
 
 ## `@noharness/experimental-client-ui-forge`
 
@@ -1226,7 +1226,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-client-ui-forge -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-computer-use-cua-driver-mcp -->
-<a id="noharnessnhs-experimental-computer-use-cua-driver-mcp"></a>
+<a id="noharnessexperimental-computer-use-cua-driver-mcp"></a>
 
 ## `@noharness/experimental-computer-use-cua-driver-mcp`
 
@@ -1250,7 +1250,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-computer-use-cua-driver-mcp -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-forge -->
-<a id="noharnessnhs-experimental-forge"></a>
+<a id="noharnessexperimental-forge"></a>
 
 ## `@noharness/experimental-forge`
 
@@ -1272,7 +1272,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-forge -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-forge-github -->
-<a id="noharnessnhs-experimental-forge-github"></a>
+<a id="noharnessexperimental-forge-github"></a>
 
 ## `@noharness/experimental-forge-github`
 
@@ -1304,7 +1304,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-forge-github -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-forge-session -->
-<a id="noharnessnhs-experimental-forge-session"></a>
+<a id="noharnessexperimental-forge-session"></a>
 
 ## `@noharness/experimental-forge-session`
 
@@ -1321,7 +1321,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-forge-session -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-inspector -->
-<a id="noharnessnhs-experimental-inspector"></a>
+<a id="noharnessexperimental-inspector"></a>
 
 ## `@noharness/experimental-inspector`
 
@@ -1390,7 +1390,7 @@ export interface InspectorOptions {
 <!-- END GENERATED config-catalog:@noharness/experimental-inspector -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-speech-to-text -->
-<a id="noharnessnhs-experimental-speech-to-text"></a>
+<a id="noharnessexperimental-speech-to-text"></a>
 
 ## `@noharness/experimental-speech-to-text`
 
@@ -1409,7 +1409,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-speech-to-text -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-speech-to-text-sensevoice -->
-<a id="noharnessnhs-experimental-speech-to-text-sensevoice"></a>
+<a id="noharnessexperimental-speech-to-text-sensevoice"></a>
 
 ## `@noharness/experimental-speech-to-text-sensevoice`
 
@@ -1470,7 +1470,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-speech-to-text-sensevoice -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-subagent-oar -->
-<a id="noharnessnhs-experimental-subagent-oar"></a>
+<a id="noharnessexperimental-subagent-oar"></a>
 
 ## `@noharness/experimental-subagent-oar`
 
@@ -1499,7 +1499,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-subagent-oar -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-tool-subagent-oar -->
-<a id="noharnessnhs-experimental-tool-subagent-oar"></a>
+<a id="noharnessexperimental-tool-subagent-oar"></a>
 
 ## `@noharness/experimental-tool-subagent-oar`
 
@@ -1518,7 +1518,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-tool-subagent-oar -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-translator -->
-<a id="noharnessnhs-experimental-translator"></a>
+<a id="noharnessexperimental-translator"></a>
 
 ## `@noharness/experimental-translator`
 
@@ -1557,7 +1557,7 @@ export type PaidTranslationProvider = 'deepseek-account' | 'deepseek-official'
 <!-- END GENERATED config-catalog:@noharness/experimental-translator -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/experimental-worktree -->
-<a id="noharnessnhs-experimental-worktree"></a>
+<a id="noharnessexperimental-worktree"></a>
 
 ## `@noharness/experimental-worktree`
 
@@ -1593,7 +1593,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/experimental-worktree -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/file-reference-local -->
-<a id="noharnessnhs-file-reference-local"></a>
+<a id="noharnessfile-reference-local"></a>
 
 ## `@noharness/file-reference-local`
 
@@ -1614,7 +1614,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/file-reference-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/fs-local -->
-<a id="noharnessnhs-fs-local"></a>
+<a id="noharnessfs-local"></a>
 
 ## `@noharness/fs-local`
 
@@ -1635,12 +1635,12 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/fs-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/fs-sandbox -->
-<a id="noharnessnhs-fs-sandbox"></a>
+<a id="noharnessfs-sandbox"></a>
 
 ## `@noharness/fs-sandbox`
 
 - `inject`: `sandboxPolicy`
-- `refs`: [`LocalConfig`](#noharnessnhs-fs-local)
+- `refs`: [`LocalConfig`](#noharnessfs-local)
 - `source`: [`packages/fs/fs-sandbox/src/index.ts:45`](../packages/fs/fs-sandbox/src/index.ts)
 
 ```ts config-catalog
@@ -1655,7 +1655,7 @@ export type Config = LocalConfig
 <!-- END GENERATED config-catalog:@noharness/fs-sandbox -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/goal -->
-<a id="noharnessnhs-goal"></a>
+<a id="noharnessgoal"></a>
 
 ## `@noharness/goal`
 
@@ -1672,7 +1672,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/goal -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/headless -->
-<a id="noharnessnhs-headless"></a>
+<a id="noharnessheadless"></a>
 
 ## `@noharness/headless`
 
@@ -1698,7 +1698,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/headless -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/hmr -->
-<a id="noharnessnhs-hmr"></a>
+<a id="noharnesshmr"></a>
 
 ## `@noharness/hmr`
 
@@ -1721,7 +1721,7 @@ export interface HmrConfig extends ChokidarOptions {
 <!-- END GENERATED config-catalog:@noharness/hmr -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/hooks-claude-code -->
-<a id="noharnessnhs-hooks-claude-code"></a>
+<a id="noharnesshooks-claude-code"></a>
 
 ## `@noharness/hooks-claude-code`
 
@@ -1760,7 +1760,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/hooks-claude-code -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/hooks-codex -->
-<a id="noharnessnhs-hooks-codex"></a>
+<a id="noharnesshooks-codex"></a>
 
 ## `@noharness/hooks-codex`
 
@@ -1788,7 +1788,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/hooks-codex -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/host-authentication-desktop -->
-<a id="noharnessnhs-host-authentication-desktop"></a>
+<a id="noharnesshost-authentication-desktop"></a>
 
 ## `@noharness/host-authentication-desktop`
 
@@ -1805,7 +1805,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/host-authentication-desktop -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/host-authentication-token -->
-<a id="noharnessnhs-host-authentication-token"></a>
+<a id="noharnesshost-authentication-token"></a>
 
 ## `@noharness/host-authentication-token`
 
@@ -1822,7 +1822,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/host-authentication-token -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/host-directory-picker-browse -->
-<a id="noharnessnhs-host-directory-picker-browse"></a>
+<a id="noharnesshost-directory-picker-browse"></a>
 
 ## `@noharness/host-directory-picker-browse`
 
@@ -1838,7 +1838,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/host-directory-picker-browse -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/host-frontend-static -->
-<a id="noharnessnhs-host-frontend-static"></a>
+<a id="noharnesshost-frontend-static"></a>
 
 ## `@noharness/host-frontend-static`
 
@@ -1855,7 +1855,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/host-frontend-static -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/host-open-in-app -->
-<a id="noharnessnhs-host-open-in-app"></a>
+<a id="noharnesshost-open-in-app"></a>
 
 ## `@noharness/host-open-in-app`
 
@@ -1887,7 +1887,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/host-open-in-app -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/host-product-telemetry-otel -->
-<a id="noharnessnhs-host-product-telemetry-otel"></a>
+<a id="noharnesshost-product-telemetry-otel"></a>
 
 ## `@noharness/host-product-telemetry-otel`
 
@@ -1924,7 +1924,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/host-product-telemetry-otel -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/host-webserver -->
-<a id="noharnessnhs-host-webserver"></a>
+<a id="noharnesshost-webserver"></a>
 
 ## `@noharness/host-webserver`
 
@@ -1977,7 +1977,7 @@ export interface TlsConfig {
 <!-- END GENERATED config-catalog:@noharness/host-webserver -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/jobs-local -->
-<a id="noharnessnhs-jobs-local"></a>
+<a id="noharnessjobs-local"></a>
 
 ## `@noharness/jobs-local`
 
@@ -2006,7 +2006,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/jobs-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/llm-deepseek-account -->
-<a id="noharnessnhs-llm-deepseek-account"></a>
+<a id="noharnessllm-deepseek-account"></a>
 
 ## `@noharness/llm-deepseek-account`
 
@@ -2024,7 +2024,7 @@ export interface Config extends Omit<ProtocolConfig, 'models'>, ModelListingConf
 <!-- END GENERATED config-catalog:@noharness/llm-deepseek-account -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/llm-deepseek-api-key -->
-<a id="noharnessnhs-llm-deepseek-api-key"></a>
+<a id="noharnessllm-deepseek-api-key"></a>
 
 ## `@noharness/llm-deepseek-api-key`
 
@@ -2042,7 +2042,7 @@ export interface Config extends ProtocolConfig, ModelListingConfig {
 <!-- END GENERATED config-catalog:@noharness/llm-deepseek-api-key -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/llm-pi-ai -->
-<a id="noharnessnhs-llm-pi-ai"></a>
+<a id="noharnessllm-pi-ai"></a>
 
 ## `@noharness/llm-pi-ai`
 
@@ -2239,7 +2239,10 @@ export interface PiAiCompatProfile {
   /**
    * Whether the endpoint accepts the `developer` role for the system prompt,
    * which pi-ai sends only to a reasoning model; `false` keeps `system`.
-   * `openai-completions` and the three Responses protocols.
+   * `openai-completions` and the three Responses protocols. A model the
+   * installed catalog does not describe defaults to `false`, because pi-ai
+   * assumes an endpoint it does not recognize is OpenAI itself and sends the
+   * role most OpenAI-compatible gateways refuse.
    */
   supportsDeveloperRole?: boolean
   /** Whether the endpoint accepts `reasoning_effort`; `openai-completions`. */
@@ -2329,7 +2332,7 @@ export type PiAiThinkingTokenBudgetField = NonNullable<OpenAICompletionsCompat['
 <!-- END GENERATED config-catalog:@noharness/llm-pi-ai -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/llm-replay -->
-<a id="noharnessnhs-llm-replay"></a>
+<a id="noharnessllm-replay"></a>
 
 ## `@noharness/llm-replay`
 
@@ -2412,7 +2415,7 @@ export interface ReplayModelConfig {
 <!-- END GENERATED config-catalog:@noharness/llm-replay -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/llm-retry -->
-<a id="noharnessnhs-llm-retry"></a>
+<a id="noharnessllm-retry"></a>
 
 ## `@noharness/llm-retry`
 
@@ -2426,7 +2429,7 @@ export type Config = Readonly<Record<string, never>>
 <!-- END GENERATED config-catalog:@noharness/llm-retry -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/lsp-stdio -->
-<a id="noharnessnhs-lsp-stdio"></a>
+<a id="noharnesslsp-stdio"></a>
 
 ## `@noharness/lsp-stdio`
 
@@ -2469,7 +2472,7 @@ export interface LspLocalServerConfig {
 <!-- END GENERATED config-catalog:@noharness/lsp-stdio -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/mcp-client -->
-<a id="noharnessnhs-mcp-client"></a>
+<a id="noharnessmcp-client"></a>
 
 ## `@noharness/mcp-client`
 
@@ -2559,7 +2562,7 @@ export interface ReconnectConfig {
 <!-- END GENERATED config-catalog:@noharness/mcp-client -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/mcp-manager -->
-<a id="noharnessnhs-mcp-manager"></a>
+<a id="noharnessmcp-manager"></a>
 
 ## `@noharness/mcp-manager`
 
@@ -2610,7 +2613,7 @@ export interface McpManagedServerEntry {
 <!-- END GENERATED config-catalog:@noharness/mcp-manager -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/message-feedback -->
-<a id="noharnessnhs-message-feedback"></a>
+<a id="noharnessmessage-feedback"></a>
 
 ## `@noharness/message-feedback`
 
@@ -2627,7 +2630,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/message-feedback -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/office-kit -->
-<a id="noharnessnhs-office-kit"></a>
+<a id="noharnessoffice-kit"></a>
 
 ## `@noharness/office-kit`
 
@@ -2685,7 +2688,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/office-kit -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/permission-presets -->
-<a id="noharnessnhs-permission-presets"></a>
+<a id="noharnesspermission-presets"></a>
 
 ## `@noharness/permission-presets`
 
@@ -2725,7 +2728,7 @@ export interface PresetSpec {
 <!-- END GENERATED config-catalog:@noharness/permission-presets -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/persona -->
-<a id="noharnessnhs-persona"></a>
+<a id="noharnesspersona"></a>
 
 ## `@noharness/persona`
 
@@ -2755,7 +2758,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/persona -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/plan-mode -->
-<a id="noharnessnhs-plan-mode"></a>
+<a id="noharnessplan-mode"></a>
 
 ## `@noharness/plan-mode`
 
@@ -2772,7 +2775,7 @@ export interface PlanModeConfig {
 <!-- END GENERATED config-catalog:@noharness/plan-mode -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/plugin-manager -->
-<a id="noharnessnhs-plugin-manager"></a>
+<a id="noharnessplugin-manager"></a>
 
 ## `@noharness/plugin-manager`
 
@@ -2822,7 +2825,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/plugin-manager -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/plugin-market -->
-<a id="noharnessnhs-plugin-market"></a>
+<a id="noharnessplugin-market"></a>
 
 ## `@noharness/plugin-market`
 
@@ -2862,7 +2865,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/plugin-market -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/plugin-package-inventory-deepseek -->
-<a id="noharnessnhs-plugin-package-inventory-deepseek"></a>
+<a id="noharnessplugin-package-inventory-deepseek"></a>
 
 ## `@noharness/plugin-package-inventory-deepseek`
 
@@ -2879,7 +2882,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/plugin-package-inventory-deepseek -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/ptc-runtime-node -->
-<a id="noharnessnhs-ptc-runtime-node"></a>
+<a id="noharnessptc-runtime-node"></a>
 
 ## `@noharness/ptc-runtime-node`
 
@@ -2936,7 +2939,7 @@ export type LaunchConfig = {
 <!-- END GENERATED config-catalog:@noharness/ptc-runtime-node -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/pwsh-local -->
-<a id="noharnessnhs-pwsh-local"></a>
+<a id="noharnesspwsh-local"></a>
 
 ## `@noharness/pwsh-local`
 
@@ -2971,12 +2974,12 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/pwsh-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/pwsh-sandbox -->
-<a id="noharnessnhs-pwsh-sandbox"></a>
+<a id="noharnesspwsh-sandbox"></a>
 
 ## `@noharness/pwsh-sandbox`
 
 - `inject`: `subprocess` · `sandbox` · `sandboxPolicy`
-- `refs`: [`LocalConfig`](#noharnessnhs-pwsh-local)
+- `refs`: [`LocalConfig`](#noharnesspwsh-local)
 - `source`: [`packages/shell/pwsh-sandbox/src/index.ts:40`](../packages/shell/pwsh-sandbox/src/index.ts)
 
 ```ts config-catalog
@@ -2993,7 +2996,7 @@ export type Config = LocalConfig
 <!-- END GENERATED config-catalog:@noharness/pwsh-sandbox -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/repeat-tool-reminder -->
-<a id="noharnessnhs-repeat-tool-reminder"></a>
+<a id="noharnessrepeat-tool-reminder"></a>
 
 ## `@noharness/repeat-tool-reminder`
 
@@ -3029,7 +3032,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/repeat-tool-reminder -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/sandbox-local -->
-<a id="noharnessnhs-sandbox-local"></a>
+<a id="noharnesssandbox-local"></a>
 
 ## `@noharness/sandbox-local`
 
@@ -3063,7 +3066,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/sandbox-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/sandbox-policy -->
-<a id="noharnessnhs-sandbox-policy"></a>
+<a id="noharnesssandbox-policy"></a>
 
 ## `@noharness/sandbox-policy`
 
@@ -3101,7 +3104,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/sandbox-policy -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/schedule -->
-<a id="noharnessnhs-schedule"></a>
+<a id="noharnessschedule"></a>
 
 ## `@noharness/schedule`
 
@@ -3131,7 +3134,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/schedule -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/sdk-app -->
-<a id="noharnessnhs-sdk-app"></a>
+<a id="noharnesssdk-app"></a>
 
 ## `@noharness/sdk-app`
 
@@ -3148,7 +3151,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/sdk-app -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/sdk-jsonrpc-server -->
-<a id="noharnessnhs-sdk-jsonrpc-server"></a>
+<a id="noharnesssdk-jsonrpc-server"></a>
 
 ## `@noharness/sdk-jsonrpc-server`
 
@@ -3172,7 +3175,7 @@ export interface JsonRpcConfig {
 <!-- END GENERATED config-catalog:@noharness/sdk-jsonrpc-server -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-log-deepseek -->
-<a id="noharnessnhs-session-log-deepseek"></a>
+<a id="noharnesssession-log-deepseek"></a>
 
 ## `@noharness/session-log-deepseek`
 
@@ -3196,7 +3199,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/session-log-deepseek -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-log-export -->
-<a id="noharnessnhs-session-log-export"></a>
+<a id="noharnesssession-log-export"></a>
 
 ## `@noharness/session-log-export`
 
@@ -3216,7 +3219,7 @@ export type SessionLogCompressionLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 <!-- END GENERATED config-catalog:@noharness/session-log-export -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-persistence-jsonl -->
-<a id="noharnessnhs-session-persistence-jsonl"></a>
+<a id="noharnesssession-persistence-jsonl"></a>
 
 ## `@noharness/session-persistence-jsonl`
 
@@ -3249,7 +3252,7 @@ export type JsonlCompression = 'zstd' | 'none'
 <!-- END GENERATED config-catalog:@noharness/session-persistence-jsonl -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-projection-cache -->
-<a id="noharnessnhs-session-projection-cache"></a>
+<a id="noharnesssession-projection-cache"></a>
 
 ## `@noharness/session-projection-cache`
 
@@ -3274,7 +3277,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/session-projection-cache -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-query-sqlite -->
-<a id="noharnessnhs-session-query-sqlite"></a>
+<a id="noharnesssession-query-sqlite"></a>
 
 ## `@noharness/session-query-sqlite`
 
@@ -3322,7 +3325,7 @@ export type JournalMode = 'wal' | 'delete' | 'truncate' | 'persist'
 <!-- END GENERATED config-catalog:@noharness/session-query-sqlite -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-reference -->
-<a id="noharnessnhs-session-reference"></a>
+<a id="noharnesssession-reference"></a>
 
 ## `@noharness/session-reference`
 
@@ -3345,7 +3348,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/session-reference -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-telemetry-otel -->
-<a id="noharnessnhs-session-telemetry-otel"></a>
+<a id="noharnesssession-telemetry-otel"></a>
 
 ## `@noharness/session-telemetry-otel`
 
@@ -3392,7 +3395,7 @@ export enum SessionTelemetryMode {
 <!-- END GENERATED config-catalog:@noharness/session-telemetry-otel -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-title -->
-<a id="noharnessnhs-session-title"></a>
+<a id="noharnesssession-title"></a>
 
 ## `@noharness/session-title`
 
@@ -3413,7 +3416,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/session-title -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-title-all-prompts-llm -->
-<a id="noharnessnhs-session-title-all-prompts-llm"></a>
+<a id="noharnesssession-title-all-prompts-llm"></a>
 
 ## `@noharness/session-title-all-prompts-llm`
 
@@ -3426,14 +3429,14 @@ export interface Config {
 export interface Config extends SessionTitleLlmConfig {
   /** Target word count for non-CJK titles. */
   readonly targetWords: number
-  /** Target character count for Japanese titles. */
+  /** Target character count for Chinese, Japanese, or Korean titles. */
   readonly targetCjkCharacters: number
 }
 ```
 <!-- END GENERATED config-catalog:@noharness/session-title-all-prompts-llm -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/session-title-first-prompt-llm -->
-<a id="noharnessnhs-session-title-first-prompt-llm"></a>
+<a id="noharnesssession-title-first-prompt-llm"></a>
 
 ## `@noharness/session-title-first-prompt-llm`
 
@@ -3446,14 +3449,14 @@ export interface Config extends SessionTitleLlmConfig {
 export interface Config extends SessionTitleLlmConfig {
   /** Target word count for non-CJK titles. */
   readonly targetWords: number
-  /** Target character count for Japanese titles. */
+  /** Target character count for Chinese, Japanese, or Korean titles. */
   readonly targetCjkCharacters: number
 }
 ```
 <!-- END GENERATED config-catalog:@noharness/session-title-first-prompt-llm -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/shell-env -->
-<a id="noharnessnhs-shell-env"></a>
+<a id="noharnessshell-env"></a>
 
 ## `@noharness/shell-env`
 
@@ -3469,7 +3472,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/shell-env -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/skill -->
-<a id="noharnessnhs-skill"></a>
+<a id="noharnessskill"></a>
 
 ## `@noharness/skill`
 
@@ -3485,7 +3488,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/skill -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/skill-filesystem -->
-<a id="noharnessnhs-skill-filesystem"></a>
+<a id="noharnessskill-filesystem"></a>
 
 ## `@noharness/skill-filesystem`
 
@@ -3524,7 +3527,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/skill-filesystem -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/skill-office -->
-<a id="noharnessnhs-skill-office"></a>
+<a id="noharnessskill-office"></a>
 
 ## `@noharness/skill-office`
 
@@ -3555,7 +3558,7 @@ export type PythonEnvironment = 'workspace-dependencies' | 'user'
 <!-- END GENERATED config-catalog:@noharness/skill-office -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/spill-local -->
-<a id="noharnessnhs-spill-local"></a>
+<a id="noharnessspill-local"></a>
 
 ## `@noharness/spill-local`
 
@@ -3586,7 +3589,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/spill-local -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/spill-policy -->
-<a id="noharnessnhs-spill-policy"></a>
+<a id="noharnessspill-policy"></a>
 
 ## `@noharness/spill-policy`
 
@@ -3603,7 +3606,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/spill-policy -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/ssh -->
-<a id="noharnessnhs-ssh"></a>
+<a id="noharnessssh"></a>
 
 ## `@noharness/ssh`
 
@@ -3650,7 +3653,7 @@ export type HelperLaunch = {
 <!-- END GENERATED config-catalog:@noharness/ssh -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/storage-domain -->
-<a id="noharnessnhs-storage-domain"></a>
+<a id="noharnessstorage-domain"></a>
 
 ## `@noharness/storage-domain`
 
@@ -3674,7 +3677,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/storage-domain -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/storage-json -->
-<a id="noharnessnhs-storage-json"></a>
+<a id="noharnessstorage-json"></a>
 
 ## `@noharness/storage-json`
 
@@ -3696,7 +3699,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/storage-json -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/storage-sqlite -->
-<a id="noharnessnhs-storage-sqlite"></a>
+<a id="noharnessstorage-sqlite"></a>
 
 ## `@noharness/storage-sqlite`
 
@@ -3737,7 +3740,7 @@ export type JournalMode = 'wal' | 'delete' | 'truncate' | 'persist'
 <!-- END GENERATED config-catalog:@noharness/storage-sqlite -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/subagent -->
-<a id="noharnessnhs-subagent"></a>
+<a id="noharnesssubagent"></a>
 
 ## `@noharness/subagent`
 
@@ -3757,7 +3760,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/subagent -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/subagent-acp -->
-<a id="noharnessnhs-subagent-acp"></a>
+<a id="noharnesssubagent-acp"></a>
 
 ## `@noharness/subagent-acp`
 
@@ -3803,7 +3806,7 @@ export type PermissionPolicy = 'allow' | 'reject'
 <!-- END GENERATED config-catalog:@noharness/subagent-acp -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/subagent-claude-code -->
-<a id="noharnessnhs-subagent-claude-code"></a>
+<a id="noharnesssubagent-claude-code"></a>
 
 ## `@noharness/subagent-claude-code`
 
@@ -3839,7 +3842,7 @@ export type ClaudeCodePermissionMode = typeof CLAUDE_CODE_PERMISSION_MODES[numbe
 <!-- END GENERATED config-catalog:@noharness/subagent-claude-code -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/subagent-codex -->
-<a id="noharnessnhs-subagent-codex"></a>
+<a id="noharnesssubagent-codex"></a>
 
 ## `@noharness/subagent-codex`
 
@@ -3872,8 +3875,25 @@ export type CodexPermissionMode =
 ```
 <!-- END GENERATED config-catalog:@noharness/subagent-codex -->
 
+<!-- BEGIN GENERATED config-catalog:@noharness/subagent-fork-in-process -->
+<a id="noharnesssubagent-fork-in-process"></a>
+
+## `@noharness/subagent-fork-in-process`
+
+- `inject`: `subagents`
+- `source`: [`packages/subagent/subagent-fork-in-process/src/index.ts:29`](../packages/subagent/subagent-fork-in-process/src/index.ts)
+
+```ts config-catalog
+/** Config: the registry name to register the provider under. */
+export interface Config {
+  /** Provider name on `ctx.subagents` (default `fork`). */
+  providerName: string
+}
+```
+<!-- END GENERATED config-catalog:@noharness/subagent-fork-in-process -->
+
 <!-- BEGIN GENERATED config-catalog:@noharness/subagent-nhs-sdk -->
-<a id="noharnessnhs-subagent-nhs-sdk"></a>
+<a id="noharnesssubagent-nhs-sdk"></a>
 
 ## `@noharness/subagent-nhs-sdk`
 
@@ -3920,25 +3940,8 @@ export interface Config {
 ```
 <!-- END GENERATED config-catalog:@noharness/subagent-nhs-sdk -->
 
-<!-- BEGIN GENERATED config-catalog:@noharness/subagent-fork-in-process -->
-<a id="noharnessnhs-subagent-fork-in-process"></a>
-
-## `@noharness/subagent-fork-in-process`
-
-- `inject`: `subagents`
-- `source`: [`packages/subagent/subagent-fork-in-process/src/index.ts:29`](../packages/subagent/subagent-fork-in-process/src/index.ts)
-
-```ts config-catalog
-/** Config: the registry name to register the provider under. */
-export interface Config {
-  /** Provider name on `ctx.subagents` (default `fork`). */
-  providerName: string
-}
-```
-<!-- END GENERATED config-catalog:@noharness/subagent-fork-in-process -->
-
 <!-- BEGIN GENERATED config-catalog:@noharness/subagent-spawn-in-process -->
-<a id="noharnessnhs-subagent-spawn-in-process"></a>
+<a id="noharnesssubagent-spawn-in-process"></a>
 
 ## `@noharness/subagent-spawn-in-process`
 
@@ -3955,7 +3958,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/subagent-spawn-in-process -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/system-prompt -->
-<a id="noharnessnhs-system-prompt"></a>
+<a id="noharnesssystem-prompt"></a>
 
 ## `@noharness/system-prompt`
 
@@ -3989,7 +3992,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/system-prompt -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/terminal-bash -->
-<a id="noharnessnhs-terminal-bash"></a>
+<a id="noharnessterminal-bash"></a>
 
 ## `@noharness/terminal-bash`
 
@@ -4049,7 +4052,7 @@ export type ShellDialect = 'bash' | 'pwsh'
 <!-- END GENERATED config-catalog:@noharness/terminal-bash -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/terminal-panel -->
-<a id="noharnessnhs-terminal-panel"></a>
+<a id="noharnessterminal-panel"></a>
 
 ## `@noharness/terminal-panel`
 
@@ -4090,7 +4093,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/terminal-panel -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/time-context -->
-<a id="noharnessnhs-time-context"></a>
+<a id="noharnesstime-context"></a>
 
 ## `@noharness/time-context`
 
@@ -4109,7 +4112,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/time-context -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/timeline -->
-<a id="noharnessnhs-timeline"></a>
+<a id="noharnesstimeline"></a>
 
 ## `@noharness/timeline`
 
@@ -4202,7 +4205,7 @@ export type ProgressPrecision = (typeof progressPrecisions)[number]
 <!-- END GENERATED config-catalog:@noharness/timeline -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tmux-context -->
-<a id="noharnessnhs-tmux-context"></a>
+<a id="noharnesstmux-context"></a>
 
 ## `@noharness/tmux-context`
 
@@ -4219,7 +4222,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tmux-context -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/token-meter -->
-<a id="noharnessnhs-token-meter"></a>
+<a id="noharnesstoken-meter"></a>
 
 ## `@noharness/token-meter`
 
@@ -4233,7 +4236,7 @@ export type TokenMeterConfig = Record<string, never>
 <!-- END GENERATED config-catalog:@noharness/token-meter -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-agent-team -->
-<a id="noharnessnhs-tool-agent-team"></a>
+<a id="noharnesstool-agent-team"></a>
 
 ## `@noharness/tool-agent-team`
 
@@ -4247,7 +4250,7 @@ export type Config = Record<never, never>
 <!-- END GENERATED config-catalog:@noharness/tool-agent-team -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-ask-user -->
-<a id="noharnessnhs-tool-ask-user"></a>
+<a id="noharnesstool-ask-user"></a>
 
 ## `@noharness/tool-ask-user`
 
@@ -4266,7 +4269,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-ask-user -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-bash -->
-<a id="noharnessnhs-tool-bash"></a>
+<a id="noharnesstool-bash"></a>
 
 ## `@noharness/tool-bash`
 
@@ -4296,7 +4299,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-bash -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-bash-persistent -->
-<a id="noharnessnhs-tool-bash-persistent"></a>
+<a id="noharnesstool-bash-persistent"></a>
 
 ## `@noharness/tool-bash-persistent`
 
@@ -4319,7 +4322,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-bash-persistent -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-executor-ptc -->
-<a id="noharnessnhs-tool-executor-ptc"></a>
+<a id="noharnesstool-executor-ptc"></a>
 
 ## `@noharness/tool-executor-ptc`
 
@@ -4338,7 +4341,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-executor-ptc -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-fs -->
-<a id="noharnessnhs-tool-fs"></a>
+<a id="noharnesstool-fs"></a>
 
 ## `@noharness/tool-fs`
 
@@ -4371,7 +4374,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-fs -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-fs-search -->
-<a id="noharnessnhs-tool-fs-search"></a>
+<a id="noharnesstool-fs-search"></a>
 
 ## `@noharness/tool-fs-search`
 
@@ -4407,7 +4410,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-fs-search -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-goal -->
-<a id="noharnessnhs-tool-goal"></a>
+<a id="noharnesstool-goal"></a>
 
 ## `@noharness/tool-goal`
 
@@ -4424,7 +4427,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-goal -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-jobs -->
-<a id="noharnessnhs-tool-jobs"></a>
+<a id="noharnesstool-jobs"></a>
 
 ## `@noharness/tool-jobs`
 
@@ -4468,7 +4471,7 @@ export type CompletionDelivery = 'quiet' | 'wakeup'
 <!-- END GENERATED config-catalog:@noharness/tool-jobs -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-lsp -->
-<a id="noharnessnhs-tool-lsp"></a>
+<a id="noharnesstool-lsp"></a>
 
 ## `@noharness/tool-lsp`
 
@@ -4489,7 +4492,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-lsp -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-office -->
-<a id="noharnessnhs-tool-office"></a>
+<a id="noharnesstool-office"></a>
 
 ## `@noharness/tool-office`
 
@@ -4514,7 +4517,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-office -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-present -->
-<a id="noharnessnhs-tool-present"></a>
+<a id="noharnesstool-present"></a>
 
 ## `@noharness/tool-present`
 
@@ -4531,7 +4534,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-present -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-pwsh -->
-<a id="noharnessnhs-tool-pwsh"></a>
+<a id="noharnesstool-pwsh"></a>
 
 ## `@noharness/tool-pwsh`
 
@@ -4561,7 +4564,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-pwsh -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-pwsh-persistent -->
-<a id="noharnessnhs-tool-pwsh-persistent"></a>
+<a id="noharnesstool-pwsh-persistent"></a>
 
 ## `@noharness/tool-pwsh-persistent`
 
@@ -4584,7 +4587,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-pwsh-persistent -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-ralph -->
-<a id="noharnessnhs-tool-ralph"></a>
+<a id="noharnesstool-ralph"></a>
 
 ## `@noharness/tool-ralph`
 
@@ -4607,7 +4610,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-ralph -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-session-query -->
-<a id="noharnessnhs-tool-session-query"></a>
+<a id="noharnesstool-session-query"></a>
 
 ## `@noharness/tool-session-query`
 
@@ -4626,7 +4629,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-session-query -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-skill -->
-<a id="noharnessnhs-tool-skill"></a>
+<a id="noharnesstool-skill"></a>
 
 ## `@noharness/tool-skill`
 
@@ -4643,7 +4646,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-skill -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-str-replace-editor -->
-<a id="noharnessnhs-tool-str-replace-editor"></a>
+<a id="noharnesstool-str-replace-editor"></a>
 
 ## `@noharness/tool-str-replace-editor`
 
@@ -4662,7 +4665,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-str-replace-editor -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-subagent -->
-<a id="noharnessnhs-tool-subagent"></a>
+<a id="noharnesstool-subagent"></a>
 
 ## `@noharness/tool-subagent`
 
@@ -4720,7 +4723,7 @@ export interface PresetSelectionConfig {
 <!-- END GENERATED config-catalog:@noharness/tool-subagent -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-subagent-control -->
-<a id="noharnessnhs-tool-subagent-control"></a>
+<a id="noharnesstool-subagent-control"></a>
 
 ## `@noharness/tool-subagent-control`
 
@@ -4737,7 +4740,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-subagent-control -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-terminal -->
-<a id="noharnessnhs-tool-terminal"></a>
+<a id="noharnesstool-terminal"></a>
 
 ## `@noharness/tool-terminal`
 
@@ -4756,7 +4759,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-terminal -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-todo -->
-<a id="noharnessnhs-tool-todo"></a>
+<a id="noharnesstool-todo"></a>
 
 ## `@noharness/tool-todo`
 
@@ -4779,7 +4782,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-todo -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-web -->
-<a id="noharnessnhs-tool-web"></a>
+<a id="noharnesstool-web"></a>
 
 ## `@noharness/tool-web`
 
@@ -4810,7 +4813,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-web -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-workflow -->
-<a id="noharnessnhs-tool-workflow"></a>
+<a id="noharnesstool-workflow"></a>
 
 ## `@noharness/tool-workflow`
 
@@ -4837,7 +4840,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-workflow -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/tool-workspace-dependencies -->
-<a id="noharnessnhs-tool-workspace-dependencies"></a>
+<a id="noharnesstool-workspace-dependencies"></a>
 
 ## `@noharness/tool-workspace-dependencies`
 
@@ -4860,7 +4863,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/tool-workspace-dependencies -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/typert-loader -->
-<a id="noharnessnhs-typert-loader"></a>
+<a id="noharnesstypert-loader"></a>
 
 ## `@noharness/typert-loader`
 
@@ -4877,7 +4880,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/typert-loader -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/user-approval -->
-<a id="noharnessnhs-user-approval"></a>
+<a id="noharnessuser-approval"></a>
 
 ## `@noharness/user-approval`
 
@@ -4911,12 +4914,12 @@ export type ApprovalPolicy = 'ask' | 'never'
 <!-- END GENERATED config-catalog:@noharness/user-approval -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/web -->
-<a id="noharnessnhs-web"></a>
+<a id="noharnessweb"></a>
 
 ## `@noharness/web`
 
 - `refs`: `Volatile` (`@noharness/cordis`)
-- `source`: [`packages/web/web/src/index.ts:62`](../packages/web/web/src/index.ts)
+- `source`: [`packages/web/web/src/index.ts:64`](../packages/web/web/src/index.ts)
 
 ```ts config-catalog
 /**
@@ -4937,7 +4940,7 @@ export interface WebRuntimeConfig {
 <!-- END GENERATED config-catalog:@noharness/web -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/web-app -->
-<a id="noharnessnhs-web-app"></a>
+<a id="noharnessweb-app"></a>
 
 ## `@noharness/web-app`
 
@@ -4969,7 +4972,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/web-app -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/web-deepseek-api -->
-<a id="noharnessnhs-web-deepseek-api"></a>
+<a id="noharnessweb-deepseek-api"></a>
 
 ## `@noharness/web-deepseek-api`
 
@@ -5022,7 +5025,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/web-deepseek-api -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/web-fetch-http -->
-<a id="noharnessnhs-web-fetch-http"></a>
+<a id="noharnessweb-fetch-http"></a>
 
 ## `@noharness/web-fetch-http`
 
@@ -5047,7 +5050,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/web-fetch-http -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/web-search-deepseek -->
-<a id="noharnessnhs-web-search-deepseek"></a>
+<a id="noharnessweb-search-deepseek"></a>
 
 ## `@noharness/web-search-deepseek`
 
@@ -5077,7 +5080,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/web-search-deepseek -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/webhook-github -->
-<a id="noharnessnhs-webhook-github"></a>
+<a id="noharnesswebhook-github"></a>
 
 ## `@noharness/webhook-github`
 
@@ -5100,7 +5103,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/webhook-github -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/workflow-ptc -->
-<a id="noharnessnhs-workflow-ptc"></a>
+<a id="noharnessworkflow-ptc"></a>
 
 ## `@noharness/workflow-ptc`
 
@@ -5125,7 +5128,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/workflow-ptc -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/working-directory -->
-<a id="noharnessnhs-working-directory"></a>
+<a id="noharnessworking-directory"></a>
 
 ## `@noharness/working-directory`
 
@@ -5142,7 +5145,7 @@ export interface Config {
 <!-- END GENERATED config-catalog:@noharness/working-directory -->
 
 <!-- BEGIN GENERATED config-catalog:@noharness/workspace-changes -->
-<a id="noharnessnhs-workspace-changes"></a>
+<a id="noharnessworkspace-changes"></a>
 
 ## `@noharness/workspace-changes`
 
@@ -5226,6 +5229,7 @@ These load from a `cordis.yml` entry with no `config:` block; they declare no co
 | `@noharness/client-ui-settings` | — | [`packages/client/ui-settings/src/index.ts`](../packages/client/ui-settings/src/index.ts) |
 | `@noharness/client-ui-settings-agent-loop` | — | [`packages/client/ui-settings-agent-loop/src/index.ts`](../packages/client/ui-settings-agent-loop/src/index.ts) |
 | `@noharness/client-ui-settings-general` | — | [`packages/client/ui-settings-general/src/index.ts`](../packages/client/ui-settings-general/src/index.ts) |
+| `@noharness/client-ui-settings-models` | — | [`packages/client/ui-settings-models/src/index.ts`](../packages/client/ui-settings-models/src/index.ts) |
 | `@noharness/client-ui-settings-plugin-inventory` | — | [`packages/client/ui-settings-plugin-inventory/src/index.ts`](../packages/client/ui-settings-plugin-inventory/src/index.ts) |
 | `@noharness/client-ui-settings-plugins` | — | [`packages/client/ui-settings-plugins/src/index.ts`](../packages/client/ui-settings-plugins/src/index.ts) |
 | `@noharness/client-ui-settings-session-log` | — | [`packages/client/ui-settings-session-log/src/index.ts`](../packages/client/ui-settings-session-log/src/index.ts) |

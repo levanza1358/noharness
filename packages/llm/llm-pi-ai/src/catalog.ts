@@ -392,7 +392,10 @@ export interface PiAiCompatProfile {
   /**
    * Whether the endpoint accepts the `developer` role for the system prompt,
    * which pi-ai sends only to a reasoning model; `false` keeps `system`.
-   * `openai-completions` and the three Responses protocols.
+   * `openai-completions` and the three Responses protocols. A model the
+   * installed catalog does not describe defaults to `false`, because pi-ai
+   * assumes an endpoint it does not recognize is OpenAI itself and sends the
+   * role most OpenAI-compatible gateways refuse.
    */
   supportsDeveloperRole?: boolean
   /** Whether the endpoint accepts `reasoning_effort`; `openai-completions`. */
@@ -815,6 +818,17 @@ function resolveModelCompat(
         + ` ${offered.length === 0 ? 'no configurable compat' : offered.join(', ')}`)
     }
     configured[field] = value
+  }
+  // A model no installed catalog describes was declared by hand against an
+  // endpoint this package knows nothing about. `developer` is OpenAI's own
+  // system-prompt role: pi-ai decides which role to send from the baseURL, and
+  // an endpoint it does not recognize is assumed to be official OpenAI, so a
+  // gateway that only accepts `system` refuses the whole request. `system` is
+  // accepted by both, so an undeclared model starts there; a route or model
+  // switch overrides it.
+  if (base === undefined && gate?.supportsDeveloperRole === 'offer'
+    && configured.supportsDeveloperRole === undefined) {
+    configured.supportsDeveloperRole = false
   }
   if (Object.keys(configured).length === 0) return {}
   // The installed entry's compat matches the entry's OWN api — a route-level

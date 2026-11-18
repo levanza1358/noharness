@@ -860,8 +860,12 @@ describe('compat switches', () => {
       },
     }, 'acme-gateway')
 
-    expect(models.get('dialect-default')?.compat).toEqual({ thinkingFormat: 'deepseek' })
-    expect(models.get('dialect-odd')?.compat).toEqual({ thinkingFormat: 'openai', supportsReasoningEffort: false })
+    // A hand-declared model starts on `system`, the role both kinds of endpoint
+    // accept; see the developer-role default below.
+    expect(models.get('dialect-default')?.compat)
+      .toEqual({ thinkingFormat: 'deepseek', supportsDeveloperRole: false })
+    expect(models.get('dialect-odd')?.compat)
+      .toEqual({ thinkingFormat: 'openai', supportsReasoningEffort: false, supportsDeveloperRole: false })
   })
 
   it('merges the switches over the catalog entry’s own compat instead of replacing it', () => {
@@ -927,6 +931,49 @@ describe('compat switches', () => {
       supportsDeveloperRole: false,
       maxTokensField: 'max_tokens',
     })
+  })
+
+  it('defaults a hand-declared reasoning model to the system role, and lets a switch ask for developer', () => {
+    // pi-ai picks `developer` for a reasoning model on any endpoint it does not
+    // recognize as non-standard, and a gateway that only takes `system` refuses
+    // the whole request with its own error code. Nothing about a hand-declared
+    // route says which of the two the endpoint accepts, so it starts on the one
+    // both accept, and a route that does take `developer` says so.
+    const models = modelsOf({
+      'acme-default': {
+        api: 'openai-completions',
+        baseURL: 'https://acme.test/v1',
+        models: [{ id: 'default-think', reasoningEfforts: { off: null, high: 'high' } }],
+      },
+      'acme-openai': {
+        api: 'openai-completions',
+        baseURL: 'https://acme.test/v1',
+        compat: { supportsDeveloperRole: true },
+        models: [{ id: 'openai-think', reasoningEfforts: { off: null, high: 'high' } }],
+      },
+    }, 'acme-default')
+
+    expect(models.get('default-think')?.compat).toEqual({ supportsDeveloperRole: false })
+    const openai = resolveProfiles({
+      'acme-openai': {
+        api: 'openai-completions',
+        baseURL: 'https://acme.test/v1',
+        compat: { supportsDeveloperRole: true },
+        models: [{ id: 'openai-think', reasoningEfforts: { off: null, high: 'high' } }],
+      },
+    }).get('acme-openai')?.piProvider?.getModels() ?? []
+    expect(openai[0]?.compat).toEqual({ supportsDeveloperRole: true })
+  })
+
+  it('keeps the installed catalog’s own developer-role value for a catalog model', () => {
+    // A catalog route describes its endpoint, so its model keeps whatever compat
+    // the catalog ships rather than the undeclared default.
+    const [catalogModel] = getBuiltinModels('deepseek')
+    if (catalogModel === undefined) throw new Error('the installed catalog ships no deepseek model')
+
+    const models = modelsOf({ deepseek: { models: [{ id: catalogModel.id }] } }, 'deepseek')
+
+    expect(models.get(catalogModel.id)?.compat).toEqual(catalogModel.compat)
   })
 
   it('carries a switch both OpenAI protocols declare onto an openai-responses route', () => {
@@ -999,6 +1046,7 @@ describe('compat switches', () => {
     expect(models.get('qwen-local')?.compat).toEqual({
       thinkingFormat: 'qwen-chat-template',
       chatTemplateKwargs: { enable_thinking: { $var: 'thinking.enabled' } },
+      supportsDeveloperRole: false,
     })
   })
 
@@ -1024,6 +1072,7 @@ describe('compat switches', () => {
       thinkingFormat: 'baseten',
       chatTemplateArgs: { enable_thinking: { $var: 'thinking.enabled' } },
       supportsThinkingTokenBudget: true,
+      supportsDeveloperRole: false,
     })
   })
 

@@ -11559,6 +11559,9 @@ importers:
       '@noharness/typert-registry':
         specifier: workspace:*
         version: link:../../typert/registry
+      '@noharness/web':
+        specifier: workspace:*
+        version: link:../../web/web
       '@noharness/workspace':
         specifier: workspace:*
         version: link:../../workspace/workspace

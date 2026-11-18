@@ -13,6 +13,7 @@ import type {} from '@noharness/cua/remote'
 import type {} from '@noharness/experimental-api-speech-to-text/remote'
 import type {} from '@noharness/experimental-claude-code-mods/remote'
 import type {} from '@noharness/experimental-client-ui-cot-translation/remote'
+import type {} from '@noharness/web/remote'
 import { VIEWER_ENDPOINT_CLASSES, type ViewerEndpointClass } from '../endpoint-classification.ts'
 
 /**

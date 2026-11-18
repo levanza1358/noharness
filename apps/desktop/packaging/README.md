@@ -38,7 +38,7 @@ Set `NHS_DESKTOP_PACKAGE_CACHE_DIR` to an absolute build-cache directory for reu
 
 Before each Desktop packaging run, first confirm the complete version string with the current user. Check the selected deployment, nhs base version, retained release records, and published objects, then propose the exact version for approval. Do not start packaging until the user confirms that version; the deployment setting alone does not authorize a version choice.
 
-Record the current nhs version as the base. A production Desktop release uses that exact version, including any `alpha`, `beta`, or `rc` identifiers. A test release preserves the complete prerelease base and appends `.YYYYMMDD.index`; a stable base uses `-test.YYYYMMDD.index` instead.
+Record the current nhs version as the base. A production Desktop release uses that exact version, including any `alpha`, `beta`, or `rc` identifiers. A test release preserves the complete prerelease base and appends `.YYYYMMDD.index`; a stable base uses `-test.YYYYMMDD.index` instead. [`docs/development.md`](../../../docs/development.md#application-version) owns when the base itself advances.
 
 | nhs base | Production Desktop | Test Desktop example |
 |---|---|---|

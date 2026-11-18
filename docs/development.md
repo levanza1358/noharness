@@ -197,6 +197,15 @@ pnpm run dev:desktop     # build, then launch Desktop
 
 Arguments after a Web command reach `nhs web`, for example `pnpm run dev:web --no-open --port 3081`; `dev:web` also accepts `--skip-build` to reuse the existing artifact tree and `--no-serve` to run only the rebuild watchers beside a server started elsewhere. Both Web commands use the normal Harness home, while the Desktop commands use the isolated development home described in the [Desktop README](../apps/desktop/README.md). The root `Makefile` names the same commands as `make web`, `make dev-web`, `make desktop`, `make dev-desktop`, and `make build`; `ARGS='--no-open'` forwards options.
 
+### Application version
+
+The `nhs` family carries one product version, declared in the root manifest and every member manifest, and it advances in the same change that alters the product. Two version lines exist and only one of them is tracked:
+
+- **Product version** (`0.2.2-rc.4`): the version a release publishes. Advance it with `pnpm run release:nhs -- <version>`, which rewrites every family manifest, updates the lockfile, and commits. During the developer preview, a change keeps the release numbers and increments the prerelease identifier (`0.2.2-rc.4` → `0.2.2-rc.5`); a change that opens new product surface starts the next prerelease on new numbers (`0.2.3-rc.1`); `patch` is reserved for corrective work on a released line.
+- **Build version** (for example `0.2.2-rc.4.20261118.1`): one packaged Desktop artifact. It never enters the manifests, and `--build-version auto` derives the date and index from the artifacts already recorded; [packaging](../apps/desktop/packaging/README.md#release-versions) owns its forms.
+
+A change that ships without a product-version bump makes two different builds report one version, which the Desktop updater resolves with `semver.gt` against the installed version. The [version policy note](../.agents/notes/implemented/process/2026-11-18-application-version-policy.md) records why the preview increments a prerelease identifier rather than a patch number.
+
 ### TODO markers
 
 Use one of three comment tags to flag known issues in the code, ordered by urgency:

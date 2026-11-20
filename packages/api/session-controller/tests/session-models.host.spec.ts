@@ -498,19 +498,20 @@ describe('Web session model selection', () => {
       type: 'model/selection', data: selected.selected,
     })
 
-    const unsupported = await remote.selectModel(request({
+    // A reasoning effort the target does not offer carries over from whatever
+    // model was selected before, so it falls back instead of refusing the switch.
+    const unsupported = expectValue(await remote.selectModel(request({
       sessionId,
       provider: 'deepseek-official',
       model: 'deepseek-reasoner',
       reasoningEffort: 'medium',
-    }))
-    expect(unsupported).toMatchObject({
-      ok: false,
-      error: {
-        code: 'session/model-unavailable',
-        message: 'provider "deepseek-official" model "deepseek-reasoner" does not support reasoning effort "medium"',
-      },
+    })))
+    expect(unsupported.selected).toEqual({
+      provider: 'deepseek-official',
+      model: 'deepseek-reasoner',
+      reasoningEffort: 'high',
     })
+    expect(currentSelection(ctx, sessionId)).toEqual(unsupported.selected)
 
     const rejected = await remote.selectModel(request({
       sessionId,
@@ -538,7 +539,7 @@ describe('Web session model selection', () => {
       },
     })
     expect(currentSelection(ctx, sessionId))
-      .toEqual({ provider: 'deepseek-official', model: 'deepseek-reasoner', reasoningEffort: 'max' })
+      .toEqual({ provider: 'deepseek-official', model: 'deepseek-reasoner', reasoningEffort: 'high' })
     await ctx.fiber.dispose()
   })
 
@@ -944,7 +945,26 @@ it('stores a catalog-backed deployment default and refuses an unavailable one', 
   await ctx.fiber.dispose()
 })
 
-it.each([new Error('catalog disconnected'), 'catalog disconnected'])('reports catalog rejection as an unavailable selection: %s', async (failure) => {  const { ctx } = await harness()
+it('stores a default carrying an effort the target does not offer as its default effort', async () => {
+  const { configurationFixture } = await import('../../../settings/settings/tests/configuration-fixture.ts')
+  const configured = await configurationFixture({ hmr: false })
+  const { ctx } = await harness(undefined, configured.ctx)
+  const controller = await createSessionTestController(ctx, {
+    defaultModelSelection: () => ctx.agentDefaultModel.currentSelection(), cwd: '/tmp',
+  })
+  await expect(controller.setDefaultModel({
+    provider: 'deepseek-official', model: 'deepseek-reasoner', reasoningEffort: 'medium',
+  })).resolves.toEqual({
+    provider: 'deepseek-official', model: 'deepseek-reasoner', reasoningEffort: 'high',
+  })
+  expect(ctx.agentDefaultModel.currentSelection()).toEqual({
+    provider: 'deepseek-official', model: 'deepseek-reasoner', reasoningEffort: 'high',
+  })
+  await ctx.fiber.dispose()
+})
+
+it.each([new Error('catalog disconnected'), 'catalog disconnected'])('reports catalog rejection as an unavailable selection: %s', async (failure) => {
+  const { ctx } = await harness()
   const { modelAvailable } = await import('../src/catalog.ts')
   const read = vi.spyOn(ctx.llm, 'listModels').mockRejectedValueOnce(failure)
   try {

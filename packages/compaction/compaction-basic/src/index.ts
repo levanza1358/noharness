@@ -10,10 +10,12 @@ import { CompactionEngine, ManualCompactionError } from '@noharness/compaction'
 import type { CompactionResult, CompactionTrigger } from '@noharness/compaction'
 import type { EpochHeader, Session, SessionSeq } from '@noharness/session'
 import type { ProjectionHandle } from '@noharness/session-projection'
-import { CONTEXT_WINDOW_EXCEEDED_CODE, LlmError } from '@noharness/llm'
+import { CONTEXT_WINDOW_EXCEEDED_CODE } from '@noharness/llm'
 import { assertNever } from '@noharness/util-values'
 import type { Agent, PreStepDecision } from '@noharness/agent'
 import type { CommandId } from '@noharness/commands/types'
+import type { TokenMeasurement } from '@noharness/token-meter'
+import type { ContextPressureProjection } from '@noharness/token-meter'
 // Type-only: makes the optional sibling service available to `ctx.get()`.
 import type {} from '@noharness/compaction-tool-result-pruner'
 import { answeredRouteProjectionDefinition } from './answered-route.ts'
@@ -67,6 +69,15 @@ function routedTarget(session: Session): SummaryRoute | undefined {
  */
 function reservedCompletionTokens(header: EpochHeader, defaultMaxTokens: number | undefined): number {
   return header.config.maxTokens ?? defaultMaxTokens ?? 0
+}
+
+/**
+ * Prompt tokens the route will charge. The fixed estimate undercounts scripts
+ * and code, so a provider-reported count that the latest usage sample landed on
+ * wins whenever it is larger; otherwise the local estimate stands.
+ */
+function pressureTokens(estimate: number, projected: number | undefined): number {
+  return projected === undefined ? estimate : Math.max(estimate, projected)
 }
 
 /**
@@ -207,11 +218,11 @@ export class BasicCompactionEngine extends CompactionEngine {
       } catch (error: unknown) {
         signal.throwIfAborted()
         const message = error instanceof Error ? error.message : String(error)
-        throw new LlmError(
-          `Cannot switch to ${config.provider}/${config.model}: context compaction failed: ${message}. `
-          + 'The previous request model is preserved; retry or select a model with a larger context window.',
-          'MODEL_SWITCH_COMPACTION_FAILED',
-          { cause: error },
+        // The switch is already routed; a best-effort reduction that cannot get
+        // under the target window must not discard an otherwise usable request.
+        ctx.logger.warn(
+          `model switch compaction incomplete: ${message}; sending to `
+          + `${config.provider}/${config.model} with the reduced surface`,
         )
       }
       return config
@@ -340,38 +351,57 @@ export class BasicCompactionEngine extends CompactionEngine {
     const target = header.config
     const policy = resolveTargetPolicy(this.config, target)
     const meter = this.ctx.tokenMeter
-    let measurement = meter.measure(agent.session, header)
-    const prune = this.ctx.get('toolResultPruner')
     const info = await this.ctx.llm.resolveModelInfo(target.provider, target.model, signal)
     assertNoActiveCompaction(agent.session, 'automatic pressure compaction')
-    const targetKey = `${target.provider}/${target.model}`
-    if (info.context === undefined) {
-      throw new TargetPressureConfigError(
-        targetKey,
-        `compaction-basic: no context capacity for ${targetKey}; `
-        + 'configure contextWindow on that adapter model',
-      )
+    // Test double services may publish no pressure projection at all.
+    const pressure = (): Pick<ContextPressureProjection, 'pressureTokens' | 'contextWindow'> | undefined => {
+      try {
+        return meter.contextPressure(agent.session)
+      } catch {
+        // A meter mounted without its pressure projection has no reported size.
+        return undefined
+      }
+    }
+    const reportedWindow = pressure()?.contextWindow
+    const contextWindow = info.context?.contextWindow ?? reportedWindow
+    if (contextWindow === undefined) {
+      // Without a window the target has no threshold to compact against. The
+      // step trigger keeps its warn-once report; a switch proceeds unmeasured.
+      if (!requireBelowThreshold) {
+        throw new TargetPressureConfigError(
+          `${target.provider}/${target.model}`,
+          `compaction-basic: no context capacity for ${target.provider}/${target.model}; `
+          + 'configure contextWindow on that adapter model',
+        )
+      }
+      return null
     }
     const spec = resolveCompactSpec(
       policy,
-      info.context.contextWindow,
+      contextWindow,
       reservedCompletionTokens(header, info.defaultMaxTokens),
     )
-    if (measurement.totalTokens < spec.thresholdTokens) return null
+    const pending = (measurement: TokenMeasurement): number => pressureTokens(
+      measurement.totalTokens,
+      pressure()?.pressureTokens,
+    )
+    let measurement = meter.measure(agent.session, header)
+    if (pending(measurement) < spec.thresholdTokens) return null
 
     // Once pressure qualifies, land the model-free pass before choosing a
     // summary range, then remeasure through the singleton replay fold.
+    const prune = this.ctx.get('toolResultPruner')
     if (prune !== undefined) {
       prune.pruneSession(agent.session)
       measurement = meter.measure(agent.session, header)
     }
-    if (measurement.totalTokens < spec.thresholdTokens) return null
+    if (pending(measurement) < spec.thresholdTokens) return null
 
     let result: CompactionResult | null = null
     for (let attempt = 0; attempt <= spec.compactionRetries; attempt += 1) {
       const range = selectCompactableRange(agent.session, measurement, spec.retainTokens)
       if (range === null) {
-        if (result === null && !requireBelowThreshold) return null
+        if (result === null) return null
         throw new Error(
           'no safe compaction range can reduce context below threshold '
           + `(${measurement.totalTokens} estimated tokens >= threshold ${spec.thresholdTokens})`,
@@ -379,13 +409,12 @@ export class BasicCompactionEngine extends CompactionEngine {
       }
       result = await this.compactRegion(range.start, range.end, agent, signal)
       measurement = meter.measure(agent.session, header)
-      if (measurement.totalTokens < spec.thresholdTokens) return result
+      if (pending(measurement) < spec.thresholdTokens) return result
     }
 
-    throw new Error(
-      `compaction still above threshold after ${spec.compactionRetries + 1} compaction attempts `
-      + `(${measurement.totalTokens} estimated tokens >= threshold ${spec.thresholdTokens})`,
-    )
+    // A best-effort reduction that cannot reach the threshold leaves the
+    // request routed rather than discarded; the provider reports real overflow.
+    return result
   }
 
   /**

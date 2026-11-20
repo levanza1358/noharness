@@ -15,7 +15,7 @@ import type {
 import type { FileUploadReceiptId, StagedAttachment } from '@noharness/client-file-upload/types'
 import type {} from '@noharness/client-file-upload'
 import {
-  type ReasoningEffortId, createUserMessage, freezeMessage,
+  type ReasoningEffortId, createUserMessage, freezeMessage, LlmError,
 } from '@noharness/llm'
 import type { MessageId, MessageSource } from '@noharness/llm'
 import { buildForkSeed } from '@noharness/session/fork'
@@ -169,14 +169,13 @@ export class SessionCommandController {
     return this.agents.serializeImageAdmission(agent, async () => {
       try {
         await this.requireModel(request)
-        const selected: AgentModelSelection = {
+        const selected = await this.supportedSelection({
           provider: request.provider,
           model: request.model,
           ...(request.reasoningEffort === undefined
             ? {}
             : { reasoningEffort: brandString<ReasoningEffortId>(request.reasoningEffort) }),
-        }
-        await this.ctx.llm.resolveCallConfig(selected)
+        })
         agent.model.select(selected)
         void this.ctx.agentDefaultModel.saveSelection(selected).catch((error: unknown) => {
           this.ctx.logger.warn(
@@ -423,22 +422,22 @@ export class SessionCommandController {
    * @returns the selection recorded as the deployment default.
    */
   async setDefaultModel(request: WireModelSelection): Promise<WireModelSelection> {
-    const selected: AgentModelSelection = {
-      provider: request.provider,
-      model: request.model,
-      ...(request.reasoningEffort === undefined
-        ? {}
-        : { reasoningEffort: brandString<ReasoningEffortId>(request.reasoningEffort) }),
-    }
+    let selected: AgentModelSelection
     try {
-      await this.requireModel(selected)
-      await this.ctx.llm.resolveCallConfig(selected)
+      await this.requireModel(request)
+      selected = await this.supportedSelection({
+        provider: request.provider,
+        model: request.model,
+        ...(request.reasoningEffort === undefined
+          ? {}
+          : { reasoningEffort: brandString<ReasoningEffortId>(request.reasoningEffort) }),
+      })
     } catch (error) {
       if (remoteErrorOf(error) !== undefined) throw error
       throw new RemoteError(
         'session/model-unavailable',
         error instanceof Error ? error.message : String(error),
-        { provider: selected.provider, model: selected.model },
+        { provider: request.provider, model: request.model },
       )
     }
     await this.ctx.agentDefaultModel.saveSelection(selected)
@@ -447,6 +446,42 @@ export class SessionCommandController {
       model: selected.model,
       ...(selected.reasoningEffort === undefined ? {} : { reasoningEffort: String(selected.reasoningEffort) }),
     }
+  }
+
+  /**
+   * Resolve one selection against the target's advertised reasoning efforts.
+   *
+   * A reasoning effort carries over from the previously selected model, so a
+   * target that does not offer it falls back to that model's default effort
+   * instead of refusing the selection. A target advertising no reasoning
+   * support keeps the request effort, which the provider then rejects.
+   * @param selection - provider, model, and the requested reasoning effort.
+   * @returns the selection to record, narrowed to an effort the target offers.
+   */
+  private async supportedSelection(selection: AgentModelSelection): Promise<AgentModelSelection> {
+    const requested = selection.reasoningEffort
+    if (requested === undefined) {
+      await this.ctx.llm.resolveCallConfig(selection)
+      return selection
+    }
+    const info = await this.ctx.llm.resolveModelInfo(selection.provider, selection.model)
+    const fallback = info.reasoning?.defaultEffort
+    if (info.reasoning?.efforts.some(effort => effort.id === requested) === true) {
+      await this.ctx.llm.resolveCallConfig(selection)
+      return selection
+    }
+    const resolved: AgentModelSelection = fallback === undefined
+      ? { provider: selection.provider, model: selection.model }
+      : { provider: selection.provider, model: selection.model, reasoningEffort: fallback }
+    if (fallback === undefined && info.reasoning !== undefined) {
+      throw new LlmError(
+        `provider "${selection.provider}" model "${selection.model}" offers no default reasoning effort `
+        + `for the requested "${requested}"`,
+        'UNSUPPORTED_REASONING_EFFORT',
+      )
+    }
+    await this.ctx.llm.resolveCallConfig(resolved)
+    return resolved
   }
 
   private async requireModel(selection: Pick<AgentModelSelection, 'provider' | 'model'>): Promise<void> {

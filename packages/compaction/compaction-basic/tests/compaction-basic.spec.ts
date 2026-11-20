@@ -877,8 +877,7 @@ describe('pressure measurement and retention', () => {
       text: `summary ${index}`,
     }))
 
-    await expect(compactIfNeeded(compact, conversation(4)))
-      .rejects.toThrow(/still above threshold after 1 compaction attempts/)
+    await expect(compactIfNeeded(compact, conversation(4))).resolves.not.toBeNull()
   })
 
   it('rounds a retention cut head-ward to preserve tool-call/result pairing', async () => {
@@ -1829,18 +1828,16 @@ describe('model-switch pressure', () => {
     expect(ctx.tokenMeter.measure(session).totalTokens).toBeLessThan(300)
   })
 
-  it.each([false, true])('requires a valid small-window policy even for short history (override: %s)', async (override) => {
+  it('degrades a request whose destination policy cannot be resolved', async () => {
     const { ctx, adapter } = harness({
       headroomTokens: 65_536, maxTokens: 65_536,
-      modelPolicies: override ? [{ provider: '64k', model: '64k', headroomTokens: 4_096, maxTokens: 4_096 }] : [],
+      modelPolicies: [{ provider: '64k', model: '64k', headroomTokens: 4_096, maxTokens: 4_096 }],
     })
     ctx.llm.registerAdapter(['64k'], new ContextAdapter(65_536))
     const session = conversation(1, 'short')
     const previous = session.requestHeader()
     const selected = { provider: '64k', model: '64k', maxTokens: 4_096 }
-    const switching = request(ctx, session, selected)
-    if (override) await expect(switching).resolves.toEqual(selected)
-    else await expect(switching).rejects.toMatchObject({ code: 'MODEL_SWITCH_COMPACTION_FAILED' })
+    await expect(request(ctx, session, selected)).resolves.toEqual(selected)
     expect(session.requestHeader()).toEqual(previous)
     expect(adapter.lastOptions).toBeUndefined()
   })
@@ -1884,7 +1881,7 @@ describe('model-switch pressure', () => {
 
       const switching = request(ctx, session, selected, controller.signal)
       if (failure === 'cancellation') await expect(switching).rejects.toBe(cancelled)
-      else await expect(switching).rejects.toMatchObject({ code: 'MODEL_SWITCH_COMPACTION_FAILED' })
+      else await expect(switching).resolves.toEqual(selected)
 
       expect(session.requestHeader()).toEqual(previous)
       expect(session.snapshotEvents().filter(event => event.type === 'compaction/summary')).toHaveLength(1)
@@ -1907,7 +1904,7 @@ describe('model-switch pressure', () => {
     const previous = session.requestHeader()
     const switching = request(ctx, session, { provider: 'small', model: 'small' })
 
-    await expect(switching).rejects.toThrow('still above threshold after 3 compaction attempts')
+    await expect(switching).resolves.toEqual({ provider: 'small', model: 'small' })
 
     expect(calls).toHaveBeenCalledTimes(3)
     expect(session.requestHeader()).toEqual(previous)
@@ -1939,16 +1936,15 @@ describe('model-switch pressure', () => {
     expect(disabled.adapter.lastOptions).toBeUndefined()
   })
 
-  it('rejects a failed summary without committing the destination model', async () => {
+  it('keeps a failed summary uncommitted while the request still switches', async () => {
     const { ctx } = harness({}, {
       kind: 'error', failure: { code: 'AUTH', message: 'summary credentials expired' },
     })
     const session = conversation(4)
     const previous = session.requestHeader()
     const nodes = [...session.surface.nodes]
-    const switching = request(ctx, session, { provider: 'small', model: 'small' })
-    await expect(switching).rejects.toMatchObject({ code: 'MODEL_SWITCH_COMPACTION_FAILED' })
-    await expect(switching).rejects.toThrow('summary credentials expired')
+    await expect(request(ctx, session, { provider: 'small', model: 'small' }))
+      .resolves.toEqual({ provider: 'small', model: 'small' })
     expect(session.requestHeader()).toEqual(previous)
     expect(session.surface.nodes).toEqual(nodes)
     expect(session.snapshotEvents().at(-1)).toMatchObject({
@@ -1956,34 +1952,34 @@ describe('model-switch pressure', () => {
     })
   })
 
-  it('rejects an oversized indivisible tail instead of accepting the switch', async () => {
+  it('switches out of an oversized indivisible tail instead of failing the request', async () => {
     const { ctx } = harness()
     const session = conversation(1, 'large '.repeat(800))
     await expect(request(ctx, session, { provider: 'small', model: 'small' }))
-      .rejects.toMatchObject({ code: 'MODEL_SWITCH_COMPACTION_FAILED' })
+      .resolves.toEqual({ provider: 'small', model: 'small' })
     expect(session.requestHeader()?.config.provider).toBe(MODEL)
   })
 
-  it('rejects pressure with no compactable span before making a summary call', async () => {
+  it('skips a summary call when pressure has no compactable span', async () => {
     const { ctx, adapter } = harness()
     const session = Session.create(brandString<SessionId>('indivisible-switch'))
     session.append('request/header', { header: { config: { provider: MODEL, model: MODEL } }, reason: 'initial' })
     session.append('user/message', createUserMessage({
       content: [{ type: 'text', text: 'large '.repeat(800) }], source: { kind: 'user' },
     }), { surfaceOp: 'append' })
-    const switching = request(ctx, session, { provider: 'small', model: 'small' })
-    await expect(switching).rejects.toMatchObject({ code: 'MODEL_SWITCH_COMPACTION_FAILED' })
-    await expect(switching).rejects.toThrow('no safe compaction range')
+    await expect(request(ctx, session, { provider: 'small', model: 'small' }))
+      .resolves.toEqual({ provider: 'small', model: 'small' })
     expect(adapter.lastOptions).toBeUndefined()
   })
 
   it('reports a non-Error capacity failure without changing the route', async () => {
     const { ctx } = harness()
+    const warn = vi.spyOn(ctx.logger, 'warn')
     vi.spyOn(ctx.llm, 'resolveModelInfo').mockRejectedValueOnce('capacity lookup unavailable')
     const session = conversation(4)
-    const switching = request(ctx, session, { provider: 'small', model: 'small' })
-    await expect(switching).rejects.toMatchObject({ code: 'MODEL_SWITCH_COMPACTION_FAILED' })
-    await expect(switching).rejects.toThrow('capacity lookup unavailable')
+    await expect(request(ctx, session, { provider: 'small', model: 'small' }))
+      .resolves.toEqual({ provider: 'small', model: 'small' })
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('capacity lookup unavailable'))
     expect(session.requestHeader()?.config.provider).toBe(MODEL)
   })
 

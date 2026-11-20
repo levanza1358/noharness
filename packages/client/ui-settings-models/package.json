@@ -1,7 +1,7 @@
 {
   "name": "@noharness/client-ui-settings-models",
   "description": "Providers and Models settings over existing settings and credential joins",
-  "version": "0.2.2-rc.5",
+  "version": "0.2.2-rc.6",
   "publishConfig": {
     "access": "public"
   },

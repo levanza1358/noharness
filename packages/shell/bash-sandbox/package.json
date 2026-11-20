@@ -1,7 +1,7 @@
 {
   "name": "@noharness/bash-sandbox",
   "description": "Sandbox-consuming implementation of the NoHarness bash executor seam (confines every command via ctx.sandbox, reports denial/enforcement result facts)",
-  "version": "0.2.2-rc.5",
+  "version": "0.2.2-rc.6",
   "publishConfig": {
     "access": "public"
   },

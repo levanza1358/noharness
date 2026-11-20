@@ -1,7 +1,7 @@
 {
   "name": "@noharness/web-app",
   "description": "The nhs browser-surface bundle: the web patch layer over nhs-base plus the runtime glue plugin (frontend dist serving, bash runtime variables, URL line)",
-  "version": "0.2.2-rc.5",
+  "version": "0.2.2-rc.6",
   "publishConfig": {
     "access": "public"
   },

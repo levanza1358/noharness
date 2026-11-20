@@ -1,7 +1,7 @@
 {
   "name": "@noharness/sdk-jsonrpc-server",
   "description": "Stdio JSON-RPC server plugin for out-of-process NoHarness SDK clients",
-  "version": "0.2.2-rc.5",
+  "version": "0.2.2-rc.6",
   "publishConfig": {
     "access": "public"
   },

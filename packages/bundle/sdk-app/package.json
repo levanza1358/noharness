@@ -1,7 +1,7 @@
 {
   "name": "@noharness/sdk-app",
   "description": "The nhs SDK profile bundle: stdio JSON-RPC serving and process lifecycle over nhs-base",
-  "version": "0.2.2-rc.5",
+  "version": "0.2.2-rc.6",
   "publishConfig": {
     "access": "public"
   },

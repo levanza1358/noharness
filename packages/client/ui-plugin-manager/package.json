@@ -1,7 +1,7 @@
 {
   "name": "@noharness/client-ui-plugin-manager",
   "description": "Plugin management for the nhs web client: the sidebar Plugins panel installs, enables, disables, retries, and composes installed plugin packages",
-  "version": "0.2.2-rc.5",
+  "version": "0.2.2-rc.6",
   "publishConfig": {
     "access": "public"
   },

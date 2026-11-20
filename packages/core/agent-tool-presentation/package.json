@@ -1,7 +1,7 @@
 {
   "name": "@noharness/agent-tool-presentation",
   "description": "Deprecated tool presentation selector; use nhs-tool-executor-native or nhs-tool-executor-ptc directly",
-  "version": "0.2.2-rc.5",
+  "version": "0.2.2-rc.6",
   "publishConfig": {
     "access": "public"
   },

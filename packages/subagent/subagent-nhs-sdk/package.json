@@ -1,7 +1,7 @@
 {
   "name": "@noharness/subagent-nhs-sdk",
   "description": "Out-of-process SDK subagent backend: drives a child NoHarness runtime subprocess over stdio JSON-RPC through the TypeScript SDK client",
-  "version": "0.2.2-rc.7",
+  "version": "0.2.2-rc.8",
   "publishConfig": {
     "access": "public"
   },

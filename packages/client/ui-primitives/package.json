@@ -1,7 +1,7 @@
 {
   "name": "@noharness/client-ui-primitives",
   "description": "Pure React atoms for the nhs web UI: controls, icons, markdown, and JSON inspectors (zero cordis)",
-  "version": "0.2.2-rc.7",
+  "version": "0.2.2-rc.8",
   "publishConfig": {
     "access": "public"
   },

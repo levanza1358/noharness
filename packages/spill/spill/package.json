@@ -1,7 +1,7 @@
 {
   "name": "@noharness/spill",
   "description": "Abstract spill storage seam (ctx.spillStore) for the NoHarness — save oversized tool text and return a retrieval locator",
-  "version": "0.2.2-rc.7",
+  "version": "0.2.2-rc.8",
   "publishConfig": {
     "access": "public"
   },

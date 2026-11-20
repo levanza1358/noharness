@@ -1,7 +1,7 @@
 {
   "name": "@noharness/package-manifest",
   "description": "Shared type declarations for package.json.nhs configuration fields",
-  "version": "0.2.2-rc.7",
+  "version": "0.2.2-rc.8",
   "publishConfig": {
     "access": "public"
   },

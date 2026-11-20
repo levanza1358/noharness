@@ -10,6 +10,8 @@
 #include <gdiplus.h>
 #include <new>
 #include <algorithm>
+#include <vector>
+#include <string>
 static HRESULT ApplyInstallerDwmFrame(HWND window) {
     // DWM retains native transitions; WM_NCCALCSIZE removes the visible caption.
     SetWindowLongW(window, GWL_STYLE, GetWindowLongW(window, GWL_STYLE) | WS_THICKFRAME | WS_CAPTION);
@@ -93,6 +95,38 @@ extern "C" __declspec(dllexport) DWORD __cdecl UninstallRemoveEmptyParents(LPCWS
     return uninstall_data::RemoveEmptyParents(path, stop);
 }
 
+// Collects the processes started from the given image path; another user's or directory's app is not a target.
+static bool CollectProcesses(LPCWSTR executable, std::vector<DWORD>& targets, bool& readable) {
+    WCHAR target[32768];
+    DWORD length = GetLongPathNameW(executable, target, ARRAYSIZE(target));
+    LPCWSTR expected = length > 0 && length < ARRAYSIZE(target) ? target : executable;
+    LPCWSTR filename = wcsrchr(expected, L'\\');
+    filename = filename ? filename + 1 : expected;
+    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (snapshot == INVALID_HANDLE_VALUE) return false;
+    PROCESSENTRY32W entry = {};
+    entry.dwSize = sizeof(entry);
+    readable = true;
+    BOOL present = Process32FirstW(snapshot, &entry);
+    while (present) {
+        if (_wcsicmp(entry.szExeFile, filename) == 0) {
+            HANDLE process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_TERMINATE | SYNCHRONIZE, FALSE, entry.th32ProcessID);
+            if (process) {
+                WCHAR path[32768];
+                DWORD count = ARRAYSIZE(path);
+                if (QueryFullProcessImageNameW(process, 0, path, &count) && _wcsicmp(path, expected) == 0) {
+                    targets.push_back(entry.th32ProcessID);
+                }
+                CloseHandle(process);
+            }
+        }
+        present = Process32NextW(snapshot, &entry);
+    }
+    if (!present && GetLastError() != ERROR_NO_MORE_FILES) readable = false;
+    CloseHandle(snapshot);
+    return true;
+}
+
 // Match the affected executable, not another user's or directory's same-named application.
 // Returns 0 while running, 1 when absent, and -1 if the process list cannot be read.
 extern "C" __declspec(dllexport) int __cdecl InstallerFindProcess(LPCWSTR executable) {
@@ -123,6 +157,32 @@ extern "C" __declspec(dllexport) int __cdecl InstallerFindProcess(LPCWSTR execut
     if (!present && GetLastError() != ERROR_NO_MORE_FILES) result = -1;
     CloseHandle(snapshot);
     return result;
+}
+
+// Terminates every process started from the given image path and waits for them to exit.
+// Returns 0 when none remains, 1 when the process list cannot be read, and -1 when one survives or refuses to close.
+extern "C" __declspec(dllexport) int __cdecl InstallerStopProcess(LPCWSTR executable) {
+    const ULONGLONG deadline = GetTickCount64() + 15000;
+    for (;;) {
+        std::vector<DWORD> targets;
+        bool readable = false;
+        if (!CollectProcesses(executable, targets, readable)) return 1;
+        if (!readable) return 1;
+        if (targets.empty()) return 0;
+        bool closed = true;
+        for (DWORD pid : targets) {
+            HANDLE process = OpenProcess(PROCESS_TERMINATE | SYNCHRONIZE, FALSE, pid);
+            if (!process) {
+                // Already exiting, or owned by another user.
+                continue;
+            }
+            if (!TerminateProcess(process, 0)) closed = false;
+            CloseHandle(process);
+        }
+        if (!closed) return -1;
+        if (GetTickCount64() > deadline) return -1;
+        Sleep(250);
+    }
 }
 
 struct ProgressPage {

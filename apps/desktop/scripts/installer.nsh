@@ -189,9 +189,22 @@ ManifestDPIAware true
       ${Loop}
     ${EndIf}
     ${If} $R0 == 0
-      MessageBox MB_OK|MB_ICONINFORMATION "$(INSTALLER_RUNNING)" /SD IDOK
-      SetErrorLevel 2
-      Quit
+      ${If} ${Silent}
+        MessageBox MB_OK|MB_ICONINFORMATION "$(INSTALLER_RUNNING)" /SD IDOK
+        SetErrorLevel 2
+        Quit
+      ${EndIf}
+      MessageBox MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2 "$(INSTALLER_CLOSE_CONFIRM)" /SD IDNO 0
+      ${If} ${Errors}
+        SetErrorLevel 2
+        Quit
+      ${EndIf}
+      System::Call '$PLUGINSDIR\window-frame.dll::InstallerStopProcess(w "$INSTDIR\${APP_EXECUTABLE_FILENAME}") i.R0 ?c'
+      ${If} $R0 != 0
+        MessageBox MB_OK|MB_ICONEXCLAMATION "$(INSTALLER_CLOSE_FAILED)" /SD IDOK
+        SetErrorLevel 2
+        Quit
+      ${EndIf}
     ${EndIf}
   ${EndIf}
   ${If} $R0 < 0

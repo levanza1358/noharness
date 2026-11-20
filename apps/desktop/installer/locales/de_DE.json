@@ -17,6 +17,8 @@
     "INSTALLER_THEME_ERROR": "Verwenden Sie /THEME=auto, /THEME=light oder /THEME=dark.",
     "INSTALLER_FAILED": "Die Installation wurde nicht abgeschlossen. Schließen Sie dieses Installationsprogramm und versuchen Sie es erneut. Wenn das Problem weiterhin besteht, laden Sie das Installationsprogramm erneut herunter.",
     "INSTALLER_RUNNING": "NoHarness läuft. Beenden Sie es über die Taskleiste und versuchen Sie es erneut.",
+        "INSTALLER_CLOSE_CONFIRM": "NoHarness läuft noch. Jetzt beenden und die Installation fortsetzen?",
+    "INSTALLER_CLOSE_FAILED": "NoHarness konnte nicht beendet werden. Beenden Sie es über die Taskleiste und versuchen Sie es erneut.",
     "INSTALLER_DIRECTORY_FAILED": "Das Installationsverzeichnis konnte nicht ersetzt werden.",
     "INSTALLER_DIRECTORY_HINT": "Überprüfen Sie den Zugriff auf das Installationsverzeichnis und schließen Sie Programme mithilfe seiner Dateien. Führen Sie dann das Installationsprogramm erneut aus. Kopieren Sie die Fehlerdetails, wenn das Problem weiterhin besteht.",
     "INSTALLER_DIRECTORY_RESTORE_HINT": "Die vorherige Installation konnte nicht wiederhergestellt werden. Behalten Sie das in den Fehlerdetails angezeigte Sicherungsverzeichnis bei und wenden Sie sich vor der erneuten Installation an den Support.",

@@ -1,7 +1,7 @@
 {
   "name": "@noharness/bash-local",
   "description": "Local-subprocess implementation of the NoHarness bash executor seam",
-  "version": "0.2.2-rc.6",
+  "version": "0.2.2-rc.7",
   "publishConfig": {
     "access": "public"
   },

@@ -1,7 +1,7 @@
 {
   "name": "@noharness/web-frontend",
   "description": "Web application entry: vite build over the @noharness/client-web shell library; dist/ served by apps/cli's nhs web",
-  "version": "0.2.2-rc.6",
+  "version": "0.2.2-rc.7",
   "publishConfig": {
     "access": "public"
   },

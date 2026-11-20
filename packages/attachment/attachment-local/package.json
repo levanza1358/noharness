@@ -1,7 +1,7 @@
 {
   "name": "@noharness/attachment-local",
   "description": "Private content-addressed NHS_HOME attachment storage",
-  "version": "0.2.2-rc.6",
+  "version": "0.2.2-rc.7",
   "publishConfig": {
     "access": "public"
   },
